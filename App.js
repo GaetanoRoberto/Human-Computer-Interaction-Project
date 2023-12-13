@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
+import ExploreHeader from './header';
 // to run, npx expo start
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Lorem Ipsum</Text>
+      <Text><ExploreHeader></ExploreHeader></Text>
       <StatusBar style="auto" />
     </View>
   );
