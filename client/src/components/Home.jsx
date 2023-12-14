@@ -1,15 +1,17 @@
 import { useState } from 'react'
+import {useNavigate} from 'react-router-dom'
 import { ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl } from 'react-bootstrap';
 
 function Header() {
+    const navigate = useNavigate();
 
     return (
         <>
             <Navbar bg='success' variant='dark' >
                 <Container fluid >
                     <Button style={{ visibility: 'hidden', pointerEvents: 'none' }}></Button>
-                    <Button variant="warning" className='justify-content-between'>Gluten-Hub</Button>
-                    <Navbar.Brand className="bi bi-person-circle  justify-content-end" style={{fontSize: "2rem", marginRight: 0}}/>
+                    <Button variant="warning" className='justify-content-between' onClick={() => navigate('/')}>Gluten-Hub</Button>
+                    <Navbar.Brand className="bi bi-person-circle  justify-content-end" style={{fontSize: "2rem", marginRight: 0}} onClick={() => navigate('/settings')}/>
                 </Container>
             </Navbar >
             <Row className="align-items-center" style={{marginRight: 0, marginTop:"2%", marginLeft:"2%"}}>
@@ -20,7 +22,7 @@ function Header() {
                     <FormControl type="search" placeholder="Search" />
                 </Col>
                 <Col xs={1} className="d-flex justify-content-end align-items-center" style={{marginLeft:"2%"}}>
-                    <i className="bi bi-sliders" style={{fontSize: "1.5rem"}}></i>
+                    <i className="bi bi-sliders" style={{fontSize: "1.5rem"}} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
         </>
@@ -28,6 +30,8 @@ function Header() {
 }
 
 function RestaurantsList() {
+    const navigate = useNavigate();
+
     const [list, setList] = useState([
         { key: '1', name: 'alecosta', stars: '4', prices: '4', image_path: 'image2.jpg' },
         { key: '2', name: 'davide', stars: '3', prices: '3', image_path: 'image1.jpg' },
@@ -45,7 +49,7 @@ function RestaurantsList() {
         <ListGroup>
             {list.map((item) => {
                 return (
-                    <Card key={item.id} onClick={() => { console.log('ciauuuu') }}>
+                    <Card key={item.id} onClick={() => { navigate(`/restaurants/${item.id}/menu/`) }}>
                         <Card.Body>
                             <Row>
                                 <Col>
