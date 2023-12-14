@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import ExploreHeader from './header';
+import { Home } from './components/home';
 // to run, npx expo start
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text><ExploreHeader></ExploreHeader></Text>
+      <Home></Home>
       <StatusBar style="auto" />
     </View>
   );
