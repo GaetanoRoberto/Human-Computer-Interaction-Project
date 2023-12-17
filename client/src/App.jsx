@@ -4,6 +4,12 @@ import { useState } from 'react'
 import { Home } from './components/Home'
 import { BrowserRouter,Routes,Route,Navigate,Link } from 'react-router-dom' ;
 import { Restaurant } from './components/Restaurant';
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {fab} from '@fortawesome/free-brands-svg-icons';
+import {fas} from '@fortawesome/free-solid-svg-icons';
+import {far} from '@fortawesome/free-regular-svg-icons';
+library.add(fab, fas, far);
+
 
 function App() {
   const [count, setCount] = useState(0)

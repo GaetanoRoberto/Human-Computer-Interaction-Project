@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
-import { ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl } from 'react-bootstrap';
+import {ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge} from 'react-bootstrap';
+import { ReactSmartScroller } from 'react-smart-scroller';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Header() {
     const navigate = useNavigate();
@@ -27,6 +29,26 @@ function Header() {
             </Row>
         </>
     );
+}
+
+function Filters() {
+    const [filters, setFilters] = useState(["PIZZA", "HAMBURGER", "SUSHI", "CHINESE", "ITALIAN"]);
+
+    return(
+        <ReactSmartScroller spacing={10}>
+            {
+                filters.map((filter, index) => (
+                    <h2>
+                        <Button active style={{borderRadius: "20px", marginTop: "0.5rem", backgroundColor: "#0D6EFD"}}>
+                            <span> {filter} </span>
+                            <span style={{marginLeft: "5px"}} onClick={() => setFilters(filters.filter(f => f !== filter))}><FontAwesomeIcon icon="fa-regular fa-circle-xmark" size="lg" /></span>
+                        </Button>
+                    </h2>
+                ))
+            }
+        </ReactSmartScroller>
+    );
+
 }
 
 function RestaurantsList() {
@@ -86,6 +108,7 @@ function Home() {
     return (
         <>
             <Header/>
+            <Filters/>
             <RestaurantsList/>
         </>
     );
