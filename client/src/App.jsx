@@ -17,18 +17,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<></>}/>
-        <Route path='/filters' element={<></>}/>
-        <Route path='/settings' element={<></>}/>
-        <Route path='/restaurants/:id/details' element={<Restaurant/>}/>
-        <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>
-        <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>
-        {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/}
-        <Route path='/addInfo' element={<></>}/>
-        <Route path='/editInfo/:id' element={<></>}/>
-        <Route path='/addDish' element={<></>}/>
-        <Route path='/editDish/:id' element={<></>}/>
+        <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
+        <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
+        <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
+        <Route path='/settings' element={<></>}/>{/* DAVE*/ }
+        <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/reviews/add' element={<Restaurant/>}/>{/* TANUCC*/ }
+        {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/} {/* QUEEN*/ }
+        <Route path='/addInfo' element={<></>}/>  {/* DOME*/ }
+        <Route path='/editInfo/:id' element={<></>}/>{/* DOME*/ }
+        <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
+        <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
       </Routes>
     </BrowserRouter>
   )
