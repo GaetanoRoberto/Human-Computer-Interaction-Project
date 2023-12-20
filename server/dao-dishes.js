@@ -1,0 +1,116 @@
+'use strict';
+
+/* Data Access Object (DAO) module for accessing dishes data */
+
+const db = require('./db');
+
+// This function returns all the dishes of a given restaurant.
+exports.getDishes = (restaurantId) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'SELECT id,name,price,type,image FROM dishes WHERE restaurantId=?';
+      db.all(sql, [restaurantId], (err, rows) => {
+          // if query error, reject the promise, otherwise return the content
+          if (err) {
+              reject(err);
+          } else {
+              // put together quality and safety average
+              const dishes = rows.map(dish => ({ id:dish.id, name: dish.name, price:dish.price, type:dish.type, image: dish.image }));
+              resolve(dishes);
+          }
+      });
+  });
+};
+
+// This function returns a dish given his id.
+exports.getDish = (id) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM dishes WHERE id=?';
+      db.get(sql, [id], (err, row) => {
+          // if query error, reject the promise, otherwise if not found return an error else return the content
+          if (err) {
+              reject(err);
+          } else if (row === undefined) {
+              resolve({ error: 'Dish not found.' });
+          }
+          else {
+              const dish = Object.assign({}, row);
+              resolve(dish);
+          }
+      });
+  });
+};
+
+// This function returns the image path of a dish given his id.
+exports.getDishImage = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT image FROM dishes WHERE id=?';
+        db.get(sql, [id], (err, row) => {
+            // if query error, reject the promise, otherwise if not found return an error else return the content
+            if (err) {
+                reject(err);
+            } else if (row === undefined) {
+                resolve({ error: 'Dish not found.' });
+            }
+            else {
+                const dish = Object.assign({}, row);
+                resolve(dish);
+            }
+        });
+    });
+};
+
+// This function create a new dish.
+exports.insertDish = (dish) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'INSERT INTO dishes (restaurantId, name, price, type, image)' +
+          ' VALUES(?, ?, ?, ?, ?)';
+      db.run(sql,
+          [dish.restaurantId,dish.name,dish.price,dish.type,dish.image],
+          function (err) {
+              // if query error, reject the promise, otherwise return the content
+              if (err) {
+                  reject(err);
+              } else {
+                  // Returning the success message to the client.
+                  resolve(exports.getDish(this.lastID));
+              }
+          });
+  });
+};
+
+// This function update a specific dish given its id and infos.
+exports.updateDish = (dish) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'UPDATE dishes SET restaurantId=?, name=?, price=?, type=?, image=? WHERE id=?';
+      db.run(sql,
+          [dish.restaurantId,dish.name,dish.price,dish.type,dish.image,dish.id],
+          function (err) {
+              // if query error, reject the promise, otherwise if not found return an error else return the content
+              if (err) {
+                  reject(err);
+              } else if (this.changes !== 1) {
+                  resolve({ error: 'No Dish was updated.' });
+              }
+              else {
+                  resolve(exports.getDish(dish.id));
+              }
+          });
+  });
+};
+
+// This function delete a specific dish given its id.
+exports.deleteDish = (id) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'DELETE FROM dishes WHERE id=?';
+      db.run(sql, [id], function (err) {
+          // if query error, reject the promise, otherwise if no changes return an error else return the content
+          if (err) {
+              reject(err);
+          } else if (this.changes !== 1) {
+              resolve({ error: 'No Dish deleted.' });
+          } else {
+              resolve({ success: 'Dish deleted successfully.' });
+          }
+      });
+  });
+};
