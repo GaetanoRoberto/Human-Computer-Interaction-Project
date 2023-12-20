@@ -59,6 +59,23 @@ exports.getDishImage = (id) => {
     });
 };
 
+// This function returns all the possible type of dishes, for filter in the home page.
+exports.getFilters = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT DISTINCT(type) FROM dishes';
+        db.all(sql, [], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
+                // put together quality and safety average
+                const filters = rows.map(filter => (filter.type));
+                resolve(filters);
+            }
+        });
+    });
+};
+
 // This function create a new dish.
 exports.insertDish = (dish) => {
   return new Promise((resolve, reject) => {

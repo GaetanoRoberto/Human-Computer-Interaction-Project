@@ -34,13 +34,16 @@ GET http://localhost:3001/api/restaurants/1 HTTP/1.1
 GET http://localhost:3001/api/ingredients/3 HTTP/1.1
 ###
 
+## Get all the possible type of dishes, for filter in the home page.
+GET http://localhost:3001/api/dishes/ HTTP/1.1
+###
+
 ## Insert a new Restaurant
 POST http://localhost:3001/api/restaurants HTTP/1.1
 content-type: application/json
 
 {
   "isNewInserted": 0,
-  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
   "name": "Sorbillo",
   "location": "Via Bruno Buozzi, 3, 10121 Torino TO",
   "phone": "011 1923 4672",

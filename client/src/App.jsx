@@ -1,23 +1,48 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import API from './API'
 import { Home } from './components/Home'
 import { BrowserRouter,Routes,Route,Navigate,Link } from 'react-router-dom' ;
 import { Restaurant } from './components/Restaurant';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {fab} from '@fortawesome/free-brands-svg-icons';
+import {faQuinscape, fab} from '@fortawesome/free-brands-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
 library.add(fab, fas, far);
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [restaurantList, setrestaurantList] = useState([]);
+  const [filters,setFilters] = useState([]);
+
+  useEffect(() => {
+    async function getRestaurants() {
+      try {
+        const restaurants = await API.getRestaurants();
+        setrestaurantList(restaurants);
+        console.log(restaurants);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    async function getFilters() {
+      try {
+        const filters = await API.getFilters();
+        setFilters(filters);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getRestaurants();
+    getFilters();
+  }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
+        <Route path='/' element={<Home restaurants={restaurantList} filters={filters}/>}/>     {/* FATTA*/ }
         <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }

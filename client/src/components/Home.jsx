@@ -31,9 +31,9 @@ function Header() {
     );
 }
 
-function Filters() {
-    const [filters, setFilters] = useState(["PIZZA", "HAMBURGER", "SUSHI", "CHINESE", "ITALIAN"]);
-
+function Filters(props) {
+    const {filters} = props;
+    console.log(filters);
     return(
         <ReactSmartScroller spacing={10}>
             {
@@ -51,48 +51,36 @@ function Filters() {
 
 }
 
-function RestaurantsList() {
+function RestaurantsList(props) {
     const navigate = useNavigate();
-
-    const [list, setList] = useState([
-        { key: '1', name: 'alecosta', stars: '4', prices: '4', image_path: 'image2.jpg' },
-        { key: '2', name: 'davide', stars: '3', prices: '3', image_path: 'image1.jpg' },
-        { key: '3', name: 'grammar man', stars: '5', prices: '5', image_path: 'image3.jpg' },
-        { key: '4', name: 'new person 1', stars: '2', prices: '2', image_path: 'image4.jpg' },
-        { key: '5', name: 'new person 2', stars: '4', prices: '3', image_path: 'image5.jpg' },
-        { key: '6', name: 'new person 3', stars: '3', prices: '4', image_path: 'image6.jpg' },
-        { key: '7', name: 'john doe', stars: '4', prices: '5', image_path: 'image7.jpg' },
-        { key: '8', name: 'mary smith', stars: '5', prices: '4', image_path: 'image8.jpg' },
-        { key: '9', name: 'jane doe', stars: '3', prices: '2', image_path: 'image9.jpg' },
-        { key: '10', name: 'alex brown', stars: '4', prices: '3', image_path: 'image10.jpg' },
-    ]);
-
+    const {restaurants} = props;
+    
     return (
         <ListGroup>
-            {list.map((item) => {
+            {restaurants.map((restaurant) => {
                 return (
-                    <Card key={item.id} onClick={() => { navigate(`/restaurants/${item.id}/menu/`) }}>
+                    <Card key={restaurant.id} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu/`) }}>
                         <Card.Body>
                             <Row>
                                 <Col>
-                                    <Card.Title>{item.name}</Card.Title>
+                                    <Card.Title>{restaurant.name}</Card.Title>
                                     <Card.Text>
                                         {
-                                            Array.from({ length: item.stars }, (_, index) => (
+                                            Array.from({ length: restaurant.avg_stars }, (_, index) => (
                                                 <i key={index} className="bi bi-star-fill"></i>
                                             ))
                                         }
                                     </Card.Text>
                                     <Card.Text>
                                         {
-                                            Array.from({ length: item.prices }, (_, index) => (
+                                            Array.from({ length: restaurant.avg_price }, (_, index) => (
                                                 <i key={index} className="bi bi-currency-euro"></i>
                                             ))
                                         }
                                     </Card.Text>
                                 </Col>
                                 <Col>
-                                    <img height={"100px"} width={"100px"} src='./src/download.png' />
+                                    <img height={"100px"} width={"100px"} src={restaurant.image} />
                                 </Col>
                             </Row>
                         </Card.Body>
@@ -104,12 +92,12 @@ function RestaurantsList() {
 }
 
 
-function Home() {
+function Home(props) {
     return (
         <>
             <Header/>
-            <Filters/>
-            <RestaurantsList/>
+            <Filters filters={props.filters}/>
+            <RestaurantsList restaurants={props.restaurants}/>
         </>
     );
 }

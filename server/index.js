@@ -208,6 +208,14 @@ app.get('/api/ingredients/:id', (req, res) => {
     .catch(() => res.status(503).json({ error: 'Database Error' }));
 });
 
+// GET /api/dishes/
+// This route is used to get all the possible type of dishes, for filter in the home page.
+app.get('/api/dishes/', (req, res) => {
+  dishesDao.getFilters()
+    .then(filters => res.json(filters))
+    .catch(() => res.status(503).json({ error: 'Database Error' }));
+});
+
 // POST /api/restaurants
 // This route is used to create a restaurant with all the infos (restaurant,dishes,ingredients) as atomic operation
 app.post('/api/restaurants',

@@ -9,7 +9,7 @@ exports.getRestaurants = () => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT restaurants.id, restaurants.image AS image,restaurants.name AS name,' +
             'AVG(reviews.quality) AS avg_quality,AVG(reviews.safety) AS avg_safety,AVG(reviews.price) AS avg_price ' +
-            'FROM restaurants, reviews WHERE restaurants.id=reviews.restaurantId GROUP BY restaurants.id, restaurants.image, restaurants.name';
+            'FROM restaurants LEFT JOIN reviews ON restaurants.id = reviews.restaurantId GROUP BY restaurants.id, restaurants.image, restaurants.name';
         db.all(sql, [], (err, rows) => {
             // if query error, reject the promise, otherwise return the content
             if (err) {
