@@ -32,13 +32,13 @@ function Header() {
 }
 
 function Filters(props) {
-    const {filters} = props;
-    console.log(filters);
+    const {filters,setFilters} = props;
+
     return(
         <ReactSmartScroller spacing={10}>
             {
                 filters.map((filter, index) => (
-                    <h2>
+                    <h2 key={index}>
                         <Button active style={{borderRadius: "20px", marginTop: "0.5rem", backgroundColor: "#0D6EFD"}}>
                             <span> {filter} </span>
                             <span style={{marginLeft: "5px"}} onClick={() => setFilters(filters.filter(f => f !== filter))}><FontAwesomeIcon icon="fa-regular fa-circle-xmark" size="lg" /></span>
@@ -96,7 +96,7 @@ function Home(props) {
     return (
         <>
             <Header/>
-            <Filters filters={props.filters}/>
+            <Filters filters={props.filters} setFilters={props.setFilters}/>
             <RestaurantsList restaurants={props.restaurants}/>
         </>
     );

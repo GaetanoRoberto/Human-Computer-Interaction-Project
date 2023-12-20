@@ -21,7 +21,6 @@ function App() {
       try {
         const restaurants = await API.getRestaurants();
         setrestaurantList(restaurants);
-        console.log(restaurants);
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +41,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home restaurants={restaurantList} filters={filters}/>}/>     {/* FATTA*/ }
+        <Route path='/' element={<Home restaurants={restaurantList} filters={filters} setFilters={setFilters}/>}/>     {/* FATTA*/ }
         <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }
