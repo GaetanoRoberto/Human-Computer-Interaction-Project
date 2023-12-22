@@ -15,6 +15,8 @@ library.add(fab, fas, far);
 function App() {
   const [restaurantList, setrestaurantList] = useState([]);
   const [filters,setFilters] = useState([]);
+  // Create an array of boolean states for the fade animation
+  const [fadeStates, setFadeStates] = useState([]);
 
   useEffect(() => {
     async function getRestaurants() {
@@ -29,6 +31,7 @@ function App() {
       try {
         const filters = await API.getFilters();
         setFilters(filters);
+        setFadeStates(filters.map(() => true));
       } catch (error) {
         console.log(error);
       }
@@ -41,7 +44,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home restaurants={restaurantList} filters={filters} setFilters={setFilters}/>}/>     {/* FATTA*/ }
+        <Route path='/' element={<Home restaurants={restaurantList} filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates}/>}/>     {/* FATTA*/ }
         <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }

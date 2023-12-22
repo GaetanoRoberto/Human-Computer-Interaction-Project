@@ -22,7 +22,6 @@
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
-    "react-smart-scroller": "^1.1.22",
     "validator": "^13.9.0"
   },
   "devDependencies": {

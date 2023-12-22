@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
-import {ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge} from 'react-bootstrap';
-import { ReactSmartScroller } from 'react-smart-scroller';
+import {ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge, Fade} from 'react-bootstrap';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Header() {
@@ -16,14 +15,16 @@ function Header() {
                     <Navbar.Brand className="bi bi-person-circle  justify-content-end" style={{fontSize: "2rem", marginRight: 0}} onClick={() => navigate('/settings')}/>
                 </Container>
             </Navbar >
-            <Row className="align-items-center" style={{marginRight: 0, marginTop:"2%", marginLeft:"2%"}}>
+
+            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+            <Row className="align-items-center" style={{marginRight: 0, marginTop:"0.2rem", marginLeft: 0, marginBottom: "0.2rem"}}>
                 <Col xs={1} className="d-flex align-items-center" style={{marginRight:"2%"}}>
                     <i className="bi bi-search" style={{fontSize: "1.5rem"}}></i>
                 </Col>
-                <Col xs={9}>
+                <Col>
                     <FormControl type="search" placeholder="Search" />
                 </Col>
-                <Col xs={1} className="d-flex justify-content-end align-items-center" style={{marginLeft:"2%"}}>
+                <Col xs={1} className="d-flex justify-content-end align-items-center" style={{marginLeft:"3%"}}>
                     <i className="bi bi-sliders" style={{fontSize: "1.5rem"}} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
@@ -32,23 +33,44 @@ function Header() {
 }
 
 function Filters(props) {
-    const {filters,setFilters} = props;
+    const {filters, setFilters, fadeStates, setFadeStates} = props;
+    // const initialList = ["pasta", "pizza", "burger", "sushi", "chinese", "merda"];
+    // const [list, setList] = useState(initialList);
 
-    return(
-        <ReactSmartScroller spacing={10}>
-            {
-                filters.map((filter, index) => (
-                    <h2 key={index}>
-                        <Button active style={{borderRadius: "20px", marginTop: "0.5rem", backgroundColor: "#0D6EFD"}}>
-                            <span> {filter} </span>
-                            <span style={{marginLeft: "5px"}} onClick={() => setFilters(filters.filter(f => f !== filter))}><FontAwesomeIcon icon="fa-regular fa-circle-xmark" size="lg" /></span>
+    const handleFadeClick = (filter, index) => {
+        setFadeStates(prevStates => {
+            const newStates = [...prevStates];
+            newStates[index] = false;
+            return newStates;
+        });
+
+        setTimeout(() => {
+            setFilters(filters.filter(f => f !== filter));
+            setFadeStates(prevStates => {
+                const newStates = [...prevStates];
+                newStates[index] = true;
+                return newStates;
+            });
+        }, 300);
+    };
+
+
+    return (
+        <Container fluid className="scroll" style={{ marginTop: "0.4rem", display: "flex", overflowX: "auto" }}>
+            {filters.map((filter, index) => (
+                <h2 key={index}>
+                    <Fade in={fadeStates[index]}>
+                        <Button active style={{ marginRight: "0.4rem", borderRadius: "10px", backgroundColor: "#52b69a", borderColor: "#52b69a", whiteSpace: "nowrap" }}>
+                            {filter}
+                            <span style={{ marginLeft: "0.7rem", display: "inline-block" }} onClick={() => handleFadeClick(filter, index)}>
+                                <FontAwesomeIcon icon="fa-solid fa-xmark" />
+                            </span>
                         </Button>
-                    </h2>
-                ))
-            }
-        </ReactSmartScroller>
+                    </Fade>
+                </h2>
+            ))}
+        </Container>
     );
-
 }
 
 function RestaurantsList(props) {
@@ -96,7 +118,7 @@ function Home(props) {
     return (
         <>
             <Header/>
-            <Filters filters={props.filters} setFilters={props.setFilters}/>
+            <Filters filters={props.filters} setFilters={props.setFilters} fadeStates={props.fadeStates} setFadeStates={props.setFadeStates}/>
             <RestaurantsList restaurants={props.restaurants}/>
         </>
     );
