@@ -14,7 +14,7 @@ exports.getReviews = (restaurantId) => {
                 reject(err);
             } else {
                 // put together quality and safety by doing average
-                const reviews = rows.map(review => ({ id: review.id, username: review.username, date: review.date, title: review.title, stars: (review.quality + review.safety) / 2, price: review.price }));
+                const reviews = rows.map(review => ({ id: review.id, username: review.username, date: review.date, title: review.title, quality: review.quality, safety:review.safety, price: review.price }));
                 resolve(reviews);
             }
         });

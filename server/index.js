@@ -163,11 +163,20 @@ app.get('/api/users/:username', (req, res) => {
 });
 
 // GET /api/restaurants
-// This route is used to get all the restaurants (not complete info) for the home page
-app.get('/api/restaurants', (req, res) => {
-  restaurantsDao.getRestaurants()
-    .then(restaurants => res.json(restaurants))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+// This route is used to get all the restaurants (not complete info), along with their type of dishes (to filter) for the home page
+app.get('/api/restaurants', async (req, res) => {
+  try {
+    const restaurants = await restaurantsDao.getRestaurants().catch(() => { throw { error: 'Database Error' } });
+    const return_struct = restaurants;
+    for (const restaurant of return_struct) {
+      const types = await dishesDao.getRestaurantFilters(restaurant.id).catch(() => { throw { error: 'Database Error' } });
+      restaurant.dish_types = types;
+    }
+    // return all the restaurant along with their dishes
+    res.json(return_struct);
+  } catch (error) {
+    res.status(503).json({ error: 'Database Error' })
+  }
 });
 
 // GET /api/restaurants/:id

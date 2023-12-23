@@ -75,11 +75,11 @@ function Filters(props) {
 
 function RestaurantsList(props) {
     const navigate = useNavigate();
-    const {restaurants} = props;
+    const {filterRestaurants} = props;
     
     return (
         <ListGroup>
-            {restaurants.map((restaurant) => {
+            {filterRestaurants().map((restaurant) => {
                 return (
                     <Card key={restaurant.id} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu/`) }}>
                         <Card.Body>
@@ -119,7 +119,7 @@ function Home(props) {
         <>
             <Header/>
             <Filters filters={props.filters} setFilters={props.setFilters} fadeStates={props.fadeStates} setFadeStates={props.setFadeStates}/>
-            <RestaurantsList restaurants={props.restaurants}/>
+            <RestaurantsList filterRestaurants={props.filterRestaurants}/>
         </>
     );
 }

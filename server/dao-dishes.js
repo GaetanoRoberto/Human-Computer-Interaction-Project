@@ -13,7 +13,6 @@ exports.getDishes = (restaurantId) => {
           if (err) {
               reject(err);
           } else {
-              // put together quality and safety average
               const dishes = rows.map(dish => ({ id:dish.id, name: dish.name, price:dish.price, type:dish.type, image: dish.image }));
               resolve(dishes);
           }
@@ -68,7 +67,22 @@ exports.getFilters = () => {
             if (err) {
                 reject(err);
             } else {
-                // put together quality and safety average
+                const filters = rows.map(filter => (filter.type));
+                resolve(filters);
+            }
+        });
+    });
+};
+
+// This function returns the possible type of dishes for a given restaurant from his id, for filter in the home page.
+exports.getRestaurantFilters = (restaurantId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT DISTINCT(type) FROM dishes where restaurantId=?';
+        db.all(sql, [restaurantId], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
                 const filters = rows.map(filter => (filter.type));
                 resolve(filters);
             }

@@ -41,10 +41,31 @@ function App() {
     getFilters();
   }, []);
 
+  /*
+  * Function to filter the restaurants based on the selected filters for the home page
+  */
+  function filterRestaurants() {
+      return restaurantList.filter((restaurant) => {
+        // if no filter applied, return all the restaurants
+        if (filters.length === 0) {
+          return true;
+        }
+        // otherwise, return only the restaurants that have at least one matching type
+        for (const dish_type of restaurant.dish_types) {
+          for (const filter_dish_type of filters) {
+            if (filter_dish_type === dish_type) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
+  }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home restaurants={restaurantList} filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates}/>}/>     {/* FATTA*/ }
+        <Route path='/' element={<Home filterRestaurants={filterRestaurants} filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates}/>}/>     {/* FATTA*/ }
         <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }

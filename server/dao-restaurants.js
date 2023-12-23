@@ -16,7 +16,7 @@ exports.getRestaurants = () => {
                 reject(err);
             } else {
                 // put together quality and safety average
-                const restaurants = rows.map(restaurant => ({ id: restaurant.id, image: restaurant.image, name: restaurant.name, avg_stars: (restaurant.avg_quality + restaurant.avg_safety) / 2, avg_price: restaurant.avg_price }));
+                const restaurants = rows.map(restaurant => ({ id: restaurant.id, image: restaurant.image, name: restaurant.name, avg_quality: restaurant.avg_quality, avg_safety: restaurant.avg_safety, avg_price: restaurant.avg_price }));
                 resolve(restaurants);
             }
         });
