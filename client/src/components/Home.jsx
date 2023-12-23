@@ -88,7 +88,14 @@ function RestaurantsList(props) {
                                     <Card.Title>{restaurant.name}</Card.Title>
                                     <Card.Text>
                                         {
-                                            Array.from({ length: restaurant.avg_stars }, (_, index) => (
+                                            Array.from({ length: restaurant.avg_quality }, (_, index) => (
+                                                <i key={index} className="bi bi-star-fill"></i>
+                                            ))
+                                        }
+                                    </Card.Text>
+                                    <Card.Text>
+                                        {
+                                            Array.from({ length: restaurant.avg_safety }, (_, index) => (
                                                 <i key={index} className="bi bi-star-fill"></i>
                                             ))
                                         }
