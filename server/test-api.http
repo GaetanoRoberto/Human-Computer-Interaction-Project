@@ -44,6 +44,7 @@ content-type: application/json
 
 {
   "isNewInserted": 0,
+  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
   "name": "Sorbillo",
   "location": "Via Bruno Buozzi, 3, 10121 Torino TO",
   "phone": "011 1923 4672",
@@ -61,12 +62,14 @@ content-type: application/json
       "ingredients": [
         {
          "name": "Spaghetti",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
          "allergens":"bfbb",
          "brandName":"ngerj",
          "brandLink":"vmero"
         },
         {
          "name": "Bacon",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
          "allergens":"bfbb",
          "brandName":"ngerj",
          "brandLink":"vmero"
@@ -81,12 +84,14 @@ content-type: application/json
       "ingredients": [
         {
          "name": "Tomato Sauce",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
          "allergens":"bfbb",
          "brandName":"ngerj",
          "brandLink":"vmero"
         },
         {
          "name": "Mozzarella Cheese",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
          "allergens":"bfbb",
          "brandName":"ngerj",
          "brandLink":"vmero"
@@ -99,11 +104,11 @@ content-type: application/json
 ###
 
 ## Update a Restaurant Given his ID
-POST http://localhost:3001/api/restaurants/16 HTTP/1.1
+POST http://localhost:3001/api/restaurants/7 HTTP/1.1
 content-type: application/json
 
 {
-  "id": "7",
+  "id": 7,
   "isNewInserted": 0,
   "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
   "name": "Sorbillo",
@@ -116,25 +121,53 @@ content-type: application/json
   "description": "Gino Sorbillo appartiene ad una delle famiglie di pizzaioli più antiche di Napoli. cresce nella pizzeria di famiglia e ben presto impara i segreti della vera pizza napoletana. Con Gino Sorbillo la Pizza Napoletana è giunta a livelli qualitativi altissimi e si è guadagnata di diritto spazio tra le migliori eccellenze gastronomiche italiane.",
   "dishes": [
     {
-      "id": "7",
+      "id": 7,
       "name": "Pasta Carbonara",
-      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
       "price": 10.99,
       "type": "pasta",
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
       "ingredients": [
-        {"id": "7", "name": "Spaghetti", "allergens":"bfbb","brandName":"ngerj","brandLink":"vmero","kcal":"4","protein":"3","carbs":"3","fats":"3"},
-        {"id": "8", "name": "Bacon", "allergens":"bfbb","brandName":"ngerj","brandLink":"vmero","kcal":"4","protein":"3","carbs":"3","fats":"3"}
+        {
+         "id": 7,
+         "name": "Spaghetti",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
+         "allergens":"bfbb",
+         "brandName":"ngerj",
+         "brandLink":"vmero"
+        },
+        {
+         "id": 8,
+         "name": "Bacon",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
+         "allergens":"bfbb",
+         "brandName":"ngerj",
+         "brandLink":"vmero"
+        }
       ]
     },
     {
-      "id": "8",
+      "id": 8,
       "name": "Margherita Pizza",
-      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
       "price": 12.99,
       "type": "pizza",
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
       "ingredients": [
-        {"id": "9","name": "Tomato Sauce", "allergens":"bfbb","brandName":"ngerj","brandLink":"vmero","kcal":"4","protein":"3","carbs":"3","fats":"3"},
-        {"id": "10","name": "Mozzarella Cheese", "allergens":"bfbb","brandName":"ngerj","brandLink":"vmero","kcal":"4","protein":"3","carbs":"3","fats":"3"}
+        {
+         "id" : 9,
+         "name": "Tomato Sauce",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
+         "allergens":"bfbb",
+         "brandName":"ngerj",
+         "brandLink":"vmero"
+        },
+        {
+         "id": 10,
+         "name": "Mozzarella Cheese",
+         "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABrSURBVBhXHcaxCoJQFIDh39MVLBpCtLmtoAafNHqThp7HwUUEE0yKuB6vp3D44Iuut9KK/Z1L/iBNKiRSZGUB+WOGEBw6rRGCLHn7jO5zoBnOuFG3tMMJUwcGX5/i/Lij7gueryM2x0y64Qemmyv/QTYLjwAAAABJRU5ErkJggg==",
+         "allergens":"bfbb",
+         "brandName":"ngerj",
+         "brandLink":"vmero"
+        }
       ]
     }
   ]

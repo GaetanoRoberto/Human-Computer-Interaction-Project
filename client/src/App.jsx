@@ -4,11 +4,12 @@ import { useState,useEffect } from 'react'
 import API from './API'
 import { Home } from './components/Home'
 import { BrowserRouter,Routes,Route,Navigate,Link } from 'react-router-dom' ;
-import { Restaurant } from './components/Restaurant';
+import { NavigationButtons } from './components/NavigationButtons';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faQuinscape, fab} from '@fortawesome/free-brands-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 import {far} from '@fortawesome/free-regular-svg-icons';
+import { RestaurantForm } from './components/RestaurantForm';
 library.add(fab, fas, far);
 
 
@@ -69,13 +70,13 @@ function App() {
         <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }
-        <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
-        <Route path='/restaurants/:id/reviews/add' element={<Restaurant/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/details' element={<NavigationButtons/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/menu' element={<NavigationButtons/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/reviews' element={<NavigationButtons/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/reviews/add' element={<NavigationButtons/>}/>{/* TANUCC*/ }
         {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/} {/* QUEEN*/ }
-        <Route path='/addInfo' element={<></>}/>  {/* DOME*/ }
-        <Route path='/editInfo/:id' element={<></>}/>{/* DOME*/ }
+        <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
+        <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
         <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
         <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
       </Routes>

@@ -64,11 +64,11 @@ exports.getRestaurantImage = (id) => {
 // This function create a new restaurant.
 exports.insertRestaurant = (restaurant) => {
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO restaurants (isNewInserted, image, name, location, phone, website, facebook, instagram, hours, description)' +
-            ' VALUES(1,?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const sql = 'INSERT INTO restaurants (isNewInserted, image, name, location, phone, website, facebook, instagram, twitter, hours, description)' +
+            ' VALUES(1,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         db.run(sql,
             [restaurant.image, restaurant.name, restaurant.location, restaurant.phone, restaurant.website,
-            restaurant.facebook, restaurant.instagram, restaurant.hours, restaurant.description],
+            restaurant.facebook, restaurant.instagram, restaurant.twitter, restaurant.hours, restaurant.description],
             function (err) {
                 // if query error, reject the promise, otherwise return the content
                 if (err) {
@@ -85,10 +85,10 @@ exports.insertRestaurant = (restaurant) => {
 exports.updateRestaurant = (restaurant) => {
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE restaurants SET image=?, name=?, location=?,' +
-            ' phone=?, website=?, facebook=?, instagram=?, hours=?, description=? WHERE id=?';
+            ' phone=?, website=?, facebook=?, instagram=?, twitter=?, hours=?, description=? WHERE id=?';
         db.run(sql,
             [restaurant.image, restaurant.name, restaurant.location, restaurant.phone, restaurant.website,
-            restaurant.facebook, restaurant.instagram, restaurant.hours, restaurant.description, restaurant.id],
+            restaurant.facebook, restaurant.instagram, restaurant.twitter, restaurant.hours, restaurant.description, restaurant.id],
             function (err) {
                 // if query error, reject the promise, otherwise if not found return an error else return the content
                 if (err) {

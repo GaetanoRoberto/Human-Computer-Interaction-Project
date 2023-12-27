@@ -58,6 +58,21 @@ exports.getDishImage = (id) => {
     });
 };
 
+// This function returns all the images of the dishes of a given restaurant.
+exports.getAllDishesImages = (restaurantId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT id,image FROM dishes where restaurantId=?';
+        db.all(sql, [restaurantId], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
+                resolve(rows.map((row) => ({id: row.id, image: row.image})));
+            }
+        });
+    });
+};
+
 // This function returns all the possible type of dishes, for filter in the home page.
 exports.getFilters = () => {
     return new Promise((resolve, reject) => {
@@ -109,6 +124,7 @@ exports.insertDish = (dish) => {
   });
 };
 
+/*
 // This function update a specific dish given its id and infos.
 exports.updateDish = (dish) => {
   return new Promise((resolve, reject) => {
@@ -127,6 +143,24 @@ exports.updateDish = (dish) => {
               }
           });
   });
+};
+*/
+
+// This function deletes all restaurant dishes given the restaurant id.
+exports.deleteAllRestaurantDishes = (restaurantId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'DELETE FROM dishes WHERE restaurantId=?';
+        db.run(sql, [restaurantId], function (err) {
+            // if query error, reject the promise, otherwise if no changes return an error else return the content
+            if (err) {
+                reject(err);
+            } else if (this.changes === 0) {
+                resolve({ error: 'No dishes deleted.' });
+            } else {
+                resolve(this.changes);
+            }
+        });
+    });
 };
 
 // This function delete a specific dish given its id.

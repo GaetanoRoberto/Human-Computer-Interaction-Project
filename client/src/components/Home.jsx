@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge, Fade} from 'react-bootstrap';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-function Header() {
+function TopBar() {
     const navigate = useNavigate();
 
     return (
@@ -15,7 +15,15 @@ function Header() {
                     <Navbar.Brand className="bi bi-person-circle  justify-content-end" style={{fontSize: "2rem", marginRight: 0}} onClick={() => navigate('/settings')}/>
                 </Container>
             </Navbar >
+        </>
+    );
+}
 
+function SearchBar() {
+    const navigate = useNavigate();
+
+    return (
+        <>
             <div style={{borderTop: "1px solid #000", margin: 0}}></div>
             <Row className="align-items-center" style={{marginRight: 0, marginTop:"0.2rem", marginLeft: 0, marginBottom: "0.2rem"}}>
                 <Col xs={1} className="d-flex align-items-center" style={{marginRight:"2%"}}>
@@ -28,6 +36,15 @@ function Header() {
                     <i className="bi bi-sliders" style={{fontSize: "1.5rem"}} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
+        </>
+    );
+}
+
+function Header(props) {
+    return(
+        <>
+            <TopBar/>
+            <SearchBar/>
         </>
     );
 }
@@ -130,4 +147,4 @@ function Home(props) {
         </>
     );
 }
-export { Home };
+export { Home,Header,TopBar };

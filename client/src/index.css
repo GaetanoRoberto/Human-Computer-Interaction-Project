@@ -24,3 +24,21 @@
   width: 33.33%;
   height: 50px;
 }
+
+/* Custom CSS */
+.custom-input {
+  border: 1px solid #ced4da; /* Border color */
+  border-radius: 0.25rem; /* Border radius */
+  padding: 0.375rem 0.75rem; /* Padding */
+}
+
+.custom-input input {
+  border: none;
+}
+/* Optionally, you can add styles for focus state */
+.custom-input input:focus {
+  border-color: #80bdff; /* Border color on focus */
+  border-radius: 0.25rem; /* Border radius */
+  outline: 0; /* Remove default focus outline */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus shadow */
+}

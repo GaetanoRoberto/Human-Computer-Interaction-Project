@@ -45,14 +45,14 @@ const LocalStrategy = require('passport-local');                   // authentica
  * The user object will contain other information extracted by the method usersDao.getUser
  **/
 passport.use(new LocalStrategy({
-    usernameField: 'username',    // define the parameter in req.body that passport can use as username and password
-    passwordField: 'isRestaurateur'
-  },async function verify(username, password, callback) {
+  usernameField: 'username',    // define the parameter in req.body that passport can use as username and password
+  passwordField: 'isRestaurateur'
+}, async function verify(username, password, callback) {
   const user = await usersDao.getUser(username)
   if (!user)
     return callback(null, false, 'Incorrect username');
 
-  return callback(null, {username: user.username, isRestaurateur:user.isRestaurateur}); // NOTE: user info in the session will be all the fields returned by usersDao.getUser
+  return callback(null, { username: user.username, isRestaurateur: user.isRestaurateur }); // NOTE: user info in the session will be all the fields returned by usersDao.getUser
 }));
 
 // Serializing in the session the user object given from the above LocalStrategy
@@ -85,16 +85,16 @@ async function saveImageToServer(imageBuffer, folder) {
     }
 
     imageBuffer = imageBuffer.replace(/^data:image\/\w+;base64,/, '');
-    
+
     // Generate a unique filename for the image (you can use a library like uuid)
-    const fileName = `image_${Date.now()}.png`;
+    const fileName = `image_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.png`;
 
     // Specify the path where you want to save the image
     // folder will be dishes or restaurants, depend on the case
     const filePath = `./${folder}/${fileName}`;
 
     // Write the image buffer to the file asynchronously
-    await fs.writeFile(filePath,  Buffer.from(imageBuffer, 'base64'));
+    await fs.writeFile(filePath, Buffer.from(imageBuffer, 'base64'));
 
     const return_path = 'http://localhost:3001/' + filePath.split('./public/')[1];
 
@@ -159,23 +159,23 @@ app.delete('/api/sessions/current', (req, res) => {
 app.get('/api/users/:username', (req, res) => {
   usersDao.getUser(req.params.username)
     .then(user => res.json(user))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting the User' }));
 });
 
 // GET /api/restaurants
 // This route is used to get all the restaurants (not complete info), along with their type of dishes (to filter) for the home page
 app.get('/api/restaurants', async (req, res) => {
   try {
-    const restaurants = await restaurantsDao.getRestaurants().catch(() => { throw { error: 'Database Error' } });
+    const restaurants = await restaurantsDao.getRestaurants().catch(() => { throw { error: 'Database Error in Getting the Restaurants' } });
     const return_struct = restaurants;
     for (const restaurant of return_struct) {
-      const types = await dishesDao.getRestaurantFilters(restaurant.id).catch(() => { throw { error: 'Database Error' } });
+      const types = await dishesDao.getRestaurantFilters(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the type of dishes of the Restaurants' } });
       restaurant.dish_types = types;
     }
     // return all the restaurant along with their dishes
     res.json(return_struct);
   } catch (error) {
-    res.status(503).json({ error: 'Database Error' })
+    res.status(503).json({ error: error.error })
   }
 });
 
@@ -186,26 +186,26 @@ app.get('/api/restaurants/:id', async (req, res) => {
     let return_struct = {};
     const restaurantId = req.params.id;
     // get restaurant
-    const restaurant = await restaurantsDao.getRestaurant(restaurantId).catch(() => { throw { error: 'Database Error' } });
+    const restaurant = await restaurantsDao.getRestaurant(restaurantId).catch(() => { throw { error: 'Database Error in Getting the Restaurant' } });
     return_struct = restaurant;
     // get dishes of a restaurant
-    const dishes = await dishesDao.getDishes(restaurantId).catch(() => { throw { error: 'Database Error' } });
+    const dishes = await dishesDao.getDishes(restaurantId).catch(() => { throw { error: 'Database Error in Getting the Dishes' } });
     // populate dishes_ingredients, create for each dish the dish + the array of ingredients 
     // struct to put together dish and ingredients => use Promise.all to wait for all asynchronous operations to complete
     const dishes_ingredients = await Promise.all(dishes.map(async (dish) => {
-      const ingredients = await ingredientsDao.getIngredients(dish.id).catch(() => { throw { error: 'Database Error' } });
+      const ingredients = await ingredientsDao.getIngredients(dish.id).catch(() => { throw { error: 'Database Error in Getting the Ingredients' } });
       dish.ingredients = ingredients;
       return dish;
     }));
     // get the reviews relatd to the restaurant
-    const reviews = await reviewsDao.getReviews(req.params.id).catch(() => { throw { error: 'Database Error' } });
+    const reviews = await reviewsDao.getReviews(req.params.id).catch(() => { throw { error: 'Database Error in Getting the Reviews' } });
     // assign to the final struct the dishes and the reviews
     return_struct.dishes = dishes_ingredients;
     return_struct.reviews = reviews;
     // return it
     res.json(return_struct);
   } catch (error) {
-    res.status(503).json({ error: 'Database Error' })
+    res.status(503).json({ error: error.error })
   }
 });
 
@@ -214,7 +214,7 @@ app.get('/api/restaurants/:id', async (req, res) => {
 app.get('/api/ingredients/:id', (req, res) => {
   ingredientsDao.getIngredient(req.params.id)
     .then(ingredient => res.json(ingredient))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting the Ingredient' }));
 });
 
 // GET /api/dishes/
@@ -222,7 +222,7 @@ app.get('/api/ingredients/:id', (req, res) => {
 app.get('/api/dishes/', (req, res) => {
   dishesDao.getFilters()
     .then(filters => res.json(filters))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting all Possible type of dishes' }));
 });
 
 // POST /api/restaurants
@@ -232,12 +232,12 @@ app.post('/api/restaurants',
     try {
       // take the information from the body and add the restaurant
       let restaurant_image_link = '';
-      // since image can be null, if defined save it, otherwise return placeholder image to visualize
-      if (req.body.image) {
-        restaurant_image_link = await saveImageToServer(req.body.image,RESTAURANT_PATH).catch(() => { throw { error: 'Database Error' } });
+      // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
+      if (req.body.image && !req.body.image.startsWith("http://localhost:3001")) {
+        restaurant_image_link = await saveImageToServer(req.body.image, RESTAURANT_PATH).catch(() => { throw { error: 'Error in Saving the Restaurant Image to the Server' } });
         restaurant_image_link = restaurant_image_link.success;
       } else {
-        restaurant_image_link = PLACEHOLDER;
+        restaurant_image_link = req.body.image;
       }
 
       const restaurant = {
@@ -249,62 +249,63 @@ app.post('/api/restaurants',
         website: req.body.website,
         facebook: req.body.facebook,
         instagram: req.body.instagram,
+        twitter: req.body.twitter,
         hours: req.body.hours,
         description: req.body.description
       };
       // insert restaurant into the db
-      const new_restaurant = await restaurantsDao.insertRestaurant(restaurant).catch(() => { throw { error: 'Database Error' } });
+      const new_restaurant = await restaurantsDao.insertRestaurant(restaurant).catch(() => { throw { error: 'Database Error in Inserting the Restaurant' } });
       // take the information from the body and add all the dishes related to the restaurant
       const dishes = [];
       for (const dish of req.body.dishes) {
-          let dish_image_link = '';
-          
-          // since image can be null, if defined save it, otherwise return placeholder image to visualize
-          if (dish.image) {
-            dish_image_link = await saveImageToServer(dish.image, DISH_PATH).catch(() => {
-              throw { error: 'Database Error' };
-            });
-            dish_image_link = dish_image_link.success;
-          } else {
-            dish_image_link = PLACEHOLDER;
-          }
-      
-          dishes.push({
-            restaurantId: new_restaurant.id,
-            name: dish.name,
-            price: dish.price,
-            type: dish.type,
-            image: dish_image_link,
-            ingredients: dish.ingredients
-          })
+        let dish_image_link = '';
+
+        // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
+        if (dish.image && !dish.image.startsWith("http://localhost:3001")) {
+          dish_image_link = await saveImageToServer(dish.image, DISH_PATH).catch(() => {
+            throw { error: 'Error in Saving the Dish Image to the Server' };
+          });
+          dish_image_link = dish_image_link.success;
+        } else {
+          dish_image_link = dish.image;
+        }
+
+        dishes.push({
+          restaurantId: new_restaurant.id,
+          name: dish.name,
+          price: dish.price,
+          type: dish.type,
+          image: dish_image_link,
+          ingredients: dish.ingredients
+        })
       }
-      
+
       // insert dishes into the db
       const new_dishes = await Promise.all(dishes.map(async (dish) => {
         const ingredients = dish.ingredients;
         delete dish.ingredients;
-        const new_dish = await dishesDao.insertDish(dish).catch(() => { throw { error: 'Database Error' } });
+        const new_dish = await dishesDao.insertDish(dish).catch(() => { throw { error: 'Database Error in Inserting the Dish' } });
         new_dish.ingredients = ingredients;
         return new_dish;
       }));
-      
+
       // take the information from the body and add all the ingredients related to the dishes
       const ingredients = [];
       for (const dish of new_dishes) {
         for (const ingredient of dish.ingredients) {
           let ingredient_image_link = '';
-          
-          // since image can be null, if defined save it, otherwise return placeholder image to visualize
-          if (ingredient.image) {
-            ingredient_image_link = await saveImageToServer(ingredient.image,INGREDIENT_PATH).catch(() => { throw { error: 'Database Error' } });
+
+          // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
+          if (ingredient.image && !ingredient.image.startsWith("http://localhost:3001")) {
+            ingredient_image_link = await saveImageToServer(ingredient.image, INGREDIENT_PATH).catch(() => { throw { error: 'Error in Saving the Ingredient Image to the Server' } });
             ingredient_image_link = ingredient_image_link.success;
           } else {
-            ingredient_image_link = PLACEHOLDER;
+            ingredient_image_link = ingredient.image;
           }
-          
+
           ingredients.push({
             dishId: dish.id,
-            image: ingredient_image_link, 
+            image: ingredient_image_link,
             name: ingredient.name,
             allergens: ingredient.allergens,
             brandName: ingredient.brandName,
@@ -314,7 +315,7 @@ app.post('/api/restaurants',
       }
       // insert ingredients into the db
       const new_ingredients = await Promise.all(ingredients.map(async (ingredient) => {
-        return await ingredientsDao.insertIngredient(ingredient).catch(() => { throw { error: 'Database Error' } });
+        return await ingredientsDao.insertIngredient(ingredient).catch(() => { throw { error: 'Database Error in Inserting the Ingredient' } });
       }));
       // construct the object to return
       let return_struct = {};
@@ -324,9 +325,9 @@ app.post('/api/restaurants',
         const temp_dish = new_dish;
         temp_dish.ingredients = [];
         for (const new_ingredient of new_ingredients) {
-            if (temp_dish.id === new_ingredient.dishId) {
-              temp_dish.ingredients.push(new_ingredient);
-            }
+          if (temp_dish.id === new_ingredient.dishId) {
+            temp_dish.ingredients.push(new_ingredient);
+          }
         }
         dishes_ingredients.push(temp_dish);
       }
@@ -335,7 +336,7 @@ app.post('/api/restaurants',
       // return it
       res.json(return_struct);
     } catch (error) {
-      res.status(503).json({ error: 'Database Error' })
+      res.status(503).json({ error: error.error })
     }
   }
 );
@@ -346,33 +347,30 @@ app.post('/api/restaurants/:id',
   async (req, res) => {
     try {
       let restaurant_image_link;
-      // check if there is a new image
-      if (req.body.image) {
+      // check if there is a new image (so base64 data not an URL)
+      if (req.body.image && !req.body.image.startsWith("http://localhost:3001")) {
         // check if image is not changed, otherwise useless to re-save it
-        const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Database Error' } });
-        const restaurant_image_path = getServerPath(restaurant_path.image,RESTAURANT_PATH);
+        const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Error in Getting the Restaurant image from Thse Server' } });
+        const restaurant_image_path = getServerPath(restaurant_path.image, RESTAURANT_PATH);
         let old_image = await fs.readFile(restaurant_image_path);
         old_image = 'data:image/png;base64,' + old_image.toString('base64');
         if (old_image === req.body.image) {
           // image not changed
           restaurant_image_link = restaurant_path.image;
         } else {
-          //image changed
-          restaurant_image_link = await saveImageToServer(req.body.image,RESTAURANT_PATH).catch(() => { throw { error: 'Database Error' } });
+          //image changed, delete the old save the new
+          // delete only if not placeholder
+          if (restaurant_path.image !== PLACEHOLDER) {
+            await fs.unlink(restaurant_image_path).catch(() => { throw { error: 'Error in deleting the Restaurant Image from the Server' } });
+          }
+          restaurant_image_link = await saveImageToServer(req.body.image, RESTAURANT_PATH).catch(() => { throw { error: 'Error in Saving the Restaurant Image to the Server' } });
           restaurant_image_link = restaurant_image_link.success;
         }
       } else {
-        // no new image to update, return the old image if there is one or the placeholder if not
-        const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Database Error' } });
-        if (restaurant_path.image) {
-          // image is present, use it
-          restaurant_image_link = restaurant_path.image;
-        } else {
-          // no image previously, use the placeholder
-          restaurant_image_link = PLACEHOLDER;
-        }
+        // no new image to save, return the provided URL
+        restaurant_image_link = req.body.image;
       }
-            
+
       // take the information from the body and add the restaurant
       const restaurant = {
         id: req.params.id,
@@ -384,58 +382,76 @@ app.post('/api/restaurants/:id',
         website: req.body.website,
         facebook: req.body.facebook,
         instagram: req.body.instagram,
+        twitter: req.body.twitter,
         hours: req.body.hours,
         description: req.body.description
       };
       // insert restaurant into the db
-      const new_restaurant = await restaurantsDao.updateRestaurant(restaurant).catch(() => { throw { error: 'Database Error' } });
+      const new_restaurant = await restaurantsDao.updateRestaurant(restaurant).catch(() => { throw { error: 'Database Error in Updating the Restaurant' } });
+
+      // getting the dishes and ingredient images currently stored in the server (URL in the db) of the restaurant to edit
+      const dishes_images = await dishesDao.getAllDishesImages(new_restaurant.id).catch(() => { throw { error: 'Database Error in Getting all The Dishes Images' } });
+      const ingredients_images = [];
+      await Promise.all(dishes_images.map(async (dish) => {
+        const vett = await ingredientsDao.getAllIngredientsImages(dish.id).catch(() => { throw { error: 'Database Error in Getting all The Ingredients Images' } });
+        ingredients_images.push(...vett);
+      }));
+      // getting the dishes and ingredients images received from the http post
+      const body_dishes_images = req.body.dishes.map((dish) => dish.image);
+      const body_ingredients_images = req.body.dishes.map((dish) => dish.ingredients.map((ingredient) => ingredient.image)).flat();
+      
+      // iterate through the server images of dishes
+      await Promise.all(dishes_images.map(async (dish) => {
+        // if is not present in the body arrays and not placeholder delete it, otherwise it's still needed
+        if (!body_dishes_images.includes(dish.image) && dish.image !== PLACEHOLDER) {
+          const image_to_delete = getServerPath(dish.image, DISH_PATH);
+          await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Dish Image from the Server' } });
+        }
+      }));
+      
+      // iterate through the server images of ingredients
+      await Promise.all(ingredients_images.map(async (ingredient_image) => {
+        // if is not present in the body arrays and not placeholder delete it, otherwise it's still needed
+        if (!body_ingredients_images.includes(ingredient_image) && ingredient_image !== PLACEHOLDER) {
+          const image_to_delete = getServerPath(ingredient_image, INGREDIENT_PATH);
+          await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Ingredient Image from the Server' } });
+        }
+      }));
+      
+      // delete all dishes of the restaurant and their ingredients from the db (for ingredients ON DELETE CASCADE)
+      await dishesDao.deleteAllRestaurantDishes(new_restaurant.id).catch(() => { throw { error: 'Database Error in Deleting all the Dishes of the Restaurant' } });
+
       // take the information from the body and add all the dishes related to the restaurant
       const dishes = [];
       for (const dish of req.body.dishes) {
-          let dish_image_link;
-          // check if there is a new image
-          if (dish.image) {
-            // check if image is not changed, otherwise useless to re-save it
-            const dish_path = await dishesDao.getDishImage(dish.id).catch(() => { throw { error: 'Database Error' } });
-            const dish_image_path = getServerPath(dish_path.image,DISH_PATH);
-            let old_image = await fs.readFile(dish_image_path);       
-            old_image = 'data:image/png;base64,' + old_image.toString('base64');
-            if (old_image === dish.image) {
-              // image not changed
-              dish_image_link = dish_path.image;
-            } else {
-              //image changed
-              dish_image_link = await saveImageToServer(dish.image,DISH_PATH).catch(() => { throw { error: 'Database Error' } });
-              dish_image_link = dish_image_link.success;
-            }
-          } else {
-            // no new image to update, return the old image if there is one or the placeholder if not
-            const dish_path = await dishesDao.getDishImage(dish.id).catch(() => { throw { error: 'Database Error' } });
-            if (dish_path.image) {
-              // image is present, use it
-              dish_image_link = dish_path.image;
-            } else {
-              // no image previously, use the placeholder
-              dish_image_link = PLACEHOLDER;
-            }
-          }
-      
-          dishes.push({
-            id: dish.id,
-            restaurantId: new_restaurant.id,
-            name: dish.name,
-            price: dish.price,
-            type: dish.type,
-            image: dish_image_link,
-            ingredients: dish.ingredients
-          })
+        let dish_image_link = '';
+
+        // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
+        if (dish.image && !dish.image.startsWith("http://localhost:3001")) {
+          dish_image_link = await saveImageToServer(dish.image, DISH_PATH).catch(() => {
+            throw { error: 'Error in Saving the Dish Image to the Server' };
+          });
+          dish_image_link = dish_image_link.success;
+        } else {
+          dish_image_link = dish.image;
+        }
+
+        dishes.push({
+          id: dish.id,
+          restaurantId: new_restaurant.id,
+          name: dish.name,
+          price: dish.price,
+          type: dish.type,
+          image: dish_image_link,
+          ingredients: dish.ingredients
+        })
       }
 
-      // insert dishes into the db
+      // insert the dishes from scratch
       const new_dishes = await Promise.all(dishes.map(async (dish) => {
         const ingredients = dish.ingredients;
         delete dish.ingredients;
-        const new_dish = await dishesDao.updateDish(dish).catch(() => { throw { error: 'Database Error' } });
+        const new_dish = await dishesDao.insertDish(dish).catch(() => { throw { error: 'Database Error in Inserting the Dish' } });
         new_dish.ingredients = ingredients;
         return new_dish;
       }));
@@ -444,32 +460,14 @@ app.post('/api/restaurants/:id',
       const ingredients = [];
       for (const dish of new_dishes) {
         for (const ingredient of dish.ingredients) {
-          let ingredient_image_link;
-          // check if there is a new image
-          if (ingredient.image) {
-            // check if image is not changed, otherwise useless to re-save it
-            const ingredient_path = await ingredientsDao.getIngredientImage(ingredient.id).catch(() => { throw { error: 'Database Error' } });
-            const ingredient_image_path = getServerPath(ingredient_path.image,INGREDIENT_PATH);
-            let old_image = await fs.readFile(ingredient_image_path);
-            old_image = 'data:image/png;base64,' + old_image.toString('base64');
-            if (old_image === ingredient.image) {
-              // image not changed
-              ingredient_image_link = ingredient_path.image;
-            } else {
-              //image changed
-              ingredient_image_link = await saveImageToServer(ingredient.image,INGREDIENT_PATH).catch(() => { throw { error: 'Database Error' } });
-              ingredient_image_link = ingredient_image_link.success;
-            }
+          let ingredient_image_link = '';
+
+          // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
+          if (ingredient.image && !ingredient.image.startsWith("http://localhost:3001")) {
+            ingredient_image_link = await saveImageToServer(ingredient.image, INGREDIENT_PATH).catch(() => { throw { error: 'Error in Saving the Ingredient Image to the Server' } });
+            ingredient_image_link = ingredient_image_link.success;
           } else {
-            // no new image to update, return the old image if there is one or the placeholder if not
-            const ingredient_path = await ingredientsDao.getIngredientImage(ingredient.id).catch(() => { throw { error: 'Database Error' } });
-            if (ingredient_path.image) {
-              // image is present, use it
-              ingredient_image_link = ingredient_path.image;
-            } else {
-              // no image previously, use the placeholder
-              ingredient_image_link = PLACEHOLDER;
-            }
+            ingredient_image_link = ingredient.image;
           }
 
           ingredients.push({
@@ -483,10 +481,12 @@ app.post('/api/restaurants/:id',
           });
         }
       }
-      // insert ingredients into the db
+
+      // insert the ingredients from scratch
       const new_ingredients = await Promise.all(ingredients.map(async (ingredient) => {
-        return await ingredientsDao.updateIngredient(ingredient).catch(() => { throw { error: 'Database Error' } });
+        return await ingredientsDao.insertIngredient(ingredient).catch(() => { throw { error: 'Database Error in Inserting the Ingredient' } });
       }));
+
       // construct the object to return
       let return_struct = {};
       return_struct = new_restaurant;
@@ -495,9 +495,9 @@ app.post('/api/restaurants/:id',
         const temp_dish = new_dish;
         temp_dish.ingredients = [];
         for (const new_ingredient of new_ingredients) {
-            if (temp_dish.id === new_ingredient.dishId) {
-              temp_dish.ingredients.push(new_ingredient);
-            }
+          if (temp_dish.id === new_ingredient.dishId) {
+            temp_dish.ingredients.push(new_ingredient);
+          }
         }
         dishes_ingredients.push(temp_dish);
       }
@@ -506,7 +506,7 @@ app.post('/api/restaurants/:id',
       // return it
       res.json(return_struct);
     } catch (error) {
-      res.status(503).json({ error: 'Database Error' })
+      res.status(503).json({ error: error })
     }
   }
 );
@@ -516,7 +516,7 @@ app.post('/api/restaurants/:id',
 app.delete('/api/restaurants/:id', (req, res) => {
   restaurantsDao.deleteRestaurant(req.params.id)
     .then(msg => res.json(msg))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Restaurant' }));
 });
 
 // POST /api/reviews/
@@ -536,17 +536,17 @@ app.post('/api/reviews/',
       };
 
       // if review already exist, trigger an error
-      const review_present = await reviewsDao.checkReview(review.username,review.restaurantId).catch(() => { throw { error: 'Database Error' } });
+      const review_present = await reviewsDao.checkReview(review.username, review.restaurantId).catch(() => { throw { error: 'Database Error in Checking the Review' } });
       if (review_present.error) {
-          throw { error: review_present.error }
+        throw { error: review_present.error }
       }
       // if not insert the review
-      const new_review = await reviewsDao.insertReview(review).catch(() => { throw { error: 'Database Error' } });
+      const new_review = await reviewsDao.insertReview(review).catch(() => { throw { error: 'Database Error in Inserting the Review' } });
       res.json(new_review);
     } catch (error) {
       res.status(503).json({ error: error.error })
     }
-    
+
   }
 );
 
@@ -568,17 +568,17 @@ app.post('/api/reviews/:id',
       };
 
       // if review not exist, trigger an error
-      const review_present = await reviewsDao.getReview(review.id).catch(() => { throw { error: 'Database Error' } });
+      const review_present = await reviewsDao.getReview(review.id).catch(() => { throw { error: 'Database Error in Getting the Review' } });
       if (review_present.error) {
-          throw { error: review_present.error }
+        throw { error: review_present.error }
       }
       // if not update the review
-      const new_review = await reviewsDao.updateReview(review).catch(() => { throw { error: 'Database Error' } });
+      const new_review = await reviewsDao.updateReview(review).catch(() => { throw { error: 'Database Error in Updating the Review' } });
       res.json(new_review);
     } catch (error) {
       res.status(503).json({ error: error.error })
     }
-    
+
   }
 );
 
@@ -587,7 +587,7 @@ app.post('/api/reviews/:id',
 app.delete('/api/reviews/:id', (req, res) => {
   reviewsDao.deleteReview(req.params.id)
     .then(msg => res.json(msg))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Review' }));
 });
 
 // GET /api/reviews/:username
@@ -595,7 +595,7 @@ app.delete('/api/reviews/:id', (req, res) => {
 app.get('/api/reviews/:username', (req, res) => {
   reviewsDao.getReviewsByUsername(req.params.username)
     .then(ingredient => res.json(ingredient))
-    .catch(() => res.status(503).json({ error: 'Database Error' }));
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Reviews Done by an User' }));
 });
 
 // Activating the server

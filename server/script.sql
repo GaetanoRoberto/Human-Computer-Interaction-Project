@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "restaurants" (
 	"website" 	TEXT,
 	"facebook" 	TEXT,
 	"instagram" TEXT,
+	"twitter" TEXT,
 	"hours" 	TEXT NOT NULL, -- 8:30-10:30;12:30-15:30 otherwise separate table
 	"description" 	TEXT NOT NULL
 	--"priceRange" 	TEXT NOT NULL,
@@ -63,12 +64,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 
 -- filters in home and categories when add/edit restaurant hardcoded without backend (a costant array in costants.jsx)
 
-INSERT INTO "restaurants" VALUES (1,0, 'http://localhost:3001/restaurants/sorbillo.png', 'Sorbillo', 'Via Bruno Buozzi, 3, 10121 Torino TO', '011 1923 4672', 'https://www.sorbillo.it/', 'https://www.facebook.com/PizzeriaGinoSorbillo/', 'https://www.instagram.com/sorbillo/', '8:30-10:30;12:30-15:30', 'Gino Sorbillo appartiene ad una delle famiglie di pizzaioli più antiche di Napoli. cresce nella pizzeria di famiglia e ben presto impara i segreti della vera pizza napoletana. Con Gino Sorbillo la Pizza Napoletana è giunta a livelli qualitativi altissimi e si è guadagnata di diritto spazio tra le migliori eccellenze gastronomiche italiane.');
-INSERT INTO "restaurants" VALUES (2,0, 'http://localhost:3001/restaurants/daMichele.png', 'Restaurant 2', 'Location 2', '987654321', 'http://www.restaurant2.com', 'restaurant2-facebook', 'restaurant2-instagram', '9:00-11:00;13:00-16:00', 'Description for Restaurant 2');
-INSERT INTO "restaurants" VALUES (3,0, 'http://localhost:3001/restaurants/gustoDivino.jpg', 'Restaurant 3', 'Location 3', '555555555', 'http://www.restaurant3.com', 'restaurant3-facebook', 'restaurant3-instagram', '10:00-12:00;14:00-17:00', 'Description for Restaurant 3');
-INSERT INTO "restaurants" VALUES (4,0, 'http://localhost:3001/restaurants/osteria.png', 'Restaurant 4', 'Location 4', '999999999', 'http://www.restaurant4.com', 'restaurant4-facebook', 'restaurant4-instagram', '11:30-13:30;16:30-19:30', 'Description for Restaurant 4');
-INSERT INTO "restaurants" VALUES (5,0, 'http://localhost:3001/restaurants/saporiditalia.jpg', 'Restaurant 5', 'Location 5', '777777777', 'http://www.restaurant5.com', 'restaurant5-facebook', 'restaurant5-instagram', '12:00-14:00;18:00-21:00', 'Description for Restaurant 5');
-INSERT INTO "restaurants" VALUES (6,0, 'http://localhost:3001/restaurants/trattoria.jpg', 'Restaurant 6', 'Location 6', '333333333', 'http://www.restaurant6.com', 'restaurant6-facebook', 'restaurant6-instagram', '14:00-16:00;20:00-23:00', 'Description for Restaurant 6');
+INSERT INTO "restaurants" VALUES (1,0, 'http://localhost:3001/restaurants/sorbillo.png', 'Sorbillo', 'Via Bruno Buozzi, 3, 10121 Torino TO', '011 1923 4672', 'https://www.sorbillo.it/', 'https://www.facebook.com/PizzeriaGinoSorbillo/', 'https://www.instagram.com/sorbillo/', 'https://www.twitter.com/sorbillo/' ,'8:30-10:30;12:30-15:30', 'Gino Sorbillo appartiene ad una delle famiglie di pizzaioli più antiche di Napoli. cresce nella pizzeria di famiglia e ben presto impara i segreti della vera pizza napoletana. Con Gino Sorbillo la Pizza Napoletana è giunta a livelli qualitativi altissimi e si è guadagnata di diritto spazio tra le migliori eccellenze gastronomiche italiane.');
+INSERT INTO "restaurants" VALUES (2,0, 'http://localhost:3001/restaurants/daMichele.png', 'Restaurant 2', 'Location 2', '987654321', 'http://www.restaurant2.com', 'restaurant2-facebook', 'restaurant2-instagram', 'restaurant2-twitter' , '9:00-11:00;13:00-16:00', 'Description for Restaurant 2');
+INSERT INTO "restaurants" VALUES (3,0, 'http://localhost:3001/restaurants/gustoDivino.jpg', 'Restaurant 3', 'Location 3', '555555555', 'http://www.restaurant3.com', 'restaurant3-facebook', 'restaurant3-instagram', 'restaurant3-twitter' , '10:00-12:00;14:00-17:00', 'Description for Restaurant 3');
+INSERT INTO "restaurants" VALUES (4,0, 'http://localhost:3001/restaurants/osteria.png', 'Restaurant 4', 'Location 4', '999999999', 'http://www.restaurant4.com', 'restaurant4-facebook', 'restaurant4-instagram', 'restaurant4-twitter', '11:30-13:30;16:30-19:30', 'Description for Restaurant 4');
+INSERT INTO "restaurants" VALUES (5,0, 'http://localhost:3001/restaurants/saporiditalia.jpg', 'Restaurant 5', 'Location 5', '777777777', 'http://www.restaurant5.com', 'restaurant5-facebook', 'restaurant5-instagram', 'restaurant5-twitter' ,'12:00-14:00;18:00-21:00', 'Description for Restaurant 5');
+INSERT INTO "restaurants" VALUES (6,0, 'http://localhost:3001/restaurants/trattoria.jpg', 'Restaurant 6', 'Location 6', '333333333', 'http://www.restaurant6.com', 'restaurant6-facebook', 'restaurant6-instagram', 'restaurant6-twitter', '14:00-16:00;20:00-23:00', 'Description for Restaurant 6');
 
 INSERT INTO "dishes" VALUES (1,1, 'Pasta Carbonara', 10.99, 'pasta', 'http://localhost:3001/dishes/bismark.jpeg');
 INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 12.99, 'pizza', 'http://localhost:3001/dishes/capricciosa.jpg');
