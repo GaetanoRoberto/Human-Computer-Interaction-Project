@@ -226,13 +226,6 @@ function InnerForm(props) {
             invalid = true;
             setPhone({ text: phone.text, invalid: true });
         }
-
-        /*if(!phone.text || (phone.text && isValidPhoneNumber(phone.text) === undefined)) {
-            invalid = true;
-            setPhone({text: phone.text, invalid: true});
-        } else {
-            setPhone({text: phone.text, invalid: false});
-        }*/
         return invalid;
     }
 
@@ -369,7 +362,7 @@ function InnerForm(props) {
                             <Form.Control.Feedback type="invalid">Please Insert The Address</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <PhoneInput className='custom-input' defaultCountry='IT' placeholder="Enter phone number" value={phone.text} onChange={(event) => {phoneValidation({text: event , invalid: phone.invalid},setPhone)}}/>
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter phone number" value={phone.text} onChange={(event) => {phoneValidation({text: event , invalid: phone.invalid},setPhone)}}/>
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Please Insert a valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>

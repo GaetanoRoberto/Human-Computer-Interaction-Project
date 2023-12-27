@@ -25,17 +25,21 @@
   height: 50px;
 }
 
-/* Custom CSS */
+/* Custom CSS for Phone Number Input Field */
 .custom-input {
   border: 1px solid #ced4da; /* Border color */
   border-radius: 0.25rem; /* Border radius */
   padding: 0.375rem 0.75rem; /* Padding */
 }
 
+.is-invalid {
+  border-color: #dc3545;
+}
+
 .custom-input input {
   border: none;
 }
-/* Optionally, you can add styles for focus state */
+
 .custom-input input:focus {
   border-color: #80bdff; /* Border color on focus */
   border-radius: 0.25rem; /* Border radius */
