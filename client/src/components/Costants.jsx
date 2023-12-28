@@ -10,7 +10,10 @@ const RESTAURANTS_PATH = 'http://localhost:3001/restaurants/';
 // placeholder if no image is provided
 const PLACEHOLDER = 'http://localhost:3001/placeholder.png';
 
+// API KEY for google maps address
+const API_KEY = 'AIzaSyCvuhhqU5FKKc39jRLY1pviZAzcKeNLJdc';
+
 // possible filters to apply/categories to enter when adding or editing a restaurant
 const FILTERS = [];
 
-export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER};
+export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY};

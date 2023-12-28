@@ -88,6 +88,30 @@ async function getUser(username) {
 };
 
 /**
+ * This function is used to update a user
+ * It returns a JSON object
+ */
+async function updateUser(user) {
+  const response = await fetch(SERVER_URL + `/users/${user.username}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
+    body: JSON.stringify(Object.assign({}, user)),
+  }).catch(() => { throw { error: "Connection Error" } });
+  if (response.ok) {
+    // 200 status code, parse and return the object
+    const response_user = await response.json();
+    return response_user;
+  } else {
+    // json object provided by the server with the error
+    const error = await response.json();
+    throw error;
+  }
+}
+
+/**
  * This function is used to get all the restaurants (not complete info) for the home page
  * It returns a JSON object
  */
@@ -313,6 +337,7 @@ const API = {
   getUserInfo,
   logOut,
   getUser,
+  updateUser,
   getRestaurants,
   getRestaurant,
   getIngredient,

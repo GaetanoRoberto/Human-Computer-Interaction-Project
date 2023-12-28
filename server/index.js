@@ -162,6 +162,26 @@ app.get('/api/users/:username', (req, res) => {
     .catch(() => res.status(503).json({ error: 'Database Error in Getting the User' }));
 });
 
+// POST /api/users/:username
+// This route is used to update the info of an user with that username
+app.post('/api/users/:username',
+  async (req, res) => {
+    try {
+      const user = {
+        username: req.params.username,
+        position: req.body.position,
+        isRestaurateur: req.body.isRestaurateur
+      };
+
+      const updated_user = await usersDao.updateUser(user).catch(() => { throw { error: 'Database Error in Updating The User' } });
+      res.json(updated_user);
+    } catch (error) {
+      res.status(503).json({ error: error.error })
+    }
+
+  }
+);
+
 // GET /api/restaurants
 // This route is used to get all the restaurants (not complete info), along with their type of dishes (to filter) for the home page
 app.get('/api/restaurants', async (req, res) => {
@@ -350,7 +370,7 @@ app.post('/api/restaurants/:id',
       // check if there is a new image (so base64 data not an URL)
       if (req.body.image && !req.body.image.startsWith("http://localhost:3001")) {
         // check if image is not changed, otherwise useless to re-save it
-        const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Error in Getting the Restaurant image from Thse Server' } });
+        const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Error in Getting the Restaurant image from The Server' } });
         const restaurant_image_path = getServerPath(restaurant_path.image, RESTAURANT_PATH);
         let old_image = await fs.readFile(restaurant_image_path);
         old_image = 'data:image/png;base64,' + old_image.toString('base64');
@@ -363,7 +383,7 @@ app.post('/api/restaurants/:id',
           if (restaurant_path.image !== PLACEHOLDER) {
             await fs.unlink(restaurant_image_path).catch(() => { throw { error: 'Error in deleting the Restaurant Image from the Server' } });
           }
-          restaurant_image_link = await saveImageToServer(req.body.image, RESTAURANT_PATH).catch(() => { throw { error: 'Error in Saving the Restaurant Image to the Server' } });
+          restaurant_image_link = await saveImageToServer(req.body.image, RESTAURANT_PATH).catch(() => { throw { error: 'Error in Saving the Restaurant Image to The Server' } });
           restaurant_image_link = restaurant_image_link.success;
         }
       } else {

@@ -22,6 +22,17 @@ DELETE http://localhost:3001/api/sessions/current HTTP/1.1
 GET http://localhost:3001/api/users/User HTTP/1.1
 ###
 
+## Update the info of the user with that username
+POST http://localhost:3001/api/users/User HTTP/1.1
+content-type: application/json
+
+{
+  "username": "User",
+  "position": "posssss",
+  "isRestaurateur": "0"
+}
+###
+
 ## Get All The restaurants
 GET http://localhost:3001/api/restaurants HTTP/1.1
 ###

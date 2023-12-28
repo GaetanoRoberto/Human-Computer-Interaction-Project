@@ -24,3 +24,22 @@ exports.getUser = (username) => {
   });
 };
 
+// This function update a specific user given its infos.
+exports.updateUser = (user) => {
+  return new Promise((resolve, reject) => {
+      const sql = 'UPDATE users SET position=?,isRestaurateur=? WHERE username=?';
+      db.run(sql,
+          [user.position,user.isRestaurateur,user.username],
+          function (err) {
+              // if query error, reject the promise, otherwise if not found return an error else return the content
+              if (err) {
+                  reject(err);
+              } else if (this.changes !== 1) {
+                  resolve({ error: 'No user was updated.' });
+              }
+              else {
+                  resolve(exports.getUser(user.username));
+              }
+          });
+  });
+};
