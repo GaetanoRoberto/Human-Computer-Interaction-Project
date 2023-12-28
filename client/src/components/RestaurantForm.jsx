@@ -480,6 +480,12 @@ function InnerForm(props) {
     );
 }
 
+/**
+ * React state to use and pass to this component as props:
+ * const [image, setImage] = useState(PLACEHOLDER);
+ * const [fileName, setFileName] = useState('No File Chosen');
+ * PLACEHOLDER is a costant declared in Costants.jsx to import 
+ */
 function ImageViewer(props) {
     const { width, height, image, setImage, fileName, setFileName } = props;
     const fileInputRef = useRef(null);
@@ -533,6 +539,10 @@ function DishItem(props) {
     );
 }
 
+/**
+ * React state to use and pass to this component as props:
+ * const [address, setAddress] = useState({ text: '', invalid: false });
+ */
 function AddressSelector(props) {
     const { address, setAddress } = props;
     const inputRef = useRef();
