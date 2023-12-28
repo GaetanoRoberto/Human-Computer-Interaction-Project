@@ -25,6 +25,21 @@ const handleImageChange = (event, setImage, setFileName) => {
     }
 };
 
+const address_string_to_object = (addr) => {
+    const main_infos = addr.split(';');
+    const lat = parseFloat(main_infos[1].split(':')[1]);
+    const lng = parseFloat(main_infos[2].split(':')[1]);
+    return {
+        text: main_infos[0],
+        lat: lat,
+        lng: lng
+    };
+};
+
+const address_object_to_string = (addr) => {
+    return addr.text + ';lat:' + addr.lat + ";lng:" + addr.lng;
+};
+
 function ProgressLabel(props) {
     const { progress } = props;
 
@@ -85,16 +100,6 @@ function InnerForm(props) {
                 const restaurant = await API.getRestaurant(restaurantId);
                 // set info of the restaurant
                 setActivityName({ text: restaurant.name, invalid: false });
-                const address_string_to_object = (addr) => {
-                    const main_infos = addr.split(';');
-                    const lat = parseFloat(main_infos[1].split(':')[1]);
-                    const lng = parseFloat(main_infos[2].split(':')[1]);
-                    return {
-                        text: main_infos[0],
-                        lat: lat,
-                        lng: lng
-                    };
-                }
                 setAddress(address_string_to_object(restaurant.location));
                 setPhone({ text: restaurant.phone, invalid: false });
                 setDescription({ text: restaurant.description, invalid: false });
@@ -361,9 +366,6 @@ function InnerForm(props) {
             const restaurant = {};
             restaurant.image = image;
             restaurant.name = activityName.text;
-            const address_object_to_string = (addr) => {
-                return addr.text + ';lat:' + addr.lat + ";lng:" + addr.lng;
-            }
             restaurant.location = address_object_to_string(address);
             restaurant.phone = phone.text;
             restaurant.website = website.link;
@@ -601,4 +603,4 @@ function RestaurantForm(props) {
         </>
     );
 }
-export { RestaurantForm, ImageViewer, AddressSelector };
+export { RestaurantForm, ImageViewer, AddressSelector, address_string_to_object, address_object_to_string };
