@@ -55,7 +55,7 @@ function InnerForm(props) {
     const { progress, setProgress } = props;
     // states for progress 1/3
     const [activityName, setActivityName] = useState({ text: '', invalid: false });
-    const [address, setAddress] = useState({ text: '', invalid: false });
+    const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
     const [phone, setPhone] = useState({ text: '', invalid: false });
     const [description, setDescription] = useState({ text: '', invalid: false });
     const [website, setWebsite] = useState({ link: '', invalid: false });
@@ -72,8 +72,8 @@ function InnerForm(props) {
 
     // states for progress 3/3
     const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
-
     //const [dishes,setDishes] = useState([]);
+
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
 
@@ -85,13 +85,22 @@ function InnerForm(props) {
                 const restaurant = await API.getRestaurant(restaurantId);
                 // set info of the restaurant
                 setActivityName({ text: restaurant.name, invalid: false });
-                setAddress({ text: restaurant.location, invalid: false });
+                const address_string_to_object = (addr) => {
+                    const main_infos = addr.split(';');
+                    const lat = parseFloat(main_infos[1].split(':')[1]);
+                    const lng = parseFloat(main_infos[2].split(':')[1]);
+                    return {
+                        text: main_infos[0],
+                        lat: lat,
+                        lng: lng
+                    };
+                }
+                setAddress(address_string_to_object(restaurant.location));
                 setPhone({ text: restaurant.phone, invalid: false });
                 setDescription({ text: restaurant.description, invalid: false });
                 setWebsite({ link: restaurant.website, invalid: false });
                 setInstagram({ link: restaurant.instagram, invalid: false });
                 setFacebook({ link: restaurant.facebook, invalid: false });
-                //setTwitter(restaurant.twitter);
                 setTwitter({ link: restaurant.twitter, invalid: false });
                 // retrieve hours (remove the first empty element, then inserting from the db)
                 setTimes([]);
@@ -246,11 +255,11 @@ function InnerForm(props) {
             geocoder.geocode(geocodeRequest, (results, status) => {
                 if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
                     // Address is valid
-                    setAddress({ text: address.text, invalid: false });
+                    setAddress({ text: address.text, lat: address.lat, lng:address.lng, invalid: false });
                     resolve(undefined); // Resolve with undefined for a valid address
                 } else {
                     // Address is invalid
-                    setAddress({ text: address.text, invalid: true });
+                    setAddress({ text: address.text, lat:address.lat, lng:address.lng, invalid: true });
                     reject(true); // Resolve with true for an invalid address
                 }
             });
@@ -352,7 +361,10 @@ function InnerForm(props) {
             const restaurant = {};
             restaurant.image = image;
             restaurant.name = activityName.text;
-            restaurant.location = address.text;
+            const address_object_to_string = (addr) => {
+                return addr.text + ';lat:' + addr.lat + ";lng:" + addr.lng;
+            }
+            restaurant.location = address_object_to_string(address);
             restaurant.phone = phone.text;
             restaurant.website = website.link;
             restaurant.facebook = facebook.link;
@@ -541,7 +553,7 @@ function DishItem(props) {
 
 /**
  * React state to use and pass to this component as props:
- * const [address, setAddress] = useState({ text: '', invalid: false });
+ * const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
  */
 function AddressSelector(props) {
     const { address, setAddress } = props;
@@ -552,6 +564,8 @@ function AddressSelector(props) {
         if (place) {
             setAddress({
                 text: place.formatted_address,
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
                 invalid: address.invalid
             });
         }
@@ -564,8 +578,8 @@ function AddressSelector(props) {
                     isInvalid={address.invalid}
                     type="text"
                     placeholder="Enter The Location"
-                    // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, invalid: address.invalid},setAddress)}
-                    onChange={(event) => { setAddress({ text: event.target.value, invalid: address.invalid }); }}
+                    // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
+                    onChange={(event) => { setAddress({ text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid }); }}
                     defaultValue={address.text}
                 />
                 <Form.Control.Feedback type="invalid">Please Insert a Valid Address</Form.Control.Feedback>
