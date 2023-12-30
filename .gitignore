@@ -7,5 +7,5 @@ Thumbs.db
 Desktop.ini
 
 # ignore the public folder, comment if you want to add images to the repo
-server/public/*
-server/public/
+#server/public/*
+#server/public/
