@@ -71,19 +71,61 @@ INSERT INTO "restaurants" VALUES (4,0, 'http://localhost:3001/restaurants/rossop
 INSERT INTO "restaurants" VALUES (5,0, 'http://localhost:3001/restaurants/assaje.jpg', 'Assaje', 'Via Andrea Doria, 11, 10123 Torino TO;lat:45.0640710;lng:7.6834790', '011 780 2618', 'https://www.assaje.it/', 'https://www.facebook.com/pizzeriaassaje/', 'https://www.instagram.com/pizzeria_assaje/', NULL ,'12:00–15:00;19:00–00:00', 'The Assaje pizzeria in Milan is a concept born from a group of Neapolitans who decided to export the flavors of true Neapolitan pizza to the Lombard capital. Gourmet pizzas and traditional Neapolitan recipes are what Assaje restaurants offer. All the products are distributed by local farmers and the basic idea is to bring the true flavors of Campania back to the table. For this reason the suppliers are exclusively Neapolitan, so as to re-propose the true dishes of a gastronomic culture with an ancient history.');
 INSERT INTO "restaurants" VALUES (6,0, 'http://localhost:3001/restaurants/skassapanza.jpg', 'Skassapanza', 'Via Pasquale Paoli, 54a, 10134 Torino TO;lat:45.0351312;lng:7.6522041', '0117931455', 'https://skassapanza.it/', 'https://www.facebook.com/skassapanza', 'https://www.instagram.com/skassapanza/', NULL, '12:00–15:00;19:00–00:00', 'Skassapanza was born from the will of two friends, Vito and Enzo, who after years of entrepreneurial experience, with a strong passion for food, decided to open a hamburger/rotisserie aimed, immediately, at customizing their own menu. The idea was born precisely from this vision which, still today, is the peculiarity of the Skassapanza premises: you decide how to compose your hamburger');
 
-INSERT INTO "dishes" VALUES (1,1, 'Pasta Carbonara', 10.99, 'pasta', 'http://localhost:3001/dishes/bismark.jpeg');
-INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 12.99, 'pizza', 'http://localhost:3001/dishes/capricciosa.jpg');
-INSERT INTO "dishes" VALUES (3,2, 'Chicken Alfredo', 15.99, 'pasta', 'http://localhost:3001/dishes/gorgonzola.png');
-INSERT INTO "dishes" VALUES (4,2, 'Vegetarian Pizza', 13.99, 'pizza', 'http://localhost:3001/dishes/margherita.png');
-INSERT INTO "dishes" VALUES (5,3, 'Lasagna', 14.99, 'pasta', 'http://localhost:3001/placeholder.png');
-INSERT INTO "dishes" VALUES (6,3, 'Pepperoni Pizza', 16.99, 'pizza', 'http://localhost:3001/dishes/tonnoCipolla.png');
+INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'http://localhost:3001/dishes/pastacarbonara.jpeg');
+INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 7.00, 'pizza', 'http://localhost:3001/dishes/margherita.jpg');
+INSERT INTO "dishes" VALUES (3,2, 'Pepperoni Pizza', 9.00, 'pizza', 'http://localhost:3001/dishes/pepperonipizza.png');
+INSERT INTO "dishes" VALUES (4,2, 'Vegetarian Pizza', 9.00, 'pizza', 'http://localhost:3001/dishes/vegetariana.png');
+INSERT INTO "dishes" VALUES (5,3, 'Lasagna alla Bolognese', 10.00, 'pasta', 'http://localhost:3001/placeholder.png');
+INSERT INTO "dishes" VALUES (6,3, 'Tonno e cipolla', 10.00, 'pizza', 'http://localhost:3001/dishes/tonnoCipolla.png');
+INSERT INTO "dishes" VALUES (7,1, 'Bismark', 10.00, 'pizza', 'http://localhost:3001/dishes/bismark.jpeg');
+INSERT INTO "dishes" VALUES (8,2, 'Amatriciana', 10.00, 'pasta', 'http://localhost:3001/dishes/pastaamatriciana.jpeg');
+INSERT INTO "dishes" VALUES (9,3, 'Gricia', 10.00, 'pasta', 'http://localhost:3001/dishes/pastagricia.jpeg');
+INSERT INTO "dishes" VALUES (10,2, 'Cacio e pepe', 10.00, 'pasta', 'http://localhost:3001/dishes/pastacacioepepe.jpeg');
+INSERT INTO "dishes" VALUES (11,1, 'Capricciosa', 10.99, 'pizza', 'http://localhost:3001/dishes/capricciosa.jpeg');
+INSERT INTO "dishes" VALUES (12,2, 'Pizza alla Norma', 10.99, 'pizza', 'http://localhost:3001/dishes/norma.jpeg');
+INSERT INTO "dishes" VALUES (13,3, 'Norma', 9.00, 'pasta', 'http://localhost:3001/dishes/pastanorma.jpeg');
+INSERT INTO "dishes" VALUES (14,1, 'Cheeseburger', 10.99, 'hamburger', 'http://localhost:3001/dishes/cheeseburger.jpeg');
+INSERT INTO "dishes" VALUES (15,2, 'Chocolate Cheesecake', 5.00, 'dessert', 'http://localhost:3001/dishes/chocolatecheesecake.jpeg');
+INSERT INTO "dishes" VALUES (16,3, 'Tiramisù', 5.00, 'desserts', 'http://localhost:3001/dishes/tiramisu.jpeg');
+INSERT INTO "dishes" VALUES (17,1, 'Natural Water', 1.00, 'drinks', 'http://localhost:3001/dishes/naturalwater.jpeg');
+INSERT INTO "dishes" VALUES (18,2, 'Sparkling Water', 1.00, 'drinks', 'http://localhost:3001/dishes/sparklingwater.jpeg');
+INSERT INTO "dishes" VALUES (19,3, 'Coca cola', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacola.jpeg');
+INSERT INTO "dishes" VALUES (20,1, 'Coca cola zero', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacolazero.jpeg');
+INSERT INTO "dishes" VALUES (21,2, 'Fanta', 2.00, 'drinks', 'http://localhost:3001/dishes/fanta.jpeg');
+INSERT INTO "dishes" VALUES (22,3, 'Sprite', 2.00, 'drinks', 'http://localhost:3001/dishes/sprite.jpeg');
+
+
+
+
+
+
+
+
+
+
+
+
 
 INSERT INTO "ingredients" VALUES (1,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
-INSERT INTO "ingredients"(id,dishId,image,name,allergens,brandName) VALUES (2,1, 'http://localhost:3001/ingredients/bacon.jpg', 'Bacon', 'pork', 'HomeMade');
-INSERT INTO "ingredients" (id, dishId, image, name, brandName, brandLink) VALUES (3,2, 'http://localhost:3001/ingredients/tomato_sauce-png', 'Tomato Sauce', 'Ragu', 'http://www.ragu.com');
+INSERT INTO "ingredients"(id,dishId,image,name,allergens,brandName) VALUES (2,1, 'http://localhost:3001/ingredients/bacon.jpg', 'Bacon', '', 'LocalBreeding');
+INSERT INTO "ingredients" (id, dishId, image, name, brandName, brandLink) VALUES (3,2, 'http://localhost:3001/ingredients/tomatosauce.png', 'Tomato Sauce', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (4,2, 'http://localhost:3001/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
-INSERT INTO "ingredients" (id, dishId, image, name, brandName, brandLink) VALUES (5,3, 'http://localhost:3001/ingredients/chicken_breast.png', 'Chicken Breast', 'Tyson', 'http://www.tyson.com');
-INSERT INTO "ingredients" VALUES (6,3, 'http://localhost:3001/ingredients/spaghetti.png','Alfredo Sauce', 'lactose', 'Classico', 'http://www.classico.com');
+INSERT INTO "ingredients" (id, dishId, image, name, brandName, brandLink) VALUES (5,3, 'http://localhost:3001/ingredients/chickenbreast.png', 'Chicken Breast', 'Aia', 'http://www.aiafood.com');
+INSERT INTO "ingredients" VALUES (6,3, 'http://localhost:3001/ingredients/egg.png','Egg', '', '', 'LocalBreeding');
+INSERT INTO "ingredients" VALUES (7, 3, 'http://localhost:3001/ingredients/parmesan_cheese.png', 'Parmesan Cheese', 'lactose', 'Kraft', 'http://www.kraft.com');
+INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES (8, 4, 'http://localhost:3001/ingredients/basil.jpg', 'Fresh Basil', '', 'LocalFarm');
+INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES (9, 4, 'http://localhost:3001/ingredients/garlic.png', 'Garlic', '', 'LocalFarm');
+INSERT INTO "ingredients" VALUES (10, 5, 'http://localhost:3001/ingredients/olive_oil.jpg', 'Olive Oil', '', 'Monini', 'http://www.monini.com');
+INSERT INTO "ingredients" VALUES (11, 6, 'http://localhost:3001/ingredients/mushrooms.jpg', 'Mushrooms', '', 'LocalFarm');
+INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES (12, 6, 'http://localhost:3001/ingredients/white_wine.jpg', 'White Wine', 'sulfites', 'https://www.altalangadocg.com');
+INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES (13, 4, 'http://localhost:3001/ingredients/white_wine.jpg', 'Red Wine', 'sulfites', 'https://www.altalangadocg.com');
+INSERT INTO "ingredients" VALUES (13, 7, 'http://localhost:3001/ingredients/potatoes.jpg', 'Potatoes', '', 'McCain', 'http://www.mccain.com');
+INSERT INTO "ingredients" VALUES (14, 8, 'http://localhost:3001/ingredients/beef.png', 'Ground Beef', '', 'GrassFed', 'http://www.grassfed.com');
+INSERT INTO "ingredients" VALUES (15,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Pennette gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (17,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Fusilli gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (18,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com');
+INSERT INTO "ingredients" VALUES (19,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.it/');
+
 
 INSERT INTO "users" VALUES ('Andrea','position1',0);
 INSERT INTO "users" VALUES ('Giuseppe','position2',0);
