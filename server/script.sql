@@ -121,10 +121,10 @@ INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES
 INSERT INTO "ingredients" (id, dishId, image, name, allergens, brandName) VALUES (13, 4, 'http://localhost:3001/ingredients/white_wine.jpg', 'Red Wine', 'sulfites', 'https://www.altalangadocg.com');
 INSERT INTO "ingredients" VALUES (13, 7, 'http://localhost:3001/ingredients/potatoes.jpg', 'Potatoes', '', 'McCain', 'http://www.mccain.com');
 INSERT INTO "ingredients" VALUES (14, 8, 'http://localhost:3001/ingredients/beef.png', 'Ground Beef', '', 'GrassFed', 'http://www.grassfed.com');
-INSERT INTO "ingredients" VALUES (15,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Pennette gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
-INSERT INTO "ingredients" VALUES (17,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Fusilli gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
-INSERT INTO "ingredients" VALUES (18,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com');
-INSERT INTO "ingredients" VALUES (19,1, 'http://localhost:3001/ingredients/spaghetti.png' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.it/');
+INSERT INTO "ingredients" VALUES (15,1, 'http://localhost:3001/ingredients/pennetteglutenfree.png' , 'Pennette gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (17,1, 'http://localhost:3001/ingredients/fusilliglutenfree.png' , 'Fusilli gluten-free', '', 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (18,1, 'http://localhost:3001/ingredients/darkchocolate.png' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com');
+INSERT INTO "ingredients" VALUES (19,1, 'http://localhost:3001/ingredients/cottagecheese.png' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.it/');
 
 
 INSERT INTO "users" VALUES ('Andrea','position1',0);
