@@ -74,6 +74,8 @@ function App() {
         <Route path='/restaurants/:id/menu' element={<RestaurantForm/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/reviews' element={<Reviews/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/add' element={<ReviewForm/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
         {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/} {/* QUEEN*/ }
         <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }

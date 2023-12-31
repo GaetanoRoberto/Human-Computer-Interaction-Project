@@ -5,15 +5,23 @@ import { ButtonGroup, Form, Button, Alert, Row, Col, Image } from 'react-bootstr
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-function Rating(props) {
-  const [starsSelected, setStarsSelected] = useState(props.rating);
+import { UserContext } from './userContext';
 
+/*
   const handleStarClick = (value) => {
     setStarsSelected(value);
   };
-
+  const handleHappinessClick = (happinessIndex) => {
+    setSelectedHappiness(happinessIndex);
+  };
+  const handleEuros = (value) => {
+    setEuros(value);
+  };
+  */
+function Rating(props) {
+  const [starsSelected, setStarsSelected] = useState(props.rating);
   return [...Array(5)].map((el, index) =>
-    <i onClick={() => handleStarClick(index + 1)} key={index} 
+    <i onClick={() => setStarsSelected(index + 1)} key={index} 
       className={(index < starsSelected) ? "bi bi-star-fill " : "bi bi-star"} 
       style={{ color:  '#FFD700', marginRight: "5px",
       fontSize: "2em"
@@ -22,13 +30,8 @@ function Rating(props) {
 }
 function Prices(props) {
   const [euros, setEuros] = useState(props.prices);
-
-  const handleEuros = (value) => {
-    setEuros(value);
-  };
-
   return [...Array(5)].map((el, index) =>
-    <i onClick={() => handleEuros(index + 1)} key={index} 
+    <i onClick={() => setEuros(index + 1)} key={index} 
       className={"bi bi-currency-euro" } 
       style={{ color:(index < euros) ?  "#000": "#DCDCDC",marginRight: "5px",
       fontSize: "2em"
@@ -37,15 +40,10 @@ function Prices(props) {
 }
 function HappinessRating(props) {
   const [selectedHappiness, setSelectedHappiness] = useState(props.happy);
-
-  const handleHappinessClick = (happinessIndex) => {
-    setSelectedHappiness(happinessIndex);
-  };
-
   return [...Array(5)].map((el, index) =>
     <FontAwesomeIcon
       key={index}
-      onClick={() => handleHappinessClick(index + 1)}
+      onClick={() => setSelectedHappiness(index + 1)}
       icon={(index+1 != selectedHappiness) ? getHappinessClass(index) : getHappinessSolidClass(index)}
       style={{color:(index < 5) ? getHappinessColor(index) : "",marginRight: "5px",
       fontSize: "2em" 
@@ -101,14 +99,14 @@ function getHappinessColor(index) {
   }
 }
 const ReviewForm = (props) => {
-
-
+  const user = useContext(UserContext);
 
   // pageID da URL
   const { pageId } = useParams();
   const location = useLocation();
   // location.pathname = /reviews/:id of view or /edit/:id or /add
   const view = location.pathname === `/restaurants/${pageId}`
+  console.log(view)
   // info pagina
   const [title, setTitle] = useState('');
   const [datePubbl, setDatePubbl] = useState(null);

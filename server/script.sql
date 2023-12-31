@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS "reviews" (
 	"date" DATE NOT NULL,
 	"title" TEXT NOT NULL,
 	"description" TEXT NOT NULL,
-	"quality" FLOAT NOT NULL,
-	"safety" FLOAT NOT NULL,
-	"price" FLOAT NOT NULL,
+	"quality" INTEGER NOT NULL,
+	"safety" INTEGER NOT NULL,
+	"price" INTEGER NOT NULL,
 	FOREIGN KEY("restaurantId") REFERENCES "restaurants"("id") ON DELETE CASCADE
 	FOREIGN KEY("username") REFERENCES "users"("username") ON DELETE CASCADE
 );
@@ -251,11 +251,11 @@ INSERT INTO "users" VALUES ('Davide','Via Cesare Battisti, 7, 10123 Torino TO;la
 INSERT INTO "users" VALUES ('User','Via Montebello, 6, 10124 Torino TO;lat:45.0682528;lng:7.6923044',0);
 INSERT INTO "users" VALUES ('Restaurateur','Via Ascanio Vittozzi, 30, 10131 Torino TO;lat:45.0614369;lng:7.6992785',1);
 
-INSERT INTO "reviews" VALUES (1,'Andrea', 1, DATE('2023-02-28') ,'Great Experience', 'Had a wonderful time!', 4.5, 4, 4);
-INSERT INTO "reviews" VALUES (2,'Giuseppe', 2, DATE('2023-03-28'), 'Awesome Food', 'The pizza was fantastic!', 5, 4.5, 4);
-INSERT INTO "reviews" VALUES (3,'Luca', 3, DATE('2023-02-21'), 'Delicious Pasta', 'Enjoyed the spaghetti!', 4, 4, 3.5);
-INSERT INTO "reviews" VALUES (4,'Giovanni', 4, DATE('2023-04-22'), 'Pizza Lover’s Paradise', 'Great variety of pizzas!', 4.8, 4.2, 4.5);
-INSERT INTO "reviews" VALUES (5,'Alessandro', 5, DATE('2023-02-15'), 'Cozy Atmosphere', 'Lovely place for dinner!', 4.2, 4, 3.8);
-INSERT INTO "reviews" VALUES (6,'Davide', 6, DATE('2023-08-20'), 'Excellent Service', 'Staff was friendly and attentive!', 4.7, 4.5, 4.2);
+INSERT INTO "reviews" VALUES (1,'Andrea', 1, DATE('2023-02-28') ,'Great Experience', 'Had a wonderful time!', 5, 4, 4);
+INSERT INTO "reviews" VALUES (2,'Giuseppe', 2, DATE('2023-03-28'), 'Awesome Food', 'The pizza was fantastic!', 5, 4, 4);
+INSERT INTO "reviews" VALUES (3,'Luca', 3, DATE('2023-02-21'), 'Delicious Pasta', 'Enjoyed the spaghetti!', 4, 4, 3);
+INSERT INTO "reviews" VALUES (4,'Giovanni', 4, DATE('2023-04-22'), 'Pizza Lover’s Paradise', 'Great variety of pizzas!', 5, 4, 4);
+INSERT INTO "reviews" VALUES (5,'Alessandro', 5, DATE('2023-02-15'), 'Cozy Atmosphere', 'Lovely place for dinner!', 4, 4, 3);
+INSERT INTO "reviews" VALUES (6,'Davide', 6, DATE('2023-08-20'), 'Excellent Service', 'Staff was friendly and attentive!', 5, 4, 4);
 
 COMMIT;
