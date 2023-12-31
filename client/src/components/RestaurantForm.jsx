@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { TopBar } from './Home';
-import { Button, Container, Form, ListGroup, Placeholder } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import { TimePicker } from '@hilla/react-components/TimePicker.js';
 import dayjs from 'dayjs';
@@ -87,7 +87,7 @@ function InnerForm(props) {
 
     // states for progress 3/3
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
-    const [dishes,setDishes] = useState([]);
+    const [dishes, setDishes] = useState([]);
 
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
@@ -250,26 +250,26 @@ function InnerForm(props) {
         return new Promise((resolve, reject) => {
             // Create a Geocoder instance
             const geocoder = new google.maps.Geocoder();
-    
+
             // Define the Geocoding request
             const geocodeRequest = {
                 address: address.text,
             };
-    
+
             // Perform Geocoding
             geocoder.geocode(geocodeRequest, (results, status) => {
                 if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
                     // Address is valid
-                    setAddress({ text: address.text, lat: address.lat, lng:address.lng, invalid: false });
+                    setAddress({ text: address.text, lat: address.lat, lng: address.lng, invalid: false });
                     resolve(undefined); // Resolve with undefined for a valid address
                 } else {
                     // Address is invalid
-                    setAddress({ text: address.text, lat:address.lat, lng:address.lng, invalid: true });
+                    setAddress({ text: address.text, lat: address.lat, lng: address.lng, invalid: true });
                     reject(true); // Resolve with true for an invalid address
                 }
             });
         });
-    }    
+    }
 
     function linkValidation(info, setState) {
         let invalid = undefined;
@@ -303,7 +303,7 @@ function InnerForm(props) {
                     invalid = undefined;
                 } catch (error) {
                     invalid = true;
-                }            
+                }
                 let phone_invalidity = phoneValidation(phone, setPhone);
                 if (phone_invalidity) {
                     invalid = phone_invalidity;
@@ -358,7 +358,7 @@ function InnerForm(props) {
             default:
                 break;
         }
-        
+
         // go on if all ok
         if (progress < 3) {
             if (!invalid) {
@@ -549,11 +549,21 @@ function DishItem(props) {
 
     return (
         //border-0 to remove the border
-        <div className="d-flex justify-content-center align-items-center" style={{ marginBottom: '5%' }}>
-            <ListGroup.Item className="border-0" style={{ marginRight: '7%' }}>{dish.name}</ListGroup.Item>
-            <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${dish.id}`) }} style={{ marginRight: "5%" }}><i className="bi bi-pencil-square"></i></Button>
-            <Button size='sm' variant="danger" onClick={() => { deleteDish(dish.id) }}><i className="bi bi-trash"></i></Button>
-        </div>
+        <ListGroup.Item className="border-0">
+            <Row>
+                <Col xs={8}>{dish.name}</Col>
+                <Col xs={2}>
+                    <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${dish.id}`) }}>
+                        <i className="bi bi-pencil-square"></i>
+                    </Button>
+                </Col>
+                <Col xs={2}>
+                    <Button size='sm' variant="danger" onClick={() => { deleteDish(dish.id) }}>
+                        <i className="bi bi-trash"></i>
+                    </Button>
+                </Col>
+            </Row>
+        </ListGroup.Item>
     );
 }
 
@@ -585,7 +595,7 @@ function AddressSelector(props) {
                     type="text"
                     placeholder="Enter The Location"
                     // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
-                    onChange={(event) => { setAddress({ text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid }); }}
+                    onChange={(event) => { setAddress({ text: event.target.value, lat: address.lat, lng: address.lng, invalid: address.invalid }); }}
                     defaultValue={address.text}
                 />
                 <Form.Control.Feedback type="invalid">Please Insert a Valid Address</Form.Control.Feedback>
