@@ -248,6 +248,23 @@ async function deleteRestaurant(restaurantId) {
 }
 
 /**
+ * This function is used to get the info of an user with that username
+ * It returns a JSON object
+ */
+async function getReview(review_id) {
+  const response = await fetch(SERVER_URL + `/reviews/${review_id}`).catch(() => {throw {error: "Connection Error"}});
+  if (response.ok) {
+    // 200 status code, return the object
+    const review = await response.json();
+    return review;
+  } else {
+    // json object provided by the server with the error
+    const error = await response.json();
+    throw error;
+  }
+};
+
+/**
  * This function is used to insert a review
  * It returns a JSON object
  */
@@ -345,6 +362,7 @@ const API = {
   createRestaurant,
   editRestaurant,
   deleteRestaurant,
+  getReview,
   createReview,
   updateReview,
   deleteReview,

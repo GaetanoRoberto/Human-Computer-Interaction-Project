@@ -190,6 +190,10 @@ content-type: application/json
 DELETE http://localhost:3001/api/restaurants/2 HTTP/1.1
 ###
 
+## Get a review from his id.
+GET http://localhost:3001/api/reviews/1 HTTP/1.1
+###
+
 ## Insert a new review
 POST http://localhost:3001/api/reviews/ HTTP/1.1
 content-type: application/json

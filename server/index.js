@@ -539,6 +539,14 @@ app.delete('/api/restaurants/:id', (req, res) => {
     .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Restaurant' }));
 });
 
+// GET /api/reviews/:id
+// This route is used to get the review with that id
+app.get('/api/reviews/:id', (req, res) => {
+  reviewsDao.getReview(req.params.id)
+    .then(review => res.json(review))
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting the Review' }));
+});
+
 // POST /api/reviews/
 // This route is used to insert a review
 app.post('/api/reviews/',
