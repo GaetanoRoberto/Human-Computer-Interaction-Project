@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TopBar } from './Home';
+import { Header } from './Home';
 import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import { TimePicker } from '@hilla/react-components/TimePicker.js';
@@ -609,7 +609,7 @@ function RestaurantForm(props) {
 
     return (
         <>
-            <TopBar />
+            <Header />
             <ProgressLabel progress={progress} />
             <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
                 <InnerForm progress={progress} setProgress={setProgress} />

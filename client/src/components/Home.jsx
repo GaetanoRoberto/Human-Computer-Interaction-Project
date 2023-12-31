@@ -3,22 +3,7 @@ import API from '../API';
 import { useNavigate } from 'react-router-dom'
 import { ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge, Fade } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-function TopBar() {
-    const navigate = useNavigate();
-
-    return (
-        <>
-            <Navbar bg='success' variant='dark' >
-                <Container fluid >
-                    <Button style={{ visibility: 'hidden', pointerEvents: 'none' }}></Button>
-                    <Button variant="warning" className='justify-content-between' onClick={() => navigate('/')}>Gluten-Hub</Button>
-                    <Navbar.Brand className="bi bi-person-circle  justify-content-end" style={{ fontSize: "2rem", marginRight: 0 }} onClick={() => navigate('/settings')} />
-                </Container>
-            </Navbar >
-        </>
-    );
-}
+import { Header } from './Header';
 
 function SearchBar() {
     const navigate = useNavigate();
@@ -41,23 +26,6 @@ function SearchBar() {
     )
 }
 
-function Header(props) {
-    return (
-        <>
-            <TopBar />
-            <SearchBar />
-        </>
-    )
-}
-
-function Header(props) {
-    return (
-        <>
-            <TopBar />
-            <SearchBar />
-        </>
-    );
-}
 
 function Filters(props) {
     const { filters, setFilters, fadeStates, setFadeStates } = props;
@@ -201,9 +169,10 @@ function Home(props) {
     return (
         <>
             <Header />
+            <SearchBar/>
             <Filters filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates} />
             <RestaurantsList filterRestaurants={filterRestaurants} />
         </>
     );
 }
-export { Home, Header, TopBar };
+export { Home, Header,SearchBar };
