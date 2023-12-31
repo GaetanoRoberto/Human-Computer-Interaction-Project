@@ -38,7 +38,16 @@ function SearchBar() {
                 </Col>
             </Row>
         </>
-    );
+    )
+}
+
+function Header(props) {
+    return (
+        <>
+            <TopBar />
+            <SearchBar />
+        </>
+    )
 }
 
 function Header(props) {
