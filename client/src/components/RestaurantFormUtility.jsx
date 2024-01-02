@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import { TimePicker } from '@hilla/react-components/TimePicker.js';
 import 'react-phone-number-input/style.css'
 import { StandaloneSearchBox } from '@react-google-maps/api';
+import ConfirmModal from './ConfirmModal';
 
 const handleImageChange = (event, setImage, setFileName) => {
     const file = event.target.files[0];
@@ -58,8 +59,9 @@ function ImageViewer(props) {
 
 function DishItem(props) {
     const { dish, deleteDish } = props;
+    const [show, setShow] = useState(false);
     const navigate = useNavigate();
-
+    
     return (
         //border-0 to remove the border
         <ListGroup.Item className="border-0">
@@ -71,10 +73,11 @@ function DishItem(props) {
                     </Button>
                 </Col>
                 <Col xs={2}>
-                    <Button size='sm' variant="danger" onClick={() => { deleteDish(dish.id) }}>
+                    <Button size='sm' variant="danger" onClick={() => { setShow(true); }}>
                         <i className="bi bi-trash"></i>
                     </Button>
                 </Col>
+                <ConfirmModal text={'Delete the Dish'} show={show} setShow={setShow} action={deleteDish} parameter={dish.id}/>
             </Row>
         </ListGroup.Item>
     );

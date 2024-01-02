@@ -11,6 +11,7 @@ import { ReviewForm } from './components/ReviewPage';
 import { useState,useEffect } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
 import { UserContext } from './components/userContext';
+import { Button,Col } from 'react-bootstrap';
 import API from './API';
 library.add(fab, fas, far);
 
@@ -67,7 +68,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
-        <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }
         <Route path='/restaurants/:id/details' element={<RestaurantForm/>}/>{/* QUEEN*/ }
@@ -81,6 +81,7 @@ function App() {
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
         <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
         <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
+        <Route path='*' element={<DefaultRoute/>} />
       </Routes>
     </BrowserRouter>
     </UserContext.Provider>
@@ -88,4 +89,19 @@ function App() {
   )
 }
 
-export default App
+function DefaultRoute() {
+
+  return(
+      <div className="position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+        <Col>
+          <h1>Nothing here...</h1>
+          <p>This is not the route you are looking for!</p>
+          <Link to="/">
+            <Button type="button" variant="success" className="btn btn-lg edit-button">Go back to the homepage</Button>
+          </Link>
+        </Col>
+      </div>
+  );
+}
+
+export default App;
