@@ -20,6 +20,23 @@ exports.getDishes = (restaurantId) => {
   });
 };
 
+// This function returns all restaurants for the home page.
+exports.getDishesAvgPrice = (restaurantId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT AVG(price) as average from dishes where restaurantId=?';
+        db.all(sql, [restaurantId], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
+                // put together quality and safety average
+                const average = rows[0].average;
+                resolve(average);
+            }
+        });
+    });
+};
+
 // This function returns a dish given his id.
 exports.getDish = (id) => {
   return new Promise((resolve, reject) => {

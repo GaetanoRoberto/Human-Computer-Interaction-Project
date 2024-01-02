@@ -10,8 +10,6 @@ import API from '../API';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
-const libraries = ['places']; // Define libraries outside the component (for address field)
-import { API_KEY } from './Costants';
 
 const handleImageChange = (event, setImage, setFileName) => {
     const file = event.target.files[0];
@@ -282,7 +280,7 @@ function InnerForm(props) {
             setState({ link: info.link, invalid: true });
         } else {
             setState({ link: info.link, invalid: false });
-        }
+        }        
         return invalid;
     }
 
@@ -423,19 +421,19 @@ function InnerForm(props) {
                     <Form.Group className="mb-3">
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" onChange={(event) => { linkValidation({ link: event.target.value, invalid: website.invalid }, setWebsite) }} defaultValue={website.link} />
+                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" value={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: instagram.invalid }, setInstagram)} defaultValue={instagram.link} />
+                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" value={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: facebook.invalid }, setFacebook)} defaultValue={facebook.link} />
+                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" value={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: twitter.invalid }, setTwitter)} defaultValue={twitter.link} />
+                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" value={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -485,7 +483,7 @@ function InnerForm(props) {
     return (
         <>
             <Form noValidate onSubmit={handleSubmit}>
-                <Container fluid style={{ height: '78vh', overflowY: 'auto' }}>
+                <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
@@ -513,8 +511,8 @@ function ImageViewer(props) {
                 <img height={height} width={width} style={{ marginBottom: '5%' }} src={image} />
                 {(image !== PLACEHOLDER) ? <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Activity Image</Button> : ''}
             </Container>
-            <Container className="d-flex align-items-center">
-                <Button variant='light' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
+            <Container className="d-flex align-items-center custom-input">
+                <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
                 <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName)} accept="image/*" />
             </Container>
         </>
@@ -610,10 +608,8 @@ function RestaurantForm(props) {
     return (
         <>
             <Header />
-            <ProgressLabel progress={progress} />
-            <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
-                <InnerForm progress={progress} setProgress={setProgress} />
-            </LoadScript>
+            <ProgressLabel progress={progress}/>
+            <InnerForm progress={progress} setProgress={setProgress} />
         </>
     );
 }

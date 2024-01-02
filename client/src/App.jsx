@@ -26,11 +26,11 @@ function App() {
       try {
         // se sono già loggato prendo info
         const user = await API.getUserInfo();
-        console.log("già autenticato", user)
-        //setLoggedIn(true);
+        // console.log("già autenticato", user)
+        // setLoggedIn(true);
         setUser(user);
       } catch (err) {
-        console.log("Utente non autenticato. Effettua il login.");
+        // console.log("Utente non autenticato. Effettua il login.");
         // Effettua il login se l'utente non è autenticato
         doLogIn();
         return
@@ -39,15 +39,15 @@ function App() {
     checkAuth();
     
   }, []);
-  const doLogIn = (credentials) => {
-    credentials={
-      "username": "User",
-      "isRestaurateur": 0
+  const doLogIn = () => {
+    const credentials = {
+      username: "User",
+      isRestaurateur: "0"
     }
     /*
-    credentials={
-      "username": "Restaurateur",
-      "isRestaurateur": 1
+    const credentials = {
+      username: "Restaurateur",
+      isRestaurateur: "1"
     }*/
     API.logIn(credentials)
       .then( user => {
