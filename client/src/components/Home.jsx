@@ -29,7 +29,6 @@ function SearchBar() {
 
 function Filters(props) {
     const { filters, setFilters, fadeStates, setFadeStates } = props;
-    // const initialList = ["pasta", "pizza", "burger", "sushi", "chinese", "merda"];
     // const [list, setList] = useState(initialList);
 
     const handleFadeClick = (filter, index) => {
@@ -70,32 +69,35 @@ function Filters(props) {
 
 function RestaurantsList(props) {
     const navigate = useNavigate();
-    const { filterRestaurants } = props;
+    const { filterRestaurants, filters } = props;
+    // Used for scrollable restaurant list
+    const listHeight = ( filters.length === 0 ? (window.innerHeight - 103) : (window.innerHeight - 162));
+
 
     return (
-        <ListGroup>
+        <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: listHeight}}>
             {filterRestaurants().map((restaurant) => {
                 return (
-                    <Card key={restaurant.id} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu/`) }}>
-                        <Card.Body>
+                    <Card key={restaurant.id} style={{borderRadius: 0, borderBottom: 0}} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu`) }}>
+                        <Button variant="light">
                             <Row>
                                 <Col>
-                                    <Card.Title>{restaurant.name}</Card.Title>
-                                    <Card.Text>
+                                    <Card.Title style={{textAlign: "start"}}>{restaurant.name}</Card.Title>
+                                    <Card.Text style={{textAlign: "start"}}>
                                         {
                                             Array.from({ length: restaurant.avg_quality }, (_, index) => (
                                                 <i key={index} className="bi bi-star-fill"></i>
                                             ))
                                         }
                                     </Card.Text>
-                                    <Card.Text>
+                                    <Card.Text style={{textAlign: "start"}}>
                                         {
                                             Array.from({ length: restaurant.avg_safety }, (_, index) => (
                                                 <i key={index} className="bi bi-star-fill"></i>
                                             ))
                                         }
                                     </Card.Text>
-                                    <Card.Text>
+                                    <Card.Text style={{textAlign: "start"}}>
                                         {
                                             Array.from({ length: restaurant.avg_price }, (_, index) => (
                                                 <i key={index} className="bi bi-currency-euro"></i>
@@ -103,11 +105,11 @@ function RestaurantsList(props) {
                                         }
                                     </Card.Text>
                                 </Col>
-                                <Col>
+                                <Col style={{textAlign: "end"}}>
                                     <img height={"100px"} width={"100px"} src={restaurant.image} />
                                 </Col>
                             </Row>
-                        </Card.Body>
+                        </Button>
                     </Card>
                 );
             })}
@@ -171,7 +173,7 @@ function Home(props) {
             <Header />
             <SearchBar/>
             <Filters filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates} />
-            <RestaurantsList filterRestaurants={filterRestaurants} />
+            <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} />
         </>
     );
 }

@@ -10,6 +10,7 @@ import { Reviews } from './components/ReviewsList';
 import { ReviewForm } from './components/ReviewPage';
 import { useState,useEffect } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
+import {Restaurant} from "./components/Restaurant.jsx";
 import { UserContext } from './components/userContext';
 import { Button,Col } from 'react-bootstrap';
 import API from './API';
@@ -70,13 +71,12 @@ function App() {
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }
-        <Route path='/restaurants/:id/details' element={<RestaurantForm/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/menu' element={<RestaurantForm/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/reviews' element={<Reviews/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/add' element={<ReviewForm/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
-        {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/} {/* QUEEN*/ }
         <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
         <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
