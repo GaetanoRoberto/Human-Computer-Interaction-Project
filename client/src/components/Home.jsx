@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react'
 import API from '../API';
 import { useNavigate } from 'react-router-dom'
-import { ListGroup, Card, Col, Row, Button, Navbar, Container, FormControl, Badge, Fade } from 'react-bootstrap';
+import { ListGroup, Card, Col, Row, Button, Navbar, Container, Form, Badge, Fade } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from './Header';
 
-function SearchBar() {
+function SearchBar(props) {
+    const { search, setSearch, setRestaurantList, restaurantInitialList} = props;
     const navigate = useNavigate();
+
+    const handleSearch = (ev) => {
+        setSearch(ev.target.value);
+        setRestaurantList(restaurantInitialList.filter((restaurant) =>
+            (restaurant.name.toLowerCase().includes(ev.target.value.toLowerCase()))
+        ));
+    }
+
 
     return (
         <>
@@ -16,7 +25,7 @@ function SearchBar() {
                     <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
                 </Col>
                 <Col>
-                    <FormControl type="search" placeholder="Search" />
+                    <Form.Control type="search" placeholder="Search" value={search} onChange={handleSearch} />
                 </Col>
                 <Col xs={1} className="d-flex justify-content-end align-items-center" style={{ marginLeft: "3%" }}>
                     <i className="bi bi-sliders" style={{ fontSize: "1.5rem" }} onClick={() => navigate('/filters')}></i>
@@ -69,14 +78,20 @@ function Filters(props) {
 
 function RestaurantsList(props) {
     const navigate = useNavigate();
-    const { filterRestaurants, filters } = props;
+    const { filterRestaurants, filters, search } = props;
     // Used for scrollable restaurant list
     const listHeight = ( filters.length === 0 ? (window.innerHeight - 104) : (window.innerHeight - 150));
 
 
     return (
         <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: listHeight}}>
-            {filterRestaurants().map((restaurant) => {
+            { filterRestaurants().length === 0 ?
+                <>
+                    <div style={{borderTop: "1px solid", margin: 0, color: "lightgray"}}></div>
+                    <p style={{marginTop: "1rem", textAlign: "center"}}> No result for "<b>{search}</b>" with the selected filters! </p>
+                </>
+                :
+                filterRestaurants().map((restaurant) => {
                 return (
                     <Card key={restaurant.id} style={{borderRadius: 0, borderBottom: 0}} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu`) }}>
                         <Button variant="light">
@@ -119,8 +134,10 @@ function RestaurantsList(props) {
 
 
 function Home(props) {
-    const [restaurantList, setrestaurantList] = useState([]);
+    const [restaurantList, setRestaurantList] = useState([]);
     const [filters, setFilters] = useState([]);
+    const [search, setSearch] = useState("");
+    const [restaurantInitialList, setRestaurantInitialList] = useState([]);
     // Create an array of boolean states for the fade animation
     const [fadeStates, setFadeStates] = useState([]);
 
@@ -128,7 +145,8 @@ function Home(props) {
         async function getRestaurants() {
             try {
                 const restaurants = await API.getRestaurants();
-                setrestaurantList(restaurants);
+                setRestaurantList(restaurants);
+                setRestaurantInitialList(restaurants);
             } catch (error) {
                 console.log(error);
             }
@@ -171,9 +189,9 @@ function Home(props) {
     return (
         <>
             <Header />
-            <SearchBar/>
+            <SearchBar search={search} setSearch={setSearch} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} />
             <Filters filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates} />
-            <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} />
+            <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} search={search} />
         </>
     );
 }
