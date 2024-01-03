@@ -88,7 +88,7 @@ INSERT INTO "dishes" VALUES (14,3, 'Tiramisù', 5.00, 'desserts', 'http://localh
 INSERT INTO "dishes" VALUES (15,1, 'Natural Water', 1.00, 'drinks', 'http://localhost:3001/dishes/naturalwater.jpg');
 INSERT INTO "dishes" VALUES (16,2, 'Sparkling Water', 1.00, 'drinks', 'http://localhost:3001/placeholder.png');
 INSERT INTO "dishes" VALUES (17,3, 'Coca cola', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacola.jpeg');
-INSERT INTO "dishes" VALUES (18,1, 'Coca cola zero', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacolazero.jpeg');
+INSERT INTO "dishes" VALUES (18,1, 'Coca cola zero', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (19,2, 'Fanta', 2.00, 'drinks', 'http://localhost:3001/dishes/fanta.jpg');
 INSERT INTO "dishes" VALUES (20,3, 'Sprite', 2.00, 'drinks', 'http://localhost:3001/dishes/sprite.jpg');
 INSERT INTO "dishes" VALUES (21,2, 'Pesto pasta', 10.00, 'pasta', 'http://localhost:3001/dishes/pastapesto.jpg');
@@ -109,7 +109,7 @@ INSERT INTO "dishes" VALUES (35,6, 'Tiramisù', 5.00, 'desserts', 'http://localh
 INSERT INTO "dishes" VALUES (36,4, 'Natural Water', 1.00, 'drinks', 'http://localhost:3001/dishes/naturalwater.jpg');
 INSERT INTO "dishes" VALUES (37,5, 'Sparkling Water', 1.00, 'drinks', 'http://localhost:3001/placeholder.png');
 INSERT INTO "dishes" VALUES (38,6, 'Coca cola', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacola.jpeg');
-INSERT INTO "dishes" VALUES (39,4, 'Coca cola zero', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacolazero.jpeg');
+INSERT INTO "dishes" VALUES (39,4, 'Coca cola zero', 2.00, 'drinks', 'http://localhost:3001/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (40,5, 'Fanta', 2.00, 'drinks', 'http://localhost:3001/dishes/fanta.jpg');
 INSERT INTO "dishes" VALUES (41,6, 'Sprite', 2.00, 'drinks', 'http://localhost:3001/dishes/sprite.jpg');
 INSERT INTO "dishes" VALUES (42,5, 'Pesto pasta', 10.00, 'pasta', 'http://localhost:3001/dishes/pastapesto.jpg');
