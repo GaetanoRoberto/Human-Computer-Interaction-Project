@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Link, useNavigate, useParams} from 'react-router-dom'
+import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
 import {
     ListGroup,
     Card,
@@ -58,7 +58,7 @@ const Banner = (props) => {
         });
 
         for (const { start, end } of timeRanges) {
-            if (currentTime >= start && currentTime <= end) {
+            if ( (currentTime >= start && currentTime <= end) || (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end) ) {
                 return `Open now (closes at ${formatTime(end)})`;
             }
         }
@@ -341,10 +341,14 @@ const Details = (props) => {
 
 function Restaurant() {
     const { id } = useParams();
+    const location = useLocation();
+    const regexDetails = /\/details$/;
+    const regexMenu = /\/menu$/;
+    const regexReviews = /\/reviews$/;
     const [restaurant, setRestaurant] = useState(null);
-    const [menu, setMenu] = useState(true);
-    const [details, setDetails] = useState(false);
-    const [reviews, setReviews] = useState(false);
+    const [menu, setMenu] = useState(regexMenu.test(location.pathname));
+    const [details, setDetails] = useState(regexDetails.test(location.pathname));
+    const [reviews, setReviews] = useState(regexReviews.test(location.pathname));
 
     useEffect(() => {
         const getRestaurant = async () => {
