@@ -43,7 +43,7 @@ const ReviewForm = (props) => {
   const view = location.pathname === `/restaurants/${id}/reviews/${reviewId}`
   //console.log(view, id, user && user.username)
   // info pagina
-  const [username, setUsername] = useState(user && user.username ? user.username : "Gaetano");
+  const [username, setUsername] = useState(user && user.username ? user.username : " ");
   const [date, setDate] = useState(dayjs());
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -213,13 +213,14 @@ const ReviewForm = (props) => {
         safety:safety,
         price : price
       }
-      console.log(review);
       if (reviewId) {  // per vedere se sono in add o in edit
         review.id = reviewId;//url
         editReview(review);
       } else {
         addReview(review);
       }
+      console.log(`/restaurants/${id}/reviews`);
+
       navigate(`/restaurants/${id}/reviews`);
     }
 
@@ -295,10 +296,10 @@ const ReviewForm = (props) => {
           </Form.Group>
 
           <Row hidden={view} ><hr />
-            <ButtonGroup style={{width:"25%"}}>
-              <Button className="btn-lg mx-2 mb-2" type='submit' variant="primary">{reviewId ? 'Update' : 'Add'}</Button>
-              <Button hidden={view} onClick={() => { navigate(-1) }} className="btn-lg mx-2 mb-2" variant='warning'>Cancel</Button>
-              <Button className="btn-lg mx-2 mb-2 " hidden={ !reviewId ?  true : !(user && username == user.username )} variant="danger" onClick={() => { deleteReview(reviewId);navigate(`/restaurants/${id}/reviews`); }}
+            <ButtonGroup style={{width:"180px"}}>
+              <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">{reviewId ? 'Update' : 'Add'}</Button>
+              <Button hidden={view} onClick={() => { navigate(-1) }} className="btn-lg mx-1 mb-2" variant='warning'>Cancel</Button>
+              <Button className="btn-lg mx-1 mb-2 " hidden={ !reviewId ?  true : !(user && username == user.username )} variant="danger" onClick={() => { deleteReview(reviewId);navigate(`/restaurants/${id}/reviews`); }}
               ><i className="bi bi-trash "></i></Button>
             </ButtonGroup>
           </Row>

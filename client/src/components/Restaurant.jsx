@@ -350,7 +350,7 @@ function Restaurant() {
         const getRestaurant = async () => {
             try {
                 const restaurant = await API.getRestaurant(id);
-                console.log(restaurant);
+                //console.log(restaurant);
                 setRestaurant(restaurant);
             } catch (error) {
                 console.log(error);

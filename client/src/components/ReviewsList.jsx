@@ -1,44 +1,86 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ListGroup, Card, Col, Row, Button, FormControl } from 'react-bootstrap';
-import { Header } from './Header';
-import { NavigationButtons } from './NavigationButtons';
-import { SearchBar } from './Home';
+import { UserContext } from './userContext';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import dayjs from 'dayjs';
 
-
+function getHappinessClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-regular fa-face-dizzy";
+      case 1:
+        return "fa-regular fa-face-tired";
+      case 2:
+        return "fa-regular fa-face-meh";
+      case 3:
+        return "fa-regular fa-face-smile";
+      case 4:
+        return "fa-regular fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessSolidClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-solid fa-face-dizzy";
+      case 1:
+        return "fa-solid fa-face-tired";
+      case 2:
+        return "fa-solid fa-face-meh";
+      case 3:
+        return "fa-solid fa-face-smile";
+      case 4:
+        return "fa-solid fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessColor(index) {
+    switch (index) {
+      case 0:
+        return "#ff3300" // Faccina arrabbiata
+      case 1:
+        return "#ff8300"; // Faccina triste
+      case 2:
+        return "#FFD700"; // Faccina neutra
+      case 3:
+        return "#00ff5b"; // Faccina sorridente
+      case 4:
+        return "green"; // Faccina che ride
+      default:
+        return " ";
+    }
+  }
 function SearchReview(props) {
     const { list, setList } = props;
-    const [label, setLabel] = useState("NEWEST");
-    const [order, setOrder] = useState("ASC");
+    const [label, setLabel] = useState("QUALITY");
+    const [order, setOrder] = useState("DESC");
+    const { id } = useParams();
     const navigate = useNavigate();
 
-    /*const sortByPrices = (order) => {
-    let sortedList;
-    if (order === 'asc') {
-      sortedList = [...list].sort((a, b) => a.prices - b.prices);
-    } else {
-      sortedList = [...list].sort((a, b) => b.prices - a.prices);
-    }
-   setList(sortedList);
-  };
-*/
-    const sortByField = (field, name) => {
-        let sortedList;
 
-        if (order === 'asc') {
-            sortedList = [...list].sort((a, b) => a[field] > b[field] ? 1 : -1);
-        } else {
-            sortedList = [...list].sort((a, b) => a[field] < b[field] ? 1 : -1);
-        }
-        setLabel(name);
+
+
+const sortByField = (field) => {
+    const name = field.toUpperCase();
+    setLabel(name);
+    //const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field] ) : [...list].sort((a, b) => b[field] - a[field] );
+    //console.log(field)
+    if(field == "date"){
+        const sortedList = order === 'ASC' ? [...list].sort((a, b) =>dayjs(a.date).diff(dayjs(b.date), "day") ) :[...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"))
         setList(sortedList);
-    };
-
+    }else{
+        const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field] ) :  [...list].sort((a, b) => b[field] - a[field])
+        setList(sortedList);
+    }
+  };
     const sortByDate = (name) => {
         let sortedList;
-        if (order === 'asc') {
+        if (order === 'ASC') {
             sortedList = [...list].sort((a, b) => dayjs(a.date).diff(dayjs(b.date), "day"));
         } else {
             sortedList = [...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"));
@@ -47,8 +89,10 @@ function SearchReview(props) {
         setList(sortedList);
     }
     const toggleOrder = () => {
-        const newOrder = order === 'asc' ? 'desc' : 'asc';
-        setOrder(newOrder);
+        const sortedList = [...list].reverse();
+        setList(sortedList);
+        setOrder(order === 'ASC' ? 'DESC' : 'ASC');
+        //console.log(order, label);
     };
     return (
         <>
@@ -60,32 +104,32 @@ function SearchReview(props) {
                     <FormControl type="search" placeholder="Search" />
                 </Col>
                 <Col xs={2}>
-                    <Button variant="warning" className="btn-sm" onClick={() => navigate('/restaurants/:id/reviews/add')}>Add a review</Button>
+                    <Button variant="warning" className="btn-sm" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add a review</Button>
                 </Col>
             </Row>
-            <Row className='my-1 mx-0 '>
-                <Col >
-                    <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="info" >
-                        <Dropdown.Item onClick={() => sortByDate( "DATE")}>DATE</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByDate( "PRICE")}>PRICE</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByField('prices', "QUALITY")}>QUALITY</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByField('prices',  "SAFETY")}>SAFETY</Dropdown.Item>
+            <Row className='my-1 mb-3  mx-0 '>
+                <Col xs={4} >
+                    <DropdownButton  id="dropdown"  title={"SORT BY: " } variant="info" >
+                        <Dropdown.Item onClick={() => sortByField("date")}>DATE</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("price")}>PRICE</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("quality")}>QUALITY</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("safety")}>SAFETY</Dropdown.Item>
                     </DropdownButton>
-                </Col>
-                <Col>
-                    {order === 'asc' ? (
-                        <i className="bi bi-sort-up" onClick={toggleOrder} style={{ fontSize: "1.5rem" }} />
-                    ) : (
+                    </Col>
+                   <Col xs={4}><Button disabled style={{width:"110px"}} variant="info">{label}</Button>   </Col>
+                <Col >
+                    {order === 'ASC' ? (
                         <i className="bi bi-sort-down" onClick={toggleOrder} style={{ fontSize: "1.5rem" }} />
-                    )}
+                    ) : (
+                        <i className="bi bi-sort-up" onClick={toggleOrder} style={{ fontSize: "1.5rem" }} />
+                    )} {label === "DATE" ? (order === "ASC" ? "OLD" : "NEW") : order.toUpperCase()}
+
+
                 </Col>
                 {
-
-                    // FARE FRECCIA PER ORDINARE ANZICHE' DI TUTTI E 8 I CAMPI
                     // FISSARE WIDTH DEL BOTTONE
                 }
                 {/*<Col>
-            <Button variant="warning">{label}</Button>
     </Col>*/}
             </Row>
         </>
@@ -95,74 +139,53 @@ function SearchReview(props) {
 function ReviewsList({ reviews }) {
     const navigate = useNavigate();
     const reviewsHeight = (window.innerHeight - 342);
+    const { id } = useParams();
+    const [list, setList] = useState(reviews);
+    const user = useContext(UserContext);
 
-    const [list, setList] = useState([
-        { key: '1', name: 'alecosta', stars: '4', prices: '4', ReviewTitle: 'Nice', date: "2023/01/18" },
-        { key: '2', name: 'davide', stars: '3', prices: '3', ReviewTitle: 'Good', date: "2023/01/22" },
-        { key: '3', name: 'grammar man', stars: '5', prices: '5', ReviewTitle: 'Nice', date: "2024/01/18" },
-        { key: '4', name: 'new person 1', stars: '2', prices: '2', ReviewTitle: 'Good', date: "2025/01/18" },
-        { key: '5', name: 'new person 2', stars: '4', prices: '3', ReviewTitle: 'Nice', date: "2026/01/18" },
-        { key: '6', name: 'new person 3', stars: '3', prices: '4', ReviewTitle: 'Good', date: "2023/01/18" },
-        { key: '7', name: 'john doe', stars: '4', prices: '5', ReviewTitle: 'Nice', date: "2023/01/8" },
-        { key: '8', name: 'mary smith', stars: '5', prices: '4', ReviewTitle: 'Good', date: "2023/01/15" },
-        { key: '9', name: 'jane doe', stars: '3', prices: '2', ReviewTitle: 'Nice', date: "2023/01/16" },
-        { key: '10', name: 'alex brown', stars: '4', prices: '3', ReviewTitle: 'Nice', date: "2023/01/17" },
-    ])
-    /*
-    INSERT INTO "reviews" VALUES (1,'Andrea', 1, DATE('2023-02-28') ,'Great Experience', 'Had a wonderful time!', 5, 4, 4);
-
-    CREATE TABLE IF NOT EXISTS "reviews" (
-        "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
-        "username" TEXT NOT NULL, -- to say who did the review and to check if an user already did a review on a restaurant [already exist (username,restaurantId)]
-        "restaurantId"	INTEGER NOT NULL,
-        "date" DATE NOT NULL,
-        "title" TEXT NOT NULL,
-        "description" TEXT NOT NULL,
-        "quality" INTEGER NOT NULL,
-        "safety" INTEGER NOT NULL,
-        "price" INTEGER NOT NULL,
-        FOREIGN KEY("restaurantId") REFERENCES "restaurants"("id") ON DELETE CASCADE
-        FOREIGN KEY("username") REFERENCES "users"("username") ON DELETE CASCADE
-    );*/
-    
     return (
         <>
             <SearchReview list={list} setList={setList} />
-            <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: reviewsHeight}}>
-                {list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
+            <ListGroup className="scroll" style={{ overflowY: "auto", maxHeight: reviewsHeight }}>
+                {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
+                    list.map((item) => {
                     return (
-                        <Card key={item.id} style={{borderRadius: 0}} onClick={() => { navigate(`/restaurants/${item.id}/reviews/add`) }}>
+                        <Card key={item.id} style={{ borderRadius: 0 }} onClick={item.username == user.username ? () => { navigate(`/restaurants/${id}/reviews/edit/${item.id}`) } : () => { navigate(`/restaurants/${id}/reviews/${item.id}`) }}>
                             <Card.Body>
                                 <Row>
                                     <Col>
-                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Title>{item.title}</Card.Title>
                                     </Col>
-                                    <Col>
-                                        <Card.Text>
-                                            {
-                                                Array.from({ length: item.stars }, (_, index) => (
-                                                    <i key={index} className="bi bi-star-fill"></i>
-                                                ))
-                                            }
-                                        </Card.Text>
-                                        <Card.Text>
-                                            {
-                                                Array.from({ length: item.prices }, (_, index) => (
-                                                    <i key={index} className="bi bi-currency-euro"></i>
-                                                ))
-                                            }
-                                        </Card.Text>
-                                    </Col>
+                                    {/*<Col><Card.Text>{item.date}</Card.Text></Col>*/}
                                 </Row>
                                 <Row>
-                                    <Card.Text>
-                                        {item.ReviewTitle}
-                                    </Card.Text>
+                                    <Col><Card.Text>Quality:</Card.Text></Col>
+                                    <Col><Card.Text>
+                                        {Array.from({ length: item.quality }, (_, index) => (
+                                            <i key={index} className="bi bi-star-fill" style={{ color: '#FFD700', marginRight:"5px" }} ></i>
+                                        ))}
+                                    </Card.Text></Col>
                                 </Row>
                                 <Row>
-                                    <Card.Text>
-                                        {item.date}
-                                    </Card.Text>
+                                    <Col><Card.Text>Prices:</Card.Text></Col>
+                                    <Col><Card.Text>
+                                        {Array.from({ length: item.price }, (_, index) => (
+                                            <i key={index} className="bi bi-currency-euro" style={{ marginRight:"5px"}}></i>
+                                        ))}
+                                    </Card.Text></Col>
+                                </Row>
+                                <Row>
+                                    <Col><Card.Text>Safety:</Card.Text></Col>
+                                    <Col><Card.Text>
+                                        {Array.from({ length: 5 }, (_, index) => (
+                                            <FontAwesomeIcon
+                                                key={index}
+                                                icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
+                                                style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px"}} />))}
+                                    </Card.Text></Col>
+                                </Row>
+                                <Row >
+                                <footer style={{fontSize:"1em"}} className="blockquote-footer">By {item.username}, {dayjs(item.date).format("DD-MM-YYYY")}</footer>
                                 </Row>
 
                             </Card.Body>
