@@ -39,16 +39,19 @@ function App() {
     checkAuth();
     
   }, []);
+
+  
+
   const doLogIn = (credentials) => {
-    credentials={
+    /*credentials={
       "username": "User",
       "isRestaurateur": 0
     }
-    /*
+    */
     credentials={
       "username": "Restaurateur",
       "isRestaurateur": 1
-    }*/
+    }
     API.logIn(credentials)
       .then( user => {
         setUser(user);

@@ -56,7 +56,7 @@ function SearchReview(props) {
                 <Col xs={1} >
                     <i className="bi bi-search " style={{ fontSize: "1.5rem", marginLeft: "1%" }}></i>
                 </Col>
-                <Col xs={8}>
+                <Col xs={7}>
                     <FormControl type="search" placeholder="Search" />
                 </Col>
                 <Col xs={2}>
@@ -106,7 +106,23 @@ function ReviewsList() {
         { key: '9', name: 'jane doe', stars: '3', prices: '2', ReviewTitle: 'Nice', date: "2023/01/16" },
         { key: '10', name: 'alex brown', stars: '4', prices: '3', ReviewTitle: 'Nice', date: "2023/01/17" },
     ])
+    /*
+    INSERT INTO "reviews" VALUES (1,'Andrea', 1, DATE('2023-02-28') ,'Great Experience', 'Had a wonderful time!', 5, 4, 4);
 
+    CREATE TABLE IF NOT EXISTS "reviews" (
+        "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+        "username" TEXT NOT NULL, -- to say who did the review and to check if an user already did a review on a restaurant [already exist (username,restaurantId)]
+        "restaurantId"	INTEGER NOT NULL,
+        "date" DATE NOT NULL,
+        "title" TEXT NOT NULL,
+        "description" TEXT NOT NULL,
+        "quality" INTEGER NOT NULL,
+        "safety" INTEGER NOT NULL,
+        "price" INTEGER NOT NULL,
+        FOREIGN KEY("restaurantId") REFERENCES "restaurants"("id") ON DELETE CASCADE
+        FOREIGN KEY("username") REFERENCES "users"("username") ON DELETE CASCADE
+    );*/
+    
     return (
         <>
             <SearchReview list={list} setList={setList} />

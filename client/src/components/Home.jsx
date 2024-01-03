@@ -76,7 +76,7 @@ function RestaurantsList(props) {
         <ListGroup>
             {filterRestaurants().map((restaurant) => {
                 return (
-                    <Card key={restaurant.id} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu/`) }}>
+                    <Card key={restaurant.id} onClick={() => { navigate(`/restaurants/${restaurant.id}/menu`) }}>
                         <Card.Body>
                             <Row>
                                 <Col>

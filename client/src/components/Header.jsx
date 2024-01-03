@@ -3,21 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation ,useParams} from 'react-router-dom';
 import { UserContext } from './userContext';
 function Header() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   //const user = useContext(UserContext);
   const user = useContext(UserContext);
   const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
   const location = useLocation();
-//  console.log("header",user && user.isRestaurateur)
+  const detailsMenuReviews = location.pathname== `/restaurants/${id}/details`|| location.pathname == `/restaurants/${id}/menu`|| location.pathname == `/restaurants/${id}/reviews`
+  //console.log("header",detailsMenuReviews,location.pathname)
   return (
     <>
       <Navbar bg='success' variant='dark'>
         <Container fluid>
           {location.pathname!="/"?
-          <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={() => navigate(-1)} />
+          <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ?  () => navigate("/")  : () => navigate(-1)} />
           :
           <Button style={{ visibility: 'hidden', marginLeft: "2.5%", pointerEvents: 'none' }}></Button>
           }
