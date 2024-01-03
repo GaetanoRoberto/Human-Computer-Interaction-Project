@@ -3,42 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from './Home';
 import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
-import { TimePicker } from '@hilla/react-components/TimePicker.js';
 import dayjs from 'dayjs';
 import validator from 'validator';
 import API from '../API';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
-import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
-const libraries = ['places']; // Define libraries outside the component (for address field)
-import { API_KEY } from './Costants';
-
-const handleImageChange = (event, setImage, setFileName) => {
-    const file = event.target.files[0];
-    setFileName(file.name);
-    if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImage(reader.result);
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
-const address_string_to_object = (addr) => {
-    const main_infos = addr.split(';');
-    const lat = parseFloat(main_infos[1].split(':')[1]);
-    const lng = parseFloat(main_infos[2].split(':')[1]);
-    return {
-        text: main_infos[0],
-        lat: lat,
-        lng: lng
-    };
-};
-
-const address_object_to_string = (addr) => {
-    return addr.text + ';lat:' + addr.lat + ";lng:" + addr.lng;
-};
+import { ImageViewer, DishItem, TimeSelector, AddressSelector, address_string_to_object, address_object_to_string } from './RestaurantFormUtility';
 
 function ProgressLabel(props) {
     const { progress } = props;
@@ -282,7 +252,7 @@ function InnerForm(props) {
             setState({ link: info.link, invalid: true });
         } else {
             setState({ link: info.link, invalid: false });
-        }
+        }        
         return invalid;
     }
 
@@ -423,19 +393,19 @@ function InnerForm(props) {
                     <Form.Group className="mb-3">
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" onChange={(event) => { linkValidation({ link: event.target.value, invalid: website.invalid }, setWebsite) }} defaultValue={website.link} />
+                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" value={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: instagram.invalid }, setInstagram)} defaultValue={instagram.link} />
+                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" value={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: facebook.invalid }, setFacebook)} defaultValue={facebook.link} />
+                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" value={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" onChange={(event) => linkValidation({ link: event.target.value, invalid: twitter.invalid }, setTwitter)} defaultValue={twitter.link} />
+                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" value={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -485,7 +455,7 @@ function InnerForm(props) {
     return (
         <>
             <Form noValidate onSubmit={handleSubmit}>
-                <Container fluid style={{ height: '78vh', overflowY: 'auto' }}>
+                <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
@@ -498,123 +468,15 @@ function InnerForm(props) {
     );
 }
 
-/**
- * React state to use and pass to this component as props:
- * const [image, setImage] = useState(PLACEHOLDER);
- * const [fileName, setFileName] = useState('No File Chosen');
- * PLACEHOLDER is a costant declared in Costants.jsx to import 
- */
-function ImageViewer(props) {
-    const { width, height, image, setImage, fileName, setFileName } = props;
-    const fileInputRef = useRef(null);
-    return (
-        <>
-            <Container className="d-flex flex-column align-items-center">
-                <img height={height} width={width} style={{ marginBottom: '5%' }} src={image} />
-                {(image !== PLACEHOLDER) ? <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Activity Image</Button> : ''}
-            </Container>
-            <Container className="d-flex align-items-center">
-                <Button variant='light' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
-                <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName)} accept="image/*" />
-            </Container>
-        </>
-    );
-}
-
-function TimeSelector(props) {
-    const { n_times, time, addTime, saveTime, deleteTime, checkTime } = props;
-
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5%', flexWrap: 'wrap' }}>
-            <TimePicker invalid={time.invalid} style={{ width: "30%", marginRight: "2%" }} value={time.first} step={60 * 30} onChange={(event) => {
-                const new_time = { id: time.id, first: event.target.value, last: time.last, invalid: time.invalid };
-                saveTime(new_time);
-                checkTime(new_time);
-            }} onKeyDown={(event) => { event.preventDefault() }} />
-            <TimePicker invalid={time.invalid} style={{ width: "30%", marginRight: "5%" }} value={time.last} step={60 * 30} onChange={(event) => {
-                const new_time = { id: time.id, first: time.first, last: event.target.value, invalid: time.invalid };
-                saveTime(new_time);
-                checkTime(new_time);
-            }} onKeyDown={(event) => { event.preventDefault() }} />
-            <Button size='sm' variant="success" onClick={() => { addTime() }} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>
-            {(n_times > 1) ? <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id) }}><i className="bi bi-trash"></i></Button> : ''}
-            <p style={{ display: 'block', color: '#dc3545' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
-        </div>
-    );
-}
-
-function DishItem(props) {
-    const { dish, deleteDish } = props;
-    const navigate = useNavigate();
-
-    return (
-        //border-0 to remove the border
-        <ListGroup.Item className="border-0">
-            <Row>
-                <Col xs={8}>{dish.name}</Col>
-                <Col xs={2}>
-                    <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${dish.id}`) }}>
-                        <i className="bi bi-pencil-square"></i>
-                    </Button>
-                </Col>
-                <Col xs={2}>
-                    <Button size='sm' variant="danger" onClick={() => { deleteDish(dish.id) }}>
-                        <i className="bi bi-trash"></i>
-                    </Button>
-                </Col>
-            </Row>
-        </ListGroup.Item>
-    );
-}
-
-/**
- * React state to use and pass to this component as props:
- * const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
- */
-function AddressSelector(props) {
-    const { address, setAddress } = props;
-    const inputRef = useRef();
-
-    const handlePlaceChanged = () => {
-        const [place] = inputRef.current.getPlaces();
-        if (place) {
-            setAddress({
-                text: place.formatted_address,
-                lat: place.geometry.location.lat(),
-                lng: place.geometry.location.lng(),
-                invalid: address.invalid
-            });
-        }
-    };
-
-    return (
-        <StandaloneSearchBox onLoad={(ref) => (inputRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
-            <>
-                <Form.Control
-                    isInvalid={address.invalid}
-                    type="text"
-                    placeholder="Enter The Location"
-                    // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
-                    onChange={(event) => { setAddress({ text: event.target.value, lat: address.lat, lng: address.lng, invalid: address.invalid }); }}
-                    defaultValue={address.text}
-                />
-                <Form.Control.Feedback type="invalid">Please Insert a Valid Address</Form.Control.Feedback>
-            </>
-        </StandaloneSearchBox>
-    );
-}
-
 function RestaurantForm(props) {
     const [progress, setProgress] = useState(1);
 
     return (
         <>
             <Header />
-            <ProgressLabel progress={progress} />
-            <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
-                <InnerForm progress={progress} setProgress={setProgress} />
-            </LoadScript>
+            <ProgressLabel progress={progress}/>
+            <InnerForm progress={progress} setProgress={setProgress} />
         </>
     );
 }
-export { RestaurantForm, ImageViewer, AddressSelector, address_string_to_object, address_object_to_string };
+export { RestaurantForm };

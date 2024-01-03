@@ -10,7 +10,9 @@ import { Reviews } from './components/ReviewsList';
 import { ReviewForm } from './components/ReviewPage';
 import { useState,useEffect } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
+import {Restaurant} from "./components/Restaurant.jsx";
 import { UserContext } from './components/userContext';
+import { Button,Col } from 'react-bootstrap';
 import API from './API';
 library.add(fab, fas, far);
 
@@ -26,11 +28,11 @@ function App() {
       try {
         // se sono già loggato prendo info
         const user = await API.getUserInfo();
-        console.log("già autenticato", user)
-        //setLoggedIn(true);
+        // console.log("già autenticato", user)
+        // setLoggedIn(true);
         setUser(user);
       } catch (err) {
-        console.log("Utente non autenticato. Effettua il login.");
+        // console.log("Utente non autenticato. Effettua il login.");
         // Effettua il login se l'utente non è autenticato
         doLogIn();
         return
@@ -39,19 +41,16 @@ function App() {
     checkAuth();
     
   }, []);
-
-  
-
-  const doLogIn = (credentials) => {
-    /*credentials={
-      "username": "User",
-      "isRestaurateur": 0
+  const doLogIn = () => {
+    const credentials = {
+      username: "User",
+      isRestaurateur: "0"
     }
-    */
-    credentials={
-      "username": "Restaurateur",
-      "isRestaurateur": 1
-    }
+    /*
+    const credentials = {
+      username: "Restaurateur",
+      isRestaurateur: "1"
+    }*/
     API.logIn(credentials)
       .then( user => {
         setUser(user);
@@ -70,20 +69,19 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
-        <Route path='/login' element={<></>}/>  {/* TANUCC*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
         <Route path='/settings' element={<></>}/>{/* DAVE*/ }
-        <Route path='/restaurants/:id/details' element={<RestaurantForm/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/menu' element={<RestaurantForm/>}/>{/* QUEEN*/ }
-        <Route path='/restaurants/:id/reviews' element={<Reviews/>}/>{/* TANUCC*/ }
+        <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
+        <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/add' element={<ReviewForm/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
         <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
-        {/*POP UP DI ALE COSTA <Route path='/restaurants/:id/menu/ingredients/:id' element={<></>}/>*/} {/* QUEEN*/ }
         <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
         <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
         <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
+        <Route path='*' element={<DefaultRoute/>} />
       </Routes>
     </BrowserRouter>
     </UserContext.Provider>
@@ -91,4 +89,19 @@ function App() {
   )
 }
 
-export default App
+function DefaultRoute() {
+
+  return(
+      <div className="position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+        <Col>
+          <h1>Nothing here...</h1>
+          <p>This is not the route you are looking for!</p>
+          <Link to="/">
+            <Button type="button" variant="success" className="btn btn-lg edit-button">Go back to the homepage</Button>
+          </Link>
+        </Col>
+      </div>
+  );
+}
+
+export default App;

@@ -91,8 +91,10 @@ function SearchReview(props) {
         </>
     )
 }
-function ReviewsList() {
+
+function ReviewsList({ reviews }) {
     const navigate = useNavigate();
+    const reviewsHeight = (window.innerHeight - 342);
 
     const [list, setList] = useState([
         { key: '1', name: 'alecosta', stars: '4', prices: '4', ReviewTitle: 'Nice', date: "2023/01/18" },
@@ -126,10 +128,10 @@ function ReviewsList() {
     return (
         <>
             <SearchReview list={list} setList={setList} />
-            <ListGroup>
+            <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: reviewsHeight}}>
                 {list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
                     return (
-                        <Card key={item.id} onClick={() => { navigate(`/restaurants/${item.id}/reviews/add`) }}>
+                        <Card key={item.id} style={{borderRadius: 0}} onClick={() => { navigate(`/restaurants/${item.id}/reviews/add`) }}>
                             <Card.Body>
                                 <Row>
                                     <Col>
@@ -172,15 +174,9 @@ function ReviewsList() {
     );
 }
 
-function Reviews() {
+function Reviews(props) {
 
-    return (
-        <>
-            <Header />
-            <ReviewsList />
-            <NavigationButtons />
-        </>
-    )
+    return <ReviewsList reviews={props.reviews} />
 }
 
 export { Reviews };

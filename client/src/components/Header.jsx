@@ -13,16 +13,19 @@ function Header() {
   const user = useContext(UserContext);
   const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
   const location = useLocation();
+  const regexDetails = /\/details$/;
+  const regexMenu = /\/menu$/;
+  const regexReviews = /\/reviews$/;
   const detailsMenuReviews = location.pathname== `/restaurants/${id}/details`|| location.pathname == `/restaurants/${id}/menu`|| location.pathname == `/restaurants/${id}/reviews`
   //console.log("header",detailsMenuReviews,location.pathname)
   return (
     <>
-      <Navbar bg='success' variant='dark'>
+      <Navbar bg='success' variant='dark' style={{height: 54}}>
         <Container fluid>
           {location.pathname!="/"?
           <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ?  () => navigate("/")  : () => navigate(-1)} />
           :
-          <Button style={{ visibility: 'hidden', marginLeft: "2.5%", pointerEvents: 'none' }}></Button>
+          <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
           <div className="d-flex flex-grow-1 justify-content-center">
             <Button variant="warning" onClick={() => navigate('/')}>Gluten-Hub</Button>
