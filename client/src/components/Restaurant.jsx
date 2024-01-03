@@ -1,14 +1,12 @@
 import {useEffect, useState} from 'react'
-import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
+import {Link, useLocation, useParams} from 'react-router-dom'
 import {
     ListGroup,
     Card,
     Col,
     Row,
     Button,
-    Navbar,
     Container,
-    ToggleButtonGroup, ToggleButton,
     Form,
     Modal, Badge
 } from 'react-bootstrap';
@@ -144,7 +142,6 @@ const Menu = (props) => {
     const [type, setType] = useState(allDishTypes[0]);
     const [search, setSearch] = useState("");
     const [filteredDishes, setFilteredDishes] = useState(restaurant.dishes);
-    // const initialList = ["pasta", "pizza", "burger", "sushi", "chinese", "merda"];
     const [ingredient, setIngredient] = useState(null);
     const [modalShow, setModalShow] = useState(false);
     const menuHeight = (window.innerHeight - 336);
@@ -239,24 +236,23 @@ const Menu = (props) => {
             </Row>
 
             {/*Menu categories*/}
-            <Col className="scroll" style={{ display: "flex", overflowX: "auto"}}>
-                <ToggleButtonGroup type="radio" name="types" value={type} onChange={(value) => setType(value)}>
-                    {allDishTypes.map((type, index) => (
-                        <ToggleButton id={index.toString()} value={type} variant="light" size="lg" style={{borderRadius: 0, borderColor: "#1a1a1a"}}>
-                            {type}
-                        </ToggleButton>
-                    ))}
-                </ToggleButtonGroup>
+            <Col className="scroll" style={{ display: "flex", overflowX: "scroll"}}>
+                {allDishTypes.map((currentType, index) => (
+                    <Button key={index} active={currentType === type} onClick={() => setType(currentType)} variant="light" size="lg" style={{borderRadius: 0, borderColor: "#1a1a1a"}}>
+                        {currentType}
+                    </Button>
+                ))}
             </Col>
+            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
 
             {/*Menu dishes*/}
-            <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: menuHeight}}>
+            <ListGroup className="scroll" style={{overflowY: "scroll", maxHeight: menuHeight}}>
                 { filteredDishes.filter((dish) => dish.type === type).length === 0 ?
                     <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search}</b>" in this menu section! </p>
                     :
                     filteredDishes.filter((dish) => dish.type === type).map((dish) => {
                     return (
-                        <Card key={dish.id} style={{borderRadius: 0}}>
+                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}}>
                             <Card.Body>
                                 <Row>
                                     <Col>

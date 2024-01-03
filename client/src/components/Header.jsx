@@ -13,9 +13,6 @@ function Header() {
   const user = useContext(UserContext);
   const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
   const location = useLocation();
-  /*const regexDetails = /\/details$/;
-  const regexMenu = /\/menu$/;
-  const regexReviews = /\/reviews$/;*/
   const detailsMenuReviews = location.pathname== `/restaurants/${id}/details`|| location.pathname == `/restaurants/${id}/menu`|| location.pathname == `/restaurants/${id}/reviews`
   //console.log("header",detailsMenuReviews,location.pathname)
   return (

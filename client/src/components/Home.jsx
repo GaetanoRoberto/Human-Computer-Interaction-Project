@@ -71,7 +71,7 @@ function RestaurantsList(props) {
     const navigate = useNavigate();
     const { filterRestaurants, filters } = props;
     // Used for scrollable restaurant list
-    const listHeight = ( filters.length === 0 ? (window.innerHeight - 103) : (window.innerHeight - 162));
+    const listHeight = ( filters.length === 0 ? (window.innerHeight - 104) : (window.innerHeight - 150));
 
 
     return (
