@@ -56,44 +56,50 @@ function getHappinessClass(index) {
     }
   }
 function SearchReview(props) {
-    const { list, setList } = props;
-    const [label, setLabel] = useState("QUALITY");
+    const { filteredReviews,reviews, setFilteredReviews,search,setSearch } = props;
+    const [label, setLabel] = useState("DATE");
     const [order, setOrder] = useState("DESC");
+    
     const { id } = useParams();
     const navigate = useNavigate();
 
+    useEffect(() => {
+      // Sort the reviews initially based on 'QUALITY' when the component mounts
+      sortByField("date",filteredReviews);
+  }, []); 
 
 
 
-const sortByField = (field) => {
+const sortByField = (field, list) => {
     const name = field.toUpperCase();
     setLabel(name);
     //const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field] ) : [...list].sort((a, b) => b[field] - a[field] );
     //console.log(field)
     if(field == "date"){
-        const sortedList = order === 'ASC' ? [...list].sort((a, b) =>dayjs(a.date).diff(dayjs(b.date), "day") ) :[...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"))
-        setList(sortedList);
+        const sortedList = order === 'ASC' ? [...list].sort((a, b) =>dayjs(a.date).diff(dayjs(b.date), "day") ) 
+        :
+        [...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"))
+        setFilteredReviews(sortedList);
     }else{
-        const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field] ) :  [...list].sort((a, b) => b[field] - a[field])
-        setList(sortedList);
+        const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field] ) 
+        :
+        [...list].sort((a, b) => b[field] - a[field])
+        setFilteredReviews(sortedList);
     }
   };
-    const sortByDate = (name) => {
-        let sortedList;
-        if (order === 'ASC') {
-            sortedList = [...list].sort((a, b) => dayjs(a.date).diff(dayjs(b.date), "day"));
-        } else {
-            sortedList = [...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"));
-        }
-        setLabel(name);
-        setList(sortedList);
-    }
+
     const toggleOrder = () => {
-        const sortedList = [...list].reverse();
-        setList(sortedList);
+        const sortedList = [...filteredReviews].reverse();
+        setFilteredReviews(sortedList);
         setOrder(order === 'ASC' ? 'DESC' : 'ASC');
         //console.log(order, label);
     };
+    const handleSearch = (ev) => {
+      setSearch(ev.target.value);
+      const searched = reviews.filter((review) => review.title.toLowerCase().includes(ev.target.value.toLowerCase()));
+      sortByField(label.toLowerCase(),searched);
+  };
+
     return (
         <>
             <Row className='my-1 mx-0 d-flex align-items-center'>
@@ -101,7 +107,7 @@ const sortByField = (field) => {
                     <i className="bi bi-search " style={{ fontSize: "1.5rem", marginLeft: "1%" }}></i>
                 </Col>
                 <Col xs={7}>
-                    <FormControl type="search" placeholder="Search" />
+                    <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search" />
                 </Col>
                 <Col xs={2}>
                     <Button variant="warning" className="btn-sm" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add a review</Button>
@@ -110,10 +116,10 @@ const sortByField = (field) => {
             <Row className='my-1 mb-3  mx-0 '>
                 <Col xs={4} >
                     <DropdownButton  id="dropdown"  title={"SORT BY: " } variant="info" >
-                        <Dropdown.Item onClick={() => sortByField("date")}>DATE</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByField("price")}>PRICE</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByField("quality")}>QUALITY</Dropdown.Item>
-                        <Dropdown.Item onClick={() => sortByField("safety")}>SAFETY</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("date",filteredReviews)}>DATE</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("price",filteredReviews)}>PRICE</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("quality",filteredReviews)}>QUALITY</Dropdown.Item>
+                        <Dropdown.Item onClick={() => sortByField("safety",filteredReviews)}>SAFETY</Dropdown.Item>
                     </DropdownButton>
                     </Col>
                    <Col xs={4}><Button disabled style={{width:"110px"}} variant="info">{label}</Button>   </Col>
@@ -140,15 +146,21 @@ function ReviewsList({ reviews }) {
     const navigate = useNavigate();
     const reviewsHeight = (window.innerHeight - 342);
     const { id } = useParams();
-    const [list, setList] = useState(reviews);
+    //const [list, setList] = useState(reviews);
     const user = useContext(UserContext);
+    const [filteredReviews, setFilteredReviews] = useState(reviews);
+    const [search,setSearch] = useState("")
 
     return (
         <>
-            <SearchReview list={list} setList={setList} />
+            <SearchReview filteredReviews={filteredReviews} reviews={reviews} search={search} setSearch={setSearch}  setFilteredReviews={setFilteredReviews} />
             <ListGroup className="scroll" style={{ overflowY: "auto", maxHeight: reviewsHeight }}>
                 {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
-                    list.map((item) => {
+                 //   list.map((item) => {
+                  filteredReviews.length === 0 ?
+                    <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search}</b>" in these reviews! </p>
+                    :
+                    filteredReviews.map((item) => {
                     return (
                         <Card key={item.id} style={{ borderRadius: 0 }} onClick={item.username == user.username ? () => { navigate(`/restaurants/${id}/reviews/edit/${item.id}`) } : () => { navigate(`/restaurants/${id}/reviews/${item.id}`) }}>
                             <Card.Body>
