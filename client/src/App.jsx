@@ -43,7 +43,7 @@ function App() {
   }, []);
   const doLogIn = () => {
     const credentials = {
-      username: "User",
+      username: "Andrea",
       isRestaurateur: "0"
     }
     /*
