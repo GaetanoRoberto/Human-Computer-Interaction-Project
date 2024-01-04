@@ -84,7 +84,7 @@ const Banner = (props) => {
     const bannerZoom = () => {
         const img = new Image();
         img.src = restaurant.image;
-        if (window.innerWidth > img.width)
+        if (img.width !== 0 && window.innerWidth > img.width)
             return window.innerWidth / img.width;
         else
             return 1;
@@ -150,9 +150,9 @@ const Menu = (props) => {
     const handleSearch = (ev) => {
         setSearch(ev.target.value);
         setFilteredDishes(restaurant.dishes.filter((dish) =>
-            (dish.name.toLowerCase().includes(ev.target.value.toLowerCase()))
+            (dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
             ||
-            (dish.ingredients.some((ingredient) => ingredient.name.toLowerCase().includes(ev.target.value.toLowerCase())))
+            (dish.ingredients.some((ingredient) => ingredient.name.toLowerCase().includes(ev.target.value.trim().toLowerCase())))
         ));
     }
 
@@ -248,7 +248,7 @@ const Menu = (props) => {
             {/*Menu dishes*/}
             <ListGroup className="scroll" style={{overflowY: "scroll", maxHeight: menuHeight}}>
                 { filteredDishes.filter((dish) => dish.type === type).length === 0 ?
-                    <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search}</b>" in this menu section! </p>
+                    <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search.trim()}</b>" in this menu section! </p>
                     :
                     filteredDishes.filter((dish) => dish.type === type).map((dish) => {
                     return (

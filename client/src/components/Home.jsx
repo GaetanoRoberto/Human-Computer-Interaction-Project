@@ -5,6 +5,7 @@ import { ListGroup, Card, Col, Row, Button, Navbar, Container, Form, Badge, Fade
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from './Header';
 
+
 function SearchBar(props) {
     const { search, setSearch, setRestaurantList, restaurantInitialList} = props;
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ function SearchBar(props) {
     const handleSearch = (ev) => {
         setSearch(ev.target.value);
         setRestaurantList(restaurantInitialList.filter((restaurant) =>
-            (restaurant.name.toLowerCase().includes(ev.target.value.toLowerCase()))
+            (restaurant.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
         ));
     }
 
@@ -88,7 +89,7 @@ function RestaurantsList(props) {
             { filterRestaurants().length === 0 ?
                 <>
                     <div style={{borderTop: "1px solid", margin: 0, color: "lightgray"}}></div>
-                    <p style={{marginTop: "1rem", textAlign: "center"}}> No result for "<b>{search}</b>" with the selected filters! </p>
+                    <p style={{marginTop: "1rem", textAlign: "center"}}> No result for "<b>{search.trim()}</b>" with the selected filters! </p>
                 </>
                 :
                 filterRestaurants().map((restaurant) => {
