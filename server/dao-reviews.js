@@ -7,14 +7,14 @@ const db = require('./db');
 // This function returns all reviews for a given restaurant.
 exports.getReviews = (restaurantId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT id,username,date,title,quality,safety,price FROM reviews WHERE restaurantId=?';
+        const sql = 'SELECT id,username,date,title,quality,safety,price,description FROM reviews WHERE restaurantId=?';
         db.all(sql, [restaurantId], (err, rows) => {
             // if query error, reject the promise, otherwise return the content
             if (err) {
                 reject(err);
             } else {
                 // put together quality and safety by doing average
-                const reviews = rows.map(review => ({ id: review.id, username: review.username, date: review.date, title: review.title, quality: review.quality, safety:review.safety, price: review.price }));
+                const reviews = rows.map(review => ({ id: review.id, username: review.username, date: review.date, title: review.title, quality: review.quality, safety:review.safety, price: review.price, description: review.description }));
                 resolve(reviews);
             }
         });
