@@ -1,0 +1,122 @@
+.fixed-position{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.scroll::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
+
+.custom-link-button {
+  color: black !important;
+  padding: 0 0;
+}
+
+.custom-link-button:hover {
+  color: gray !important;
+}
+
+/*.fixed-position-top{*/
+/*  position: fixed;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  top: 0;*/
+/*}
+/*.blur {*/
+/*  filter: blur(2px);*/
+/*}*/
+
+.sharp-border {
+  border-radius: 0;
+  border-color: #1a1a1a;
+  width: 33.33%;
+  height: 50px;
+}
+
+/* Custom CSS for Phone Number Input Field */
+.custom-input {
+  border: 1px solid #ced4da; /* Border color */
+  border-radius: 0.25rem; /* Border radius */
+  padding: 0.375rem 0.75rem; /* Padding */
+}
+
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.custom-input input {
+  border: none;
+}
+
+.custom-input input:focus {
+  border-color: #80bdff; /* Border color on focus */
+  border-radius: 0.25rem; /* Border radius */
+  outline: 0; /* Remove default focus outline */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus shadow */
+}
+
+
+/* Override Bootstrap's default :active state for Dropdown items */
+.profile-dropdown-item:active, .profile-dropdown-item:focus {
+  background-color: transparent !important; 
+  color: inherit; 
+}
+
+
+/* EnterLocation css */
+.location-wrapper {
+  position: relative;
+  display: inline-block; 
+}
+
+.suggestions-dropdown {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  border: 1px solid #ddd;
+  border-top: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  width: calc(100% - 20px); 
+}
+
+.suggestion-item {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f8f8f8;
+}
+
+.location-input {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* DishForm.css */
+.ingredient-item {
+  display: flex;
+  gap: 5px;
+}
+
+.ingredient-item input[type='text'] {
+  flex: 1;
+}
+
+/* .ingredient-item button {
+  padding: 8px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+} */
+
+
