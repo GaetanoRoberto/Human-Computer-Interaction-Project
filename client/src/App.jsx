@@ -13,13 +13,17 @@ import { RestaurantForm } from './components/RestaurantForm';
 import {Restaurant} from "./components/Restaurant.jsx";
 import { UserContext } from './components/userContext';
 import { Button,Col } from 'react-bootstrap';
+import { Profile } from './components/Profile';
+import { DishForm } from './components/DishForm';
 import API from './API';
 library.add(fab, fas, far);
 
 
 function App() {
   const [user, setUser] = useState(null);
- // const [loggedIn, setLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('Restaurater'); //User: Default selection, Restaurater
+
 
 
   
@@ -64,13 +68,14 @@ function App() {
     await API.logOut().catch((err) => console.log(err));
     setUser(undefined);
   }
+
   return (
     <UserContext.Provider value={user}>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
-        <Route path='/settings' element={<></>}/>{/* DAVE*/ }
+        <Route path='/settings' element={<Profile selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/>}/>{/* DAVE*/ }
         <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
@@ -79,7 +84,7 @@ function App() {
         <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm/>}/>{/* TANUCC*/ }
         <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
-        <Route path='/addDish' element={<></>}/>{/*   DAVE*/ }
+        {selectedStatus == "Restaurater" && <Route path='/addDish' element={<DishForm/>}/>}   {/*   DAVE*/ }
         <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
         <Route path='*' element={<DefaultRoute/>} />
       </Routes>

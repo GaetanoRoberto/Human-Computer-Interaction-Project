@@ -47,7 +47,7 @@ function ImageViewer(props) {
         <>
             <Container className="d-flex flex-column align-items-center">
                 <img height={height} width={width} style={{ marginBottom: '5%' }} src={image} />
-                {(image !== PLACEHOLDER) ? <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Activity Image</Button> : ''}
+                {(image === PLACEHOLDER || (Array.isArray(image) && image.includes(PLACEHOLDER))) ? '' : <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Current Image</Button>}
             </Container>
             <Container className="d-flex align-items-center custom-input">
                 <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
