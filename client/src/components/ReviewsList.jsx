@@ -157,6 +157,9 @@ function ReviewsList({ reviews }) {
             <ListGroup className="scroll" style={{ overflowY: "auto", maxHeight: reviewsHeight }}>
                 {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
                  //   list.map((item) => {
+                  reviews.length === 0?
+                  <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No reviews for this Restaurant, add the first! </p>
+                  :
                   filteredReviews.length === 0 ?
                     <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search}</b>" in these reviews! </p>
                     :
@@ -188,13 +191,15 @@ function ReviewsList({ reviews }) {
                                 </Row>
                                 <Row>
                                     <Col><Card.Text>Safety:</Card.Text></Col>
-                                    <Col><Card.Text>
+                                    <Col>
+                                    <Card.Text>
                                         {Array.from({ length: 5 }, (_, index) => (
                                             <FontAwesomeIcon
                                                 key={index}
                                                 icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
                                                 style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px"}} />))}
-                                    </Card.Text></Col>
+                                    </Card.Text>
+                                    </Col>
                                 </Row>
                                 <Row >
                                 <footer style={{fontSize:"1em"}} className="blockquote-footer">By {item.username}, {dayjs(item.date).format("DD-MM-YYYY")}</footer>

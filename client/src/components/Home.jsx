@@ -5,6 +5,55 @@ import { ListGroup, Card, Col, Row, Button, Navbar, Container, Form, Badge, Fade
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from './Header';
 
+function getHappinessClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-regular fa-face-dizzy";
+      case 1:
+        return "fa-regular fa-face-tired";
+      case 2:
+        return "fa-regular fa-face-meh";
+      case 3:
+        return "fa-regular fa-face-smile";
+      case 4:
+        return "fa-regular fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessSolidClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-solid fa-face-dizzy";
+      case 1:
+        return "fa-solid fa-face-tired";
+      case 2:
+        return "fa-solid fa-face-meh";
+      case 3:
+        return "fa-solid fa-face-smile";
+      case 4:
+        return "fa-solid fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessColor(index) {
+    switch (index) {
+      case 0:
+        return "#ff3300" // Faccina arrabbiata
+      case 1:
+        return "#ff8300"; // Faccina triste
+      case 2:
+        return "#FFD700"; // Faccina neutra
+      case 3:
+        return "#00ff5b"; // Faccina sorridente
+      case 4:
+        return "green"; // Faccina che ride
+      default:
+        return " ";
+    }
+  }
+  
 function SearchBar(props) {
     const { search, setSearch, setRestaurantList, restaurantInitialList} = props;
     const navigate = useNavigate();
@@ -101,16 +150,16 @@ function RestaurantsList(props) {
                                     <Card.Text style={{textAlign: "start"}}>
                                         {
                                             Array.from({ length: restaurant.avg_quality }, (_, index) => (
-                                                <i key={index} className="bi bi-star-fill"></i>
+                                                <i key={index} className="bi bi-star-fill " style={{ color: '#FFD700', marginRight:"5px" }}></i>
                                             ))
                                         }
                                     </Card.Text>
                                     <Card.Text style={{textAlign: "start"}}>
-                                        {
-                                            Array.from({ length: restaurant.avg_safety }, (_, index) => (
-                                                <i key={index} className="bi bi-star-fill"></i>
-                                            ))
-                                        }
+                                    {Array.from({ length: 5 }, (_, index) => (
+                                            <FontAwesomeIcon hidden = {Math.round(restaurant.avg_safety) == 0}// hidden if no reviews [TANUCC]
+                                                key={index}
+                                                icon={(index + 1 !=  Math.round(restaurant.avg_safety)) ? getHappinessClass(index) : getHappinessSolidClass(index)}
+                                                style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px"}} />))}
                                     </Card.Text>
                                     <Card.Text style={{textAlign: "start"}}>
                                         {
