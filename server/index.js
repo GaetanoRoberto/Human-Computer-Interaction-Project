@@ -4,7 +4,6 @@
 const RESTAURANT_PATH = 'public/restaurants';
 const DISH_PATH = 'public/dishes';
 const INGREDIENT_PATH = 'public/ingredients';
-const PLACEHOLDER = 'http://localhost:3001/placeholder.png';
 
 /*** Importing modules ***/
 const fs = require('fs').promises;
@@ -19,6 +18,9 @@ const dishesDao = require('./dao-dishes'); // module for accessing the dishes ta
 const ingredientsDao = require('./dao-ingredients'); // module for accessing the ingredients table in the DB
 const reviewsDao = require('./dao-reviews'); // module for accessing the reviews table in the DB
 const usersDao = require('./dao-users'); // module for accessing the users table in the DB
+const retrieveIp = require('./retrieve-ip');
+const IP_ADDRESS_AND_PORT = retrieveIp.getLocalWirelessIP();
+const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder.png';
 
 /*** init express and set-up the middlewares ***/
 const app = express();
@@ -30,7 +32,7 @@ app.use(express.static('./public'));
 
 /** Set up and enable Cross-Origin Resource Sharing (CORS) **/
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'http://localhost:5174', IP_ADDRESS_AND_PORT.split(":3001")[0] +':5173', IP_ADDRESS_AND_PORT.split(":3001")[0] +':5174'],
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -96,7 +98,7 @@ async function saveImageToServer(imageBuffer, folder) {
     // Write the image buffer to the file asynchronously
     await fs.writeFile(filePath, Buffer.from(imageBuffer, 'base64'));
 
-    const return_path = 'http://localhost:3001/' + filePath.split('./public/')[1];
+    const return_path = IP_ADDRESS_AND_PORT + '/' + filePath.split('./public/')[1];
 
     return { success: return_path };
 
@@ -107,7 +109,7 @@ async function saveImageToServer(imageBuffer, folder) {
 
 function getServerPath(localhostPath, folder) {
   folder = folder.split('/')[0];
-  return `./${folder}` + localhostPath.split('http://localhost:3001')[1];
+  return `./${folder}` + localhostPath.split(IP_ADDRESS_AND_PORT)[1];
 }
 
 /*** Session API ***/
@@ -256,7 +258,7 @@ app.post('/api/restaurants',
       // take the information from the body and add the restaurant
       let restaurant_image_link = '';
       // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
-      if (req.body.image && !req.body.image.startsWith("http://localhost:3001")) {
+      if (req.body.image && !req.body.image.startsWith(IP_ADDRESS_AND_PORT)) {
         restaurant_image_link = await saveImageToServer(req.body.image, RESTAURANT_PATH).catch(() => { throw { error: 'Error in Saving the Restaurant Image to the Server' } });
         restaurant_image_link = restaurant_image_link.success;
       } else {
@@ -284,7 +286,7 @@ app.post('/api/restaurants',
         let dish_image_link = '';
 
         // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
-        if (dish.image && !dish.image.startsWith("http://localhost:3001")) {
+        if (dish.image && !dish.image.startsWith(IP_ADDRESS_AND_PORT)) {
           dish_image_link = await saveImageToServer(dish.image, DISH_PATH).catch(() => {
             throw { error: 'Error in Saving the Dish Image to the Server' };
           });
@@ -319,7 +321,7 @@ app.post('/api/restaurants',
           let ingredient_image_link = '';
 
           // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
-          if (ingredient.image && !ingredient.image.startsWith("http://localhost:3001")) {
+          if (ingredient.image && !ingredient.image.startsWith(IP_ADDRESS_AND_PORT)) {
             ingredient_image_link = await saveImageToServer(ingredient.image, INGREDIENT_PATH).catch(() => { throw { error: 'Error in Saving the Ingredient Image to the Server' } });
             ingredient_image_link = ingredient_image_link.success;
           } else {
@@ -371,7 +373,7 @@ app.post('/api/restaurants/:id',
     try {
       let restaurant_image_link;
       // check if there is a new image (so base64 data not an URL)
-      if (req.body.image && !req.body.image.startsWith("http://localhost:3001")) {
+      if (req.body.image && !req.body.image.startsWith(IP_ADDRESS_AND_PORT)) {
         // check if image is not changed, otherwise useless to re-save it
         const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Error in Getting the Restaurant image from The Server' } });
         const restaurant_image_path = getServerPath(restaurant_path.image, RESTAURANT_PATH);
@@ -450,7 +452,7 @@ app.post('/api/restaurants/:id',
         let dish_image_link = '';
 
         // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
-        if (dish.image && !dish.image.startsWith("http://localhost:3001")) {
+        if (dish.image && !dish.image.startsWith(IP_ADDRESS_AND_PORT)) {
           dish_image_link = await saveImageToServer(dish.image, DISH_PATH).catch(() => {
             throw { error: 'Error in Saving the Dish Image to the Server' };
           });
@@ -486,7 +488,7 @@ app.post('/api/restaurants/:id',
           let ingredient_image_link = '';
 
           // if it's not an URL (expect base64 data) save it, otherwise return image URL provided to visualize
-          if (ingredient.image && !ingredient.image.startsWith("http://localhost:3001")) {
+          if (ingredient.image && !ingredient.image.startsWith(IP_ADDRESS_AND_PORT)) {
             ingredient_image_link = await saveImageToServer(ingredient.image, INGREDIENT_PATH).catch(() => { throw { error: 'Error in Saving the Ingredient Image to the Server' } });
             ingredient_image_link = ingredient_image_link.success;
           } else {
@@ -540,6 +542,14 @@ app.delete('/api/restaurants/:id', (req, res) => {
   restaurantsDao.deleteRestaurant(req.params.id)
     .then(msg => res.json(msg))
     .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Restaurant' }));
+});
+
+// GET /api/reviews/:username
+// This route is used to get the reviews done by the user
+app.get('/api/reviews/:username', (req, res) => {
+  reviewsDao.getReviewsByUsername(req.params.username)
+    .then(ingredient => res.json(ingredient))
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Reviews Done by an User' }));
 });
 
 // GET /api/reviews/:id
@@ -621,14 +631,6 @@ app.delete('/api/reviews/:id', (req, res) => {
     .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Review' }));
 });
 
-// GET /api/reviews/:username
-// This route is used to get the reviews done by the user
-app.get('/api/reviews/:username', (req, res) => {
-  reviewsDao.getReviewsByUsername(req.params.username)
-    .then(ingredient => res.json(ingredient))
-    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Reviews Done by an User' }));
-});
-
 // Activating the server
 const PORT = 3001;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
+app.listen(PORT, () => console.log(`Server running on ${IP_ADDRESS_AND_PORT}/`));

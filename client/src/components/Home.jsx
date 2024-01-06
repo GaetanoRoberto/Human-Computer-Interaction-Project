@@ -135,7 +135,8 @@ function RestaurantsList(props) {
 
     return (
         <ListGroup className="scroll" style={{overflowY: "auto", maxHeight: listHeight}}>
-            { filterRestaurants().length === 0 ?
+            {
+             filterRestaurants().length === 0 ?
                 <>
                     <div style={{borderTop: "1px solid", margin: 0, color: "lightgray"}}></div>
                     <p style={{marginTop: "1rem", textAlign: "center"}}> No result for "<b>{search.trim()}</b>" with the selected filters! </p>
@@ -150,8 +151,8 @@ function RestaurantsList(props) {
                                     <Card.Title style={{textAlign: "start"}}>{restaurant.name}</Card.Title>
                                     <Card.Text style={{textAlign: "start"}}>
                                         {
-                                            Array.from({ length: restaurant.avg_quality }, (_, index) => (
-                                                <i key={index} className="bi bi-star-fill " style={{ color: '#FFD700', marginRight:"5px" }}></i>
+                                            Array.from({ length: Math.round(restaurant.avg_quality) }, (_, index) => (
+                                                <i key={index} className="bi bi-star-fill " style={{ color: '#FFD700', marginRight:"5px" ,fontSize:"1.2em"}}></i>
                                             ))
                                         }
                                     </Card.Text>
@@ -160,12 +161,12 @@ function RestaurantsList(props) {
                                             <FontAwesomeIcon hidden = {Math.round(restaurant.avg_safety) == 0}// hidden if no reviews [TANUCC]
                                                 key={index}
                                                 icon={(index + 1 !=  Math.round(restaurant.avg_safety)) ? getHappinessClass(index) : getHappinessSolidClass(index)}
-                                                style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px"}} />))}
+                                                style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px",fontSize:"1.2em"}} />))}
                                     </Card.Text>
                                     <Card.Text style={{textAlign: "start"}}>
                                         {
-                                            Array.from({ length: restaurant.avg_price }, (_, index) => (
-                                                <i key={index} className="bi bi-currency-euro"></i>
+                                            Array.from({ length: Math.round(restaurant.avg_price) }, (_, index) => (
+                                                <i key={index} className="bi bi-currency-euro" style={{  marginRight:"5px" ,fontSize:"1.2em"}}></i>
                                             ))
                                         }
                                     </Card.Text>

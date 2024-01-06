@@ -37,6 +37,7 @@ const deleteReview = (review) => {
 const ReviewForm = (props) => {
   const user = useContext(UserContext);
 
+
   // reviewId da URL
   const { id, reviewId } = useParams();
   const location = useLocation();
@@ -56,6 +57,8 @@ const ReviewForm = (props) => {
   const [qualityValid, setQualityValid] = useState(true);
   const [safetyValid, setSafetyValid] = useState(true);
   const [euroValid, setEuroValid] = useState(true);
+  const [titleInvalid, setTitleInvalid] = useState(false);
+  const [descInvalid, setDescInvalid] = useState(false);
 
   const [show,setShow] =  useState(false);
   // USE EFFECT 
@@ -66,7 +69,7 @@ const ReviewForm = (props) => {
         .then((review) => {
           setTitle(review.title);
           setUsername(review.username),
-            setDate(review.date)
+          setDate(review.date)
           setDescription(review.description)
           setQuality(review.quality)
           setSafety(review.safety)
@@ -190,6 +193,14 @@ const ReviewForm = (props) => {
     event.stopPropagation();
 
     // Form validation
+    if(title === '' || title.trim().length === 0){
+      setTitleInvalid(true);
+      valid = false;
+    }
+    if(description === '' || description.trim().length === 0){
+      setDescInvalid(true);
+      valid = false;
+    }
     if (quality == 0){
       setQualityValid(false);
       valid = false;
@@ -244,13 +255,13 @@ const ReviewForm = (props) => {
           </Row>
           <Form.Group controlId="formTitle">
             <Form.Label>Title</Form.Label>
-            <Form.Control type="text" isInvalid={title === '' || title.trim().length === 0} disabled={view} required name="title" value={title} onChange={ev => setTitle(ev.target.value)} />
+            <Form.Control type="text" isInvalid={titleInvalid}  disabled={view} required name="title" value={title} onChange={ev => {setTitle(ev.target.value);setTitleInvalid(false);}} />
             <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group controlId="formDescription">
             <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" isInvalid={description === '' || description.trim().length === 0} required disabled={view} rows={3} name="description" value={description} onChange={ev => setDescription(ev.target.value)} />
+            <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => {setDescription(ev.target.value);setDescInvalid(false);}} />
             <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
           </Form.Group>
 
