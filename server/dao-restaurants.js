@@ -23,6 +23,25 @@ exports.getRestaurants = () => {
     });
 };
 
+// This function returns the only restaurant that has been inserted.
+exports.getRestaurantInserted = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM restaurants WHERE isNewInserted=1';
+        db.get(sql, [], (err, row) => {
+            // if query error, reject the promise, otherwise if not found return an error else return the content
+            if (err) {
+                reject(err);
+            } else if (row === undefined) {
+                resolve({ error: 'Restaurant not found.' });
+            }
+            else {
+                const restaurant = Object.assign({}, row);
+                resolve(restaurant);
+            }
+        });
+    });
+};
+
 // This function returns a restaurant given his id.
 exports.getRestaurant = (id) => {
     return new Promise((resolve, reject) => {

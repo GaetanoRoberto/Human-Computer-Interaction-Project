@@ -41,12 +41,20 @@ GET http://localhost:3001/api/restaurants HTTP/1.1
 GET http://localhost:3001/api/restaurants/1 HTTP/1.1
 ###
 
+## Get the inserted restaurants
+GET http://localhost:3001/api/insertedrestaurants/ HTTP/1.1
+###
+
 ## Get complete infos of an ingredient 
 GET http://localhost:3001/api/ingredients/3 HTTP/1.1
 ###
 
 ## Get all the possible type of dishes, for filter in the home page.
 GET http://localhost:3001/api/dishes/ HTTP/1.1
+###
+
+## Get all the ingredients for the given dish
+GET http://localhost:3001/api/dishes/1 HTTP/1.1
 ###
 
 ## Insert a new Restaurant
@@ -232,5 +240,5 @@ DELETE http://localhost:3001/api/reviews/8 HTTP/1.1
 ###
 
 ## Get all reviews of a user from his username
-GET http://localhost:3001/api/reviews/users/Davide HTTP/1.1
+GET http://localhost:3001/api/reviews/users/Andrea HTTP/1.1
 ###

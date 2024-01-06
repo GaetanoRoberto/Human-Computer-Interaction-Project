@@ -146,6 +146,23 @@ async function getRestaurant(restaurantId) {
 };
 
 /**
+ * This function is used to get the complete info of one restaurant (restaurant,dishes, ingredients (only name), reviews)
+ * It returns a JSON object
+ */
+async function getInsertedRestaurant() {
+  const response = await fetch(SERVER_URL + '/insertedrestaurants').catch(() => {throw {error: "Connection Error"}});
+  if (response.ok) {
+    // 200 status code, return the object
+    const restaurant = await response.json();
+    return restaurant;
+  } else {
+    // json object provided by the server with the error
+    const error = await response.json();
+    throw error;
+  }
+};
+
+/**
  * This function is used to get the complete infos of one ingredient (when opening the dedicated screen)
  * It returns a JSON object
  */
@@ -172,6 +189,23 @@ async function getFilters() {
     // 200 status code, return the object
     const filters = await response.json();
     return filters;
+  } else {
+    // json object provided by the server with the error
+    const error = await response.json();
+    throw error;
+  }
+};
+
+/**
+ * This function is used to get all to get all the ingredients for a given dish
+ * It returns a JSON object
+ */
+async function getDishIngredients(id) {
+  const response = await fetch(SERVER_URL + `/dishes/${id}`).catch(() => {throw {error: "Connection Error"}});
+  if (response.ok) {
+    // 200 status code, return the object
+    const ingredients = await response.json();
+    return ingredients;
   } else {
     // json object provided by the server with the error
     const error = await response.json();
@@ -357,8 +391,10 @@ const API = {
   updateUser,
   getRestaurants,
   getRestaurant,
+  getInsertedRestaurant,
   getIngredient,
   getFilters,
+  getDishIngredients,
   createRestaurant,
   editRestaurant,
   deleteRestaurant,
