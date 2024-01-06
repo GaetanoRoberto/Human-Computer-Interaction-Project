@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "dishes" (
 	"restaurantId"	INTEGER NOT NULL,
 	"name"	TEXT NOT NULL,
 	"price"	FLOAT NOT NULL,
-	"type" 	TEXT NOT NULL, -- pasta pizza dessert ...
+	"type" 	TEXT NOT NULL, -- pasta pizza desserts ...
 	"image" TEXT NOT NULL,
 	FOREIGN KEY("restaurantId") REFERENCES "restaurants"("id") ON DELETE CASCADE
 );
