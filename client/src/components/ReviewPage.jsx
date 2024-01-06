@@ -37,6 +37,7 @@ const deleteReview = (review) => {
 const ReviewForm = (props) => {
   const user = useContext(UserContext);
 
+
   // reviewId da URL
   const { id, reviewId } = useParams();
   const location = useLocation();
@@ -68,7 +69,7 @@ const ReviewForm = (props) => {
         .then((review) => {
           setTitle(review.title);
           setUsername(review.username),
-            setDate(review.date)
+          setDate(review.date)
           setDescription(review.description)
           setQuality(review.quality)
           setSafety(review.safety)

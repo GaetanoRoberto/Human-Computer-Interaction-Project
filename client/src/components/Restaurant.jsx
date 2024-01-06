@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
-import {Link, useLocation, useParams} from 'react-router-dom'
+import {Link, useLocation, useParams, useNavigate} from 'react-router-dom'
+
 import {
     ListGroup,
     Card,
@@ -122,6 +123,114 @@ const Banner = (props) => {
                         <Link style={{marginLeft: "0.5rem"}} to={restaurant.facebook}><img width="40px" height="40px" src={facebookImage}/></Link>
                         <Link style={{marginLeft: "0.5rem"}} to={restaurant.instagram}><img width="40px" height="40px" src={instagramImage}/></Link>
                     </Col>
+                </Row>
+                <Row>
+                    <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
+                </Row>
+                <Row>
+                    <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
+                </Row>
+            </Container>
+            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+        </>
+    );
+}
+
+
+const BannerProfile = (props) => {
+    const { restaurant } = props;
+    const navigate = useNavigate();
+
+    // Used to show the restaurant rating based on the reviews
+    const restaurantStars = () => {
+        const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
+        const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
+        // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
+        return (
+            <h6>
+                Quality: <i className="bi bi-star-fill"></i> {averageQuality.toFixed(1)}
+                {" "}
+                Safety: <i className="bi bi-star-fill"></i> {averageSafety.toFixed(1)}
+            </h6>
+        );
+    }
+
+    // Functions used to show the opening hours status based on real time
+    const getOpeningHours = (openingHours) => {
+        const currentDateTime = new Date();
+        const currentHour = currentDateTime.getHours();
+        const currentMinutes = currentDateTime.getMinutes();
+        const currentTime = currentHour * 60 + currentMinutes;
+
+        const timeRanges = openingHours.split(';').map(range => {
+            const [start, end] = range.split('-').map(time => {
+                const [hours, minutes] = time.split(':').map(Number);
+                return hours * 60 + minutes;
+            });
+            return { start, end };
+        });
+
+        for (const { start, end } of timeRanges) {
+            if (currentTime >= start && currentTime <= end) {
+                return `Open now (closes at ${formatTime(end)})`;
+            }
+        }
+
+        const nextOpeningTime = timeRanges.reduce((closestTime, { start }) => {
+            return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
+        }, -1);
+
+        if (nextOpeningTime !== -1) {
+            return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
+        } else {
+            return `Closed now (opens tomorrow at ${openingHours.split('-')[0]})`;
+        }
+    }
+    const formatTime = (minutes) => {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${padZero(hours)}:${padZero(mins)}`;
+    }
+    const padZero = (number) => {
+        return number < 10 ? `0${number}` : number;
+    }
+
+    // Used for banner image zoom
+    const bannerZoom = () => {
+        const img = new Image();
+        img.src = restaurant.image;
+        if (img.width !== 0 && window.innerWidth > img.width)
+            return window.innerWidth / img.width;
+        else
+            return 1;
+    }
+
+
+    return(
+        <>
+            <div style={{borderTop: "1px solid #000", margin: 0}} ></div>
+            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "194px", borderLeft: '1px solid #000', borderRight: '1px solid #000' }} onClick={() => navigate('/restaurants/1/menu')}>
+                {/* Background Image Overlay */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundImage: `url(${restaurant.image})`,
+                        backgroundPositionY: 'center',
+                        opacity: 0.2,
+                        zoom: bannerZoom(),
+                        zIndex: -1, // Ensure the overlay is behind the text
+                    }} >
+                </div>
+                {/* Content with Text */}
+                <Row>
+                    <h1 style={{fontSize: '2rem', marginTop: '10px', color: 'black'}}> <b><i> {restaurant.name} </i></b> </h1>
+                </Row>
+                <Row>
+                    <Col xs={5} style={{marginTop: "0.4rem"}}> {restaurantStars()} </Col>
                 </Row>
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
@@ -388,4 +497,4 @@ function Restaurant() {
         </>
     );
 }
-export { Restaurant };
+export { Restaurant, BannerProfile };

@@ -4,9 +4,15 @@ import Modal from 'react-bootstrap/Modal';
 function ConfirmModal(props) {
     const {text,show,setShow,action,parameter} = props;
     const handleClose = () => setShow(false);
+    
     const perform_action = () => {
-        action(parameter);
-        setShow(false);
+        if(parameter == undefined){
+            action();
+            setShow(false);
+        } else {
+            action(parameter);
+            setShow(false);
+        }
     };
 
     return (
