@@ -200,7 +200,7 @@ const Menu = (props) => {
                                     </h5>
                                 ))
                             }
-                            { ingredient.brandLink === f ?
+                            { ingredient.brandLink === null ?
                                 <h5 style={{marginTop: "3rem"}}>
                                     {ingredient.brandName}
                                 </h5>

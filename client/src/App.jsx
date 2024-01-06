@@ -14,6 +14,8 @@ import {Restaurant} from "./components/Restaurant.jsx";
 import { UserContext } from './components/userContext';
 import { Button,Col } from 'react-bootstrap';
 import API from './API';
+
+import { Header } from './components/Home';
 library.add(fab, fas, far);
 
 
@@ -70,7 +72,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
         <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
-        <Route path='/settings' element={<></>}/>{/* DAVE*/ }
+        <Route path='/settings' element={<Header></Header>}/>{/* DAVE*/ }
         <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
