@@ -82,7 +82,7 @@ INSERT INTO "dishes" VALUES (9,3, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT
 INSERT INTO "dishes" VALUES (10,2, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
 INSERT INTO "dishes" VALUES (11,1, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
 INSERT INTO "dishes" VALUES (12,1, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
-INSERT INTO "dishes" VALUES (13,2, 'Chocolate Cheesecake', 5.00, 'dessert', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
+INSERT INTO "dishes" VALUES (13,2, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" VALUES (14,3, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (15,1, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
 INSERT INTO "dishes" VALUES (16,2, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
@@ -103,7 +103,7 @@ INSERT INTO "dishes" VALUES (30,6, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_POR
 INSERT INTO "dishes" VALUES (31,5, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
 INSERT INTO "dishes" VALUES (32,4, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
 INSERT INTO "dishes" VALUES (33,4, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
-INSERT INTO "dishes" VALUES (34,5, 'Chocolate Cheesecake', 5.00, 'dessert', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
+INSERT INTO "dishes" VALUES (34,5, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" VALUES (35,6, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (36,4, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
 INSERT INTO "dishes" VALUES (37,5, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
