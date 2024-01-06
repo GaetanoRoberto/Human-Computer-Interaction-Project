@@ -12,7 +12,7 @@ import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
 const libraries = ['places']; // Define libraries outside the component (for address field)
 import { API_KEY } from './Costants';
-import { ImageViewer, DishItem, TimeSelector, AddressSelector, address_string_to_object, address_object_to_string } from './RestaurantFormUtility';
+import { ImageViewer, DishItem, AddressSelector, address_string_to_object, address_object_to_string } from './RestaurantFormUtility';
 
 
 function ProgressLabel(props) {
