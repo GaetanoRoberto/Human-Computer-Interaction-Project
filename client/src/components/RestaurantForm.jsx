@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from './Home';
-import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup, Col, Row, Dropdown } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import dayjs from 'dayjs';
 import validator from 'validator';
 import API from '../API';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
-import { ImageViewer, DishItem, TimeSelector, AddressSelector, address_string_to_object, address_object_to_string } from './RestaurantFormUtility';
+import { ImageViewer, DishItem, EditTimeSelector, AddressSelector, address_string_to_object, address_object_to_string, ViewTimeSelector, ViewDailyTimeSelector, time_string_to_object, time_object_to_string, filter_by_day, sort_and_merge_times } from './RestaurantFormUtility';
 
 function ProgressLabel(props) {
     const { progress } = props;
@@ -19,9 +19,12 @@ function ProgressLabel(props) {
             text = 'Insert Info ';
             break;
         case 2:
-            text = 'Describe Your Activity ';
+            text = 'Insert your TimeTable ';
             break;
         case 3:
+            text = 'Describe Your Activity '
+            break;
+        case 4:
             text = 'Describe Your Menù ';
             break;
         default:
@@ -30,7 +33,7 @@ function ProgressLabel(props) {
     }
 
     return (
-        <h1 className="text-center">{text}({props.progress}/3)</h1>
+        <h1 className="text-center">{text}({props.progress}/4)</h1>
     );
 }
 
@@ -38,7 +41,7 @@ function InnerForm(props) {
     const navigate = useNavigate();
     const restaurant_id = useParams().id;
     const { progress, setProgress } = props;
-    // states for progress 1/3
+    // states for progress 1/4
     const [activityName, setActivityName] = useState({ text: '', invalid: false });
     const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
     const [phone, setPhone] = useState({ text: '', invalid: false });
@@ -47,20 +50,48 @@ function InnerForm(props) {
     const [instagram, setInstagram] = useState({ link: '', invalid: false });
     const [facebook, setFacebook] = useState({ link: '', invalid: false });
     const [twitter, setTwitter] = useState({ link: '', invalid: false });
-    const [times, setTimes] = useState([{ id: 1, first: '', last: '', invalid: false }]);
-    // temporary client id for managing the time intervals (find the max id in the times array and add 1)
-    const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
 
-    // states for progress 2/3
+    // states for progress 2/4
+    const [times, setTimes] = useState([]);
+    const [day,setDay] = useState({text:'', clicked: false});
+    const [temporaryTimes,setTemporaryTimes] = useState([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false}]);
+    const [errorMsg,setErrorMsg] = useState('');
+    // temporary client id for managing the time intervals (find the max id in the times array and add 1)
+    const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
+    const prevTimesLength = useRef(times.length);
+
+    // states for progress 3/4
     const [image, setImage] = useState(PLACEHOLDER);
     const [fileName, setFileName] = useState('No File Chosen');
 
-    // states for progress 3/3
+    // states for progress 4/4
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
     const [dishes, setDishes] = useState([]);
 
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
+
+    // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
+    useEffect(() => {
+        // Check if the length of times array has changed
+        if (times.length !== prevTimesLength.current) {
+            // Update temporaryTimes and timetempId when times state changes
+            setTemporaryTimes([
+                {
+                    id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
+                    day: '',
+                    first: '',
+                    last: '',
+                    invalid: false,
+                },
+            ]);
+            setTimeTempId(
+                times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2
+            );
+            // Update the length
+            prevTimesLength.current = times.length;
+        }
+    }, [times]);
 
     // to retrieve info of the restaurant if in edit
     useEffect(() => {
@@ -77,19 +108,8 @@ function InnerForm(props) {
                 setInstagram({ link: restaurant.instagram, invalid: false });
                 setFacebook({ link: restaurant.facebook, invalid: false });
                 setTwitter({ link: restaurant.twitter, invalid: false });
-                // retrieve hours (remove the first empty element, then inserting from the db)
-                setTimes([]);
-                restaurant.hours.split(';').forEach((timeRange) => {
-                    // Split each time range by hyphen to get start and end times
-                    const [startTime, endTime] = timeRange.split('-');
-
-                    // Check if the time already exists in the state
-                    const timeExists = times.some(time => time.first === startTime && time.last === endTime);
-
-                    if (!timeExists) {
-                        addTime({ first: startTime, last: endTime, invalid: false });
-                    }
-                });
+                // retrieve hours
+                setTimes(sort_and_merge_times(time_string_to_object(restaurant.hours)));
                 setImage(restaurant.image);
                 setDishes(restaurant.dishes);
             } catch (err) {
@@ -129,10 +149,10 @@ function InnerForm(props) {
         ));
     }
 
-    function addTime(new_time) {
+    function addTime(setTimeArrays,new_time) {
         setTimeTempId((oldTempId) => {
             if (new_time) {
-                setTimes((oldtimeList) => {
+                setTimeArrays((oldtimeList) => {
                     // Check if the time already exists
                     const timeExists = oldtimeList.some(time => time.first === new_time.first && time.last === new_time.last);
                     if (!timeExists) {
@@ -141,7 +161,7 @@ function InnerForm(props) {
                     return oldtimeList;
                 });
             } else {
-                setTimes((oldtimeList) => [
+                setTimeArrays((oldtimeList) => [
                     ...oldtimeList,
                     { id: oldTempId, first: '', last: '', invalid: false },
                 ]);
@@ -150,8 +170,8 @@ function InnerForm(props) {
         });
     }
 
-    function saveTime(updatedTime) {
-        setTimes((timeList) => timeList.map((time) => {
+    function saveTime(updatedTime,setTimeArrays) {
+        setTimeArrays((timeList) => timeList.map((time) => {
             if (time.id === updatedTime.id) {
                 return Object.assign({}, updatedTime);
             } else {
@@ -159,10 +179,13 @@ function InnerForm(props) {
             }
         }
         ));
+        
+        // sort and merge only if there are no invalidities and no in edit
+        //setTimeArrays((timelist) => (timelist.every(item => !item.invalid)) ? sort_and_merge_times(timelist) : timelist);
     }
 
-    function deleteTime(timeId) {
-        setTimes((timeList) => timeList.filter((time) => {
+    function deleteTime(timeId,setTimeArrays) {
+        setTimeArrays((timeList) => timeList.filter((time) => {
             if (timeList.length > 1) {
                 if (time.id !== timeId) {
                     return true;
@@ -175,15 +198,59 @@ function InnerForm(props) {
         ));
     }
 
-    function checkTime(time) {
-        if (time.first && time.last) {
+    function checkTime(time,setTimeArrays) {
+        let invalid = undefined;
+        if (time.first!=='' && time.last!=='') {
             const first_hour = dayjs(`2023-01-01T${time.first}`);
             const last_hour = dayjs(`2023-01-01T${time.last}`);
-            if (last_hour <= first_hour) {
-                saveTime(Object.assign({}, time, { invalid: true }));
+            if (last_hour > first_hour) {
+                saveTime(Object.assign({}, time, { invalid: false }),setTimeArrays);
             } else {
-                saveTime(Object.assign({}, time, { invalid: false }));
+                if (last_hour.isSame(first_hour) && last_hour.hour()===0 && last_hour.minute() === 0) {
+                    // allow 24 hours
+                    saveTime(Object.assign({}, time, { invalid: false }),setTimeArrays);
+                } else {
+                    saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
+                    invalid = true;
+                }   
             }
+        } else {
+            saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
+            invalid = true;
+        }
+        return invalid;
+    }
+
+    function addTempTimesToTimes() {
+        // temporary times validation
+        let invalidity = undefined;
+        for (const time of temporaryTimes) {
+            invalidity = checkTime(time,setTemporaryTimes);
+            if (invalidity) {
+                return;
+            }
+        }
+        // check if a day has been clicked
+        // in case not,message of error and don't add
+        if(day.clicked === true) {
+            // add also the day to temporary times
+            const times_to_add = temporaryTimes.map((time) => {
+                return {
+                    id: time.id,
+                    day: day.text,
+                    first: time.first,
+                    last: time.last,
+                    invalid: time.invalid
+                };
+            })
+            
+            // if all ok, add the temporary times
+            setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
+            //setTemporaryTimes([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2, day: '', first: '', last: '', invalid: false}]);
+            setDay({text:'', clicked: false});
+            setErrorMsg('');
+        } else {
+            setErrorMsg('Select a Day of The Week');
         }
     }
 
@@ -299,30 +366,40 @@ function InnerForm(props) {
                 if (twitter_invalidity) {
                     invalid = twitter_invalidity;
                 }
-                // timetable validation
-                // required part (1 required timetable has to contain values)
-                if (times.length === 1 && (times[0] === '' || times[1] === '')) {
-                    invalid = true;
-                    saveTime(Object.assign({}, times[0], { invalid: true }));
-                } else {
-                    saveTime(Object.assign({}, times[0], { invalid: false }));
-                }
-                // if present, check valid time intervals
-                for (const time of times) {
-                    const first_hour = dayjs(`2023-01-01T${time.first}`);
-                    const last_hour = dayjs(`2023-01-01T${time.last}`);
-                    if (last_hour <= first_hour) {
-                        invalid = true;
-                        saveTime(Object.assign({}, time, { invalid: true }));
-                    } else {
-                        saveTime(Object.assign({}, time, { invalid: false }));
-                    }
-                }
                 break;
             case 2:
-                // no validation needed
+                // timetable validation
+                // at least 1 timetable required
+                if (times.length === 0) {
+                    invalid = true;
+                }
+                // check for good values
+                for (const time of times) {
+                    const invalidity = checkTime(time,setTimes);
+                    if (invalidity) {
+                        invalid = invalidity;
+                        break;
+                    }
+                }
+                // also in temporary values, if not clicked save
+                for (const time of temporaryTimes) {
+                    // check only if they are not empty, since they are temporary and not required
+                    if (time.first !== '' || time.last !== '') {
+                        const invalidity = checkTime(time, setTemporaryTimes);
+                        if (invalidity) {
+                            invalid = invalidity;
+                            break;
+                        }
+                    }
+                }
+                // sort and merge them (only here and after temporary times to avoid changing while user do something)
+                setTimes((oldTimes) => sort_and_merge_times(oldTimes));
+                setTemporaryTimes((oldTempTimes) => sort_and_merge_times(oldTempTimes));
                 break;
             case 3:
+                // no validation needed
+                break;
+            case 4:
                 // no validation needed (rely on addDish and editDish screens to validate)
                 break;
             default:
@@ -330,12 +407,12 @@ function InnerForm(props) {
         }
 
         // go on if all ok
-        if (progress < 3) {
+        if (progress < 4) {
             if (!invalid) {
                 setProgress(progress + 1);
             }
         } else {
-            //progress is 3 and click save button, construct the http post object and submit by invoking the API
+            //progress is 4 and click save button, construct the http post object and submit by invoking the API
             // construct the object to call the API
             const restaurant = {};
             restaurant.image = image;
@@ -346,18 +423,16 @@ function InnerForm(props) {
             restaurant.facebook = facebook.link;
             restaurant.instagram = instagram.link;
             restaurant.twitter = twitter.link;
-            restaurant.hours = times.map(time => `${time.first}-${time.last}`).join(';');
+            restaurant.hours = time_object_to_string(times);
             restaurant.description = description.text;
             restaurant.dishes = dishes;
 
             if (restaurant_id) {
                 // update case, add the restaurantId and 
                 restaurant.id = restaurant_id;
-                console.log(restaurant);
                 // call the API to update an existing restaurant
                 await API.editRestaurant(restaurant);
             } else {
-                console.log(restaurant);
                 // call the API to add a new restaurant
                 await API.createRestaurant(restaurant);
             }
@@ -374,18 +449,18 @@ function InnerForm(props) {
                     <Form.Group className="mb-3" >
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={activityName.invalid} type="text" placeholder="Enter The Activity's Name" onChange={(event) => mainInfoValidation({ text: event.target.value, invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
+                            <Form.Control isInvalid={activityName.invalid} type="text" placeholder="Enter The Activity's Name" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
                             <Form.Control.Feedback type="invalid">Please Insert The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <AddressSelector address={address} setAddress={setAddress} />
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event.trim(), invalid: phone.invalid }, setPhone) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Please Insert a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} placeholder="Enter The Description" onChange={(event) => mainInfoValidation({ text: event.target.value, invalid: description.invalid }, setDescription)} defaultValue={description.text} />
+                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} placeholder="Enter The Description" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
                             <Form.Control.Feedback type="invalid">Please Insert A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -393,34 +468,57 @@ function InnerForm(props) {
                     <Form.Group className="mb-3">
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" value={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
+                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" value={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
+                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" value={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
+                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" value={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value, invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
+                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
                             <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
                         </div>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>TimeTable</Form.Label>
-                        {times.map((time, index) => {
-                            return <TimeSelector key={index} n_times={times.length} time={time} addTime={addTime} saveTime={saveTime} deleteTime={deleteTime} checkTime={checkTime} />;
-                        })}
                     </Form.Group>
 
                 </Container>
             );
             break;
         case 2:
+            componentToRender = (
+                <Container fluid>
+                    <Container>
+                        <p style={(errorMsg !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{errorMsg}</p>
+                        <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Mon', clicked: true}) }}>Mon</span>
+                        <span className={(day.text === 'Tue') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Tue', clicked: true}) }}>Tue</span>
+                        <span className={(day.text === 'Wed') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Wed', clicked: true}) }}>Wed</span>
+                        <span className={(day.text === 'Thu') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Thu', clicked: true}) }}>Thu</span>
+                        <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Fry', clicked: true}) }}>Fry</span>
+                        <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
+                        <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
+                        {temporaryTimes.map((temp_time) => {
+                            return <EditTimeSelector key={temp_time.id} n_times={temporaryTimes.length} time={temp_time} addTime={addTime} setTimeArrays={setTemporaryTimes} saveTime={saveTime} deleteTime={deleteTime} checkTime={checkTime} />;
+                        })}
+                    </Container>
+                    <Container className="d-flex justify-content-between mt-auto">
+                        <Button variant="warning" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); }}>Cancel</Button>
+                        <Button variant="primary" size='sm' onClick={addTempTimesToTimes}>Save</Button>
+                    </Container>
+                    {(filter_by_day(times, 'Mon').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Mon')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Tue').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Tue')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Wed').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Wed')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Thu').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Thu')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Fry').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Fry')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Sat').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sat')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    {(filter_by_day(times, 'Sun').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sun')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                </Container>
+            );
+            break;
+        case 3:
             componentToRender = (
                 <Container fluid>
                     <Form.Group className="mb-3" >
@@ -430,7 +528,7 @@ function InnerForm(props) {
                 </Container>
             );
             break;
-        case 3:
+        case 4:
             componentToRender = (
                 <>
                     <Container>
@@ -460,8 +558,8 @@ function InnerForm(props) {
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
                     {(progress > 1) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
-                    {(progress < 3) ? <Button variant="primary" type='submit' className="ms-auto">Next</Button> : ''}
-                    {(progress === 3 && dishes.length !== 0) ? <Button variant="primary" type='submit' className="ms-auto">Save</Button> : ''}
+                    {(progress < 4) ? <Button variant="primary" type='submit' className="ms-auto">Next</Button> : ''}
+                    {(progress === 4 && dishes.length !== 0) ? <Button variant="primary" type='submit' className="ms-auto">Save</Button> : ''}
                 </Container>
             </Form>
         </>

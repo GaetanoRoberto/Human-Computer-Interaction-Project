@@ -16,4 +16,7 @@ const API_KEY = 'AIzaSyCvuhhqU5FKKc39jRLY1pviZAzcKeNLJdc';
 // possible filters to apply/categories to enter when adding or editing a restaurant
 const FILTERS = [];
 
-export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY};
+// days of the week
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"];
+
+export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS};
