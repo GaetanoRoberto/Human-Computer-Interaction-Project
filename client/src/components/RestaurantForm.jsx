@@ -373,9 +373,8 @@ function InnerForm(props) {
                 if (times.length === 0) {
                     invalid = true;
                     setErrorMsg('At Least One Hours Is Required');
-                } else {
-                    setErrorMsg('');
                 }
+                
                 // check for good values
                 for (const time of times) {
                     const invalidity = checkTime(time,setTimes);
@@ -400,6 +399,7 @@ function InnerForm(props) {
                     // sort and merge them (only here and after temporary times to avoid changing while user do something)
                     setTimes((oldTimes) => sort_and_merge_times(oldTimes));
                     setTemporaryTimes((oldTempTimes) => sort_and_merge_times(oldTempTimes));
+                    setErrorMsg('');
                 }
                 break;
             case 3:
