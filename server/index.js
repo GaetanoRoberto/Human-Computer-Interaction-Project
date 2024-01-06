@@ -234,6 +234,14 @@ app.get('/api/restaurants/:id', async (req, res) => {
   }
 });
 
+// GET /api/restaurants/inserted
+// This route is used to get the only inserted restaurant
+app.get('/api/insertedrestaurants/', (req, res) => {
+  restaurantsDao.getRestaurantInserted()
+    .then(restaurant => res.json(restaurant))
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting the Inserted Restaurant' }));
+});
+
 // GET /api/ingredients/:id
 // This route is used to get the complete infos of one ingredient (when opening the dedicated screen)
 app.get('/api/ingredients/:id', (req, res) => {
@@ -248,6 +256,14 @@ app.get('/api/dishes/', (req, res) => {
   dishesDao.getFilters()
     .then(filters => res.json(filters))
     .catch(() => res.status(503).json({ error: 'Database Error in Getting all Possible type of dishes' }));
+});
+
+// GET /api/dishes/:id
+// This route is used to get all the ingredients for a given dish
+app.get('/api/dishes/:id', async (req, res) => {
+  ingredientsDao.getIngredients(req.params.id)
+    .then(ingredients => res.json(ingredients))
+    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Ingredients for the Given Dish' }));
 });
 
 // POST /api/restaurants
@@ -546,10 +562,17 @@ app.delete('/api/restaurants/:id', (req, res) => {
 
 // GET /api/reviews/:username
 // This route is used to get the reviews done by the user
-app.get('/api/reviews/users/:username', (req, res) => {
-  reviewsDao.getReviewsByUsername(req.params.username)
-    .then(ingredient => res.json(ingredient))
-    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Reviews Done by an User' }));
+app.get('/api/reviews/users/:username', async (req, res) => {
+  try {
+    const reviews = await reviewsDao.getReviewsByUsername(req.params.username).catch(() => res.status(503).json(() => { throw { error: 'Database Error in Getting all the Reviews Done by an User' } })); 
+    for (const review of reviews) {
+      const restaurant = await restaurantsDao.getRestaurant(review.restaurantId).catch(() => res.status(503).json(() => { throw { error: 'Database Error in Getting the Restaurant related to the Review' } }));
+      review.restaurant_name = restaurant.name;
+    }
+    res.json(reviews);
+  } catch (error) {
+    res.status(503).json({ error: error.error })
+  }
 });
 
 // GET /api/reviews/:id
