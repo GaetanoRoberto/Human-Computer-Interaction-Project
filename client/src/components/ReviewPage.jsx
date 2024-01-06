@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useContext, useEffect } from 'react';
-import { ButtonGroup, Form, Button, Alert, Row, Col, Image, Container } from 'react-bootstrap';
+import { ButtonGroup, Form, Button, Alert, Row, Col, Image, Container,Card,Badge } from 'react-bootstrap';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,12 +17,12 @@ const addReview = (review) => {
 }
 const editReview = (review) => {
   API.updateReview(review)
-    .then(() => {  })
+    .then(() => { })
     .catch(e => console.log(e));
 }
 const deleteReview = (review) => {
   API.deleteReview(review)
-    .then(() => {  })
+    .then(() => { })
     .catch(e => console.log(e));
 }
 /*
@@ -60,7 +60,7 @@ const ReviewForm = (props) => {
   const [titleInvalid, setTitleInvalid] = useState(false);
   const [descInvalid, setDescInvalid] = useState(false);
 
-  const [show,setShow] =  useState(false);
+  const [show, setShow] = useState(false);
   // USE EFFECT 
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const ReviewForm = (props) => {
         .then((review) => {
           setTitle(review.title);
           setUsername(review.username),
-          setDate(review.date)
+            setDate(review.date)
           setDescription(review.description)
           setQuality(review.quality)
           setSafety(review.safety)
@@ -193,38 +193,38 @@ const ReviewForm = (props) => {
     event.stopPropagation();
 
     // Form validation
-    if(title === '' || title.trim().length === 0){
+    if (title === '' || title.trim().length === 0) {
       setTitleInvalid(true);
       valid = false;
     }
-    if(description === '' || description.trim().length === 0){
+    if (description === '' || description.trim().length === 0) {
       setDescInvalid(true);
       valid = false;
     }
-    if (quality == 0){
+    if (quality == 0) {
       setQualityValid(false);
       valid = false;
     }
-    if (safety == 0){
+    if (safety == 0) {
       setSafetyValid(false);
       valid = false;
 
     }
-    if (price == 0){
+    if (price == 0) {
       setEuroValid(false);
       valid = false;
     }
 
-    if(valid){
+    if (valid) {
       const review = {
-        username : username,
-        restaurantId : id,
-        date : dayjs(date).format("YYYY-MM-DD"),
-        title : title,
-        description : description,
-        quality : quality,
-        safety:safety,
-        price : price
+        username: username,
+        restaurantId: id,
+        date: dayjs(date).format("YYYY-MM-DD"),
+        title: title,
+        description: description,
+        quality: quality,
+        safety: safety,
+        price: price
       }
       if (reviewId) {  // per vedere se sono in add o in edit
         review.id = reviewId;//url
@@ -232,7 +232,7 @@ const ReviewForm = (props) => {
       } else {
         addReview(review);
       }
- 
+
       navigate(`/restaurants/${id}/reviews`);
     }
 
@@ -242,88 +242,144 @@ const ReviewForm = (props) => {
     <>
       <Header />
       <Container>
-        <Form noValidate onSubmit={handleSubmit}>
-          <Row>
-            <Col lg={true}  >
-              <Form.Label>Username</Form.Label>
-              <Form.Control disabled readOnly type="text" name="username" value={username} />
-            </Col>
-            <Col lg={true} >
-              <Form.Label>Date</Form.Label>
-              <Form.Control disabled readOnly type="date" name="date" value={dayjs(date).format("YYYY-MM-DD")} />
-            </Col>
-          </Row>
-          <Form.Group controlId="formTitle">
-            <Form.Label>Title</Form.Label>
-            <Form.Control type="text" isInvalid={titleInvalid}  disabled={view} required name="title" value={title} onChange={ev => {setTitle(ev.target.value);setTitleInvalid(false);}} />
-            <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
-          </Form.Group>
+        {view ? /*
+        (
+    <Card className="mt-4 border">
+    <Card.Body className="p-4">
+      <Card.Title style={{ fontSize: '2rem' }} className="mb-3">{username}</Card.Title>
+    <Rating view={view} quality={quality} />
+    <HappinessRating view={view} safety={safety} />
+    <Prices view={view} price={price} />
+    <Card.Subtitle style={{ fontSize: '1.5rem' }} className="mt-3">{title}</Card.Subtitle>
+    <p>{dayjs(date).format("YYYY-MM-DD")}</p>
+    <Card.Text>{description}</Card.Text>
 
-          <Form.Group controlId="formDescription">
-            <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => {setDescription(ev.target.value);setDescInvalid(false);}} />
-            <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
-          </Form.Group>
 
-          <Form.Group controlId="formQuality">
+    </Card.Body>
+
+  </Card>
+        )*/
+        <Card className="mt-4 border">
+        <Card.Body className="p-4">
+          <div>
+          <Badge bg="success">Title</Badge>
+          <Card.Title className="mb-3">{title}</Card.Title>
+          </div>
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <Badge bg="success">Username</Badge>
+              <p>{username}</p>
+            </div>
+            <div>
+              <Badge bg="success">Date</Badge>
+              <p>{dayjs(date).format("YYYY-MM-DD")}</p>
+            </div>
+          </div>
+          <div className="mb-3">
+            <Badge bg="success">Description</Badge>
+            <p>{description}</p>
+          </div>
+          <div className="mb-2">
+            <Badge bg="success">Quality</Badge>
+            <p>    <Rating view={view} quality={quality} />
+</p>
+          </div>
+          <div className="mb-2">
+            <Badge className="mb-2" bg="success">Safety</Badge>
+            <p>    <HappinessRating view={view} safety={safety} />
+</p>
+          </div>
+          <div className="mb-2">
+            <Badge className="mb-q" bg="success">Prices</Badge>
+            <p>    <Prices view={view} price={price} />
+</p>
+          </div>
+          {/* Aggiungi altre informazioni se necessario */}
+        </Card.Body>
+      </Card>
+        : (
+          <Form noValidate onSubmit={handleSubmit}>
             <Row>
-              <Col xs={3} className="d-flex align-items-center justify-content-start">
-                <Form.Label className="me-5">Quality</Form.Label>
+              <Col lg={true}  >
+                <Form.Label>Username</Form.Label>
+                <Form.Control disabled readOnly type="text" name="username" value={username} />
               </Col>
-              <Col xs={6} className="d-flex align-items-center">
-                <Rating view={view} quality={quality} />
+              <Col lg={true} >
+                <Form.Label>Date</Form.Label>
+                <Form.Control disabled readOnly type="date" name="date" value={dayjs(date).format("YYYY-MM-DD")} />
               </Col>
             </Row>
-            <Row>
-              <Form.Text hidden={qualityValid} className="text-danger">Please select a Quality Value.</Form.Text>
-            </Row>
-          </Form.Group>
+            <Form.Group controlId="formTitle">
+              <Form.Label>Title</Form.Label>
+              <Form.Control type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
+              <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
+            </Form.Group>
 
-          <Form.Group controlId="formSafety">
-            <Row>
-              <Col xs={3} className="d-flex align-items-center justify-content-start">
-                <Form.Label className="me-5">Safety</Form.Label>
-              </Col>
-              <Col xs={6} className="d-flex align-items-center">
-                <HappinessRating view={view} safety={safety} />
-              </Col>
+            <Form.Group controlId="formDescription">
+              <Form.Label>Description</Form.Label>
+              <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
+              <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="formQuality">
+              <Row>
+                <Col xs={3} className="d-flex align-items-center justify-content-start">
+                  <Form.Label className="me-5">Quality</Form.Label>
+                </Col>
+                <Col xs={6} className="d-flex align-items-center">
+                  <Rating view={view} quality={quality} />
+                </Col>
+              </Row>
+              <Row>
+                <Form.Text hidden={qualityValid} className="text-danger">Please select a Quality Value.</Form.Text>
+              </Row>
+            </Form.Group>
+
+            <Form.Group controlId="formSafety">
+              <Row>
+                <Col xs={3} className="d-flex align-items-center justify-content-start">
+                  <Form.Label className="me-5">Safety</Form.Label>
+                </Col>
+                <Col xs={6} className="d-flex align-items-center">
+                  <HappinessRating view={view} safety={safety} />
+                </Col>
+              </Row>
+              <Row>
+                <Form.Text hidden={safetyValid} className="text-danger">Please select a Safety Value.</Form.Text>
+              </Row>
+            </Form.Group>
+
+            <Form.Group controlId="formPrice">
+              <Row>
+                <Col xs={3} className="d-flex align-items-center justify-content-start">
+                  <Form.Label className="me-5">Price</Form.Label>
+                </Col>
+                <Col xs={6} className="d-flex align-items-center">
+                  <Prices view={view} price={price} />
+                </Col>
+              </Row>
+              <Row>
+                <Form.Text hidden={euroValid} className="text-danger">Please select a Price Value.</Form.Text>
+              </Row>
+            </Form.Group>
+
+            <Row hidden={view} ><hr />
+              <ButtonGroup style={{ width: "180px" }}>
+                <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">{reviewId ? 'Update' : 'Add'}</Button>
+                <Button hidden={view} onClick={() => { navigate(-1) }} className="btn-lg mx-1 mb-2" variant='warning'>Cancel</Button>
+                <Button className="btn-lg mx-1 mb-2 " hidden={!reviewId ? true : !(user && username == user.username)} variant="danger" onClick={() => { setShow(true) }}
+                ><i className="bi bi-trash "></i></Button>
+              </ButtonGroup>
             </Row>
             <Row>
-              <Form.Text hidden={safetyValid} className="text-danger">Please select a Safety Value.</Form.Text>
+              <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow} action={() => {
+                deleteReview(reviewId);
+                navigate(`/restaurants/${id}/reviews`);
+              }} />
             </Row>
-          </Form.Group>
+          </Form>
 
-          <Form.Group controlId="formPrice">
-            <Row>
-              <Col xs={3} className="d-flex align-items-center justify-content-start">
-                <Form.Label className="me-5">Price</Form.Label>
-              </Col>
-              <Col xs={6} className="d-flex align-items-center">
-                <Prices view={view} price={price} />
-              </Col>
-            </Row>
-            <Row>
-              <Form.Text hidden={euroValid} className="text-danger">Please select a Price Value.</Form.Text>
-            </Row>
-          </Form.Group>
-
-          <Row hidden={view} ><hr />
-            <ButtonGroup style={{width:"180px"}}>
-              <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">{reviewId ? 'Update' : 'Add'}</Button>
-              <Button hidden={view} onClick={() => { navigate(-1) }} className="btn-lg mx-1 mb-2" variant='warning'>Cancel</Button>
-              <Button className="btn-lg mx-1 mb-2 " hidden={ !reviewId ?  true : !(user && username == user.username )} variant="danger" onClick={() => { setShow(true) }}
-              ><i className="bi bi-trash "></i></Button>
-            </ButtonGroup>
-          </Row>
-          <Row>
-          <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow}    action={() => {
-        deleteReview(reviewId);
-        navigate(`/restaurants/${id}/reviews`);
-    }}/>
-          </Row>
-        </Form>
-
-
+        )}
       </Container>    </>
   )
 

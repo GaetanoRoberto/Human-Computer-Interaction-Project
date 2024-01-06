@@ -188,14 +188,7 @@ function ReviewsList({ reviews }) {
                           ))}
                         </Card.Text></Col>
                       </Row>
-                      <Row>
-                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
-                        <Col xs={8} ><Card.Text>
-                          {Array.from({ length: item.price }, (_, index) => (
-                            <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
-                          ))}
-                        </Card.Text></Col>
-                      </Row>
+
                       <Row>
                         <Col xs={4}><Card.Text style={{ fontSize: "1.2em" }}>Safety:</Card.Text></Col>
                         <Col xs={8}>
@@ -204,9 +197,18 @@ function ReviewsList({ reviews }) {
                               <FontAwesomeIcon
                                 key={index}
                                 icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
-                                style={{ color: (index < 5) ? getHappinessColor(index) : "", marginRight: "5px", fontSize: "1.4em" }} />))}
+                                style={{ color: (index < 5) ? getHappinessColor(index) : "", marginTop:"5px" ,marginRight: "5px", fontSize: "1.4em" }} />))}
                           </Card.Text>
                         </Col>
+                      </Row>
+
+                      <Row>
+                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
+                        <Col xs={8} ><Card.Text>
+                          {Array.from({ length: item.price }, (_, index) => (
+                            <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
+                          ))}
+                        </Card.Text></Col>
                       </Row>
                       <Row >
                         <footer style={{ fontSize: "1em" }} className="blockquote-footer">By {item.username}, {dayjs(item.date).format("DD-MM-YYYY")}</footer>
