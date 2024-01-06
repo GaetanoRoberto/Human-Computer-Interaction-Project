@@ -337,7 +337,7 @@ async function deleteReview(reviewId) {
  * It returns a JSON object
  */
 async function getReviewsByUser(username) {
-  const response = await fetch(SERVER_URL + `/reviews/${username}`).catch(() => {throw {error: "Connection Error"}});
+  const response = await fetch(SERVER_URL + `/reviews/users/${username}`).catch(() => {throw {error: "Connection Error"}});
   if (response.ok) {
     // 200 status code, return the object
     const reviews = await response.json();

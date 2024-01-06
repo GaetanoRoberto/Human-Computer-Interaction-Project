@@ -546,7 +546,7 @@ app.delete('/api/restaurants/:id', (req, res) => {
 
 // GET /api/reviews/:username
 // This route is used to get the reviews done by the user
-app.get('/api/reviews/:username', (req, res) => {
+app.get('/api/reviews/users/:username', (req, res) => {
   reviewsDao.getReviewsByUsername(req.params.username)
     .then(ingredient => res.json(ingredient))
     .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Reviews Done by an User' }));

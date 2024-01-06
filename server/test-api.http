@@ -232,5 +232,5 @@ DELETE http://localhost:3001/api/reviews/8 HTTP/1.1
 ###
 
 ## Get all reviews of a user from his username
-GET http://localhost:3001/api/reviews/Andrea HTTP/1.1
+GET http://localhost:3001/api/reviews/users/Davide HTTP/1.1
 ###
