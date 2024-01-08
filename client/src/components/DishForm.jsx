@@ -520,7 +520,6 @@ function DishForm(props) {
 
     return (
         <>
-            <Header />
             <ProgressLabel progress={progress} />
             <InnerForm progress={progress} setProgress={setProgress} />
         </>

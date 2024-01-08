@@ -240,7 +240,6 @@ const ReviewForm = (props) => {
 
   return (
     <>
-      <Header />
       <Container>
         {view ? /*
         (

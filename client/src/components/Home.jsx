@@ -239,7 +239,6 @@ function Home(props) {
 
     return (
         <>
-            <Header />
             <SearchBar search={search} setSearch={setSearch} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} />
             <Filters filters={filters} setFilters={setFilters} fadeStates={fadeStates} setFadeStates={setFadeStates} />
             <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} search={search} />
