@@ -261,35 +261,35 @@ const ReviewForm = (props) => {
         <Card className="mt-4 border">
         <Card.Body className="p-4">
           <div>
-          <Badge bg="success">Title</Badge>
+          <Badge bg="info">Title</Badge>
           <Card.Title className="mb-3">{title}</Card.Title>
           </div>
           <div className="mb-3 d-flex justify-content-between align-items-center">
             <div>
-              <Badge bg="success">Username</Badge>
+              <Badge bg="info">Username</Badge>
               <p>{username}</p>
             </div>
             <div>
-              <Badge bg="success">Date</Badge>
+              <Badge bg="info">Date</Badge>
               <p>{dayjs(date).format("YYYY-MM-DD")}</p>
             </div>
           </div>
           <div className="mb-3">
-            <Badge bg="success">Description</Badge>
+            <Badge bg="info">Description</Badge>
             <p>{description}</p>
           </div>
           <div className="mb-2">
-            <Badge bg="success">Quality</Badge>
+            <Badge bg="info">Quality</Badge>
             <p>    <Rating view={view} quality={quality} />
 </p>
           </div>
           <div className="mb-2">
-            <Badge className="mb-2" bg="success">Safety</Badge>
+            <Badge className="mb-2" bg="info">Safety</Badge>
             <p>    <HappinessRating view={view} safety={safety} />
 </p>
           </div>
           <div className="mb-2">
-            <Badge className="mb-q" bg="success">Prices</Badge>
+            <Badge className="mb-q" bg="info">Prices</Badge>
             <p>    <Prices view={view} price={price} />
 </p>
           </div>
