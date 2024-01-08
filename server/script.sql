@@ -68,7 +68,8 @@ INSERT INTO "restaurants" VALUES (2,0, 'IP_ADDRESS_AND_PORT/restaurants/anticovi
 INSERT INTO "restaurants" VALUES (3,0, 'IP_ADDRESS_AND_PORT/restaurants/pizzium.jpg', 'Pizzium', 'Via Torquato Tasso, 5, 10122 Torino TO;lat:45.0738869;lng:7.6825461', '+3901119585395', 'https://pizzium.com/', 'https://www.facebook.com/pizzium', 'https://www.instagram.com/pizzium/', NULL , 'Wed=12:30-15:00;19:00-23:30/Thu=08:00-12:00', 'Born in 2017 in Milan from an idea by Stefano Saturnino, Giovanni Arbellini and Ilaria Puddu, Pizzium offers classic Neapolitan pizza using the best of Italian raw materials. The Pizzium style is unmistakable, but each venue is unique because it draws inspiration from the land that hosts it, without giving up the best of Naples and Campania.');
 INSERT INTO "restaurants" VALUES (4,0, 'IP_ADDRESS_AND_PORT/restaurants/rossopomodoro.jpg', 'Rossopomodoro', 'Via Nizza, 2, 10126 Torino TO;lat:45.0623010;lng:7.6781004', '+3901119781792', 'https://www.rossopomodoro.it/', 'https://www.facebook.com/rossopomodoroofficial', 'https://www.instagram.com/rossopomodoro_italia/', 'https://twitter.com/i/flow/login?redirect_after_login=%2FRossopomodoroOF', 'Mon=8:00-22:00', 'Founded in Naples - the home of pizza - in 1998, by three young people passionate about artisanal Neapolitan cuisine and pizza, Rossopomodoro has grown to become a point of reference for millions of people around the world. With over 100 restaurants in Italy and around the world, we have built an enviable reputation over 20 years, offering true Neapolitan pizza, with long-leavened dough cooked in a wood-fired oven, traditional Campania recipes and the best Italian excellences.');
 INSERT INTO "restaurants" VALUES (5,0, 'IP_ADDRESS_AND_PORT/restaurants/assaje.jpg', 'Assaje', 'Via Andrea Doria, 11, 10123 Torino TO;lat:45.0640710;lng:7.6834790', '+390117802618', 'https://www.assaje.it/', 'https://www.facebook.com/pizzeriaassaje/', 'https://www.instagram.com/pizzeria_assaje/', NULL ,'Sat=12:00-15:00;19:00-00:00', 'The Assaje pizzeria in Milan is a concept born from a group of Neapolitans who decided to export the flavors of true Neapolitan pizza to the Lombard capital. Gourmet pizzas and traditional Neapolitan recipes are what Assaje restaurants offer. All the products are distributed by local farmers and the basic idea is to bring the true flavors of Campania back to the table. For this reason the suppliers are exclusively Neapolitan, so as to re-propose the true dishes of a gastronomic culture with an ancient history.');
-INSERT INTO "restaurants" VALUES (6,0, 'IP_ADDRESS_AND_PORT/restaurants/skassapanza.jpg', 'Skassapanza', 'Via Pasquale Paoli, 54a, 10134 Torino TO;lat:45.0351312;lng:7.6522041', '+390117931455', 'https://skassapanza.it/', 'https://www.facebook.com/skassapanza', 'https://www.instagram.com/skassapanza/', NULL, 'Sun=12:00-15:00;19:00-00:00', 'Skassapanza was born from the will of two friends, Vito and Enzo, who after years of entrepreneurial experience, with a strong passion for food, decided to open a hamburger/rotisserie aimed, immediately, at customizing their own menu. The idea was born precisely from this vision which, still today, is the peculiarity of the Skassapanza premises: you decide how to compose your hamburger');
+INSERT INTO "restaurants" VALUES (6,0, 'IP_ADDRESS_AND_PORT/restaurants/skassapanza.jpg', 'Skassapanza', 'Via Pasquale Paoli, 54a, 10134 Torino TO;lat:45.0351312;lng:7.6522041', '+390117931455', 'https://skassapanza.it/', 'https://www.facebook.com/skassapanza', 'https://www.instagram.com/skassapanza/', NULL, 'Sun=12:00-15:00;19:00-00:00', 'Skassapanza was born from the will of two friends, Vito and Enzo, who after years of entrepreneurial experience, with a strong passion for food, decided to open a hamburger/rotisserie aimed, immediately, at customizing their own menu. The idea was born precisely from this vision which, still today, is the peculiarity of the Skassapanza premises: you decide how to compose your hamburger.');
+INSERT INTO "restaurants" VALUES (7,0, 'IP_ADDRESS_AND_PORT/restaurants/miscusi.jpg', 'Miscusi', "Via Principi d'Acaja, 32, 10138 Torino TO;lat:45.0739081;lng:7.6625995", '+393386292876', 'https://www.miscusi.com/', 'https://www.facebook.com/miscusi.official', 'https://www.instagram.com/miscusi.family/', NULL, 'Sun=12:00-15:00;19:00-22:00', 'Miscusi exists to make people happy by spreading a Mediterranean lifestyle. In 2017, the first restaurant launched in Milan and in just five years, the brand expanded to 12 restaurants across six Italian cities and 2 restaurants in London. Miscusi obtained B-Corp certification in the summer of 2021, thus becoming part of a movement of companies with a common goal, to be protagonists of global change and regenerate society through business, by creating a positive social and environmental impact.');
 
 INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
 INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
@@ -81,7 +82,7 @@ INSERT INTO "dishes" VALUES (8,2, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND
 INSERT INTO "dishes" VALUES (9,3, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
 INSERT INTO "dishes" VALUES (10,2, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
 INSERT INTO "dishes" VALUES (11,1, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
-INSERT INTO "dishes" VALUES (12,1, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
+INSERT INTO "dishes" VALUES (12,6, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
 INSERT INTO "dishes" VALUES (13,2, 'Chocolate Cheesecake', 5.00, 'dessert', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" VALUES (14,3, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (15,1, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
@@ -95,16 +96,16 @@ INSERT INTO "dishes" VALUES (22,4, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_
 INSERT INTO "dishes" VALUES (23,4, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
 INSERT INTO "dishes" VALUES (24,5, 'Pepperoni Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
 INSERT INTO "dishes" VALUES (25,5, 'Vegetarian Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
-INSERT INTO "dishes" VALUES (26,6, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
-INSERT INTO "dishes" VALUES (27,6, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
+INSERT INTO "dishes" VALUES (26,4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (27,5, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
 INSERT INTO "dishes" VALUES (28,4, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
 INSERT INTO "dishes" VALUES (29,5, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
-INSERT INTO "dishes" VALUES (30,6, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
+INSERT INTO "dishes" VALUES (30,5, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
 INSERT INTO "dishes" VALUES (31,5, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
 INSERT INTO "dishes" VALUES (32,4, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
-INSERT INTO "dishes" VALUES (33,4, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
+INSERT INTO "dishes" VALUES (33,6, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
 INSERT INTO "dishes" VALUES (34,5, 'Chocolate Cheesecake', 5.00, 'dessert', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
-INSERT INTO "dishes" VALUES (35,6, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
+INSERT INTO "dishes" VALUES (35,3, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (36,4, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
 INSERT INTO "dishes" VALUES (37,5, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
 INSERT INTO "dishes" VALUES (38,6, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
@@ -112,6 +113,18 @@ INSERT INTO "dishes" VALUES (39,4, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS
 INSERT INTO "dishes" VALUES (40,5, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
 INSERT INTO "dishes" VALUES (41,6, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 INSERT INTO "dishes" VALUES (42,5, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
+INSERT INTO "dishes" VALUES (43,7, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
+INSERT INTO "dishes" VALUES (44,7, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (45,7, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
+INSERT INTO "dishes" VALUES (46,7, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
+INSERT INTO "dishes" VALUES (47,7, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
+INSERT INTO "dishes" VALUES (48,7, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
+INSERT INTO "dishes" VALUES (49,7, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
+INSERT INTO "dishes" VALUES (50,7, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (51,7, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
+INSERT INTO "dishes" VALUES (52,7, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
+INSERT INTO "dishes" VALUES (53,7, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
+INSERT INTO "dishes" VALUES (54,7, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 
 
 INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
@@ -239,6 +252,30 @@ INSERT INTO "ingredients" VALUES (121,42, 'IP_ADDRESS_AND_PORT/ingredients/fusil
 INSERT INTO "ingredients" VALUES (122, 42, 'IP_ADDRESS_AND_PORT/ingredients/parmesan_cheese.png', 'Parmesan Cheese', 'lactose', 'Kraft', 'http://www.kraft.com');
 INSERT INTO "ingredients" VALUES (123, 42, 'IP_ADDRESS_AND_PORT/ingredients/basil.jpg', 'Fresh Basil', NULL, 'LocalFarm', NULL);
 INSERT INTO "ingredients" VALUES (124, 42, 'IP_ADDRESS_AND_PORT/ingredients/garlic.jpg', 'Garlic', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (125,43, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
+INSERT INTO "ingredients" VALUES (126,43, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (127,43, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks.jpg' , 'Egg yolks', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (128,43, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
+INSERT INTO "ingredients" VALUES (129,43, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (130, 44, 'IP_ADDRESS_AND_PORT/ingredients/lasagna.jpg' , 'Lasagna', 'gluten', 'Homemade', NULL);
+INSERT INTO "ingredients" VALUES (131, 44, 'IP_ADDRESS_AND_PORT/ingredients/pumpkin.jpg', 'Pumpkins', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (132, 44, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
+INSERT INTO "ingredients" VALUES (133,44, 'IP_ADDRESS_AND_PORT/ingredients/bacon.jpg', 'Bacon', NULL, 'LocalBreeding', NULL);
+INSERT INTO "ingredients" VALUES (134,45, 'IP_ADDRESS_AND_PORT/ingredients/rigatoniglutenfree.jpg' , 'Gluten-free short rigatoni', NULL, 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (135,45, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (136,45, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
+INSERT INTO "ingredients" VALUES (137,45, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (138,46, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
+INSERT INTO "ingredients" VALUES (139,46, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (140,46, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
+INSERT INTO "ingredients" VALUES (141,46, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (142,47, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
+INSERT INTO "ingredients" VALUES (143,47, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
+INSERT INTO "ingredients" VALUES (144,47, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (145,48, 'IP_ADDRESS_AND_PORT/ingredients/fusilliglutenfree.jpg' , 'Fusilli gluten-free', NULL, 'Rummo', 'http://www.pastarummo.it');
+INSERT INTO "ingredients" VALUES (146, 48, 'IP_ADDRESS_AND_PORT/ingredients/parmesan_cheese.png', 'Parmesan Cheese', 'lactose', 'Kraft', 'http://www.kraft.com');
+INSERT INTO "ingredients" VALUES (147, 48, 'IP_ADDRESS_AND_PORT/ingredients/basil.jpg', 'Fresh Basil', NULL, 'LocalFarm', NULL);
+INSERT INTO "ingredients" VALUES (148, 48, 'IP_ADDRESS_AND_PORT/ingredients/garlic.jpg', 'Garlic', NULL, 'LocalFarm', NULL);
 
 
 INSERT INTO "users" VALUES ('Andrea','Piazza Carlo Felice, 63, 10123 Torino TO;lat:45.0631586;lng:7.6800018',0);
