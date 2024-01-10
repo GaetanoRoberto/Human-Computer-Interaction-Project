@@ -174,7 +174,7 @@ function Profile(props) {
               const user = await API.getUser(username);
               if (user != null) {
                   setAddress({ text: user.position.split(";")[0], lat: user.position.split(";")[1], lng: user.position.split(";")[2], invalid: false });
-                  console.log(user);
+                  //console.log(user);
               } else {
                   // Handle the case when the dish with dishId is not found
                   console.log('User not found');

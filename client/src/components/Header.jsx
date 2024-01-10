@@ -38,7 +38,7 @@ function Header(props) {
 
   const handleOptionSelect = async (option) => {
     if (option != props.selectedStatus) {
-      await props.handleLogout(); // Log out from the current session
+      //props.handleLogout(); // Log out from the current session
       props.setSelectedStatus(option); // Update the selected status
       props.doLogIn(); // Log in with new credentials based on the selected status
     }

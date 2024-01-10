@@ -8,23 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserContext } from './userContext';
 import ConfirmModal from './ConfirmModal';
 import API from '../API';
+import { ErrorContext } from './userContext';
 
 
-const addReview = (review) => {
-  API.createReview(review)
-    .then(() => { })
-    .catch(e => console.log(e));
-}
-const editReview = (review) => {
-  API.updateReview(review)
-    .then(() => { })
-    .catch(e => console.log(e));
-}
-const deleteReview = (review) => {
-  API.deleteReview(review)
-    .then(() => { })
-    .catch(e => console.log(e));
-}
+
 /*
   const handleHappinessClick = (happinessIndex) => {
     setSelectedHappiness(happinessIndex);
@@ -36,6 +23,7 @@ const deleteReview = (review) => {
 
 const ReviewForm = (props) => {
   const user = useContext(UserContext);
+  const handleError = useContext(ErrorContext);
 
 
   // reviewId da URL
@@ -76,11 +64,25 @@ const ReviewForm = (props) => {
           setPrice(review.price)
         }
         )
-        .catch((err) => console.log(err));
+        .catch((err) => handleError(err));
     }
   }, []);
 
-
+  const addReview = (review) => {
+    API.createReview(review)
+      .then(() => { })
+      .catch(e => handleError(e));
+  }
+  const editReview = (review) => {
+    API.updateReview(review)
+      .then(() => { })
+      .catch(e => handleError( e));
+  }
+  const deleteReview = (review) => {
+    API.deleteReview(review)
+      .then(() => { })
+      .catch(e => handleError(e));
+  }
   function Rating(props) {
     const [starsSelected, setStarsSelected] = useState(props.quality);
     return [...Array(5)].map((el, index) =>
