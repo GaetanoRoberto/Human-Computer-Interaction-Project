@@ -1,30 +1,62 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListGroup, Card, Col, Row, Button, FormControl } from 'react-bootstrap';
-import { Header } from './Header';
-import { NavigationButtons } from './NavigationButtons';
-import { SearchBar } from './Home';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 import dayjs from 'dayjs';
-import ConfirmModal from './ConfirmModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import API from '../API';
 
-
+function getHappinessClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-regular fa-face-dizzy";
+      case 1:
+        return "fa-regular fa-face-tired";
+      case 2:
+        return "fa-regular fa-face-meh";
+      case 3:
+        return "fa-regular fa-face-smile";
+      case 4:
+        return "fa-regular fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessSolidClass(index) {
+    switch (index) {
+      case 0:
+        return "fa-solid fa-face-dizzy";
+      case 1:
+        return "fa-solid fa-face-tired";
+      case 2:
+        return "fa-solid fa-face-meh";
+      case 3:
+        return "fa-solid fa-face-smile";
+      case 4:
+        return "fa-solid fa-face-grin-stars";
+      default:
+        return " ";
+    }
+  }
+  function getHappinessColor(index) {
+    switch (index) {
+      case 0:
+        return "#ff3300" // Faccina arrabbiata
+      case 1:
+        return "#ff8300"; // Faccina triste
+      case 2:
+        return "#FFD700"; // Faccina neutra
+      case 3:
+        return "#00ff5b"; // Faccina sorridente
+      case 4:
+        return "green"; // Faccina che ride
+      default:
+        return " ";
+    }
+  }
+  
 function ReviewsListProfile(props) {
-    const [showModal, setShowModal] = useState(false);
-    const [indexOfTheReviewToRemove, setIndexOfTheReviewToRemove] = useState(0);
+    const reviewsHeight = (window.innerHeight - 342);
     const navigate = useNavigate();
-
-    const handleRemoveReview = (index) => {
-        console.log(index);
-        setShowModal(true);
-        setIndexOfTheReviewToRemove(index);
-    };
-
-    const removeReview = (index) => {
-        console.log(index);
-        const newReviews = props.reviews.filter((_, i) => i !== index);
-        props.setReviews(newReviews);
-    };
 
     return (
         <>
@@ -36,51 +68,48 @@ function ReviewsListProfile(props) {
                             <Card.Body>
                                 <Row>
                                     <Col>
-                                        <Card.Title>Restaurant id: {item.restaurantId}</Card.Title>
+                                    <Card.Title style={{ fontSize: "1.4rem" }}>{item.restaurant_name}</Card.Title>
                                     </Col>
-                                    <Col>
-                                        <Card.Text>
-                                            {
-                                                Array.from({ length: item.quality }, (_, index) => (
-                                                    <i key={index} className="bi bi-star-fill"></i>
-                                                ))
-                                            }
-                                        </Card.Text>
-                                        <Card.Text>
-                                            {
-                                                Array.from({ length: item.price }, (_, index) => (
-                                                    <i key={index} className="bi bi-currency-euro"></i>
-                                                ))
-                                            }
-                                        </Card.Text>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Card.Text>
+                                    <Card.Title>
                                         {item.title}
-                                    </Card.Text>
+                                    </Card.Title>
+                                    <Row>
+                                    <Col><Card.Subtitle>{item.description}</Card.Subtitle></Col>
+                                    </Row>
                                 </Row>
                                 <Row>
-                                    <Card.Text>
-                                        {item.description}
-                                    </Card.Text>
+                                    <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Quality:</Card.Text></Col>
+                                    <Col xs={8}><Card.Text>
+                                    {Array.from({ length: item.quality }, (_, index) => (
+                                        <i key={index} className="bi bi-star-fill" style={{ color: '#FFD700', marginRight: "5px", fontSize: "1.4em" }} ></i>
+                                    ))}
+                                    </Card.Text></Col>
                                 </Row>
                                 <Row>
-                                    <Card.Text>
-                                        {item.date}
-                                    </Card.Text>
+                                    <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
+                                    <Col xs={8} ><Card.Text>
+                                    {Array.from({ length: item.price }, (_, index) => (
+                                        <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
+                                    ))}
+                                    </Card.Text></Col>
                                 </Row>
-                                {/* {(props.numberOfReviews >= 1) ? 
-                                <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', zIndex: 1}}>
-                                    <Button size='sm' variant="warning" onClick={() => { navigate(`/restaurants/${item.restaurantId}/reviews/edit/${item.id}`) }} style={{marginRight: '10px', color: 'white'}}><i className="bi bi-pencil-square"></i></Button> 
-                                    <Button size='sm' variant="danger" onClick={() => handleRemoveReview(index)}><i className="bi bi-trash"></i></Button> 
-                                </div>
-                                : ''} */}
+                                <Row>
+                                    <Col xs={4}><Card.Text style={{ fontSize: "1.2em" }}>Safety:</Card.Text></Col>
+                                    <Col xs={8}>
+                                    <Card.Text>
+                                        {Array.from({ length: 5 }, (_, index) => (
+                                        <FontAwesomeIcon
+                                            key={index}
+                                            icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
+                                            style={{ color: (index < 5) ? getHappinessColor(index) : "", marginRight: "5px", fontSize: "1.4em" }} />))}
+                                    </Card.Text>
+                                    </Col>
+                                </Row>
+
                             </Card.Body>
                         </Card>
                     );
                 })}
-                    <ConfirmModal text={'Delete this Review'} show={showModal} setShow={setShowModal} action={removeReview} parameter={indexOfTheReviewToRemove}/>
             </ListGroup>
         </>
     );

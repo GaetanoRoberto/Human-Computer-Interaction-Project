@@ -7,77 +7,12 @@ import '../index.css'
 import { AddressSelector } from './RestaurantFormUtility';
 import { ReviewsListProfile } from './ReviewsListProfile';
 import { BannerProfile } from './Restaurant';
+import { Header } from './Header.jsx';
 import ConfirmModal from './ConfirmModal';
-
-
-const ProfileHeader = (props) => {
-  const navigate = useNavigate();
-
-  const handleStatusSelection = (status) => () => {
-    let checkIfRedirectIsNeeded = false;
-    if (props.selectedStatus != status) {
-      checkIfRedirectIsNeeded = true;
-    }
-    props.setSelectedStatus(status);
-    if (checkIfRedirectIsNeeded) {
-      //navigate('/');
-    }
-  };
-
-  return (
-    <Container>
-      <Row className="align-items-center">
-          <Col>
-              <FontAwesomeIcon icon="fa fa-arrow-left" onClick={() => navigate('/')} style={{ borderRadius: '50%', border: '2px solid black', fontSize: '1.2rem', padding: '0.6rem', paddingLeft: '0.65rem', paddingRight: '0.65rem'}}/>
-          </Col>
-          {/* <Col >
-              <h6>Profile</h6>
-          </Col> */}
-          <Col xs="auto">
-                <Dropdown>
-                    <Dropdown.Toggle variant="light" className="d-flex align-items-center" style={{borderRadius: 5, width: 160, border: '1px solid black', marginBottom: 0}}>
-                      {props.selectedStatus=="User" ? 
-                        <Col className="d-flex align-items-center">
-                          <FontAwesomeIcon icon="fa-solid fa-user" style={{ borderRadius: '50%', border: '2px solid black', fontSize: '1.1rem', padding: '0.3rem', paddingLeft: '0.35rem', paddingRight: '0.35rem'}} />
-                          <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem'}}>User</p>
-                        </Col> 
-                        :
-                        <Col className="d-flex align-items-center"> 
-                          <FontAwesomeIcon icon="fa-solid fa-utensils" style={{ borderRadius: '50%', border: '2px solid black', fontSize: '1.1rem', padding: '0.3rem', paddingLeft: '0.35rem', paddingRight: '0.35rem'}} />
-                          <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem'}}>Restaurater</p>
-                        </Col>
-                      }
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu style={{borderRadius: 5, width: 160, border: '1px solid black' }}>
-                      <Col>
-                        {props.selectedStatus=="Restaurater" ?
-                        <Dropdown.Item onClick={handleStatusSelection('User')} className="profile-dropdown-item d-flex align-items-center" style={{borderTop: "1px solid lightgray", borderBottom: "1px solid lightgray"}}> {/*BOOTSTRAP CLASS */}
-                            <FontAwesomeIcon icon="fa-solid fa-user" style={{ borderRadius: '50%', border: '2px solid black', fontSize: '1.1rem', padding: '0.3rem', paddingLeft: '0.35rem', paddingRight: '0.35rem'}} />
-                            <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem'}}>User</p>
-                        </Dropdown.Item>
-                        : <></>
-                        }
-                      </Col>
-                      <Col>
-                        {props.selectedStatus=="User" ?
-                        <Dropdown.Item onClick={handleStatusSelection('Restaurater')} className="profile-dropdown-item d-flex align-items-center" style={{borderTop: "1px solid lightgray", borderBottom: "1px solid lightgray"}}>
-                            <FontAwesomeIcon icon="fa-solid fa-utensils" style={{ borderRadius: '50%', border: '2px solid black', fontSize: '1.1rem', padding: '0.3rem', paddingLeft: '0.35rem', paddingRight: '0.35rem'}} />
-                            <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem'}}>Restaurater</p>
-                        </Dropdown.Item>
-                        : <></>
-                        }
-                      </Col>
-                    </Dropdown.Menu>
-                </Dropdown>
-            </Col>
-      </Row>
-    </Container>
-  );
-}
+import { address_object_to_string } from './RestaurantFormUtility';
 
 function MyLocation(props) {
-  const { address, setAddress } = props;
+  const { address, setAddress, username } = props;
 
   function handleLocationClick() {
     if (navigator.geolocation) {
@@ -98,10 +33,26 @@ function MyLocation(props) {
       const geocoder = new google.maps.Geocoder();
       const latLng = { lat: latitude, lng: longitude };
 
-      geocoder.geocode({ location: latLng }, (results, status) => {
+      geocoder.geocode({ location: latLng }, async (results, status) => {
           if (status === google.maps.GeocoderStatus.OK && results[0]) {
               setAddress({ text: results[0].formatted_address, lat: latitude, lng: longitude, invalid: false });
-              resolve(undefined); // Resolve with undefined for a valid address
+
+              const location = results[0].formatted_address + ';lat:' + latitude + ";lng:" + longitude;
+              const updatedUser = { 
+                position: location, 
+                isRestaurateur: 1, 
+                username: "Restaurateur"
+              };
+              console.log(updatedUser);
+
+              // Now call the updateUser API with the updated user information
+              try {
+                await API.updateUser(updatedUser); // Assuming updateUser returns a promise
+                resolve(updatedUser); // Resolve with undefined for a valid address
+              } catch(error) {
+                console.error("Failed to update user:", error);
+                reject(error); // Reject with the error
+              }
           } else {
               setAddress({ text: results[0].formatted_address, lat: latitude, lng: longitude, invalid: true });
               reject(true); // Resolve with true for an invalid address
@@ -139,14 +90,14 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
           <Col className="mb-2" style={{marginTop: 25}}>
             <Row as="h1" style={{borderBottom: '1px solid lightgray'}}>Your Info</Row>
             <Row as="h4" className="text-secondary">
-              Name
+                {props.username}
             </Row>
           </Col>
           <Col className="mb-2" style={{marginTop: 40}}>
             <Row as="h1" style={{marginTop: 30, marginBottom: 14.1, borderBottom: '1px solid lightgray'}}>Enter Your Location</Row>
             <Row style={{marginLeft: "-22.5px"}}>
-            <AddressSelector address={props.address} setAddress={props.setAddress} />
-            <MyLocation address={props.address} setAddress={props.setAddress}/>
+            <AddressSelector address={props.address} setAddress={props.setAddress} isInProfilePage={true}/>
+            <MyLocation address={props.address} setAddress={props.setAddress} username={props.username}/>
             </Row>
           </Col>
         </Container>
@@ -156,7 +107,6 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
 
 const ReviewRow = (props) => {  {/*ME LO PASSA GAETANO*/}
     const { reviews, setReviews, restaurant } = props;
-    const navigate = useNavigate();
 
     return (
       <Container fluid>
@@ -181,10 +131,14 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
       setShowModal(true);
     };
 
-    const removeRestaurant = () => {
-        //const emptyRestaurant = props.restaurant.filter((_, i) => i !== index);
-        setRestaurant(null); //SIAMO CERTI CHE C'è UN SOLO RISTORANTE, QUINDI BASTA FARE QUESTO PER RIMUOVERLO
-    };
+    const removeRestaurant = async () => {
+      try {
+          await API.deleteRestaurant(1); 
+          setRestaurant(null); 
+      } catch (error) {
+          console.error("Failed to delete the restaurant:", error);
+      }
+  };
 
     return (
       <Container fluid>  
@@ -209,26 +163,33 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
 
 function Profile(props) {
     const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
-
-    const { id } = useParams();
-    const username = 'Luca';
+    const username = "Restaurateur";
     const [reviews, setReviews] = useState([]);
     const [restaurant, setRestaurant] = useState(null);
 
     useEffect(() => {
-        const getRestaurant = async () => {
-            try {
-                const restaurant = await API.getRestaurant(1);
-                console.log(restaurant);
-                setRestaurant(restaurant);
-            } catch (error) {
-                console.log(error);
-            }
-        }
+      // function used to retrieve restaurant information in detail
+      async function getUser(username) {
+          try {
+              const user = await API.getUser(username);
+              if (user != null) {
+                  setAddress({ text: user.position.split(";")[0], lat: user.position.split(";")[1], lng: user.position.split(";")[2], invalid: false });
+                  console.log(user);
+              } else {
+                  // Handle the case when the dish with dishId is not found
+                  console.log('User not found');
+              }
+          } catch (err) {
+              // show error message
+              console.log(err);
+          }
+      };
+      if (username) {
+          getUser(username);
+      }
+    }, []);
 
-        getRestaurant();
-    }, [id]);
-
+    
     useEffect(() => {
       const getReviewsByUser = async () => {
         try {
@@ -244,11 +205,28 @@ function Profile(props) {
       getReviewsByUser();
   }, [username]);
 
+    useEffect(() => {
+        const getInsertedRestaurant = async () => {
+            try {
+                const restaurant = await API.getInsertedRestaurant();
+                console.log(restaurant);
+                if (restaurant.error == "Restaurant not found."){
+                  setRestaurant(null);
+                } else {
+                  setRestaurant(restaurant);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getInsertedRestaurant();
+    }, []);
+
     return (
         <>
           <Col style={{marginTop: 15, marginLeft: 24, marginRight: 24}}>
-            <ProfileHeader selectedStatus={props.selectedStatus} setSelectedStatus={props.setSelectedStatus}/>
-            <ProfileInformation address={address} setAddress={setAddress}/> 
+            <ProfileInformation address={address} setAddress={setAddress} username={username}/> 
             <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant}/>
             {props.selectedStatus != "User" ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant}/> : <></>}
           </Col>

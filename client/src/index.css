@@ -150,3 +150,23 @@
   filter: brightness(70%);
   margin-bottom: 10px;
 }
+
+/*DROPDOWN DI FilterPage.jsx*/
+.custom-typeahead .rbt-menu {
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+}
+
+.custom-typeahead .rbt-menu .dropdown-item {
+  /*border-bottom: 1px solid #ccc; */
+  padding: 8px; 
+}
+
+.custom-typeahead .rbt-menu .dropdown-item:last-child {
+  border-bottom: none; 
+}
+
+.rbt-menu, .dropdown-menu .show {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}

@@ -8,6 +8,7 @@ import { StandaloneSearchBox } from '@react-google-maps/api';
 import ConfirmModal from './ConfirmModal';
 import dayjs from 'dayjs';
 import { DAYS } from './Costants';
+import API from '../API';
 
 const handleImageChange = (event, setImage, setFileName) => {
     const file = event.target.files[0];
@@ -60,7 +61,7 @@ function ImageViewer(props) {
 }
 
 function DishItem(props) {
-    const { dish, deleteDish } = props;
+    const { restaurantId, dish, deleteDish } = props;
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
 
@@ -70,7 +71,7 @@ function DishItem(props) {
             <Row>
                 <Col xs={8}>{dish.name}</Col>
                 <Col xs={2}>
-                    <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${dish.id}`) }}>
+                    <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${restaurantId}/${dish.id}`) }}>
                         <i className="bi bi-pencil-square"></i>
                     </Button>
                 </Col>
@@ -90,10 +91,10 @@ function DishItem(props) {
  * const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
  */
 function AddressSelector(props) {
-    const { address, setAddress } = props;
+    const { address, setAddress, isInProfilePage } = props;
     const inputRef = useRef();
 
-    const handlePlaceChanged = () => {
+    const handlePlaceChanged = async () => {
         const [place] = inputRef.current.getPlaces();
         if (place) {
             setAddress({
@@ -102,8 +103,28 @@ function AddressSelector(props) {
                 lng: place.geometry.location.lng(),
                 invalid: address.invalid
             });
+            if(isInProfilePage == true){
+                const location = place.formatted_address + ';lat:' + place.geometry.location.lat() + ";lng:" + place.geometry.location.lng();
+                const updatedUser = { 
+                    position: location, 
+                    isRestaurateur: 1, 
+                    username: "Restaurateur"
+                };
+                console.log(updatedUser);
+    
+                // Now call the updateUser API with the updated user information
+                try {
+                    const result = await API.updateUser(updatedUser); // Assuming updateUser returns a promise
+                    console.log("User updated successfully:", result);
+                    // You might want to do something with the result or updated user here
+                } catch(error) {
+                    console.error("Failed to update user:", error);
+                    // Handle the error appropriately
+                }
+            }
         }
     };
+    
 
     return (
         <StandaloneSearchBox onLoad={(ref) => (inputRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
