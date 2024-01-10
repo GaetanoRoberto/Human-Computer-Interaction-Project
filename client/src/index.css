@@ -170,3 +170,7 @@
   padding-top: 0px;
   padding-bottom: 0px;
 }
+
+.dropdown-toggle::after {
+  margin-bottom: 3px;
+}
