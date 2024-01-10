@@ -225,7 +225,6 @@ function Profile(props) {
 
     return (
         <>
-          <Header selectedStatus={props.selectedStatus} setSelectedStatus={props.setSelectedStatus} handleLogout={props.handleLogout} doLogIn={props.doLogIn}/>
           <Col style={{marginTop: 15, marginLeft: 24, marginRight: 24}}>
             <ProfileInformation address={address} setAddress={setAddress} username={username}/> 
             <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant}/>

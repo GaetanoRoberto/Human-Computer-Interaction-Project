@@ -17,7 +17,6 @@ import { Profile } from './components/Profile';
 import { DishForm } from './components/DishForm';
 import { FilterPage } from './components/FilterPage.jsx';
 import API from './API';
-import ErrorComponent from './components/ErrorComponent.jsx'; 
 import { Header } from './components/Home';
 library.add(fab, fas, far);
 
@@ -43,7 +42,7 @@ function App() {
 
 
   // Define doLogIn function outside of useEffect
-  /*const doLogIn = () => {
+  const doLogIn = () => {
     const credentials = {
       username: selectedStatus == "Restaurater" ? "Restaurateur" : "Luca", 
       isRestaurateur: selectedStatus == "Restaurater" ? "1" : "0",
@@ -56,7 +55,7 @@ function App() {
       .catch(err => {
         console.error("Login failed with error:", err);
       });
-  };*/
+  };
 
   // error state for handling errors, shared with context
   const [errorMessage,setErrorMessage] = useState('');
@@ -98,7 +97,7 @@ function App() {
     <UserContext.Provider value={user}>
       <ErrorContext.Provider value={handleError}>
         <BrowserRouter>
-          <Header/>
+          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn}/>
           {errorMessage ? <Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')}>{errorMessage}</Alert> : ''}
           <Routes>
             <Route path='/' element={<Home />} />     {/* FATTA*/}
