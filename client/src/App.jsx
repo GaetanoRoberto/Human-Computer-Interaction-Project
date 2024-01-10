@@ -24,7 +24,7 @@ library.add(fab, fas, far);
 function App() {
   const [user, setUser] = useState(null);
   // const [loggedIn, setLoggedIn] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState('Restaurater'); //User: Default selection, Restaurater
+  const [selectedStatus, setSelectedStatus] = useState('User'); //User: Default selection, Restaurater
   const [filters, setFilters] = useState({
     categories: [],
     minprice: '',
@@ -44,8 +44,8 @@ function App() {
   // Define doLogIn function outside of useEffect
   const doLogIn = () => {
     const credentials = {
-      username: selectedStatus == "Restaurater" ? "Restaurateur" : "Luca", 
-      isRestaurateur: selectedStatus == "Restaurater" ? "1" : "0",
+      username: selectedStatus == "User" ? "User" : "Restaurateur", 
+      isRestaurateur: selectedStatus == "User" ? "0" : "1",
     };
     API.logIn(credentials)
       .then(user => {
@@ -69,6 +69,45 @@ function App() {
 
     setErrorMessage(errMsg);
   }
+//Gaetano 
+/*
+useEffect(() => {
+  const checkAuth = async () => {
+    try {
+      // se sono già loggato prendo info
+      const user = await API.getUserInfo();
+       console.log("già autenticato", user)
+      // setLoggedIn(true);
+      setUser(user);
+    } catch (err) {
+      // console.log("Utente non autenticato. Effettua il login.");
+      // Effettua il login se l'utente non è autenticato
+      doLogIn();
+      return
+    }};
+  checkAuth();
+  }, []);
+  const doLogIn = () => {
+    const credentials = {
+      username: "Andrea",
+      isRestaurateur: "0"
+    }
+    /*
+    const credentials = {
+      username: "Restaurateur",
+      isRestaurateur: "1"
+    }
+    API.logIn(credentials)
+      .then(user => {
+        setUser(user);
+        console.log("autenticazione in corso",user)
+      })
+      .catch(err => {
+        handleError(err);
+        console.log(err)
+      })
+  }*/
+//Davide
 
   useEffect(() => {
     // Function to check current authentication status
@@ -80,13 +119,20 @@ function App() {
         doLogIn(); // Attempt login if not authenticated
       }
     };
-    checkAuth();
+  
+    if(user){
+      handleLogout()
+      doLogIn(); 
+    }else{
+      checkAuth();
+    }
   }, [selectedStatus]); // Only runs once on component mount
 
+/*
   useEffect(() => {
     // Perform login whenever selectedStatus changes
-    doLogIn(); 
-  }, [selectedStatus]);
+
+  }, []);*/
 
   const handleLogout = async () => {
     await API.logOut().catch((err) => handleError(err));

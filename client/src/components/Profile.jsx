@@ -209,7 +209,7 @@ function Profile(props) {
         const getInsertedRestaurant = async () => {
             try {
                 const restaurant = await API.getInsertedRestaurant();
-                console.log(restaurant);
+                //console.log(restaurant);
                 if (restaurant.error == "Restaurant not found."){
                   setRestaurant(null);
                 } else {
