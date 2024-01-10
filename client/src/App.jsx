@@ -72,12 +72,11 @@ function App() {
       })
       .catch(err => {
         handleError(err);
-        console.log(err)
       })
   }
 
   const handleLogout = async () => {
-    await API.logOut().catch((err) => console.log(err));
+    await API.logOut().catch((err) => handleError(err));
     setUser(undefined);
   }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from './Home';
 import { Button, Container, Form, ListGroup, Col, Row, Dropdown } from 'react-bootstrap';
@@ -9,6 +9,7 @@ import API from '../API';
 import 'react-phone-number-input/style.css'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 import { ImageViewer, DishItem, EditTimeSelector, AddressSelector, address_string_to_object, address_object_to_string, ViewTimeSelector, ViewDailyTimeSelector, time_string_to_object, time_object_to_string, filter_by_day, sort_and_merge_times } from './RestaurantFormUtility';
+import { ErrorContext } from './userContext';
 
 function ProgressLabel(props) {
     const { progress } = props;
@@ -39,6 +40,7 @@ function ProgressLabel(props) {
 
 function InnerForm(props) {
     const navigate = useNavigate();
+    const handleError = useContext(ErrorContext);
     const restaurant_id = useParams().id;
     const { progress, setProgress } = props;
     // states for progress 1/4
@@ -98,7 +100,7 @@ function InnerForm(props) {
         // function used to retrieve restaurant information in detail
         async function getRestaurant(restaurantId) {
             try {
-                const restaurant = await API.getRestaurant(restaurantId);
+                const restaurant = await API.getRestaurant(restaurantId).catch(() => handleError('Error in Getting the Restaurant'));
                 // set info of the restaurant
                 setActivityName({ text: restaurant.name, invalid: false });
                 setAddress(address_string_to_object(restaurant.location));
@@ -437,10 +439,10 @@ function InnerForm(props) {
                 // update case, add the restaurantId and 
                 restaurant.id = restaurant_id;
                 // call the API to update an existing restaurant
-                await API.editRestaurant(restaurant);
+                await API.editRestaurant(restaurant).catch(() => handleError('Error in Updating the Restaurant'));
             } else {
                 // call the API to add a new restaurant
-                await API.createRestaurant(restaurant);
+                await API.createRestaurant(restaurant).catch(() => handleError('Error in Adding the Restaurant'));
             }
             //then return home
             navigate('/');
