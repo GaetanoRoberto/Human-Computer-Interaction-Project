@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Fade } from 'react-bootstrap';
-import { Header } from './Header';
 import { useNavigate } from 'react-router-dom';
-import { Typeahead } from 'react-bootstrap-typeahead';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -133,7 +130,6 @@ const FilterPage = (props) => {
 
     return (
         <>
-            <Header selectedStatus={props.selectedStatus} setSelectedStatus={props.setSelectedStatus}/>
             <Container fluid>
                 <Row>
                     <Col>
