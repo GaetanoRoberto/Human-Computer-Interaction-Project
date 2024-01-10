@@ -474,7 +474,6 @@ function Restaurant() {
         <>
             { restaurant && (
                 <>
-                    <Header/>
                     <Banner restaurant={restaurant} />
                     { menu ? (
                         <Menu restaurant={restaurant} />

@@ -236,10 +236,31 @@ app.get('/api/restaurants/:id', async (req, res) => {
 
 // GET /api/restaurants/inserted
 // This route is used to get the only inserted restaurant
-app.get('/api/insertedrestaurants/', (req, res) => {
-  restaurantsDao.getRestaurantInserted()
-    .then(restaurant => res.json(restaurant))
-    .catch(() => res.status(503).json({ error: 'Database Error in Getting the Inserted Restaurant' }));
+app.get('/api/insertedrestaurants/', async (req, res) => {
+  try {
+    let return_struct = {};
+    // get restaurant
+    const restaurant = await restaurantsDao.getRestaurantInserted().catch(() => { throw { error: 'Database Error in Getting the Inserted Restaurant' } });
+    return_struct = restaurant;
+    // get dishes of a restaurant
+    const dishes = await dishesDao.getDishes(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the Dishes' } });
+    // populate dishes_ingredients, create for each dish the dish + the array of ingredients 
+    // struct to put together dish and ingredients => use Promise.all to wait for all asynchronous operations to complete
+    const dishes_ingredients = await Promise.all(dishes.map(async (dish) => {
+      const ingredients = await ingredientsDao.getIngredients(dish.id).catch(() => { throw { error: 'Database Error in Getting the Ingredients' } });
+      dish.ingredients = ingredients;
+      return dish;
+    }));
+    // get the reviews relatd to the restaurant
+    const reviews = await reviewsDao.getReviews(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the Reviews' } });
+    // assign to the final struct the dishes and the reviews
+    return_struct.dishes = dishes_ingredients;
+    return_struct.reviews = reviews;
+    // return it
+    res.json(return_struct);
+  } catch (error) {
+    res.status(503).json({ error: error.error })
+  }
 });
 
 // GET /api/ingredients/:id

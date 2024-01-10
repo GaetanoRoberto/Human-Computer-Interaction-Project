@@ -372,7 +372,9 @@ function InnerForm(props) {
                 // at least 1 timetable required
                 if (times.length === 0) {
                     invalid = true;
+                    setErrorMsg('At Least One Hours Is Required');
                 }
+                
                 // check for good values
                 for (const time of times) {
                     const invalidity = checkTime(time,setTimes);
@@ -392,9 +394,13 @@ function InnerForm(props) {
                         }
                     }
                 }
-                // sort and merge them (only here and after temporary times to avoid changing while user do something)
-                setTimes((oldTimes) => sort_and_merge_times(oldTimes));
-                setTemporaryTimes((oldTempTimes) => sort_and_merge_times(oldTempTimes));
+
+                if (!invalid) {
+                    // sort and merge them (only here and after temporary times to avoid changing while user do something)
+                    setTimes((oldTimes) => sort_and_merge_times(oldTimes));
+                    setTemporaryTimes((oldTempTimes) => sort_and_merge_times(oldTempTimes));
+                    setErrorMsg('');
+                }
                 break;
             case 3:
                 // no validation needed
@@ -571,7 +577,6 @@ function RestaurantForm(props) {
 
     return (
         <>
-            <Header />
             <ProgressLabel progress={progress}/>
             <InnerForm progress={progress} setProgress={setProgress} />
         </>

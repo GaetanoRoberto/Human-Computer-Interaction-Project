@@ -47,13 +47,13 @@ function Header(props) {
   return (
     <>
       <Navbar bg='success' variant='dark' style={{ height: 54 }}>
-        <Container fluid>
+      <Container fluid >
           {location.pathname != "/" ?
             <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : () => navigate(-1)} />
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
-          <div className="d-flex flex-grow-1 justify-content-center">
+          <div >
             <Button variant="warning" onClick={() => navigate('/')}>Gluten-Hub</Button>
           </div>
             {/* <Col xs="auto">
@@ -98,8 +98,8 @@ function Header(props) {
                 */}
                       {location.pathname === "/settings" ?
 
-            <Dropdown drop= "down"  align="end">
-              <Dropdown.Toggle variant="success" id="dropdown-basic">
+            <Dropdown   drop= "down"  align="end"  style={{marginRight:"-20px"}}>
+              <Dropdown.Toggle  variant="success" id="dropdown-basic">
                 {props.selectedStatus === 'User' ? (
                   <FontAwesomeIcon icon="fa-solid fa-user"  style={{borderRadius: '50%',
     border: '1.5px solid white',
@@ -121,17 +121,17 @@ function Header(props) {
 
   }} />                )}
                 {/*selectedOption*/}
-              </Dropdown.Toggle>
+              </Dropdown.Toggle >
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  onClick={() => handleOptionSelect('User')} className={ 'bg-success text-light'}
+              <Dropdown.Menu  className={ 'bg-success  '}>
+                <Dropdown.Item /*style={{    borderBottom: '1px solid white'}}*/
+                  onClick={() => handleOptionSelect('User')} className={ 'bg-success text-light d-flex align-items-center'}
                 >
                   {userIcon}
                   User
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => handleOptionSelect('Restaurant')} className={ 'bg-success text-light'}
+                  onClick={() => handleOptionSelect('Restaurant')} className={ 'bg-success text-light d-flex align-items-center '}
                 >
                   {restaurantIcon}
                   Restaurant
@@ -148,7 +148,8 @@ function Header(props) {
           color: 'white',
           padding: '0.3rem',
           paddingLeft: '0.35rem',
-          paddingRight: '0.35rem'
+          paddingRight: '0.35rem',
+
         }} />
         :
         <FontAwesomeIcon icon="fa-solid fa-user" onClick={() => navigate('/settings')} style={{

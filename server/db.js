@@ -21,6 +21,12 @@ if (fs.existsSync(dbPath)) {
 // Create a new database instance
 const db = new sqlite3.Database(dbPath);
 
+//AGGIUNGIAMO GIà ADESSO The PRAGMA statement PER GARANTIRE CHE I VINCOLI DI FOREIGN KEY SIANO RISPETTATI GIà DALL'INIZIO
+// Enable foreign keys by executing the PRAGMA statement
+db.serialize(() => {
+  db.run('PRAGMA foreign_keys = ON;');
+});
+
 // Read the SQL file
 const templateSQL = fs.readFileSync(sqlScriptPath).toString();
 const sqlScript = templateSQL.replace(/IP_ADDRESS_AND_PORT/g, IP_ADDRESS_AND_PORT);
