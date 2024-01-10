@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext ,useState} from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { UserContext } from './userContext';
-function Header() {
+
+function Header(props) {
   const navigate = useNavigate();
   const { id } = useParams();
   //const user = useContext(UserContext);
@@ -34,11 +35,15 @@ function Header() {
     paddingRight: '0.35rem',        marginRight: '10px',
 
   }} />
-  const [selectedOption, setSelectedOption] = useState('User'); // Opzione selezionata di default
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+  const handleOptionSelect = async (option) => {
+    if (option != props.selectedStatus) {
+      await props.handleLogout(); // Log out from the current session
+      props.setSelectedStatus(option); // Update the selected status
+      props.doLogIn(); // Log in with new credentials based on the selected status
+    }
   };
+  
   return (
     <>
       <Navbar bg='success' variant='dark' style={{ height: 54 }}>
@@ -95,7 +100,7 @@ function Header() {
 
             <Dropdown drop= "down"  align="end">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                {selectedOption === 'User' ? (
+                {props.selectedStatus === 'User' ? (
                   <FontAwesomeIcon icon="fa-solid fa-user"  style={{borderRadius: '50%',
     border: '1.5px solid white',
     fontSize: '1rem',

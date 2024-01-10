@@ -15,6 +15,7 @@ import { UserContext } from './components/userContext';
 import { Button,Col } from 'react-bootstrap';
 import { Profile } from './components/Profile';
 import { DishForm } from './components/DishForm';
+import { FilterPage } from './components/FilterPage.jsx';
 import API from './API';
 
 import { Header } from './components/Home';
@@ -25,46 +26,55 @@ function App() {
   const [user, setUser] = useState(null);
   // const [loggedIn, setLoggedIn] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('Restaurater'); //User: Default selection, Restaurater
+  const [filters, setFilters] = useState({
+    categories: [],
+    minprice: '',
+    maxprice: '',
+    maxDistance: '',
+    qualityRating: '',
+    safetyRating: '', 
+    ingredientInput: '',
+    ingredients: [], // Array to hold added ingredients
+    openNow: false,
+  });
+  const [isInvalidIngredient, setIsInvalidIngredient] = useState(false);
+  const [isInvalidPrice, setIsInvalidPrice] = useState(false);
 
 
 
-  
+  // Define doLogIn function outside of useEffect
+  const doLogIn = () => {
+    const credentials = {
+      username: selectedStatus == "Restaurater" ? "Restaurateur" : "Luca", 
+      isRestaurateur: selectedStatus == "Restaurater" ? "1" : "0",
+    };
+    API.logIn(credentials)
+      .then(user => {
+        setUser(user);
+        console.log("Login successful with user:", user);
+      })
+      .catch(err => {
+        console.error("Login failed with error:", err);
+      });
+  };
+
   useEffect(() => {
+    // Function to check current authentication status
     const checkAuth = async () => {
       try {
-        // se sono già loggato prendo info
         const user = await API.getUserInfo();
-        // console.log("già autenticato", user)
-        // setLoggedIn(true);
         setUser(user);
       } catch (err) {
-        // console.log("Utente non autenticato. Effettua il login.");
-        // Effettua il login se l'utente non è autenticato
-        doLogIn();
-        return
+        doLogIn(); // Attempt login if not authenticated
       }
     };
     checkAuth();
-    
-  }, []);
-  const doLogIn = () => {
-    const credentials = {
-      username: "Andrea",
-      isRestaurateur: "0"
-    }
-    /*
-    const credentials = {
-      username: "Restaurateur",
-      isRestaurateur: "1"
-    }*/
-    API.logIn(credentials)
-      .then( user => {
-        setUser(user);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+  }, [selectedStatus]); // Only runs once on component mount
+
+  useEffect(() => {
+    // Perform login whenever selectedStatus changes
+    doLogIn(); 
+  }, [selectedStatus]);
 
   const handleLogout = async () => {
     await API.logOut().catch((err) => console.log(err));
@@ -76,8 +86,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     {/* FATTA*/ }
-        <Route path='/filters' element={<></>}/>{/* DAVE [o chi finisce prima] */ }
-        <Route path='/settings' element={<Profile selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/>}/>{/* DAVE*/ }
+        <Route path='/filters' element={<FilterPage filters={filters} setFilters={setFilters} isInvalidPrice={isInvalidPrice} setIsInvalidPrice={setIsInvalidPrice} isInvalidIngredient={isInvalidIngredient} setIsInvalidIngredient={setIsInvalidIngredient}/>}/>{/* DAVE [o chi finisce prima] */ }
+        <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn}/>}/>{/* DAVE*/ }
         <Route path='/restaurants/:id/details' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/menu' element={<Restaurant/>}/>{/* QUEEN*/ }
         <Route path='/restaurants/:id/reviews' element={<Restaurant/>}/>{/* TANUCC*/ }
@@ -87,7 +97,7 @@ function App() {
         <Route path='/addInfo' element={<RestaurantForm/>}/>  {/* DOME*/ }
         <Route path='/editInfo/:id' element={<RestaurantForm/>}/>{/* DOME*/ }
         {selectedStatus == "Restaurater" && <Route path='/addDish' element={<DishForm/>}/>}   {/*   DAVE*/ }
-        <Route path='/editDish/:id' element={<></>}/>{/* DAVE*/ }
+        <Route path='/editDish/:restaurantId/:dishId' element={<DishForm/>}/>{/* DAVE*/ }
         <Route path='*' element={<DefaultRoute/>} />
       </Routes>
     </BrowserRouter>

@@ -453,7 +453,7 @@ function InnerForm(props) {
                             <Form.Control.Feedback type="invalid">Please Insert The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <AddressSelector address={address} setAddress={setAddress} />
+                            <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event.trim(), invalid: phone.invalid }, setPhone) }} />
@@ -535,7 +535,7 @@ function InnerForm(props) {
                         <ListGroup>
                             {
                                 dishes.map((dish, index) => {
-                                    return (<DishItem key={index} dish={dish} deleteDish={deleteDish} />);
+                                    return (<DishItem key={index} restaurantId={restaurant_id} dish={dish} deleteDish={deleteDish} />);
                                 })
                             }
                         </ListGroup>
