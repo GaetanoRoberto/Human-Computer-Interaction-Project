@@ -8,7 +8,7 @@ const db = require('./db');
 exports.getRestaurants = () => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT restaurants.id, restaurants.image AS image,restaurants.name AS name, restaurants.location AS location,' +
-            'AVG(reviews.quality) AS avg_quality,AVG(reviews.safety) AS avg_safety,AVG(reviews.price) AS avg_price ' +
+            'AVG(reviews.quality) AS avg_quality,AVG(reviews.safety) AS avg_safety,AVG(reviews.price) AS avg_price, restaurants.hours AS hours ' +
             'FROM restaurants LEFT JOIN reviews ON restaurants.id = reviews.restaurantId GROUP BY restaurants.id, restaurants.image, restaurants.name';
         db.all(sql, [], (err, rows) => {
             // if query error, reject the promise, otherwise return the content
@@ -16,7 +16,7 @@ exports.getRestaurants = () => {
                 reject(err);
             } else {
                 // put together quality and safety average
-                const restaurants = rows.map(restaurant => ({ id: restaurant.id, image: restaurant.image, location: restaurant.location, name: restaurant.name, avg_quality: restaurant.avg_quality, avg_safety: restaurant.avg_safety, avg_price: restaurant.avg_price }));
+                const restaurants = rows.map(restaurant => ({ id: restaurant.id, image: restaurant.image, location: restaurant.location, name: restaurant.name, hours: restaurant.hours, avg_quality: restaurant.avg_quality, avg_safety: restaurant.avg_safety, avg_price: restaurant.avg_price }));
                 resolve(restaurants);
             }
         });
