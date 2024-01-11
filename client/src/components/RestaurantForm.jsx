@@ -469,7 +469,7 @@ function InnerForm(props) {
                             <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event.trim(), invalid: phone.invalid }, setPhone) }} />
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Please Insert a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>

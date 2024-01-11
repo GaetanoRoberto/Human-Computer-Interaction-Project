@@ -10,3 +10,5 @@ Desktop.ini
 server/public/*
 server/public/
 .idea/
+server/glutenhub.sqlite
+client/src/components/Costants.jsx
