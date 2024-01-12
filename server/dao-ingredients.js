@@ -93,6 +93,22 @@ exports.insertIngredient = (ingredient) => {
   });
 };
 
+// This function returns the possible allergens, for showing them in filters route and select them.
+exports.getAllergens = () => {
+  return new Promise((resolve, reject) => {
+      const sql = 'SELECT DISTINCT(allergens) FROM ingredients where allergens IS NOT NULL';
+      db.all(sql, [], (err, rows) => {
+          // if query error, reject the promise, otherwise return the content
+          if (err) {
+              reject(err);
+          } else {
+              const allergens = rows.map(allergen => (allergen.allergens));
+              resolve(allergens);
+          }
+      });
+  });
+};
+
 /*
 // This function update a specific Ingredient given its id and infos.
 exports.updateIngredient = (ingredient) => {

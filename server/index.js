@@ -271,6 +271,25 @@ app.get('/api/insertedrestaurants/', async (req, res) => {
   }
 });
 
+// GET /api/filterinfos/
+// This route is used to get the inserted categories and allergens from the db to allow user to filter for them
+app.get('/api/filterinfos/', async (req, res) => {
+  try {
+    let return_struct = {};
+    // get categories
+    const categories = await dishesDao.getCategories().catch(() => { throw { error: 'Database Error in Getting all the Available Categories' } });
+    // get allergens
+    const allergens = await ingredientsDao.getAllergens().catch(() => { throw { error: 'Database Error in Getting all the Available Allergens' } });
+    // assign them to the struct
+    return_struct.categories = categories;
+    return_struct.allergens = allergens;
+    // return it
+    res.json(return_struct);
+  } catch (error) {
+    res.status(503).json({ error: error.error })
+  }
+});
+
 // GET /api/ingredients/:id
 // This route is used to get the complete infos of one ingredient (when opening the dedicated screen)
 app.get('/api/ingredients/:id', (req, res) => {

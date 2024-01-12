@@ -163,6 +163,23 @@ async function getInsertedRestaurant() {
 };
 
 /**
+ * This function is used to get all the available categories and allergens for allow the user to filter for them in the filters route
+ * It returns a JSON object
+ */
+async function getFilteringInfos() {
+  const response = await fetch(SERVER_URL + '/filterinfos').catch(() => {throw {error: "Connection Error"}});
+  if (response.ok) {
+    // 200 status code, return the object
+    const filterinfos = await response.json();
+    return filterinfos;
+  } else {
+    // json object provided by the server with the error
+    const error = await response.json();
+    throw error;
+  }
+};
+
+/**
  * This function is used to get the complete infos of one ingredient (when opening the dedicated screen)
  * It returns a JSON object
  */
@@ -392,6 +409,7 @@ const API = {
   getRestaurants,
   getRestaurant,
   getInsertedRestaurant,
+  getFilteringInfos,
   getIngredient,
   getFilters,
   getDishIngredients,

@@ -45,6 +45,10 @@ GET http://localhost:3001/api/restaurants/1 HTTP/1.1
 GET http://localhost:3001/api/insertedrestaurants/ HTTP/1.1
 ###
 
+## Get the available categories and allergens
+GET http://localhost:3001/api/filterinfos/ HTTP/1.1
+###
+
 ## Get complete infos of an ingredient 
 GET http://localhost:3001/api/ingredients/3 HTTP/1.1
 ###

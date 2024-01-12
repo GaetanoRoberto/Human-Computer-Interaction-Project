@@ -122,6 +122,22 @@ exports.getRestaurantFilters = (restaurantId) => {
     });
 };
 
+// This function returns the possible type of dishes, for showing them in filters route and select them.
+exports.getCategories = () => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT DISTINCT(type) FROM dishes where type IS NOT NULL';
+        db.all(sql, [], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
+                const categories = rows.map(category => (category.type));
+                resolve(categories);
+            }
+        });
+    });
+};
+
 // This function returns all the allergens for each dish, for filter in the home page.
 exports.getDishAllergens = (dishId) => {
     return new Promise((resolve, reject) => {
