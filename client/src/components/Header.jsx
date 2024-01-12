@@ -14,7 +14,7 @@ function Header(props) {
   const location = useLocation();
   const detailsMenuReviews = location.pathname.endsWith('/details') || location.pathname.endsWith('/menu') || location.pathname.endsWith('/reviews')
   const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo') ||  location.pathname.startsWith('/addDish');
-  console.log("header", detailsMenuReviews, afterSettings, location.pathname)
+  //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
