@@ -112,19 +112,61 @@ const FilterPage = (props) => {
         }
       }, [username]);
 
-    const categoriesOptions = [
-        { value: 'Desserts', label: 'Desserts' },
-        { value: 'Drinks', label: 'Drinks' },
-        { value: 'Hamburger', label: 'Hamburger' },
-        { value: 'Pasta', label: 'Pasta' },
-        { value: 'Pizza', label: 'Pizza' },
-    ]
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    };
+    
+    const mapToCategoriesOptions = (array) => {
+        return array.map((item) => ({
+            value: capitalizeFirstLetter(item),
+            label: capitalizeFirstLetter(item)
+        }));
+    };
+    
+    const mapToAllergensOptions = (array) => {
+        return array.map((item) => ({
+            value: capitalizeFirstLetter(item),
+            label: capitalizeFirstLetter(item)
+        }));
+    };
+    
+      useEffect(() => {
+        // function used to retrieve restaurant information in detail
+        async function getCategoriesAndAllergenes() {
+            try {
+                const categoriesAndAllergenes = await API.getFilteringInfos();
+                console.log(categoriesAndAllergenes);
+                if (categoriesAndAllergenes != null) {
+                    // Example of how to use this function when setting the state
+                    props.setCategoriesOptions(mapToCategoriesOptions(categoriesAndAllergenes.categories));
+                    props.setAllergensOptions(mapToAllergensOptions(categoriesAndAllergenes.allergens));
+                    //setUserAddress(user1.position.split(";")[0]);
+                    //console.log(user);
+                } else {
+                    // Handle the case when the dish with dishId is not found
+                    console.log('User not found');
+                }
+            } catch (err) {
+                // show error message
+                console.log(err);
+            }
+        };
+        getCategoriesAndAllergenes();
+      }, []);
 
-    const allergensOptions = [
-        { value: 'Lactose', label: 'Lactose' },
-        { value: 'Gluten', label: 'Gluten' },
-        { value: 'Nickel', label: 'Nickel' },
-    ]
+    // const categoriesOptions = [
+    //     { value: 'Desserts', label: 'Desserts' },
+    //     { value: 'Drinks', label: 'Drinks' },
+    //     { value: 'Hamburger', label: 'Hamburger' },
+    //     { value: 'Pasta', label: 'Pasta' },
+    //     { value: 'Pizza', label: 'Pizza' },
+    // ]
+
+    // const allergensOptions = [
+    //     { value: 'Lactose', label: 'Lactose' },
+    //     { value: 'Gluten', label: 'Gluten' },
+    //     { value: 'Nickel', label: 'Nickel' },
+    // ]
 
       const handleCategoryChange = (selectedOptions) => {
         setTempFilters((prevFilter) => ({
@@ -265,8 +307,8 @@ const FilterPage = (props) => {
                                         isMulti
                                         isSearchable={false}
                                         isClearable={true}
-                                        options={categoriesOptions}
-                                        value={categoriesOptions.filter((option) => tempFilters.categories.includes(option.value))}
+                                        options={props.categoriesOptions}
+                                        value={props.categoriesOptions.filter((option) => tempFilters.categories.includes(option.value))}
                                         onChange={handleCategoryChange}
                                         onMenuOpen={() => setMenuOpen(true)}
                                         onMenuClose={() => setMenuOpen(false)}
@@ -286,8 +328,8 @@ const FilterPage = (props) => {
                                         isMulti
                                         isSearchable={true}
                                         isClearable={true}
-                                        options={allergensOptions}
-                                        value={allergensOptions.filter((option) => tempFilters.allergens.includes(option.value))}
+                                        options={props.allergensOptions}
+                                        value={props.allergensOptions.filter((option) => tempFilters.allergens.includes(option.value))}
                                         onChange={handleIngredientChange}
                                         />
                                         </Col>

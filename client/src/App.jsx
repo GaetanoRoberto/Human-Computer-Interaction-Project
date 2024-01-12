@@ -36,6 +36,8 @@ function App() {
     openNow: false,
     nearby: false,
   });
+  const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
+  const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
 
 
   // Define doLogIn function outside of useEffect
@@ -155,7 +157,7 @@ function App() {
           {/*<Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')} >{errorMessage}</Alert>*/}
           <Routes>
             <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
-            <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus}/>} />{/* DAVE [o chi finisce prima] */}
+            <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus} categoriesOptions={categoriesOptions} setCategoriesOptions={setCategoriesOptions} allergensOptions={allergensOptions} setAllergensOptions={setAllergensOptions}/>} />{/* DAVE [o chi finisce prima] */}
             <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} />} />{/* DAVE*/}
             <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
