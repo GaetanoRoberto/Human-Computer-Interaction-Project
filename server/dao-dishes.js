@@ -122,6 +122,22 @@ exports.getRestaurantFilters = (restaurantId) => {
     });
 };
 
+// This function returns all the allergens for each dish, for filter in the home page.
+exports.getDishAllergens = (dishId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT DISTINCT(ingredients.allergens) FROM dishes,ingredients where dishId=? AND dishes.id=ingredients.dishId AND ingredients.allergens IS NOT NULL';
+        db.all(sql, [dishId], (err, rows) => {
+            // if query error, reject the promise, otherwise return the content
+            if (err) {
+                reject(err);
+            } else {
+                const allergens = rows.map(allergen => (allergen.allergens));
+                resolve(allergens);
+            }
+        });
+    });
+};
+
 // This function create a new dish.
 exports.insertDish = (dish) => {
   return new Promise((resolve, reject) => {

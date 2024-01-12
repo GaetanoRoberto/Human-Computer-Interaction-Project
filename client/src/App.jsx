@@ -163,8 +163,8 @@ function App() {
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/addInfo' element={<RestaurantForm />} />  {/* DOME*/}
             <Route path='/editInfo/:id' element={<RestaurantForm />} />{/* DOME*/}
-            {selectedStatus == "Restaurater" && <Route path='/addDish' element={<DishForm />} />}   {/*   DAVE*/}
-            <Route path='/editDish/:restaurantId/:dishId' element={<DishForm />} />{/* DAVE*/}
+            <Route path='/restaurants/:id/addDish' element={<DishForm />} />   {/*   DAVE*/}
+            <Route path='/restaurants/:id/editDish/:dishId' element={<DishForm/>} />{/* DAVE*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>

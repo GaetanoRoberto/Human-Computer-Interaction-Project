@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useContext } from 'react'
+import { ErrorContext } from './userContext';
 import API from '../API';
 import { useNavigate } from 'react-router-dom'
 import { ListGroup, Card, Col, Row, Button, Navbar, Container, Form, Badge, Fade } from 'react-bootstrap';
@@ -185,6 +186,7 @@ function RestaurantsList(props) {
 
 
 function Home(props) {
+    const handleError = useContext(ErrorContext);
     const [restaurantList, setRestaurantList] = useState([]);
     const [filters, setFilters] = useState([]);
     const [search, setSearch] = useState("");
@@ -199,7 +201,7 @@ function Home(props) {
                 setRestaurantList(restaurants);
                 setRestaurantInitialList(restaurants);
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         };
         async function getFilters() {
@@ -208,7 +210,7 @@ function Home(props) {
                 setFilters(filters);
                 setFadeStates(filters.map(() => true));
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         };
 
