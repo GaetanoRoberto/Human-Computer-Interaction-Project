@@ -102,7 +102,7 @@ function SearchReview(props) {
 
     sortByField(label.toLowerCase(), searched);
   };
-  const userReview = reviews.find(review => review.username === user.username);
+  const userReview = user? reviews.find(review => review.username === user.username):"";
   return (
     <>
       <Row className='my-1 mx-0 d-flex align-items-center'>

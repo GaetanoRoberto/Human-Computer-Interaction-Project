@@ -36,7 +36,7 @@ function ProgressLabel(props) {
 
 function InnerForm(props) {
     const navigate = useNavigate();
-    const { restaurantId, dishId } = useParams();
+    const { id, dishId } = useParams();
     const { progress, setProgress } = props;
     // states for progress 3/3
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": IP_ADDRESS_AND_PORT + '/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": IP_ADDRESS_AND_PORT + '/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": IP_ADDRESS_AND_PORT + '/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": IP_ADDRESS_AND_PORT + '/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": IP_ADDRESS_AND_PORT + '/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": IP_ADDRESS_AND_PORT + '/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
@@ -69,9 +69,9 @@ function InnerForm(props) {
     // to retrieve info of the restaurant if in edit
     useEffect(() => {
         // function used to retrieve restaurant information in detail
-        async function getRestaurant(restaurantId) {
+        async function getRestaurant(id) {
             try {
-                const restaurant = await API.getRestaurant(restaurantId);
+                const restaurant = await API.getRestaurant(id);
                 // Find the dish with the matching dishId
                 const selectedDish = restaurant.dishes.find((dish) => dish.id == dishId);
                 console.log(selectedDish);
@@ -124,8 +124,8 @@ function InnerForm(props) {
                 console.log(err);
             }
         };
-        if (restaurantId) {
-            getRestaurant(restaurantId);
+        if (id) {
+            getRestaurant(id);
         }
     }, []);
 
@@ -296,7 +296,7 @@ function InnerForm(props) {
             restaurant.description = description.text;
             restaurant.dishes = dishes;
 
-            if (restaurant_id) {
+            if (id) {
                 // update case, add the restaurantId and 
                 restaurant.id = restaurant_id;
                 console.log(restaurant);
@@ -477,7 +477,7 @@ function InnerForm(props) {
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
-                    {(progress > 1) ? <Button variant="warning" onClick={() => { navigate(`/editInfo/${restaurantId}`) }}>Back</Button> : ''}
+                    {(progress > 1) ? <Button variant="warning" onClick={() => { navigate(`/editInfo/${id}`,{ state: { from: 'add_or_edit_dish' }}) }}>Back</Button> : ''}
                     {(progress < 4) ? <Button variant="primary" type='submit' className="ms-auto">Next</Button> : <Button variant="primary" type='submit' className="ms-auto">Add Dish</Button>}
                     {(progress === 4 && dishes.length !== 0) ? <Button variant="primary" type='submit' className="ms-auto">Save</Button> : ''}
                 </Container>

@@ -72,7 +72,7 @@ function DishItem(props) {
             <Row>
                 <Col xs={8}>{dish.name}</Col>
                 <Col xs={2}>
-                    <Button size='sm' variant="success" onClick={() => { navigate(`/editDish/${restaurantId}/${dish.id}`) }}>
+                    <Button size='sm' variant="success" onClick={() => { navigate(`/restaurants/${restaurantId}/editDish/${dish.id}`) }}>
                         <i className="bi bi-pencil-square"></i>
                     </Button>
                 </Col>

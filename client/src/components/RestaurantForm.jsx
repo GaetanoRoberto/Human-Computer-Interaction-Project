@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './Home';
 import { Button, Container, Form, ListGroup, Col, Row, Dropdown } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
@@ -39,6 +39,7 @@ function ProgressLabel(props) {
 }
 
 function InnerForm(props) {
+    const location = useLocation();
     const navigate = useNavigate();
     const handleError = useContext(ErrorContext);
     const restaurant_id = useParams().id;
@@ -100,7 +101,7 @@ function InnerForm(props) {
         // function used to retrieve restaurant information in detail
         async function getRestaurant(restaurantId) {
             try {
-                const restaurant = await API.getRestaurant(restaurantId).catch(() => handleError('Error in Getting the Restaurant'));
+                const restaurant = await API.getRestaurant(restaurantId);
                 // set info of the restaurant
                 setActivityName({ text: restaurant.name, invalid: false });
                 setAddress(address_string_to_object(restaurant.location));
@@ -116,11 +117,15 @@ function InnerForm(props) {
                 setDishes(restaurant.dishes);
             } catch (err) {
                 // show error message
-                console.log(err);
+                handleError(err);
             }
         };
         if (restaurant_id) {
             getRestaurant(restaurant_id);
+        }
+        // Access the information about the previous location
+        if(location.state?.from && location.state?.from==='add_or_edit_dish') {
+            setProgress(4);
         }
     }, []);
 
@@ -439,10 +444,10 @@ function InnerForm(props) {
                 // update case, add the restaurantId and 
                 restaurant.id = restaurant_id;
                 // call the API to update an existing restaurant
-                await API.editRestaurant(restaurant).catch(() => handleError('Error in Updating the Restaurant'));
+                await API.editRestaurant(restaurant).catch((err) => handleError(err));
             } else {
                 // call the API to add a new restaurant
-                await API.createRestaurant(restaurant).catch(() => handleError('Error in Adding the Restaurant'));
+                await API.createRestaurant(restaurant).catch((err) => handleError(err));
             }
             //then return home
             navigate('/');
@@ -464,7 +469,7 @@ function InnerForm(props) {
                             <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event.trim(), invalid: phone.invalid }, setPhone) }} />
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Please Insert a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
@@ -549,7 +554,7 @@ function InnerForm(props) {
                         </ListGroup>
                     </Container>
                     <Container className="d-flex flex-column align-items-center width-100">
-                        <Button variant='primary' onClick={() => { navigate('/addDish') }}>Add Dish</Button>
+                        <Button variant='primary' onClick={() => { navigate(`/restaurants/${restaurant_id}/addDish/`) }}>Add Dish</Button>
                     </Container>
                 </>
             );

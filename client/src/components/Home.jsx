@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect,useContext } from 'react'
+import { ErrorContext } from './userContext';
 import API from '../API';
 import { useNavigate } from 'react-router-dom'
 import { ListGroup, Card, Col, Row, Button, Navbar, Container, Form, Badge, Fade } from 'react-bootstrap';
@@ -242,6 +243,7 @@ function RestaurantsList(props) {
 
 
 function Home(props) {
+    const handleError = useContext(ErrorContext);
     const user = useContext(UserContext);
     const username = user && user.username;
     const [userAddress, setUserAddress] = useState({lat1: '', lon1: ''});
@@ -260,7 +262,7 @@ function Home(props) {
                 setRestaurantList(restaurants);
                 setRestaurantInitialList(restaurants);
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         };
         function getFilters() {
@@ -269,7 +271,7 @@ function Home(props) {
                 setFilters(filters);
                 setFadeStates(filters.map(() => true));
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         };
 

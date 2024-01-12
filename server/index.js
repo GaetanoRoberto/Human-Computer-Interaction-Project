@@ -195,11 +195,19 @@ app.get('/api/restaurants', async (req, res) => {
       restaurant.dish_types = types;
       const dishes_avg_price = await dishesDao.getDishesAvgPrice(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the Average Price of the Dishes linked to the Restaurant' }});
       restaurant.dishes_avg_price = dishes_avg_price;
+      // getting all the dishes for each restaurant
+      const dishes = await dishesDao.getDishes(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the dishes of the Restaurants' } });
+      let allergens = [];
+      for (const dish of dishes) {
+        const dish_allergens = await dishesDao.getDishAllergens(dish.id).catch(() => { throw { error: 'Database Error in Getting the allergens of the Dishes' } });
+        allergens = [...allergens,...dish_allergens];
+      }
+      // remove duplicates and assign to restaurant
+      restaurant.allergens = [...new Set(allergens)];
     }
     // return all the restaurant along with their dishes
     res.json(return_struct);
   } catch (error) {
-    console.log(error);
     res.status(503).json({ error: error.error })
   }
 });

@@ -12,7 +12,7 @@ import { useState, useEffect } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
 import { Restaurant } from "./components/Restaurant.jsx";
 import { ErrorContext, UserContext } from './components/userContext';
-import { Button, Col, Alert } from 'react-bootstrap';
+import { Button, Col, Alert, Toast } from 'react-bootstrap';
 import { Profile } from './components/Profile';
 import { DishForm } from './components/DishForm';
 import { FilterPage } from './components/FilterPage.jsx';
@@ -41,7 +41,7 @@ function App() {
   // Define doLogIn function outside of useEffect
   const doLogIn = () => {
     const credentials = {
-      username: selectedStatus == "User" ? "User" : "Restaurateur", 
+      username: selectedStatus == "User" ? "User" : "Restaurateur",
       isRestaurateur: selectedStatus == "User" ? "0" : "1",
     };
     API.logIn(credentials)
@@ -55,7 +55,7 @@ function App() {
   };
 
   // error state for handling errors, shared with context
-  const [errorMessage,setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // function to handle the application errors
   function handleError(err) {
@@ -66,45 +66,45 @@ function App() {
 
     setErrorMessage(errMsg);
   }
-//Gaetano 
-/*
-useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      // se sono già loggato prendo info
-      const user = await API.getUserInfo();
-       console.log("già autenticato", user)
-      // setLoggedIn(true);
-      setUser(user);
-    } catch (err) {
-      // console.log("Utente non autenticato. Effettua il login.");
-      // Effettua il login se l'utente non è autenticato
-      doLogIn();
-      return
-    }};
-  checkAuth();
-  }, []);
-  const doLogIn = () => {
-    const credentials = {
-      username: "Andrea",
-      isRestaurateur: "0"
-    }
-    /*
-    const credentials = {
-      username: "Restaurateur",
-      isRestaurateur: "1"
-    }
-    API.logIn(credentials)
-      .then(user => {
+  //Gaetano 
+  /*
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // se sono già loggato prendo info
+        const user = await API.getUserInfo();
+         console.log("già autenticato", user)
+        // setLoggedIn(true);
         setUser(user);
-        console.log("autenticazione in corso",user)
-      })
-      .catch(err => {
-        handleError(err);
-        console.log(err)
-      })
-  }*/
-//Davide
+      } catch (err) {
+        // console.log("Utente non autenticato. Effettua il login.");
+        // Effettua il login se l'utente non è autenticato
+        doLogIn();
+        return
+      }};
+    checkAuth();
+    }, []);
+    const doLogIn = () => {
+      const credentials = {
+        username: "Andrea",
+        isRestaurateur: "0"
+      }
+      /*
+      const credentials = {
+        username: "Restaurateur",
+        isRestaurateur: "1"
+      }
+      API.logIn(credentials)
+        .then(user => {
+          setUser(user);
+          console.log("autenticazione in corso",user)
+        })
+        .catch(err => {
+          handleError(err);
+          console.log(err)
+        })
+    }*/
+  //Davide
 
   useEffect(() => {
     // Function to check current authentication status
@@ -121,20 +121,20 @@ useEffect(() => {
         doLogIn(); // Attempt login if not authenticated
       }
     };
-  
-    if(user){
+
+    if (user) {
       handleLogout()
-      doLogIn(); 
-    }else{
+      doLogIn();
+    } else {
       checkAuth();
     }
   }, [selectedStatus]); // Only runs once on component mount
 
-/*
-  useEffect(() => {
-    // Perform login whenever selectedStatus changes
-
-  }, []);*/
+  /*
+    useEffect(() => {
+      // Perform login whenever selectedStatus changes
+  
+    }, []);*/
 
   const handleLogout = async () => {
     await API.logOut().catch((err) => handleError(err));
@@ -145,8 +145,14 @@ useEffect(() => {
     <UserContext.Provider value={user}>
       <ErrorContext.Provider value={handleError}>
         <BrowserRouter>
-          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/>
-          {errorMessage ? <Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')}>{errorMessage}</Alert> : ''}
+          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />
+
+          {errorMessage ?
+            <Toast show={errorMessage !== ''} onClose={() => setErrorMessage('')} delay={6000} autohide bg="danger w-100">
+              <Toast.Body>{errorMessage}</Toast.Body>
+            </Toast>
+            : ''}
+          {/*<Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')} >{errorMessage}</Alert>*/}
           <Routes>
             <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
             <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus}/>} />{/* DAVE [o chi finisce prima] */}
@@ -159,8 +165,8 @@ useEffect(() => {
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/addInfo' element={<RestaurantForm />} />  {/* DOME*/}
             <Route path='/editInfo/:id' element={<RestaurantForm />} />{/* DOME*/}
-            <Route path='/addDish' element={<DishForm />} />   {/*   DAVE*/}
-            <Route path='/editDish/:restaurantId/:dishId' element={<DishForm/>} />{/* DAVE*/}
+            <Route path='/restaurants/:id/addDish' element={<DishForm />} />   {/*   DAVE*/}
+            <Route path='/restaurants/:id/editDish/:dishId' element={<DishForm/>} />{/* DAVE*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>
