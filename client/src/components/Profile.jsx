@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,15 +10,19 @@ import { BannerProfile } from './Restaurant';
 import { Header } from './Header.jsx';
 import ConfirmModal from './ConfirmModal';
 import { address_object_to_string } from './RestaurantFormUtility';
+import { UserContext } from './userContext';
 
 function MyLocation(props) {
   const { address, setAddress, username } = props;
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   function handleLocationClick() {
+    setIsLoadingLocation(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
     } else {
       console.log("Geolocation not supported");
+      setIsLoadingLocation(false);
     }
   }
 
@@ -59,6 +63,8 @@ function MyLocation(props) {
               //reject('Geocode was not successful for the following reason: ' + status);
           }
       });
+    }).finally(() => {
+      setIsLoadingLocation(false); // Set loading state to false when the geocoding is complete
     });
   }
 
@@ -70,8 +76,11 @@ function MyLocation(props) {
   return (
     <div>
       <Button variant="primary" onClick={handleLocationClick} style={{width: '100%', marginTop: 10}}>
-        <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{"marginRight": 10}}/>Use your location</>
-      </Button>
+        {isLoadingLocation ? 
+            <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}}/> :
+            <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{"marginRight": 10}}/>Use your location</>
+        }
+    </Button>
       {/* {location ? (
         <div>
           <p>Location: {location.latitude}, {location.longitude}</p>
@@ -162,18 +171,19 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
 }
 
 function Profile(props) {
-    const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
-    const username = "Restaurateur";
+    const user = useContext(UserContext);
+    const username = user && user.username;
+    const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
     const [reviews, setReviews] = useState([]);
     const [restaurant, setRestaurant] = useState(null);
-
+ 
     useEffect(() => {
       // function used to retrieve restaurant information in detail
       async function getUser(username) {
           try {
-              const user = await API.getUser(username);
-              if (user != null) {
-                  setAddress({ text: user.position.split(";")[0], lat: user.position.split(";")[1], lng: user.position.split(";")[2], invalid: false });
+              const user1 = await API.getUser(username);
+              if (user1 != null) {
+                  props.setAddress({ text: user1.position.split(";")[0], lat: user1.position.split(";")[1], lng: user1.position.split(";")[2], invalid: false });
                   //console.log(user);
               } else {
                   // Handle the case when the dish with dishId is not found
@@ -187,8 +197,8 @@ function Profile(props) {
       if (username) {
           getUser(username);
       }
-    }, []);
-
+    }, [username]);
+  
     
     useEffect(() => {
       const getReviewsByUser = async () => {
@@ -226,9 +236,9 @@ function Profile(props) {
     return (
         <>
           <Col style={{marginTop: 15, marginLeft: 24, marginRight: 24}}>
-            <ProfileInformation address={address} setAddress={setAddress} username={username}/> 
+            <ProfileInformation address={props.address} setAddress={props.setAddress} username={username}/> 
             <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant}/>
-            {props.selectedStatus != "User" ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant}/> : <></>}
+            {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant}/> : <></>}
           </Col>
         </>
     );

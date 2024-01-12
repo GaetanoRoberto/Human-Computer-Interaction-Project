@@ -25,20 +25,17 @@ function App() {
   const [user, setUser] = useState(null);
   // const [loggedIn, setLoggedIn] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('User'); //User: Default selection, Restaurater
-  const [filters, setFilters] = useState({
+  const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
+  const [filtersToApply, setFiltersToApply] = useState({
     categories: [],
-    minprice: '',
-    maxprice: '',
+    priceRange: [0, 110],
     maxDistance: '',
     qualityRating: '',
     safetyRating: '', 
-    ingredientInput: '',
-    ingredients: [], // Array to hold added ingredients
+    allergens: [], // Array to hold added ingredients
     openNow: false,
+    nearby: false,
   });
-  const [isInvalidIngredient, setIsInvalidIngredient] = useState(false);
-  const [isInvalidPrice, setIsInvalidPrice] = useState(false);
-
 
 
   // Define doLogIn function outside of useEffect
@@ -115,6 +112,11 @@ useEffect(() => {
       try {
         const user = await API.getUserInfo();
         setUser(user);
+        if(user.isRestaurateur){
+          setSelectedStatus("Restaurateur");
+        } else {
+          setSelectedStatus("User");
+        }
       } catch (err) {
         doLogIn(); // Attempt login if not authenticated
       }
@@ -143,12 +145,12 @@ useEffect(() => {
     <UserContext.Provider value={user}>
       <ErrorContext.Provider value={handleError}>
         <BrowserRouter>
-          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn}/>
+          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus}/>
           {errorMessage ? <Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')}>{errorMessage}</Alert> : ''}
           <Routes>
-            <Route path='/' element={<Home />} />     {/* FATTA*/}
-            <Route path='/filters' element={<FilterPage filters={filters} setFilters={setFilters} isInvalidPrice={isInvalidPrice} setIsInvalidPrice={setIsInvalidPrice} isInvalidIngredient={isInvalidIngredient} setIsInvalidIngredient={setIsInvalidIngredient}/>} />{/* DAVE [o chi finisce prima] */}
-            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />} />{/* DAVE*/}
+            <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
+            <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus}/>} />{/* DAVE [o chi finisce prima] */}
+            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} />} />{/* DAVE*/}
             <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/reviews' element={<Restaurant />} />{/* TANUCC*/}
@@ -157,7 +159,7 @@ useEffect(() => {
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/addInfo' element={<RestaurantForm />} />  {/* DOME*/}
             <Route path='/editInfo/:id' element={<RestaurantForm />} />{/* DOME*/}
-            {selectedStatus == "Restaurater" && <Route path='/addDish' element={<DishForm />} />}   {/*   DAVE*/}
+            <Route path='/addDish' element={<DishForm />} />   {/*   DAVE*/}
             <Route path='/editDish/:restaurantId/:dishId' element={<DishForm/>} />{/* DAVE*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>

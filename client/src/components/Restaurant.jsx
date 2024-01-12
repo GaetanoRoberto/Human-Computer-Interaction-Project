@@ -209,7 +209,7 @@ const BannerProfile = (props) => {
     return(
         <>
             <div style={{borderTop: "1px solid #000", margin: 0}} ></div>
-            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "194px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate('/restaurants/1/menu')}>
+            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "174px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate('/restaurants/1/menu')}>
                 {/* Background Image Overlay */}
                 <div
                     style={{

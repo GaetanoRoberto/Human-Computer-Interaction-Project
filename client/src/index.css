@@ -174,3 +174,11 @@
 .dropdown-toggle::after {
   margin-bottom: 3px;
 }
+
+#formBasicQualityRating {
+   color: hsl(0, 0%, 50%);
+}
+ 
+#formBasicSafetyRating {
+  color: hsl(0, 0%, 50%);
+}
