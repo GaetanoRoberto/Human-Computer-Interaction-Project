@@ -12,22 +12,11 @@
 
 .custom-link-button {
   color: black !important;
+  background-color: white;
+  border: none;
   padding: 0 0;
+  text-decoration: underline;
 }
-
-.custom-link-button:hover {
-  color: gray !important;
-}
-
-/*.fixed-position-top{*/
-/*  position: fixed;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*  top: 0;*/
-/*}
-/*.blur {*/
-/*  filter: blur(2px);*/
-/*}*/
 
 .sharp-border {
   border-radius: 0;

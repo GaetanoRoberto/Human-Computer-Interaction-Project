@@ -171,6 +171,7 @@ function ReviewsList({ reviews }) {
               filteredReviews.map((item) => {
                 return (
                   <Card key={item.id} style={{ borderRadius: 0 }} onClick={user?item.username == user.username ? () => { navigate(`/restaurants/${id}/reviews/edit/${item.id}`) } : () => { navigate(`/restaurants/${id}/reviews/${item.id}`) }:null}>
+                    {/*<Button variant="light" style={{padding: "0 0 0 0"}}>*/}
                     <Card.Body>
                       <Row>
                         <Col>
@@ -215,6 +216,7 @@ function ReviewsList({ reviews }) {
                       </Row>
 
                     </Card.Body>
+                    {/*</Button>*/}
                   </Card>
                 );
               })}

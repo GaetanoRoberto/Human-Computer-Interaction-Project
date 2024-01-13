@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import {Link, useLocation, useParams, useNavigate} from 'react-router-dom'
 
 import {
@@ -9,68 +9,146 @@ import {
     Button,
     Container,
     Form,
-    Modal, Badge
+    Modal, Badge, Stack
 } from 'react-bootstrap';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import instagramImage from "../restaurantPng/instagram.png";
 import facebookImage from "../restaurantPng/facebook.png";
 import phoneImage from "../restaurantPng/phone.png";
 import webImage from "../restaurantPng/domain-registration.png";
+import twitterImage from "../restaurantPng/twitter.png";
 import API from "../API.jsx";
 import {NavigationButtons} from "./NavigationButtons.jsx";
-import {Header} from "./Header.jsx";
 import {Reviews} from "./ReviewsList.jsx";
-import {address_string_to_object} from "./RestaurantFormUtility.jsx";
+import {address_string_to_object, time_string_to_object} from "./RestaurantFormUtility.jsx";
+import {ErrorContext} from "./userContext.jsx";
 
 
+function getHappinessSolidClass(index) {
+    switch (index) {
+        case 1:
+            return "fa-solid fa-face-dizzy";
+        case 2:
+            return "fa-solid fa-face-tired";
+        case 3:
+            return "fa-solid fa-face-meh";
+        case 4:
+            return "fa-solid fa-face-smile";
+        case 5:
+            return "fa-solid fa-face-grin-stars";
+    }
+}
+function getHappinessColor(index) {
+    switch (index) {
+        case 1:
+            return "#ff3300" // Faccina arrabbiata
+        case 2:
+            return "#ff8300"; // Faccina triste
+        case 3:
+            return "#FFD700"; // Faccina neutra
+        case 4:
+            return "#00ff5b"; // Faccina sorridente
+        case 5:
+            return "green"; // Faccina che ride
+        default:
+            return " ";
+    }
+}
 
 const Banner = (props) => {
     const { restaurant } = props;
+    const iconsData = [
+        { to: `tel:${restaurant.phone}`, src: phoneImage, width: 40, height: 40 },
+        { to: restaurant.website, src: webImage, width: 40, height: 40 },
+        { to: restaurant.facebook, src: facebookImage, width: 45, height: 45 },
+        { to: restaurant.instagram, src: instagramImage, width: 45, height: 45 },
+        { to: restaurant.twitter, src: twitterImage, width: 40, height: 40 },
+    ];
 
     // Used to show the restaurant rating based on the reviews
     const restaurantStars = () => {
-        const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
-        const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
-        // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
-        return (
-            <h6>
-                Quality: <i className="bi bi-star-fill"></i> {averageQuality.toFixed(1)}
-                {" "}
-                Safety: <i className="bi bi-star-fill"></i> {averageSafety.toFixed(1)}
-            </h6>
-        );
+        if (restaurant.reviews.length === 0) {
+            return (
+                <p>
+                    <i className="bi bi-star" style={{ color: '#FFD700', marginRight: "5px"}}></i>
+                    <i>No reviews yet</i>
+                </p>
+            );
+        } else {
+            const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
+            const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
+            // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
+            return (
+                <h6>
+                    Quality: <i className="bi bi-star-fill" style={{color: "#FFC107"}}></i> {averageQuality.toFixed(1)}
+                    <br/>
+                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{color: getHappinessColor(Math.round(averageSafety))}} /> {averageSafety.toFixed(1)}
+                </h6>
+            );
+        }
     }
 
     // Functions used to show the opening hours status based on real time
     const getOpeningHours = (openingHours) => {
         const currentDateTime = new Date();
+        const currentDay = currentDateTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
         const currentHour = currentDateTime.getHours();
         const currentMinutes = currentDateTime.getMinutes();
         const currentTime = currentHour * 60 + currentMinutes;
 
-        const timeRanges = openingHours.split(';').map(range => {
-            const [start, end] = range.split('-').map(time => {
-                const [hours, minutes] = time.split(':').map(Number);
-                return hours * 60 + minutes;
-            });
-            return { start, end };
-        });
+        const dayAbbreviations = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const fullDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-        for (const { start, end } of timeRanges) {
-            if ( (currentTime >= start && currentTime <= end) || (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end) ) {
-                return `Open now (closes at ${formatTime(end)})`;
+        const dayRanges = openingHours.split('/');
+
+        for (const dayRange of dayRanges) {
+            const [dayAbbreviation, ranges] = dayRange.split('=');
+            const dayIndex = dayAbbreviations.indexOf(dayAbbreviation);
+
+            if (dayIndex === currentDay) {
+                const dayTimeRanges = ranges.split(';').map(range => {
+                    const [start, end] = range.split('-').map(time => {
+                        const [hours, minutes] = time.split(':').map(Number);
+                        return hours * 60 + minutes;
+                    });
+                    return { start, end };
+                });
+
+                for (const { start, end } of dayTimeRanges) {
+                    if (
+                        (currentTime >= start && currentTime <= end) ||
+                        (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end)
+                    ) {
+                        return `Open now (closes at ${formatTime(end)})`;
+                    }
+                }
+
+                const nextOpeningTime = dayTimeRanges.reduce((closestTime, { start }) => {
+                    return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
+                }, -1);
+
+                if (nextOpeningTime !== -1) {
+                    return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
+                }
             }
         }
 
-        const nextOpeningTime = timeRanges.reduce((closestTime, { start }) => {
-            return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
-        }, -1);
+        // Business is closed today, find the next opening day and time
+        for (let i = 1; i <= 7; i++) {
+            const nextDayIndex = (currentDay + i) % 7;
+            const nextDayRanges = dayRanges.find(range => dayAbbreviations[nextDayIndex] === range.split('=')[0]);
 
-        if (nextOpeningTime !== -1) {
-            return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
-        } else {
-            return `Closed now (opens tomorrow at ${openingHours.split('-')[0]})`;
+            if (nextDayRanges) {
+                const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
+                const opensTomorrow = i === 1;
+                if (!opensTomorrow)
+                    return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
+                else
+                    return `Closed today, opens tomorrow at ${nextOpeningTime}`;
+            }
         }
+        // If no information for the current day or future days, return a default message
+        return 'No information available for today or the next days';
     }
     const formatTime = (minutes) => {
         const hours = Math.floor(minutes / 60);
@@ -95,7 +173,7 @@ const Banner = (props) => {
     return(
         <>
             <div style={{borderTop: "1px solid #000", margin: 0}}></div>
-            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "148px" }}>
+            <div style={{ position: 'relative', overflow: 'hidden', height: "148px", padding: "0.2rem 0.2rem 0.5rem 0.5rem" }}>
                 {/* Background Image Overlay */}
                 <div
                     style={{
@@ -115,22 +193,25 @@ const Banner = (props) => {
                 <Row>
                     <h1> <b><i> {restaurant.name} </i></b> </h1>
                 </Row>
-                <Row>
-                    <Col xs={5} style={{marginTop: "0.4rem"}}> {restaurantStars()} </Col>
-                    <Col style={{textAlign: "end"}}>
-                        <Link to={`tel:${restaurant.phone}`}><img width="40px" height="40px" src={phoneImage}/></Link>
-                        <Link style={{marginLeft: "0.5rem"}} to={restaurant.website}><img width="40px" height="40px" src={webImage}/></Link>
-                        <Link style={{marginLeft: "0.5rem"}} to={restaurant.facebook}><img width="40px" height="40px" src={facebookImage}/></Link>
-                        <Link style={{marginLeft: "0.5rem"}} to={restaurant.instagram}><img width="40px" height="40px" src={instagramImage}/></Link>
+                <Stack direction={"horizontal"}>
+                    <Col xs={"auto"} style={{textAlign: "start", marginTop: "0.2rem"}}> {restaurantStars()} </Col>
+                    <Col xs={"auto"} className="ms-auto" style={{textAlign: "end", marginBottom: "0.4rem"}}>
+                        {iconsData.map((icon, index) => (
+                            icon.to && (
+                                <Link key={index} style={{ marginLeft: "0.4rem" }} to={icon.to}>
+                                    <img width={icon.width} height={icon.height} src={icon.src} />
+                                </Link>
+                            )
+                        ))}
                     </Col>
-                </Row>
+                </Stack>
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
                 </Row>
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
-            </Container>
+            </div>
             <div style={{borderTop: "1px solid #000", margin: 0}}></div>
         </>
     );
@@ -158,33 +239,64 @@ const BannerProfile = (props) => {
     // Functions used to show the opening hours status based on real time
     const getOpeningHours = (openingHours) => {
         const currentDateTime = new Date();
+        const currentDay = currentDateTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
         const currentHour = currentDateTime.getHours();
         const currentMinutes = currentDateTime.getMinutes();
         const currentTime = currentHour * 60 + currentMinutes;
 
-        const timeRanges = openingHours.split(';').map(range => {
-            const [start, end] = range.split('-').map(time => {
-                const [hours, minutes] = time.split(':').map(Number);
-                return hours * 60 + minutes;
-            });
-            return { start, end };
-        });
+        const dayAbbreviations = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const fullDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-        for (const { start, end } of timeRanges) {
-            if (currentTime >= start && currentTime <= end) {
-                return `Open now (closes at ${formatTime(end)})`;
+        const dayRanges = openingHours.split('/');
+
+        for (const dayRange of dayRanges) {
+            const [dayAbbreviation, ranges] = dayRange.split('=');
+            const dayIndex = dayAbbreviations.indexOf(dayAbbreviation);
+
+            if (dayIndex === currentDay) {
+                const dayTimeRanges = ranges.split(';').map(range => {
+                    const [start, end] = range.split('-').map(time => {
+                        const [hours, minutes] = time.split(':').map(Number);
+                        return hours * 60 + minutes;
+                    });
+                    return { start, end };
+                });
+
+                for (const { start, end } of dayTimeRanges) {
+                    if (
+                        (currentTime >= start && currentTime <= end) ||
+                        (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end)
+                    ) {
+                        return `Open now (closes at ${formatTime(end)})`;
+                    }
+                }
+
+                const nextOpeningTime = dayTimeRanges.reduce((closestTime, { start }) => {
+                    return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
+                }, -1);
+
+                if (nextOpeningTime !== -1) {
+                    return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
+                }
             }
         }
 
-        const nextOpeningTime = timeRanges.reduce((closestTime, { start }) => {
-            return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
-        }, -1);
+        // Business is closed today, find the next opening day and time
+        for (let i = 1; i <= 7; i++) {
+            const nextDayIndex = (currentDay + i) % 7;
+            const nextDayRanges = dayRanges.find(range => dayAbbreviations[nextDayIndex] === range.split('=')[0]);
 
-        if (nextOpeningTime !== -1) {
-            return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
-        } else {
-            return `Closed now (opens tomorrow at ${openingHours.split('-')[0]})`;
+            if (nextDayRanges) {
+                const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
+                const opensTomorrow = i === 1;
+                if (!opensTomorrow)
+                    return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
+                else
+                    return `Closed today, opens tomorrow at ${nextOpeningTime}`;
+            }
         }
+        // If no information for the current day or future days, return a default message
+        return 'No information available for today or the next days';
     }
     const formatTime = (minutes) => {
         const hours = Math.floor(minutes / 60);
@@ -251,8 +363,10 @@ const Menu = (props) => {
     const [type, setType] = useState(allDishTypes[0]);
     const [search, setSearch] = useState("");
     const [filteredDishes, setFilteredDishes] = useState(restaurant.dishes);
-    const [ingredient, setIngredient] = useState(null);
-    const [modalShow, setModalShow] = useState(false);
+    // const [ingredient, setIngredient] = useState(null);
+    // const [modalIngredientShow, setModalIngredientShow] = useState(false);
+    const [dishIngredients, setDishIngredients] = useState(null);
+    const [modalDishShow, setModalDishShow] = useState(false);
     const menuHeight = (window.innerHeight - 336);
 
 
@@ -265,70 +379,165 @@ const Menu = (props) => {
         ));
     }
 
-    const fetchIngredient = async (id) => {
-        try {
-            const ingredient = await API.getIngredient(id);
-            setIngredient(ingredient);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const fetchIngredient = async (id) => {
+    //     try {
+    //         const ingredient = await API.getIngredient(id);
+    //         setIngredient(ingredient);
+    //         setModalIngredientShow(true);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
-    function IngredientModal(props) {
-        let allergens = [];
+    // function IngredientModal(props) {
+    //     let allergens = [];
+    //
+    //     if(!ingredient)
+    //         return null;
+    //
+    //     if(ingredient.allergens !== null)
+    //         allergens = ingredient.allergens.split(',').map(allergen => allergen.trim());
+    //
+    //
+    //     return(
+    //         <Modal {...props} size="lg" centered>
+    //             <Modal.Header closeButton>
+    //                 <Modal.Title> <i> {ingredient.name} </i> </Modal.Title>
+    //             </Modal.Header>
+    //             <Modal.Body>
+    //                 <Row>
+    //                     <Col>
+    //                         { allergens.length === 0 ?
+    //                             <h5 style={{marginTop: "0.4rem"}}> No allergens </h5>
+    //                             :
+    //                             allergens.map((allergen, index) => (
+    //                                 <h5 key={index} style={{marginTop: "0.4rem"}}>
+    //                                     <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
+    //                                         { allergen === "gluten" ?
+    //                                             <>
+    //                                                 <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}
+    //                                             </>
+    //                                             :
+    //                                             allergen
+    //                                         }
+    //                                     </Badge>
+    //                                 </h5>
+    //                             ))
+    //                         }
+    //                         { ingredient.brandLink === null ?
+    //                             <h5 style={{marginTop: "3rem"}}>
+    //                                 {ingredient.brandName}
+    //                             </h5>
+    //                             :
+    //                             <>
+    //                                 <h6 style={{marginTop: "3rem"}}>
+    //                                     Brand :
+    //                                 </h6>
+    //                                 <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
+    //                             </>
+    //                         }
+    //                     </Col>
+    //                     <Col style={{textAlign: "end"}}>
+    //                         <img height={"130px"} width={"130px"} src={ingredient.image} />
+    //                     </Col>
+    //                 </Row>
+    //             </Modal.Body>
+    //         </Modal>
+    //     );
+    // }
 
-        if(!ingredient)
+    function DishModal(props) {
+        if(!dishIngredients)
             return null;
 
-        if(ingredient.allergens !== null)
-            allergens = ingredient.allergens.split(',').map(allergen => allergen.trim());
-
-
         return(
-            <Modal {...props} size="lg" centered>
-                <Modal.Header closeButton>
-                    <Modal.Title> <i> {ingredient.name} </i> </Modal.Title>
-                </Modal.Header>
+            <Modal {...props} fullscreen>
+                <Modal.Header closeButton />
                 <Modal.Body>
                     <Row>
-                        <Col>
-                            { allergens.length === 0 ?
-                                <h5 style={{marginTop: "0.4rem"}}> No allergens </h5>
-                                :
-                                allergens.map((allergen) => (
-                                    <h5 style={{marginTop: "0.4rem"}}>
-                                        <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
-                                            { allergen === "gluten" ?
-                                                <>
-                                                    <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}
-                                                </>
-                                                :
-                                                allergen
-                                            }
-                                        </Badge>
-                                    </h5>
-                                ))
-                            }
-                            { ingredient.brandLink === null ?
-                                <h5 style={{marginTop: "3rem"}}>
-                                    {ingredient.brandName}
-                                </h5>
-                                :
-                                <>
-                                    <h6 style={{marginTop: "3rem"}}>
-                                        Brand :
-                                    </h6>
-                                    <Button variant="link" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
-                                </>
-                            }
-                        </Col>
-                        <Col style={{textAlign: "end"}}>
-                            <img height={"130px"} width={"130px"} src={ingredient.image} />
+                        <Col style={{textAlign: "center"}}>
+                            <img width={window.innerWidth - 100} src={dishIngredients.image} />
+                            <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem", marginTop: "1rem"}}></div>
                         </Col>
                     </Row>
+                    <Modal.Title as={"h1"} style={{textAlign: "center"}}>
+                        {dishIngredients.name}
+                    </Modal.Title>
+                    <Row>
+                        <Col style={{textAlign: "center"}}>
+                            <Badge pill bg="success"> {dishIngredients.type} </Badge>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col style={{textAlign: "center", marginLeft: "0.4rem", marginTop: "0.4rem"}}>
+                            <i><b>{dishIngredients.price}<i className="bi bi-currency-euro"></i></b></i>
+                        </Col>
+                    </Row>
+                    {dishIngredients.ingredients.length !== 0 ?
+                        <Modal.Title as={"h5"} style={{textAlign: "center", marginTop: "2rem", marginBottom: "0.4rem"}}>
+                            Ingredients
+                        </Modal.Title>
+                        :
+                        <></>
+                    }
+                    {
+                        dishIngredients.ingredients.map((ingredient, index) => {
+                            let allergens = [];
+
+                            if(ingredient.allergens !== null)
+                                allergens = ingredient.allergens.split(',').map(allergen => allergen.trim());
+
+                            return (
+                                <div key={index}>
+                                    <div style={{borderTop: "1px solid #D3D3D3", margin: 0}} ></div>
+                                    <Row>
+                                        <Col as={"h4"} style={{marginTop: "1.4rem"}}>
+                                            <i>{ingredient.name}</i>
+                                        </Col>
+                                    </Row>
+                                    <Row style={{marginBottom: "1.4rem"}}>
+                                        <Col>
+                                            { allergens.length === 0 ?
+                                                <h6 style={{marginTop: "1rem"}}> No allergens </h6>
+                                                :
+                                                allergens.map((allergen, index) => (
+                                                    <h5 key={index} style={{marginTop: "0.4rem"}}>
+                                                        <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
+                                                            { allergen === "gluten" ?
+                                                                <>
+                                                                    <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}
+                                                                </>
+                                                                :
+                                                                allergen
+                                                            }
+                                                        </Badge>
+                                                    </h5>
+                                                ))
+                                            }
+                                            { ingredient.brandLink === null ?
+                                                <h5 style={{marginTop: "3rem"}}>
+                                                    {ingredient.brandName}
+                                                </h5>
+                                                :
+                                                <>
+                                                    <h6 style={{marginTop: "3rem"}}>
+                                                        Brand :
+                                                    </h6>
+                                                    <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
+                                                </>
+                                            }
+                                        </Col>
+                                        <Col style={{textAlign: "end"}}>
+                                            <img height={"130px"} width={"130px"} src={ingredient.image} />
+                                        </Col>
+                                    </Row>
+                                </div>
+                            );
+                        })
+                    }
                 </Modal.Body>
             </Modal>
-        );
+        )
     }
 
 
@@ -361,84 +570,108 @@ const Menu = (props) => {
                     :
                     filteredDishes.filter((dish) => dish.type === type).map((dish) => {
                     return (
-                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}}>
-                            <Card.Body>
-                                <Row>
-                                    <Col>
-                                        <Card.Title> {dish.name} </Card.Title>
-                                        <Card.Text>
-                                            {
-                                                dish.ingredients.map((ingredient, index) => (
-                                                    <>
-                                                        <Button variant="link" className="custom-link-button" onClick={() => {fetchIngredient(ingredient.id); setModalShow(true)}}> {ingredient.name} </Button>
-                                                        {index < dish.ingredients.length - 1 && ', '}
-                                                    </>
-                                                ))
-                                            }
-                                        </Card.Text>
-                                        <Card.Text>
-                                            <i> {dish.price}<i className="bi bi-currency-euro"></i> </i>
-                                        </Card.Text>
-                                    </Col>
-                                    <Col xs={4} style={{textAlign: "end"}}>
-                                        <img height={"100px"} width={"100px"} src={dish.image} />
-                                    </Col>
-                                </Row>
-                            </Card.Body>
+                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}} onClick={() => {setDishIngredients(dish); setModalDishShow(true)}}>
+                            <Button variant="light" style={{padding: "0 0 0 0"}}>
+                                <Card.Body>
+                                    <Row>
+                                        <Col style={{textAlign: "start"}}>
+                                            <Card.Title> {dish.name} </Card.Title>
+                                            <Card.Text>
+                                                {
+                                                    dish.ingredients.map((ingredient, index) => (
+                                                        <span key={index}>
+                                                            <span style={{whiteSpace: "nowrap"}}>{ingredient.name}</span>
+                                                            {index < dish.ingredients.length - 1 && ', '}
+                                                        </span>
+                                                    ))
+                                                }
+                                            </Card.Text>
+                                            <Card.Text>
+                                                <i> {dish.price}<i className="bi bi-currency-euro"></i> </i>
+                                            </Card.Text>
+                                        </Col>
+                                        <Col xs={4} style={{textAlign: "end"}}>
+                                            <img height={"100px"} width={"100px"} src={dish.image} />
+                                        </Col>
+                                    </Row>
+                                </Card.Body>
+                            </Button>
                         </Card>
                     );
                 })}
             </ListGroup>
 
             {/*Ingredient modal*/}
-            <IngredientModal show={modalShow} onHide={() => setModalShow(false)} />
+            {/*<IngredientModal show={modalIngredientShow} onHide={() => setModalIngredientShow(false)} />*/}
+            {/*Dish modal*/}
+            <DishModal show={modalDishShow} onHide={() => setModalDishShow(false)} />
         </>
     );
 }
 
 const Details = (props) => {
     const { restaurant } = props;
-
-    const descriptionHeight = (window.innerHeight - 450);
+    const descriptionHeight = (window.innerHeight - 495);
 
     function formatTimeRanges(input) {
-        const timeRanges = input.split(';').map(range => range.trim());
+        let groupedByDay = {};
 
-        const formattedRanges = timeRanges.map((range, index) => {
-            const [startTime, endTime] = range.split('-');
-            const from = index === 0 ? 'From' : 'from';
+        time_string_to_object(input).forEach(({ day, first, last }) => {
+            const timeRange = `${first}-${last}`;
 
-            return `${from} ${startTime} to ${endTime}`;
+            if (groupedByDay[day])
+                groupedByDay[day].push(timeRange);
+            else
+                groupedByDay[day] = [timeRange];
         });
 
-        return formattedRanges.join(', ');
+
+        return (
+            <>
+                {Object.entries(groupedByDay).map((day, index) => {
+                    return (
+                        <div key={index}>
+                            <Row>
+                                <Col>
+                                    {day[0]}
+                                </Col>
+                                <Col style={{textAlign: "end"}}>
+                                    {day[1].map((range, index) => <div key={index} style={{marginBottom: "0.4rem"}}> {range}<br/> </div> )}
+                                </Col>
+                            </Row>
+                            {index < Object.entries(groupedByDay).length - 1 && <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem"}} ></div>}
+                        </div>
+                    );
+                })}
+            </>
+        );
     }
 
 
     return(
         <>
-        {/*Description*/}
-        <Card style={{borderRadius: 0}}>
-            <Card.Header as="h2" style={{textAlign: "center"}}>
-                Description
-            </Card.Header>
-            <Card.Body style={{overflowY: "auto", maxHeight: descriptionHeight}}>
-                <Card.Text>
-                    {restaurant.description}
-                </Card.Text>
-            </Card.Body>
+            {/*Description*/}
+            <Card style={{borderRadius: 0, borderBottom: 0}}>
+                <Card.Header as="h5" style={{textAlign: "center"}}>
+                    Description
+                </Card.Header>
+                <Card.Body style={{overflowY: "auto", maxHeight: descriptionHeight}}>
+                    <Card.Text>
+                        {restaurant.description}
+                    </Card.Text>
+                </Card.Body>
 
-            {/*Opening Hours*/}
-            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
-            <Card.Header as="h2" style={{textAlign: "center"}}>
-                Opening Hours
-            </Card.Header>
-            <Card.Body>
-                <Card.Title as="h4" style={{maxWidth: 200}}>
-                    {formatTimeRanges(restaurant.hours)}
-                </Card.Title>
-            </Card.Body>
-        </Card>
+                {/*Opening Hours*/}
+                <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+                <Card.Header as="h5" style={{textAlign: "center"}}>
+                    Opening Hours
+                </Card.Header>
+                <Card.Body style={{overflowY: "auto", maxHeight: 160}}>
+                    <Card.Title as="h6">
+                        {formatTimeRanges(restaurant.hours)}
+                    </Card.Title>
+                </Card.Body>
+            </Card>
         </>
     );
 }
@@ -446,6 +679,7 @@ const Details = (props) => {
 
 function Restaurant() {
     const { id } = useParams();
+    const handleError = useContext(ErrorContext);
     const location = useLocation();
     const regexDetails = /\/details$/;
     const regexMenu = /\/menu$/;
@@ -459,10 +693,9 @@ function Restaurant() {
         const getRestaurant = async () => {
             try {
                 const restaurant = await API.getRestaurant(id);
-                //console.log(restaurant);
                 setRestaurant(restaurant);
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         }
 

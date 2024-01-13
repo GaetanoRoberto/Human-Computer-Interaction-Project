@@ -17,6 +17,7 @@ import { Profile } from './components/Profile';
 import { DishForm } from './components/DishForm';
 import { FilterPage } from './components/FilterPage.jsx';
 import API from './API';
+// import ErrorComponent from './components/ErrorComponent.jsx';
 import { Header } from './components/Home';
 library.add(fab, fas, far);
 
