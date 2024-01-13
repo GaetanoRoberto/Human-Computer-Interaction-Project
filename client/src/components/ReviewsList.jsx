@@ -4,7 +4,8 @@ import { ListGroup, Card, Col, Row, Button, FormControl } from 'react-bootstrap'
 import { UserContext } from './userContext';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { ErrorContext } from './userContext';
+import API from '../API';
 import dayjs from 'dayjs';
 
 function getHappinessClass(index) {
@@ -63,11 +64,34 @@ function SearchReview(props) {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const handleError = useContext(ErrorContext);
+  const [restaurant, setRestaurant] = useState([])
+  const [yourRestaur,setYourRestaur] = useState(true);
+  //const yourRestaurant = user && user.isRestaurateur == 1 && restaurant.isNewInserted == 1 && id == restaurant.id ? true : false;
+  //console.log(yourRestaur);
 
   useEffect(() => {
-    // Sort the reviews initially based on 'QUALITY' when the component mounts
-    sortByField("date", filteredReviews);
+    const getInsertedRestaurant = async () => {
+      // Sort the reviews initially based on 'DATE' when the component mounts
+      sortByField("date", filteredReviews);
+      try {
+        const restaurant = await API.getInsertedRestaurant();
+        //console.log(restaurant);
+        if (restaurant.error == "Restaurant not found.") {
+          setRestaurant(null);
+        } else {
+          setRestaurant(restaurant);
+        }
+        setYourRestaur(user && user.isRestaurateur == 1 && restaurant.isNewInserted == 1 && id == restaurant.id ? true : false)
+      } catch (error) {
+        handleError(error);
+      }
+    }
+
+    getInsertedRestaurant();
   }, []);
+
+
 
 
 
@@ -102,7 +126,7 @@ function SearchReview(props) {
 
     sortByField(label.toLowerCase(), searched);
   };
-  const userReview = user? reviews.find(review => review.username === user.username):"";
+  const userReview = user ? reviews.find(review => review.username === user.username) : "";
   return (
     <>
       <Row className='my-1 mx-0 d-flex align-items-center'>
@@ -112,13 +136,17 @@ function SearchReview(props) {
         <Col xs={6}>
           <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search" />
         </Col>
-        <Col xs={2}>
-          {userReview ?
-            <Button style={{ whiteSpace: "nowrap" }} variant="warning"  onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
-            :
-            <Button style={{ whiteSpace: "nowrap" }} variant="primary" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
-          }
-        </Col>
+        {!yourRestaur ?
+          <Col xs={2}>
+            {userReview ?
+              <Button style={{ whiteSpace: "nowrap" }} variant="warning" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
+              :
+              <Button style={{ whiteSpace: "nowrap" }} variant="primary" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
+            }
+          </Col>
+          :
+          " "
+        }
       </Row>
       <Row className='my-1 mb-3  mx-0 '>
         <Col xs={8} >
@@ -156,6 +184,7 @@ function ReviewsList({ reviews }) {
   const [filteredReviews, setFilteredReviews] = useState(reviews);
   const [search, setSearch] = useState("")
 
+
   return (
     <>
       <SearchReview filteredReviews={filteredReviews} reviews={reviews} search={search} setSearch={setSearch} setFilteredReviews={setFilteredReviews} />
@@ -170,7 +199,7 @@ function ReviewsList({ reviews }) {
               :
               filteredReviews.map((item) => {
                 return (
-                  <Card key={item.id} style={{ borderRadius: 0 }} onClick={user?item.username == user.username ? () => { navigate(`/restaurants/${id}/reviews/edit/${item.id}`) } : () => { navigate(`/restaurants/${id}/reviews/${item.id}`) }:null}>
+                  <Card key={item.id} style={{ borderRadius: 0 }} onClick={user ? item.username == user.username ? () => { navigate(`/restaurants/${id}/reviews/edit/${item.id}`) } : () => { navigate(`/restaurants/${id}/reviews/${item.id}`) } : null}>
                     {/*<Button variant="light" style={{padding: "0 0 0 0"}}>*/}
                     <Card.Body>
                       <Row>
@@ -198,7 +227,7 @@ function ReviewsList({ reviews }) {
                               <FontAwesomeIcon
                                 key={index}
                                 icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
-                                style={{ color: (index < 5) ? getHappinessColor(index) : "", marginTop:"5px" ,marginRight: "5px", fontSize: "1.4em" }} />))}
+                                style={{ color: (index < 5) ? getHappinessColor(index) : "", marginTop: "5px", marginRight: "5px", fontSize: "1.4em" }} />))}
                           </Card.Text>
                         </Col>
                       </Row>

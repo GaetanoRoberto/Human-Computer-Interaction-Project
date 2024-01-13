@@ -46,6 +46,7 @@ function App() {
     const credentials = {
       username: selectedStatus == "User" ? "User" : "Restaurateur",
       isRestaurateur: selectedStatus == "User" ? "0" : "1",
+      //isRestaurateur: selectedStatus == "User" ? 0 : 1,
     };
     API.logIn(credentials)
       .then(user => {
@@ -115,7 +116,7 @@ function App() {
       try {
         const user = await API.getUserInfo();
         setUser(user);
-        if(user.isRestaurateur){
+        if(user.isRestaurateur == "1"){
           setSelectedStatus("Restaurateur");
         } else {
           setSelectedStatus("User");
@@ -149,7 +150,6 @@ function App() {
       <ErrorContext.Provider value={handleError}>
         <BrowserRouter>
           <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />
-
           {errorMessage ?
             <Toast show={errorMessage !== ''} onClose={() => setErrorMessage('')} delay={6000} autohide bg="danger w-100">
               <Toast.Body>{errorMessage}</Toast.Body>

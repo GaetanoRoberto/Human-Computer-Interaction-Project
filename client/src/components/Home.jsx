@@ -8,55 +8,36 @@ import { Header } from './Header';
 import { UserContext } from './userContext';
 import dayjs from 'dayjs';
 
-
-function getHappinessClass(index) {
+function getHappinessSolidClass(index) {
     switch (index) {
-      case 0:
-        return "fa-regular fa-face-dizzy";
-      case 1:
-        return "fa-regular fa-face-tired";
-      case 2:
-        return "fa-regular fa-face-meh";
-      case 3:
-        return "fa-regular fa-face-smile";
-      case 4:
-        return "fa-regular fa-face-grin-stars";
-      default:
-        return " ";
+        case 1:
+            return "fa-solid fa-face-dizzy";
+        case 2:
+            return "fa-solid fa-face-tired";
+        case 3:
+            return "fa-solid fa-face-meh";
+        case 4:
+            return "fa-solid fa-face-smile";
+        case 5:
+            return "fa-solid fa-face-grin-stars";
     }
-  }
-  function getHappinessSolidClass(index) {
+}
+function getHappinessColor(index) {
     switch (index) {
-      case 0:
-        return "fa-solid fa-face-dizzy";
-      case 1:
-        return "fa-solid fa-face-tired";
-      case 2:
-        return "fa-solid fa-face-meh";
-      case 3:
-        return "fa-solid fa-face-smile";
-      case 4:
-        return "fa-solid fa-face-grin-stars";
-      default:
-        return " ";
+        case 1:
+            return "#ff3300" // Faccina arrabbiata
+        case 2:
+            return "#ff8300"; // Faccina triste
+        case 3:
+            return "#FFD700"; // Faccina neutra
+        case 4:
+            return "#00ff5b"; // Faccina sorridente
+        case 5:
+            return "green"; // Faccina che ride
+        default:
+            return " ";
     }
-  }
-  function getHappinessColor(index) {
-    switch (index) {
-      case 0:
-        return "#ff3300" // Faccina arrabbiata
-      case 1:
-        return "#ff8300"; // Faccina triste
-      case 2:
-        return "#FFD700"; // Faccina neutra
-      case 3:
-        return "#00ff5b"; // Faccina sorridente
-      case 4:
-        return "green"; // Faccina che ride
-      default:
-        return " ";
-    }
-  }
+}
   
 function SearchBar(props) {
     const { search, setSearch, setRestaurantList, restaurantInitialList} = props;
@@ -222,19 +203,16 @@ function RestaurantsList(props) {
                                                     ))
                                                 }
                                             </Card.Text>
-                                            <Card.Text style={{textAlign: "start"}}>
-                                                {Array.from({ length: 5 }, (_, index) => (
-                                                    <FontAwesomeIcon hidden = {Math.round(restaurant.avg_safety) == 0}// hidden if no reviews [TANUCC]
-                                                                     key={index}
-                                                                     icon={(index + 1 !=  Math.round(restaurant.avg_safety)) ? getHappinessClass(index) : getHappinessSolidClass(index)}
-                                                                     style={{color: (index < 5) ? getHappinessColor(index) : "", marginRight:"5px", fontSize:"1.2em"}} />))}
-                                            </Card.Text>
+
                                             <Card.Text style={{textAlign: "start"}}>
                                                 {
                                                     Array.from({ length: Math.round(restaurant.avg_price) }, (_, index) => (
                                                         <i key={index} className="bi bi-currency-euro" style={{marginRight:"5px" , fontSize:"1.2em"}}></i>
                                                     ))
                                                 }
+                                            </Card.Text>
+                                            <Card.Text style={{textAlign: "start"}}>
+                                            <b>Safety: </b> <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{color: getHappinessColor(Math.round(restaurant.avg_safety))}} />  ({restaurant.avg_safety.toFixed(1)}/5.0)         
                                             </Card.Text>
                                         </>
                                     }
