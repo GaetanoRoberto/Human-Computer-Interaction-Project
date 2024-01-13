@@ -243,23 +243,7 @@ const ReviewForm = (props) => {
   return (
     <>
       <Container>
-        {view ? /*
-        (
-    <Card className="mt-4 border">
-    <Card.Body className="p-4">
-      <Card.Title style={{ fontSize: '2rem' }} className="mb-3">{username}</Card.Title>
-    <Rating view={view} quality={quality} />
-    <HappinessRating view={view} safety={safety} />
-    <Prices view={view} price={price} />
-    <Card.Subtitle style={{ fontSize: '1.5rem' }} className="mt-3">{title}</Card.Subtitle>
-    <p>{dayjs(date).format("YYYY-MM-DD")}</p>
-    <Card.Text>{description}</Card.Text>
-
-
-    </Card.Body>
-
-  </Card>
-        )*/
+        {view ? 
         <Card className="mt-4 border">
         <Card.Body className="p-4">
           <div>
