@@ -50,7 +50,7 @@ function Header(props) {
 
   return (
     <>
-      <Navbar bg='success' variant='dark' style={{ height: 54 }}>
+      <Navbar bg='success' variant='dark' style={{ height: 54 }} >
         <ConfirmModal text={'go Home'} show={show} setShow={setShow} action={() => {
           navigate('/')
         }} />
@@ -63,52 +63,16 @@ function Header(props) {
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
-          <div >
-            <Button variant="warning" onClick={() => afterSettings ? setShow(true) : navigate('/')}>Gluten-Hub</Button>
-          </div>
-          {/* <Col xs="auto">
-          <Dropdown >
-              <Dropdown.Toggle size="sm" variant="success" className="d-flex align-items-center" >
-                {selectedStatus=="User" ? 
-                  <Col className="d-flex align-items-center">
-                    {userIcon}
-                    <> USER</>
-
-                  </Col> 
-                  :
-                  <Col className="d-flex align-items-center"> 
-                  {restaurantIcon}
-                    <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem'}}>Restaurater</p>
-                  </Col>
-                }
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu >
-                <Col>
-                  {selectedStatus=="Restaurater" ?
-                  <Dropdown.Item   variant="success"  /*onClick={handleStatusSelection('User')} className="profile-dropdown-item d-flex align-items-center" style={{borderTop: "1px solid lightgray", borderBottom: "1px solid lightgray"}}> }
-                  {userIcon}
-                      <p style={{marginTop: 14, marginLeft: 8, fontSize: '0.85rem',color:"white"}}>User</p>
-                  </Dropdown.Item>
-                  : <></>
-                  }
-                </Col>
-                <Col>
-                  {selectedStatus=="User" ?
-                  <Dropdown.Item /*onClick={handleStatusSelection('Restaurater')} className="profile-dropdown-item d-flex align-items-center bg-success" >
-                    {restaurantIcon}
-                      <>RESTAURATER</>
-                  </Dropdown.Item>
-                  : <></>
-                  }
-                </Col>
-              </Dropdown.Menu>
-          </Dropdown>
-          </Col>
-                */}
+          {
+            location.pathname === "/settings"?
+            <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => afterSettings ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+            :
+            <Button   variant="warning" onClick={() => afterSettings ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+          }
+         
           {location.pathname === "/settings" ?
 
-            <Dropdown drop="down" align="end" style={{ marginRight: "-20px" }}>
+            <Dropdown drop="down" align="end" style={{ marginRight: "-12px" }}>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 {props.selectedStatus === 'User' ? (
                   <FontAwesomeIcon icon="fa-solid fa-user" style={{

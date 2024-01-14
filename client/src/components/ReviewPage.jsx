@@ -348,20 +348,33 @@ const ReviewForm = (props) => {
               </Row>
             </Form.Group>
 
-            <Row hidden={view} ><hr />
-              <ButtonGroup style={{ width: "180px" }}>
-                <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">{reviewId ? 'Update' : 'Add'}</Button>
-                <Button hidden={view} onClick={() => { navigate(-1) }} className="btn-lg mx-1 mb-2" variant='warning'>Cancel</Button>
-                <Button className="btn-lg mx-1 mb-2 " hidden={!reviewId ? true : !(user && username == user.username)} variant="danger" onClick={() => { setShow(true) }}
-                ><i className="bi bi-trash "></i></Button>
-              </ButtonGroup>
-            </Row>
-            <Row>
-              <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow} action={() => {
-                deleteReview(reviewId);
-                navigate(`/restaurants/${id}/reviews`);
-              }} />
-            </Row>
+            {
+              
+            }
+
+<Row hidden={view} ><hr />
+  <Col xs={6}>
+    <Button
+      className="btn-lg mx-1 mb-2"
+      hidden={!reviewId ? true : !(user && username === user.username)}
+      variant="danger"
+      onClick={() => { setShow(true) }}
+    >
+      <i className="bi bi-trash"></i>
+    </Button>
+  </Col>
+  <Col xs={6} className="text-end">
+    <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">
+      {reviewId ? 'Update' : 'Add'}
+    </Button>
+  </Col>
+</Row>
+<Row>
+  <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow} action={() => {
+    deleteReview(reviewId);
+    navigate(`/restaurants/${id}/reviews`);
+  }} />
+</Row>
           </Form>
 
         )}
