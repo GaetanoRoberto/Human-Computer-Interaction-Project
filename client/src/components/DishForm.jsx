@@ -248,7 +248,7 @@ function DishForm(props) {
                 <Form.Group className="mb-3" style={{ borderTop: "4px solid black" }}>
                     <Form.Label style={{ fontSize: 'large', fontWeight: 'bold', paddingTop: 16 }}>List of Ingredients </Form.Label>
                     {ingredients.map((ingredient, index) => (
-                        <div key={ingredient.id} style={{ paddingBottom: 30, borderBottom: "4px solid lightgray" }}>
+                        <div key={ingredient.id} style={{ paddingBottom: 30, borderBottom: "4px solid lightgray", marginTop: "2%" }}>
                             <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold', marginBottom: 20, paddingRight: '5%' }}>Ingredient {index + 1}</Form.Label>
                             {(ingredients.length > 1) ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
                             <Row style={{ marginBottom: '5%' }}>
@@ -321,7 +321,7 @@ function DishForm(props) {
                             </div>
                         </div>
                     ))}
-                    <Button variant="success" onClick={addIngredient} style={{ marginRight: "2%" }}>Add New Ingredient</Button>
+                    <Button variant="success" onClick={addIngredient} style={{ marginRight: "2%", marginTop: "2%" }}>Add New Ingredient</Button>
                 </Form.Group>
             </Container>
             {/*<Container className="d-flex justify-content-between mt-auto">
