@@ -359,8 +359,7 @@ const ReviewForm = (props) => {
       hidden={!reviewId ? true : !(user && username === user.username)}
       variant="danger"
       onClick={() => { setShow(true) }}
-    >
-      <i className="bi bi-trash"></i>
+    >Delete
     </Button>
   </Col>
   <Col xs={6} className="text-end">
