@@ -14,6 +14,8 @@ function Header(props) {
   const location = useLocation();
   const detailsMenuReviews = location.pathname.endsWith('/details') || location.pathname.endsWith('/menu') || location.pathname.endsWith('/reviews')
   const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo');
+  const reviewPage = location.pathname.includes("add") || location.pathname.includes("edit");
+  //console.log(reviewPage)
   //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
   const [show, setShow] = useState(false);
@@ -55,19 +57,20 @@ function Header(props) {
           navigate('/')
         }} />
         <ConfirmModal text={'go Back'} show={show2} setShow={setShow2} action={() => {
-          navigate("/settings")
+          afterSettings ? navigate("/settings") : navigate(-1)
+          
         }} />
         <Container fluid >
           {location.pathname != "/" ?
-            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : afterSettings ? () => setShow2(true) : () => navigate(-1)} />
+            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : reviewPage ? () => setShow2(true) : () => navigate(-1)} />
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
           {
             location.pathname === "/settings"?
-            <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => afterSettings ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+            <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => reviewPage ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
             :
-            <Button   variant="warning" onClick={() => afterSettings ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+            <Button   variant="warning" onClick={() => reviewPage ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
           }
          
           {location.pathname === "/settings" ?
