@@ -7,16 +7,9 @@ import 'react-phone-number-input/style.css'
 import { ImageViewer, DishItem, AddressSelector, address_string_to_object, address_object_to_string, time_object_to_string, sort_and_merge_times, time_string_to_object } from './RestaurantFormUtility';
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
+import { foodAllergens } from './Costants';
 
 const animatedComponents = makeAnimated();
-const foodAllergens = ['Peanuts', 'Tree nuts', 'Milk', 'Eggs', 'Soy', 'Wheat', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Gluten-containing grains', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries'].map(item => ({ value: item, label: item }));
-
-/*function ProgressLabel(props) {
-
-    return (
-        <h1 className="text-center">{'Describe Your Menù (4/4)'}</h1>
-    );
-}*/
 
 function DishForm(props) {
     

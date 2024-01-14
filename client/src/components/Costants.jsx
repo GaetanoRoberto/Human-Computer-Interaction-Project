@@ -20,4 +20,7 @@ const FILTERS = [];
 // days of the week
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"];
 
-export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS};
+// Allergens
+const foodAllergens = ['Peanuts', 'Tree nuts', 'Milk', 'Eggs', 'Soy', 'Gluten', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries'].map(item => ({ value: item, label: item }));
+
+export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS,foodAllergens};

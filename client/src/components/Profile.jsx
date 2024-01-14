@@ -234,15 +234,13 @@ function Profile(props) {
     }, []);
 
     return (
-        <>
-        <Container fluid style={{ height: window.innerHeight-55, overflowY: 'auto', marginBottom:'3%' }}>
-          <Col style={{marginTop: 15, marginLeft: 24, marginRight: 24}}>
-            <ProfileInformation address={props.address} setAddress={props.setAddress} username={username}/> 
-            <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant}/>
-            {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant}/> : <></>}
-          </Col>
-          </Container>
-        </>
+      <>
+        <Container fluid style={{ height: window.innerHeight - 55, overflowY: 'auto', marginBottom: '3%' }}>
+          <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} />
+          <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
+          {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}
+        </Container>
+      </>
     );
 }
 export { Profile };
