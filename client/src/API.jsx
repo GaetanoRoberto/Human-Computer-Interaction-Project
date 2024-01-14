@@ -214,10 +214,10 @@ async function getFilters() {
 };
 
 /**
- * This function is used to get all to get all the ingredients for a given dish
+ * This function is used to get all to get a given dish
  * It returns a JSON object
  */
-async function getDishIngredients(id) {
+async function getDish(id) {
   const response = await fetch(SERVER_URL + `/dishes/${id}`).catch(() => {throw {error: "Connection Error"}});
   if (response.ok) {
     // 200 status code, return the object
@@ -412,7 +412,7 @@ const API = {
   getFilteringInfos,
   getIngredient,
   getFilters,
-  getDishIngredients,
+  getDish,
   createRestaurant,
   editRestaurant,
   deleteRestaurant,

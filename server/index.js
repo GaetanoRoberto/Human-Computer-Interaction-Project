@@ -307,11 +307,20 @@ app.get('/api/dishes/', (req, res) => {
 });
 
 // GET /api/dishes/:id
-// This route is used to get all the ingredients for a given dish
+// This route is used to get a given dish
 app.get('/api/dishes/:id', async (req, res) => {
-  ingredientsDao.getIngredients(req.params.id)
-    .then(ingredients => res.json(ingredients))
-    .catch(() => res.status(503).json({ error: 'Database Error in Getting all the Ingredients for the Given Dish' }));
+  try {
+    // get dish
+    const dish = await dishesDao.getDish(req.params.id).catch(() => { throw { error: 'Database Error in Getting The Dish' } });
+    // get ingredients of the dish
+    const ingredients = await ingredientsDao.getIngredients(req.params.id).catch(() => { throw { error: 'Database Error in Getting all the Ingredients for the Given Dish' } });
+    // assign them to the dish
+    dish.ingredients = ingredients;
+    // return it
+    res.json(dish);
+  } catch (error) {
+    res.status(503).json({ error: error.error })
+  }
 });
 
 // POST /api/restaurants

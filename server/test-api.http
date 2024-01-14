@@ -57,7 +57,7 @@ GET http://localhost:3001/api/ingredients/3 HTTP/1.1
 GET http://localhost:3001/api/dishes/ HTTP/1.1
 ###
 
-## Get all the ingredients for the given dish
+## Get a given dish
 GET http://localhost:3001/api/dishes/1 HTTP/1.1
 ###
 
