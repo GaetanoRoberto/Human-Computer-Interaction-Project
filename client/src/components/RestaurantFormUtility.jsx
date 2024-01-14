@@ -62,7 +62,7 @@ function ImageViewer(props) {
 }
 
 function DishItem(props) {
-    const { restaurantId, dish, deleteDish } = props;
+    const { dish, deleteDish,setManageDish } = props;
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ function DishItem(props) {
             <Row>
                 <Col xs={8}>{dish.name}</Col>
                 <Col xs={2}>
-                    <Button size='sm' variant="success" onClick={() => { navigate(`/restaurants/${restaurantId}/editDish/${dish.id}`) }}>
+                    <Button size='sm' variant="success" onClick={() => { setManageDish({route: 'add_dish', id: dish.id}) }}>
                         <i className="bi bi-pencil-square"></i>
                     </Button>
                 </Col>

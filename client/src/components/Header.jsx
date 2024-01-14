@@ -13,7 +13,7 @@ function Header(props) {
   const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
   const location = useLocation();
   const detailsMenuReviews = location.pathname.endsWith('/details') || location.pathname.endsWith('/menu') || location.pathname.endsWith('/reviews')
-  const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo') ||  location.pathname.startsWith('/addDish');
+  const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo');
   //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
   const [show, setShow] = useState(false);

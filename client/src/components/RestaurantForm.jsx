@@ -10,6 +10,8 @@ import 'react-phone-number-input/style.css'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 import { ImageViewer, DishItem, EditTimeSelector, AddressSelector, address_string_to_object, address_object_to_string, ViewTimeSelector, ViewDailyTimeSelector, time_string_to_object, time_object_to_string, filter_by_day, sort_and_merge_times } from './RestaurantFormUtility';
 import { ErrorContext } from './userContext';
+import { DishForm } from './DishForm';
+import ConfirmModal from './ConfirmModal';
 
 function ProgressLabel(props) {
     const { progress } = props;
@@ -70,9 +72,25 @@ function InnerForm(props) {
     // states for progress 4/4
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
     const [dishes, setDishes] = useState([]);
-
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
+    const prevDishesLength = useRef(dishes.length);
+
+    // DISH SECTION STATES
+    const [dishName, setDishName] = useState({text:'' , invalid:false});
+    const [price, setPrice] = useState({price: 0.0 , invalid:false});
+    const [type, setType] = useState({ text: '', invalid: false });
+    const [dishImage, setDishImage] = useState(PLACEHOLDER);
+    const [fileNameDish, setFileNameDish] = useState('No File Chosen');
+    const [ingredients, setIngredients] = useState([{ id: 0, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
+    // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
+    const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
+    const [ingredientImage, setIngredientImage] = useState([PLACEHOLDER]);
+    const [fileNameIngredient, setFileNameIngredient] = useState('No File Chosen');
+    const [show, setShow] = useState(false);
+    // state for going into the dish section
+    const [manageDish, setManageDish] = useState(undefined);
+    //const [manageDish, setManageDish] = useState({route: undefined, id: undefined});
 
     // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
     useEffect(() => {
@@ -94,7 +112,16 @@ function InnerForm(props) {
             // Update the length
             prevTimesLength.current = times.length;
         }
-    }, [times]);
+        // Check if the length of dishes array has changed
+        if (dishes.length !== prevDishesLength.current) {
+            // Update dishtempId when times state changes
+            setDishTempId(
+                dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1
+            );
+            // Update the length
+            prevDishesLength.current = dishes.length;
+        }
+    }, [times,dishes]);
 
     // to retrieve info of the restaurant if in edit
     useEffect(() => {
@@ -115,6 +142,7 @@ function InnerForm(props) {
                 setTimes(sort_and_merge_times(time_string_to_object(restaurant.hours)));
                 setImage(restaurant.image);
                 setDishes(restaurant.dishes);
+                //setDishTempId(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
             } catch (err) {
                 // show error message
                 handleError(err);
@@ -129,12 +157,50 @@ function InnerForm(props) {
         }
     }, []);
 
-    function addDish(new_dish) {
-        setDishes((oldDishList) => [...oldDishList, Object.assign({}, { id: dishtempId, new_dish })]);
-        setDishTempId((oldTempId) => oldTempId + 1);
+    function resetStates() {
+        setManageDish(undefined);
+        setDishName({ text: '', invalid: false });
+        setPrice({ price: 0.0, invalid: false });
+        setType({ text: '', invalid: false });
+        setDishImage(PLACEHOLDER);
+        setFileNameDish('No File Chosen');
+        setIngredients([{ id: 0, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+        setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
+        setIngredientImage([PLACEHOLDER]);
+        setFileNameIngredient('No File Chosen');
+    };
+          
+    function createDishObject(dishId) {
+        const dishObject = {
+            id: dishId,
+            name: dishName.text,
+            price: parseFloat(price.price),
+            type: type.text,
+            image: dishImage,
+            ingredients: ingredients.map((ingredient) => ({
+                id: ingredient.id,
+                dishId: dishId,  // Assuming you have a fixed dishId or generate it accordingly
+                image: ingredientImage[ingredients.indexOf(ingredient)],  // Adjust accordingly
+                name: ingredient.text,
+                allergens: ingredient.allergens,
+                brandName: ingredient.brandname,
+                brandLink: ingredient.link || null,
+            })),
+        };
+    
+        return dishObject;
+    }
+    
+    function addDish() {
+        const new_dish = createDishObject(undefined);
+        console.log(new_dish)
+        setDishes((oldDishList) => [...oldDishList, Object.assign({}, { ...new_dish, id: dishtempId })]);
+        // reset
+        resetStates();
     }
 
-    function editDish(updated_dish) {
+    function editDish() {
+        const updated_dish = createDishObject(manageDish.id);
         setDishes((dishes) => dishes.map((dish) => {
             if (dish.id === updated_dish.id) {
                 return Object.assign({}, updated_dish);
@@ -143,6 +209,8 @@ function InnerForm(props) {
             }
         }
         ));
+        // reset
+        resetStates();
     }
 
     function deleteDish(dishId) {
@@ -330,6 +398,115 @@ function InnerForm(props) {
         return invalid;
     }
 
+    function mainInfoDishValidation(info, setState, ingredient_field) {
+        let invalid = undefined;
+        if (!ingredient_field) {
+            if (info.text.length === 0) {
+                invalid = true;
+                setState({ text: info.text, invalid: true });
+            } else {
+                setState({ text: info.text, invalid: false });
+            }
+        } else {
+            // ingredient validation
+            let text_or_brandname;
+            if (ingredient_field === 'text') {
+                text_or_brandname = info.text;
+            } else if (ingredient_field === 'brandname') {
+                text_or_brandname = info.brandname;
+            }
+
+            if (text_or_brandname.length === 0) {
+                invalid = true;
+                setState((oldIngredients) => oldIngredients.map((oldingredient) => {
+                    if (oldingredient.id === info.id) {
+                        if (ingredient_field === 'text') {
+                            return { ...oldingredient, text: info.text, invalid_text: true };
+                        } else if (ingredient_field === 'brandname') {
+                            return { ...oldingredient, brandname: info.brandname, invalid_brandname: true };
+                        }
+                    }
+                    return oldingredient;
+                }));
+                //console.log(ingredients);
+            } else {
+                setState((oldIngredients) => oldIngredients.map((oldingredient) => {
+                    if (oldingredient.id === info.id) {
+                        if (ingredient_field === 'text') {
+                            return { ...oldingredient, text: info.text, invalid_text: false };
+                        } else if (ingredient_field === 'brandname') {
+                            return { ...oldingredient, brandname: info.brandname, invalid_brandname: false };
+                        }
+                    }
+                    return oldingredient;
+                }));
+            }
+        }
+
+        return invalid;
+    }
+
+    function priceValidation(info) {
+        let invalid = undefined;
+        if (!validator.isFloat(info.price.toString()) || parseFloat(info.price.toString()) <= 0) {
+            setPrice({ price: info.price, invalid: true });
+            invalid = true;
+        } else {
+            setPrice({ price: info.price, invalid: false });
+        }
+        return invalid;
+    }
+
+    function ingredientLinkValidation(info, setState) {
+        let invalid = undefined;
+        // if link null from the db, return undefined directly (field not required)
+        if (!info.link) {
+            return undefined;
+        }
+
+        if ((info.link.length !== 0 && !validator.isURL(info.link))) {
+            invalid = true;
+            setState((oldIngredients) => oldIngredients.map((oldingredient) => {
+                if (oldingredient.id === info.id) {
+                    return { ...oldingredient, link: info.link, invalid_link: true };
+                }
+                return oldingredient;
+            }));
+        } else {
+            setState((oldIngredients) => oldIngredients.map((oldingredient) => {
+                if (oldingredient.id === info.id) {
+                    return { ...oldingredient, link: info.link, invalid_link: false };
+                }
+                return oldingredient;
+            }));
+        }
+        return invalid;
+    }
+
+    function allergen_validation(info) {
+        let invalid = undefined;
+        const allergens = (info.allergens && info.allergens.length > 0) ? info.allergens.split(',') : [];
+        for (const allergen of allergens) {
+            if (allergen.trim().length === 0) {
+                invalid = true;
+                setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
+                    if (oldingredient.id === info.id) {
+                        return { ...info, invalid_allergens: true };
+                    }
+                    return oldingredient;
+                }));
+            } else {
+                setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
+                    if (oldingredient.id === info.id) {
+                        return { ...info, invalid_allergens: false };
+                    }
+                    return oldingredient;
+                }));
+            }
+        }
+        return invalid;
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -413,7 +590,47 @@ function InnerForm(props) {
                 // no validation needed
                 break;
             case 4:
-                // no validation needed (rely on addDish and editDish screens to validate)
+                // Validate Dish Name if gone in add edit dish
+                if (manageDish) {
+                    let dish_name_invalidity = mainInfoDishValidation(dishName, setDishName, false);
+                    if (dish_name_invalidity) {
+                        invalid = dish_name_invalidity;
+                    }
+                    // Validate Dish Price
+                    let dish_price_invalidity = priceValidation(price);
+                    if (dish_price_invalidity) {
+                        invalid = dish_price_invalidity;
+                    }
+                    // Validate Category type
+                    let category_invalidity = mainInfoDishValidation(type, setType, false);
+                    if (category_invalidity) {
+                        invalid = category_invalidity;
+                    }
+
+                    // Validate each ingredient
+                    ingredients.forEach((ingredient) => {
+                        // Validate Ingredient Name
+                        let ingredient_name_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'text');
+                        if (ingredient_name_invalidity) {
+                            invalid = ingredient_name_invalidity;
+                        }
+                        // Validate Ingredient Brand Name
+                        let ingredient_Brandname_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'brandname');
+                        if (ingredient_Brandname_invalidity) {
+                            invalid = ingredient_Brandname_invalidity;
+                        }
+                        // Validate Ingredient Brand Link
+                        let ingredient_Brandlink_invalidity = ingredientLinkValidation(ingredient, setIngredients);
+                        if (ingredient_Brandlink_invalidity) {
+                            invalid = ingredient_Brandlink_invalidity;
+                        }
+                        // Validate Allergens
+                        let ingredient_allergens_invalidity = allergen_validation(ingredient);
+                        if (ingredient_allergens_invalidity) {
+                            invalid = ingredient_allergens_invalidity;
+                        }
+                    });
+                }
                 break;
             default:
                 break;
@@ -427,30 +644,43 @@ function InnerForm(props) {
         } else {
             //progress is 4 and click save button, construct the http post object and submit by invoking the API
             // construct the object to call the API
-            const restaurant = {};
-            restaurant.image = image;
-            restaurant.name = activityName.text;
-            restaurant.location = address_object_to_string(address);
-            restaurant.phone = phone.text;
-            restaurant.website = website.link;
-            restaurant.facebook = facebook.link;
-            restaurant.instagram = instagram.link;
-            restaurant.twitter = twitter.link;
-            restaurant.hours = time_object_to_string(times);
-            restaurant.description = description.text;
-            restaurant.dishes = dishes;
-
-            if (restaurant_id) {
-                // update case, add the restaurantId and 
-                restaurant.id = restaurant_id;
-                // call the API to update an existing restaurant
-                await API.editRestaurant(restaurant).catch((err) => handleError(err));
-            } else {
-                // call the API to add a new restaurant
-                await API.createRestaurant(restaurant).catch((err) => handleError(err));
+            if(!invalid) {
+                if (manageDish && manageDish.id) {
+                    // edit dish
+                    editDish();
+                } else if(manageDish) {
+                    // add dish
+                    addDish();
+                }
+                const restaurant = {};
+                restaurant.image = image;
+                restaurant.name = activityName.text;
+                restaurant.location = address_object_to_string(address);
+                restaurant.phone = phone.text;
+                restaurant.website = website.link;
+                restaurant.facebook = facebook.link;
+                restaurant.instagram = instagram.link;
+                restaurant.twitter = twitter.link;
+                restaurant.hours = time_object_to_string(times);
+                restaurant.description = description.text;
+                restaurant.dishes = dishes;
+    
+                if (restaurant_id) {
+                    // update case, add the restaurantId and 
+                    restaurant.id = restaurant_id;
+                    // call the API to update an existing restaurant
+                    await API.editRestaurant(restaurant).catch((err) => handleError(err));
+                } else {
+                    // call the API to add a new restaurant
+                    await API.createRestaurant(restaurant).catch((err) => handleError(err));
+                }
+                //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4
+                if (manageDish) {
+                    setProgress(4);
+                } else {
+                    navigate('/');
+                }  
             }
-            //then return home
-            navigate('/');
         }
     };
 
@@ -463,18 +693,18 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={activityName.invalid} type="text" placeholder="Enter The Activity's Name" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
-                            <Form.Control.Feedback type="invalid">Please Insert The Activity's Name</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
-                            <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Please Insert a Valid Phone Number' : ''}</p>
+                            <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Insert a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={description.invalid} as="textarea" rows={4} placeholder="Enter The Description" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
-                            <Form.Control.Feedback type="invalid">Please Insert A Description</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
 
@@ -482,19 +712,19 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Please Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
 
@@ -518,9 +748,10 @@ function InnerForm(props) {
                         })}
                     </Container>
                     <Container className="d-flex justify-content-between mt-auto">
-                        <Button variant="warning" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); }}>Cancel</Button>
+                        <Button variant="secondary" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); }}>Reset</Button>
                         <Button variant="primary" size='sm' onClick={addTempTimesToTimes}>Save</Button>
                     </Container>
+                    <div style={{borderTop: "1px solid #000", marginTop: '2%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>
                     {(filter_by_day(times, 'Mon').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Mon')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
                     {(filter_by_day(times, 'Tue').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Tue')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
                     {(filter_by_day(times, 'Wed').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Wed')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
@@ -542,22 +773,51 @@ function InnerForm(props) {
             );
             break;
         case 4:
-            componentToRender = (
-                <>
-                    <Container>
-                        <ListGroup>
-                            {
-                                dishes.map((dish, index) => {
-                                    return (<DishItem key={index} restaurantId={restaurant_id} dish={dish} deleteDish={deleteDish} />);
-                                })
-                            }
-                        </ListGroup>
-                    </Container>
-                    <Container className="d-flex flex-column align-items-center width-100">
-                        <Button variant='primary' onClick={() => { navigate(`/restaurants/${restaurant_id}/addDish/`) }}>Add Dish</Button>
-                    </Container>
-                </>
-            );
+            {
+                manageDish ? componentToRender = (
+                    <DishForm
+                        dish={(manageDish.id) ? dishes.filter((dish) => dish.id===manageDish.id)[0] : undefined}
+                        dishName={dishName}
+                        setDishName={setDishName}
+                        price={price}
+                        setPrice={setPrice}
+                        type={type}
+                        setType={setType}
+                        dishImage={dishImage}
+                        setDishImage={setDishImage}
+                        fileNameDish={fileNameDish}
+                        setFileNameDish={setFileNameDish}
+                        ingredients={ingredients}
+                        setIngredients={setIngredients}
+                        ingredientTempId={ingredientTempId}
+                        setIngredientTempId={setIngredientTempId}
+                        ingredientImage={ingredientImage}
+                        setIngredientImage={setIngredientImage}
+                        fileNameIngredient={fileNameIngredient}
+                        setFileNameIngredient={setFileNameIngredient}
+                        mainInfoDishValidation={mainInfoDishValidation}
+                        priceValidation={priceValidation}
+                        ingredientLinkValidation={ingredientLinkValidation}
+                        allergen_validation={allergen_validation}
+                    />
+                ) :
+                componentToRender = (
+                        <>
+                            <Container>
+                                <ListGroup>
+                                    {
+                                        dishes.map((dish, index) => {
+                                            return (<DishItem key={index} dish={dish} deleteDish={deleteDish} setManageDish={setManageDish} />);
+                                        })
+                                    }
+                                </ListGroup>
+                            </Container>
+                            <Container className="d-flex flex-column align-items-center width-100">
+                                <Button variant='primary' onClick={() => { setManageDish({route: 'add_dish', id: undefined}) }}>Add Dish</Button>
+                            </Container>
+                        </>
+                );
+            }
             break;
         default:
             componentToRender = <p>No matching case found</p>;
@@ -565,14 +825,18 @@ function InnerForm(props) {
 
     return (
         <>
+            <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
             <Form noValidate onSubmit={handleSubmit}>
                 <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
-                    {(progress > 1) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
-                    {(progress < 4) ? <Button variant="primary" type='submit' className="ms-auto">Next</Button> : ''}
-                    {(progress === 4 && dishes.length !== 0) ? <Button variant="primary" type='submit' className="ms-auto">Save</Button> : ''}
+                    {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
+                    {(progress > 1 && manageDish === undefined) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
+                    {(progress < 4) ? <Button variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
+                    {(progress === 4 && dishes.length !== 0 && manageDish === undefined) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Save</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
                 </Container>
             </Form>
         </>
@@ -585,7 +849,7 @@ function RestaurantForm(props) {
     return (
         <>
             <ProgressLabel progress={progress}/>
-            <InnerForm progress={progress} setProgress={setProgress} />
+            <InnerForm progress={progress} setProgress={setProgress}/>
         </>
     );
 }

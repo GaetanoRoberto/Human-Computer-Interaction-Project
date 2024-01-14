@@ -1,4 +1,4 @@
-const HTTP_AND_IP_ADDRESS_AND_PORT = "http://192.168.1.164:3001"; //SOSTITUIRE 192.168.0.100 CON L'INDIRIZZO IP DELLA PROPRIA INTERFACCIA DI RETE WIFI e LASCIARE LA PORTA DEL SERVER (3001)  --> N.B.: L'INTERFACCIA DI RETE ETHERNET AVRà UN IP ADDRESS DIVERSO! (TIPICAMENTE QUELLO ETHERNET è IL 2O IP CHE CI VIENE DATO QUANDO SI RUNNA IL CLIENT DI UNA REACT APP, MENTRE QUELLO WIFI è IL 3O IP CHE CI VIENE DATO)
+const HTTP_AND_IP_ADDRESS_AND_PORT = "http://192.168.1.8:3001"; //SOSTITUIRE 192.168.0.100 CON L'INDIRIZZO IP DELLA PROPRIA INTERFACCIA DI RETE WIFI e LASCIARE LA PORTA DEL SERVER (3001)  --> N.B.: L'INTERFACCIA DI RETE ETHERNET AVRà UN IP ADDRESS DIVERSO! (TIPICAMENTE QUELLO ETHERNET è IL 2O IP CHE CI VIENE DATO QUANDO SI RUNNA IL CLIENT DI UNA REACT APP, MENTRE QUELLO WIFI è IL 3O IP CHE CI VIENE DATO)
 // base server url from which call the client API
 const SERVER_URL = HTTP_AND_IP_ADDRESS_AND_PORT + '/api';
 
@@ -20,4 +20,7 @@ const FILTERS = [];
 // days of the week
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"];
 
-export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS};
+// Allergens
+const foodAllergens = ['Peanuts', 'Tree nuts', 'Milk', 'Eggs', 'Soy', 'Gluten', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries'].map(item => ({ value: item, label: item }));
+
+export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS,foodAllergens};
