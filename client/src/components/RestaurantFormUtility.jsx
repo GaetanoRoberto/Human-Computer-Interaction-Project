@@ -10,13 +10,56 @@ import dayjs from 'dayjs';
 import { DAYS } from './Costants';
 import API from '../API';
 
+// Function to calculate the size of base64-encoded data in bytes
+const calculateFileSize = (dataURL) => {
+    // Remove metadata prefix and convert base64 to binary
+    const binaryData = atob(dataURL.split(',')[1]);
+
+    // Calculate the length of the binary data
+    return binaryData.length;
+};
+
 const handleImageChange = (event, setImage, setFileName) => {
     const file = event.target.files[0];
     setFileName(file.name);
+
     if (file) {
         const reader = new FileReader();
-        reader.onloadend = () => {
-            setImage(reader.result);
+        reader.onload = (e) => {
+            const img = new Image();
+            img.src = e.target.result;
+
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Set canvas dimensions to the image dimensions
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw image on canvas
+                ctx.drawImage(img, 0, 0);
+
+                // Determine compression quality based on image dimensions and file size
+                let compressionQuality = 0.8; // Default quality
+                const maxFileSizeInBytes = 50 * 1024; // 50KB
+
+                let compressedDataURL = canvas.toDataURL('image/jpeg', compressionQuality);
+
+                // Calculate the initial size of the compressed image in bytes
+                let compressedImageSizeInBytes = calculateFileSize(compressedDataURL);
+
+                // Check if the initial size exceeds the maximum allowed size
+                while (compressedImageSizeInBytes > maxFileSizeInBytes) {
+                    // Reduce compression quality and recalculate
+                    compressionQuality -= 0.1;
+                    compressedDataURL = canvas.toDataURL('image/jpeg', compressionQuality);
+                    compressedImageSizeInBytes = calculateFileSize(compressedDataURL);
+                }
+
+                // Set the compressed image data URL in the state
+                setImage(compressedDataURL);
+            };
         };
         reader.readAsDataURL(file);
     }
