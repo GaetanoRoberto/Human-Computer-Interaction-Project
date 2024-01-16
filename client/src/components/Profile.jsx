@@ -235,7 +235,7 @@ function Profile(props) {
 
     return (
       <>
-        <Container fluid style={{ height: window.innerHeight - 55, overflowY: 'auto', marginBottom: '3%' }}>
+        <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
           <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} />
           <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
           {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}

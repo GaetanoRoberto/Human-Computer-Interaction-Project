@@ -22,6 +22,7 @@ import {NavigationButtons} from "./NavigationButtons.jsx";
 import {Reviews} from "./ReviewsList.jsx";
 import {address_string_to_object, time_string_to_object} from "./RestaurantFormUtility.jsx";
 import {ErrorContext} from "./userContext.jsx";
+import {DishIngredientsView} from "./DishIngredientsView.jsx";
 
 
 function getHappinessSolidClass(index) {
@@ -224,16 +225,25 @@ const BannerProfile = (props) => {
 
     // Used to show the restaurant rating based on the reviews
     const restaurantStars = () => {
-        const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
-        const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
-        // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
-        return (
-            <h6>
-                Quality: <i className="bi bi-star-fill"></i> {averageQuality.toFixed(1)}
-                {" "}
-                Safety: <i className="bi bi-star-fill"></i> {averageSafety.toFixed(1)}
-            </h6>
-        );
+        if (restaurant.reviews.length === 0) {
+            return (
+                <p>
+                    <i className="bi bi-star" style={{ color: '#FFD700', marginRight: "5px"}}></i>
+                    <i>No reviews yet</i>
+                </p>
+            );
+        } else {
+            const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
+            const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
+            // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
+            return (
+                <h6>
+                    Quality: <i className="bi bi-star-fill" style={{color: "#FFC107"}}></i> {averageQuality.toFixed(1)}
+                    <br/>
+                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{color: getHappinessColor(Math.round(averageSafety))}} /> {averageSafety.toFixed(1)}
+                </h6>
+            );
+        }
     }
 
     // Functions used to show the opening hours status based on real time
@@ -290,7 +300,7 @@ const BannerProfile = (props) => {
                 const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
                 const opensTomorrow = i === 1;
                 if (!opensTomorrow)
-                    return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
+                    return `Closed today, opens on ${dayAbbreviations[nextDayIndex]} at ${nextOpeningTime}`;
                 else
                     return `Closed today, opens tomorrow at ${nextOpeningTime}`;
             }
@@ -347,7 +357,7 @@ const BannerProfile = (props) => {
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
                 </Row>
-                <Row>
+                <Row style={{whiteSpace: "nowrap"}}>
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
             </Container>
@@ -358,6 +368,7 @@ const BannerProfile = (props) => {
 
 const Menu = (props) => {
     const { restaurant } = props;
+    const navigate = useNavigate();
 
     const allDishTypes = [...new Set(restaurant.dishes.map(dish => dish.type))];
     const [type, setType] = useState(allDishTypes[0]);
@@ -365,9 +376,9 @@ const Menu = (props) => {
     const [filteredDishes, setFilteredDishes] = useState(restaurant.dishes);
     // const [ingredient, setIngredient] = useState(null);
     // const [modalIngredientShow, setModalIngredientShow] = useState(false);
-    const [dishIngredients, setDishIngredients] = useState(null);
-    const [modalDishShow, setModalDishShow] = useState(false);
-    const menuHeight = (window.innerHeight - 336);
+    // const [dishIngredients, setDishIngredients] = useState(null);
+    // const [modalDishShow, setModalDishShow] = useState(false);
+    const menuHeight = (window.innerHeight - 356);
 
 
     const handleSearch = (ev) => {
@@ -445,100 +456,100 @@ const Menu = (props) => {
     //         </Modal>
     //     );
     // }
-
-    function DishModal(props) {
-        if(!dishIngredients)
-            return null;
-
-        return(
-            <Modal {...props} fullscreen>
-                <Modal.Header closeButton />
-                <Modal.Body>
-                    <Row>
-                        <Col style={{textAlign: "center"}}>
-                            <img width={window.innerWidth - 100} src={dishIngredients.image} />
-                            <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem", marginTop: "1rem"}}></div>
-                        </Col>
-                    </Row>
-                    <Modal.Title as={"h1"} style={{textAlign: "center"}}>
-                        {dishIngredients.name}
-                    </Modal.Title>
-                    <Row>
-                        <Col style={{textAlign: "center"}}>
-                            <Badge pill bg="success"> {dishIngredients.type} </Badge>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col style={{textAlign: "center", marginLeft: "0.4rem", marginTop: "0.4rem"}}>
-                            <i><b>{dishIngredients.price}<i className="bi bi-currency-euro"></i></b></i>
-                        </Col>
-                    </Row>
-                    {dishIngredients.ingredients.length !== 0 ?
-                        <Modal.Title as={"h5"} style={{textAlign: "center", marginTop: "2rem", marginBottom: "0.4rem"}}>
-                            Ingredients
-                        </Modal.Title>
-                        :
-                        <></>
-                    }
-                    {
-                        dishIngredients.ingredients.map((ingredient, index) => {
-                            let allergens = [];
-
-                            if(ingredient.allergens !== null)
-                                allergens = ingredient.allergens.split(',').map(allergen => allergen.trim());
-
-                            return (
-                                <div key={index}>
-                                    <div style={{borderTop: "1px solid #D3D3D3", margin: 0}} ></div>
-                                    <Row>
-                                        <Col as={"h4"} style={{marginTop: "1.4rem"}}>
-                                            <i>{ingredient.name}</i>
-                                        </Col>
-                                    </Row>
-                                    <Row style={{marginBottom: "1.4rem"}}>
-                                        <Col>
-                                            { allergens.length === 0 ?
-                                                <h6 style={{marginTop: "1rem"}}> No allergens </h6>
-                                                :
-                                                allergens.map((allergen, index) => (
-                                                    <h5 key={index} style={{marginTop: "0.4rem"}}>
-                                                        <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
-                                                            { allergen === "gluten" ?
-                                                                <>
-                                                                    <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}
-                                                                </>
-                                                                :
-                                                                allergen
-                                                            }
-                                                        </Badge>
-                                                    </h5>
-                                                ))
-                                            }
-                                            { ingredient.brandLink === null ?
-                                                <h5 style={{marginTop: "3rem"}}>
-                                                    {ingredient.brandName}
-                                                </h5>
-                                                :
-                                                <>
-                                                    <h6 style={{marginTop: "3rem"}}>
-                                                        Brand :
-                                                    </h6>
-                                                    <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
-                                                </>
-                                            }
-                                        </Col>
-                                        <Col style={{textAlign: "end"}}>
-                                            <img height={"130px"} width={"130px"} src={ingredient.image} />
-                                        </Col>
-                                    </Row>
-                                </div>
-                            );
-                        })
-                    }
-                </Modal.Body>
-            </Modal>
-        )
-    }
+    //
+    // function DishModal(props) {
+    //     if(!dishIngredients)
+    //         return null;
+    //
+    //     return(
+    //         <Modal {...props} style={{marginTop: 54}}>
+    //             <Modal.Header closeButton />
+    //             <Modal.Body style={{maxHeight: window.innerHeight - 170, overflowY: "scroll"}}>
+    //                 <Row>
+    //                     <Col style={{textAlign: "center"}}>
+    //                         <img width={window.innerWidth - 100} src={dishIngredients.image} />
+    //                         <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem", marginTop: "1rem"}}></div>
+    //                     </Col>
+    //                 </Row>
+    //                 <Modal.Title as={"h1"} style={{textAlign: "center"}}>
+    //                     {dishIngredients.name}
+    //                 </Modal.Title>
+    //                 <Row>
+    //                     <Col style={{textAlign: "center"}}>
+    //                         <Badge pill bg="success"> {dishIngredients.type} </Badge>
+    //                     </Col>
+    //                 </Row>
+    //                 <Row>
+    //                     <Col style={{textAlign: "center", marginLeft: "0.4rem", marginTop: "0.4rem"}}>
+    //                         <i><b>{dishIngredients.price}<i className="bi bi-currency-euro"></i></b></i>
+    //                     </Col>
+    //                 </Row>
+    //                 {dishIngredients.ingredients.length !== 0 ?
+    //                     <Modal.Title as={"h5"} style={{textAlign: "center", marginTop: "2rem", marginBottom: "0.4rem"}}>
+    //                         Ingredients
+    //                     </Modal.Title>
+    //                     :
+    //                     <></>
+    //                 }
+    //                 {
+    //                     dishIngredients.ingredients.map((ingredient, index) => {
+    //                         let allergens = [];
+    //
+    //                         if(ingredient.allergens !== null)
+    //                             allergens = ingredient.allergens.split(',').map(allergen => allergen.trim());
+    //
+    //                         return (
+    //                             <div key={index}>
+    //                                 <div style={{borderTop: "1px solid #D3D3D3", margin: 0}} ></div>
+    //                                 <Row>
+    //                                     <Col as={"h4"} style={{marginTop: "1.4rem"}}>
+    //                                         <i>{ingredient.name}</i>
+    //                                     </Col>
+    //                                 </Row>
+    //                                 <Row style={{marginBottom: "1.4rem"}}>
+    //                                     <Col>
+    //                                         { allergens.length === 0 ?
+    //                                             <h6 style={{marginTop: "1rem"}}> No allergens </h6>
+    //                                             :
+    //                                             allergens.map((allergen, index) => (
+    //                                                 <h5 key={index} style={{marginTop: "0.4rem"}}>
+    //                                                     <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
+    //                                                         { allergen === "gluten" ?
+    //                                                             <>
+    //                                                                 <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}
+    //                                                             </>
+    //                                                             :
+    //                                                             allergen
+    //                                                         }
+    //                                                     </Badge>
+    //                                                 </h5>
+    //                                             ))
+    //                                         }
+    //                                         { ingredient.brandLink === null ?
+    //                                             <h5 style={{marginTop: "3rem"}}>
+    //                                                 {ingredient.brandName}
+    //                                             </h5>
+    //                                             :
+    //                                             <>
+    //                                                 <h6 style={{marginTop: "3rem"}}>
+    //                                                     Brand :
+    //                                                 </h6>
+    //                                                 <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
+    //                                             </>
+    //                                         }
+    //                                     </Col>
+    //                                     <Col style={{textAlign: "end"}}>
+    //                                         <img height={"130px"} width={"130px"} src={ingredient.image} />
+    //                                     </Col>
+    //                                 </Row>
+    //                             </div>
+    //                         );
+    //                     })
+    //                 }
+    //             </Modal.Body>
+    //         </Modal>
+    //     )
+    // }
 
 
     return(
@@ -556,8 +567,8 @@ const Menu = (props) => {
             {/*Menu categories*/}
             <Col className="scroll" style={{ display: "flex", overflowX: "scroll"}}>
                 {allDishTypes.map((currentType, index) => (
-                    <Button key={index} active={currentType === type} onClick={() => setType(currentType)} variant="light" size="lg" style={{borderRadius: 0, borderColor: "#1a1a1a"}}>
-                        {currentType}
+                    <Button key={index} active={currentType === type} onClick={() => setType(currentType)} size="lg" style={{margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#52b69a" : "#fff", borderColor: "#52b69a", color: currentType === type ? "#fff" : "#52b69a", border: 0}}>
+                        {currentType.charAt(0).toUpperCase() + currentType.slice(1)}
                     </Button>
                 ))}
             </Col>
@@ -570,7 +581,7 @@ const Menu = (props) => {
                     :
                     filteredDishes.filter((dish) => dish.type === type).map((dish) => {
                     return (
-                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}} onClick={() => {setDishIngredients(dish); setModalDishShow(true)}}>
+                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`)}>
                             <Button variant="light" style={{padding: "0 0 0 0"}}>
                                 <Card.Body>
                                     <Row>
@@ -604,7 +615,7 @@ const Menu = (props) => {
             {/*Ingredient modal*/}
             {/*<IngredientModal show={modalIngredientShow} onHide={() => setModalIngredientShow(false)} />*/}
             {/*Dish modal*/}
-            <DishModal show={modalDishShow} onHide={() => setModalDishShow(false)} />
+            {/*<DishModal show={modalDishShow} onHide={() => setModalDishShow(false)} />*/}
         </>
     );
 }
@@ -713,7 +724,7 @@ function Restaurant() {
                     ) : details ? (
                         <Details restaurant={restaurant} />
                     ) : (
-                        <Reviews reviews={restaurant.reviews}/>
+                        <Reviews reviews={restaurant.reviews} />
                     )}
                     <NavigationButtons
                         id={id}

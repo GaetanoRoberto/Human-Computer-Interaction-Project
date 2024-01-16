@@ -19,6 +19,7 @@ import { FilterPage } from './components/FilterPage.jsx';
 import API from './API';
 // import ErrorComponent from './components/ErrorComponent.jsx';
 import { Header } from './components/Home';
+import {DishIngredientsView} from "./components/DishIngredientsView.jsx";
 library.add(fab, fas, far);
 
 
@@ -162,6 +163,7 @@ function App() {
             <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} />} />{/* DAVE*/}
             <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
+            <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/reviews' element={<Restaurant />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}

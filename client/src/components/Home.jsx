@@ -76,7 +76,7 @@ function Filters(props) {
 
     function createClickHandler(filterKey, filterValue, index) {
         return () => {
-            handleFadeClick(filterKey, filterValue, index);
+            handleFadeClick(filterKey, index);
         };
     }
     
@@ -389,7 +389,7 @@ function Home(props) {
     function filterRestaurants() {
         let filteredRestaurants = [];
     
-        restaurantInitialList.forEach(restaurant => {
+        restaurantList.forEach(restaurant => {
             let passesAllFilters = true;
     
             // Price Range Filter
