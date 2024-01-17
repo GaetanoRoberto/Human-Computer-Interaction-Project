@@ -157,19 +157,14 @@ function SearchReview(props) {
             <Dropdown.Item onClick={() => sortByField("safety", filteredReviews)}>SAFETY</Dropdown.Item>
           </DropdownButton>
         </Col>
-        <Col >
+        <Col onClick={toggleOrder}>
           {order === 'ASC' ? (
-            <i className="bi bi-sort-down" onClick={toggleOrder} style={{ fontSize: "1.5rem" }} />
+            <i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }} />
           ) : (
-            <i className="bi bi-sort-up" onClick={toggleOrder} style={{ fontSize: "1.5rem" }} />
+            <i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }} />
           )} {label === "DATE" ? (order === "ASC" ? "OLD" : "NEW") : order.toUpperCase()}
 
         </Col>
-        {
-          // FISSARE WIDTH DEL BOTTONE
-        }
-        {/*<Col>
-    </Col>*/}
       </Row>
     </>
   )

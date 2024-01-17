@@ -14,8 +14,8 @@ function Header(props) {
   const location = useLocation();
   const detailsMenuReviews = location.pathname.endsWith('/details') || location.pathname.endsWith('/menu') || location.pathname.endsWith('/reviews')
   const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo');
-  const reviewPage = location.pathname.includes("add") || location.pathname.includes("edit");
-  //console.log(reviewPage)
+  const formPages = location.pathname.includes("add") || location.pathname.includes("edit");
+  //console.log(formPages)
   //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
   const [show, setShow] = useState(false);
@@ -56,21 +56,22 @@ function Header(props) {
         <ConfirmModal text={'go Home'} show={show} setShow={setShow} action={() => {
           navigate('/')
         }} />
-        <ConfirmModal text={'go Back'} show={show2} setShow={setShow2} action={() => {
-          afterSettings ? navigate("/settings") : navigate(-1)
+        <ConfirmModal text={afterSettings?"go to Settings":'go Back'} show={show2} setShow={setShow2} action={() => {
+                      afterSettings ? navigate("/settings") : navigate(-1)
           
         }} />
         <Container fluid >
           {location.pathname != "/" ?
-            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : reviewPage ? () => setShow2(true) : () => navigate(-1)} />
+            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={location.pathname === ("/settings") || detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : () => navigate(-1)} />
             :
-            <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
+            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-solid fa-circle-info" onClick={detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : () => navigate(-1)} />
+            /*<Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>*/
           }
           {
             location.pathname === "/settings"?
-            <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => reviewPage ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+            <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => formPages ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
             :
-            <Button   variant="warning" onClick={() => reviewPage ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
+            <Button   variant="warning" onClick={() => formPages ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
           }
          
           {location.pathname === "/settings" ?
@@ -119,7 +120,7 @@ function Header(props) {
 
             :
             isRestaurateur ?
-              <FontAwesomeIcon icon="fa-solid fa-utensils" onClick={() => navigate('/settings')} style={{
+              <FontAwesomeIcon icon="fa-solid fa-utensils" onClick={formPages ? () => setShow2(true) : () => navigate("/settings")}  style={{
                 borderRadius: '50%',
                 border: '2px solid white',
                 fontSize: '1.25rem',
@@ -130,7 +131,7 @@ function Header(props) {
 
               }} />
               :
-              <FontAwesomeIcon icon="fa-solid fa-user" onClick={() => navigate('/settings')} style={{
+              <FontAwesomeIcon icon="fa-solid fa-user" onClick={formPages ? () => setShow2(true) : () => navigate("/settings")}  style={{
                 borderRadius: '50%',
                 border: '2px solid white',
                 fontSize: '1.25rem',

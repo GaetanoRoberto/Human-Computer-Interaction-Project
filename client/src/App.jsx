@@ -37,6 +37,8 @@ function App() {
     allergens: [], // Array to hold added ingredients
     openNow: false,
     nearby: false,
+    label: "QUALITY",
+    order: "DESC"
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
   const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
@@ -184,8 +186,8 @@ function DefaultRoute() {
   return (
     <div style={styles.centered}>
       <Col>
-        <h1>Nothing here...</h1>
-        <p>This is not the route you are looking for!</p>
+        <h1>You shouldn’t be here...</h1>
+        <p>Wrong URL!</p>
         <Link to="/">
           <Button type="button" variant="success" className="btn btn-lg edit-button">Go back to the homepage</Button>
         </Link>

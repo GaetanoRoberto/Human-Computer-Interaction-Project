@@ -171,3 +171,7 @@
 #formBasicSafetyRating {
   color: hsl(0, 0%, 50%);
 }
+
+.dropdown button::after {
+  margin-bottom: 0;
+}

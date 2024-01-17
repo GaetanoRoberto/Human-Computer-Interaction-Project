@@ -65,6 +65,12 @@ function SearchBar(props) {
                     <i className="bi bi-sliders" style={{ fontSize: "1.5rem" }} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
+            <Row>
+                <Col>
+                Have you doubts? Take a look!
+                <FontAwesomeIcon style={{ fontSize: "2rem", color: "#B0fff0" }} icon="fa-solid fa-circle-info" />
+                </Col>
+            </Row>
         </>
     )
 }
@@ -474,10 +480,21 @@ function Home(props) {
                 .filter(restaurant => restaurant.distance <= nearby)
                 .sort((a, b) => a.distance - b.distance);
         }
-    
+        console.log(filteredRestaurants)
+
+        const field = props.filtersToApply.label === "QUALITY" ? "avg_quality" : props.filtersToApply.label === "PRICE" ? "avg_price" : "avg_safety";
+        const order = props.filtersToApply.order;
+        //SORT BY TANUCC
+        const sortedList = order === 'ASC' ?
+        filteredRestaurants.sort((a, b) => a[field]===null ?1 : a[field] - b[field])
+        :
+        filteredRestaurants.sort((a, b) => b[field] - a[field])
+        filteredRestaurants = sortedList;
+        //console.log(field,order)
+        console.log(filteredRestaurants)
         return filteredRestaurants;
     }
-
+    
 
     return (
         <>
