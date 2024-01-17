@@ -60,12 +60,12 @@ function Header(props) {
                       afterSettings ? navigate("/settings") : navigate(-1)
           
         }} />
+
         <Container fluid >
           {location.pathname != "/" ?
             <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={location.pathname === ("/settings") || detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : () => navigate(-1)} />
             :
-            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-solid fa-circle-info" onClick={detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : () => navigate(-1)} />
-            /*<Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>*/
+            <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
           {
             location.pathname === "/settings"?
