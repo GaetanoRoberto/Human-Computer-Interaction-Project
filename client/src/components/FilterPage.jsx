@@ -315,7 +315,12 @@ const FilterPage = (props) => {
                             style={{ marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
                         >
                             <PositionModal show={showModal} setShow={setShowModal} action={handleLocationClick} />
-                            {tempFilters.nearby ? <FontAwesomeIcon icon="fa-solid fa-check" /> : ''} Nearby
+                            {isLoadingLocation ? (
+                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
+                            ) : (
+                                tempFilters.nearby ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
+                            )}
+                            Nearby
                         </ToggleButton>
                         <Form noValidate onSubmit={handleSubmit}>
                             <Row>
