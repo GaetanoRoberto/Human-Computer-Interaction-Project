@@ -60,7 +60,7 @@ function ReviewsListProfile(props) {
 
     return (
         <>
-            {props.numberOfReviews == 1 ? <h2>You have done {props.numberOfReviews} review</h2> : <h2>You have done {props.numberOfReviews} reviews</h2>}
+            {props.numberOfReviews == 1 ? <h3>You have done {props.numberOfReviews} review</h3> : <h3>You have done {props.numberOfReviews} reviews</h3>}
             <ListGroup>
                 {props.reviews.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item, index)  => {
                     return (
