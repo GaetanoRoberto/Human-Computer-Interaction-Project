@@ -20,7 +20,7 @@ const reviewsDao = require('./dao-reviews'); // module for accessing the reviews
 const usersDao = require('./dao-users'); // module for accessing the users table in the DB
 const retrieveIp = require('./retrieve-ip');
 const IP_ADDRESS_AND_PORT = retrieveIp.getLocalWirelessIP();
-const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder.png';
+const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder2.png';
 
 /*** init express and set-up the middlewares ***/
 const app = express();

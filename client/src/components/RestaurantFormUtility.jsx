@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
-import { PLACEHOLDER } from './Costants';
+import { PLACEHOLDER, PLACEHOLDER2 } from './Costants';
 import { TimePicker } from '@hilla/react-components/TimePicker.js';
 import 'react-phone-number-input/style.css'
 import { StandaloneSearchBox } from '@react-google-maps/api';
@@ -19,7 +19,7 @@ const calculateFileSize = (dataURL) => {
     return binaryData.length;
 };
 
-const handleImageChange = (event, setImage, setFileName) => {
+const handleImageChange = (event, setImage, setFileName, setViewImage) => {
     const file = event.target.files[0];
     setFileName(file.name);
 
@@ -59,6 +59,7 @@ const handleImageChange = (event, setImage, setFileName) => {
 
                 // Set the compressed image data URL in the state
                 setImage(compressedDataURL);
+                setViewImage(compressedDataURL);
             };
         };
         reader.readAsDataURL(file);
@@ -87,18 +88,19 @@ const address_object_to_string = (addr) => {
  * PLACEHOLDER is a costant declared in Costants.jsx to import 
  */
 function ImageViewer(props) {
+    const [viewImage,setViewImage] = useState(PLACEHOLDER);
     const { width, height, image, setImage, fileName, setFileName } = props;
     const fileInputRef = useRef(null);
     return (
         <>
             <Container className="d-flex flex-column align-items-center">
-                <img height={height} width={width} style={{ marginBottom: '5%' }} src={image} />
-                {(image === PLACEHOLDER || (Array.isArray(image) && image.includes(PLACEHOLDER))) ? '' : <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Current Image</Button>}
+                <img height={height} width={width} style={{ marginBottom: '5%' }} src={(image!==PLACEHOLDER2) ? image : viewImage} />
+                {(image === PLACEHOLDER2 || (Array.isArray(image) && image.includes(PLACEHOLDER2))) ? '' : <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setViewImage(PLACEHOLDER); setImage(PLACEHOLDER2); setFileName('No File Chosen'); }}>Remove Current Image</Button>}
 
             </Container>
             <Container className="d-flex align-items-center custom-input">
                 <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
-                <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName)} accept="image/*" />
+                <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName, setViewImage)} accept="image/*" />
             </Container>
         </>
     );
