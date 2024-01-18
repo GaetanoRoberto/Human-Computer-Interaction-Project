@@ -365,7 +365,7 @@ INSERT INTO "reviews" VALUES (7,'Luca', 4, DATE('2023-06-21'), 'Delicious pizza'
 INSERT INTO "reviews" VALUES (8,'Luca', 5, DATE('2023-03-26'), 'Delicious hamburger', 'Enjoyed the spaghetti!', 4, 4, 3);
 INSERT INTO "reviews" VALUES (9,'User', 7, DATE('2024-01-15'), 'Best pasta of my life', "Genuinely one of the most delicious pasta dishes I've had. The flavours were just amazing. Never expected it to be so good.", 5, 5, 5);
 INSERT INTO "reviews" VALUES (10,'Restaurateur', 5, DATE('2023-05-27'), 'Fantastic place', "Nice location! Can't wait to come back!", 4, 4, 3);
-INSERT INTO "reviews" VALUES (11,'Restaurateur', 5, DATE('2023-02-21'), 'Cool place', 'Extremely positive experience. I will come back!', 4, 4, 3);
+INSERT INTO "reviews" VALUES (11,'Restaurateur', 4, DATE('2023-02-21'), 'Cool place', 'Extremely positive experience. I will come back!', 4, 4, 3);
 
 
 COMMIT;
