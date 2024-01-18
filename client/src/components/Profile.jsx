@@ -133,7 +133,7 @@ const ReviewRow = (props) => {  {/*ME LO PASSA GAETANO*/}
 
 const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
     const [showModal, setShowModal] = useState(false);
-    const { restaurant, setRestaurant } = props;
+    const { restaurant, setRestaurant , setProgress } = props;
     const navigate = useNavigate();
 
     const handleRemoveRestaurant= () => {
@@ -159,9 +159,9 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
             <Button variant="primary" onClick={() => {navigate(`/addInfo`)}} style={{marginTop: 20}}>Create a restaurant page</Button>
             : 
             <>
-                <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Information</Button>
-                <Button variant="primary" style={{marginTop: "0px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Menu</Button>
-                <Button variant="danger" style={{marginBottom: "20px"}} onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
+                <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${restaurant.id}/`); setProgress(1);}}>Edit your Restaurant Information</Button>
+                <Button variant="primary" style={{marginTop: "0px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${restaurant.id}/`, { state: { from: 'edit_menu' } }); setProgress(4);}}>Edit your Restaurant Menu</Button>
+                <Button variant="danger" onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
             </>
             }
             </Row>
@@ -177,6 +177,7 @@ function Profile(props) {
     const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
     const [reviews, setReviews] = useState([]);
     const [restaurant, setRestaurant] = useState(null);
+    const {setProgress} = props;
  
     useEffect(() => {
       // function used to retrieve restaurant information in detail
@@ -237,11 +238,9 @@ function Profile(props) {
     return (
       <>
         <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
-          <Container fluid>  
-            <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus}/>
-            <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
-            {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}
-          </Container>
+          <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus}/>
+          <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
+          {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} setProgress={setProgress} /> : <></>}
         </Container>
       </>
     );

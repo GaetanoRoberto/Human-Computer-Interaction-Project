@@ -175,3 +175,7 @@
 .dropdown button::after {
   margin-bottom: 0;
 }
+
+.headerDropdown button::after {
+  margin-bottom: 15%; /* Adjust this value based on your design */
+}

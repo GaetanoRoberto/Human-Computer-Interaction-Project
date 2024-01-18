@@ -352,7 +352,7 @@ INSERT INTO "users" VALUES ('Luca','Corso Bolzano, 8, 10121 Torino TO;lat:45.069
 INSERT INTO "users" VALUES ('Giovanni','Corso Giacomo Matteotti, 42, 10121 Torino TO;lat:45.0693429;lng:7.6668350',0);
 INSERT INTO "users" VALUES ('Alessandro','Via Piave, 1, 10122 Torino TO;lat:45.0748358;lng:7.6751709',0);
 INSERT INTO "users" VALUES ('Davide','Via Cesare Battisti, 7, 10123 Torino TO;lat:45.0694684;lng:7.6856760',0);
-INSERT INTO "users" VALUES ('User','Via Montebello, 6, 10124 Torino TO;lat:45.0682528;lng:7.6923044',0);
+INSERT INTO "users" VALUES ('User','',0);
 INSERT INTO "users" VALUES ('Restaurateur','Via Ascanio Vittozzi, 30, 10131 Torino TO;lat:45.0614369;lng:7.6992785',1);
 
 INSERT INTO "reviews" VALUES (1,'Andrea', 1, DATE('2023-11-28') ,'Great experience', 'Had a wonderful time!', 5, 4, 4);

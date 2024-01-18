@@ -197,23 +197,6 @@ async function getIngredient(ingredientId) {
 };
 
 /**
- * This function is used to get all the possible type of dishes, for filter in the home page.
- * It returns a JSON object
- */
-async function getFilters() {
-  const response = await fetch(SERVER_URL + '/dishes/').catch(() => {throw {error: "Connection Error"}});
-  if (response.ok) {
-    // 200 status code, return the object
-    const filters = await response.json();
-    return filters;
-  } else {
-    // json object provided by the server with the error
-    const error = await response.json();
-    throw error;
-  }
-};
-
-/**
  * This function is used to get all to get a given dish
  * It returns a JSON object
  */
@@ -411,7 +394,6 @@ const API = {
   getInsertedRestaurant,
   getFilteringInfos,
   getIngredient,
-  getFilters,
   getDish,
   createRestaurant,
   editRestaurant,
