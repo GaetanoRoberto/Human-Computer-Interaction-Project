@@ -96,14 +96,14 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
     return (
       <>
         <Container fluid>  
-          <Col className="mb-2" style={{marginTop: 25}}>
-            <Row as="h1" style={{borderBottom: '1px solid lightgray'}}>Your Info</Row>
+          <Col className="mb-2" style={{marginTop: 15}}>
+            <Row as="h2" style={{borderBottom: '1px solid lightgray'}}>Your Info</Row>
             <Row as="h4" className="text-secondary">
                 {props.username}
             </Row>
           </Col>
-          <Col className="mb-2" style={{marginTop: 40}}>
-            <Row as="h1" style={{marginTop: 30, marginBottom: 14.1, borderBottom: '1px solid lightgray'}}>Enter Your Location</Row>
+          <Col className="mb-2" style={{marginTop: 35}}>
+            <Row as="h2" style={{marginTop: 30, marginBottom: 14.1, borderBottom: '1px solid lightgray'}}>Enter Your Location</Row>
             <Row style={{marginLeft: "-22.5px"}}>
             <AddressSelector address={props.address} setAddress={props.setAddress} isInProfilePage={true}/>
             <MyLocation address={props.address} setAddress={props.setAddress} username={props.username} selectedStatus={props.selectedStatus}/>
@@ -119,8 +119,8 @@ const ReviewRow = (props) => {  {/*ME LO PASSA GAETANO*/}
 
     return (
       <Container fluid>
-      <Col className="mb-2" style={{marginTop: 40}}>
-        <Row as="h1" style={{marginBottom: 7, borderBottom: '1px solid lightgray'}}>Your Reviews</Row>
+      <Col className="mb-2" style={{marginTop: 35}}>
+        <Row as="h2" style={{marginBottom: 7, borderBottom: '1px solid lightgray'}}>Your Reviews</Row>
         {reviews.length > 0 ? 
         <ReviewsListProfile reviews={reviews} numberOfReviews={reviews.length} setReviews={setReviews} restaurant={restaurant}/> 
         : 
@@ -151,8 +151,8 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
 
     return (
       <Container fluid>  
-          <Col className="mb-2" style={{marginTop: 40}}>
-            <Row as="h1" style={{marginBottom: 14, borderBottom: '1px solid lightgray'}}>Your Restaurant</Row>
+          <Col className="mb-2" style={{marginTop: 35}}>
+            <Row as="h2" style={{marginBottom: 14, borderBottom: '1px solid lightgray'}}>Your Restaurant</Row>
             <Row className="text-secondary">
             {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant</Row> : <BannerProfile restaurant={restaurant}/>}
             {(restaurant == null) ? 
@@ -161,7 +161,7 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
             <>
                 <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Information</Button>
                 <Button variant="primary" style={{marginTop: "0px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Menu</Button>
-                <Button variant="danger" onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
+                <Button variant="danger" style={{marginBottom: "20px"}} onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
             </>
             }
             </Row>
@@ -237,9 +237,11 @@ function Profile(props) {
     return (
       <>
         <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
-          <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus}/>
-          <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
-          {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}
+          <Container fluid>  
+            <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus}/>
+            <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
+            {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}
+          </Container>
         </Container>
       </>
     );
