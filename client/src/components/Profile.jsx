@@ -13,7 +13,7 @@ import { address_object_to_string } from './RestaurantFormUtility';
 import { UserContext } from './userContext';
 
 function MyLocation(props) {
-  const { address, setAddress, username } = props;
+  const { address, setAddress, username, selectedStatus } = props;
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   function handleLocationClick() {
@@ -42,10 +42,10 @@ function MyLocation(props) {
               setAddress({ text: results[0].formatted_address, lat: latitude, lng: longitude, invalid: false });
 
               const location = results[0].formatted_address + ';lat:' + latitude + ";lng:" + longitude;
-              const updatedUser = { 
-                position: location, 
-                isRestaurateur: 1, 
-                username: "Restaurateur"
+              const updatedUser = {
+                position: location,
+                isRestaurateur: selectedStatus == "User" ? 0 : 1,
+                username: selectedStatus == "User" ? "User" : "Restaurateur",
               };
               console.log(updatedUser);
 
@@ -78,7 +78,7 @@ function MyLocation(props) {
       <Button variant="primary" onClick={handleLocationClick} style={{width: '100%', marginTop: 10}}>
         {isLoadingLocation ? 
             <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}}/> :
-            <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{"marginRight": 10}}/>Use your location</>
+            <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{"marginRight": 10}}/>Use your GPS</>
         }
     </Button>
       {/* {location ? (
@@ -106,7 +106,7 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
             <Row as="h1" style={{marginTop: 30, marginBottom: 14.1, borderBottom: '1px solid lightgray'}}>Enter Your Location</Row>
             <Row style={{marginLeft: "-22.5px"}}>
             <AddressSelector address={props.address} setAddress={props.setAddress} isInProfilePage={true}/>
-            <MyLocation address={props.address} setAddress={props.setAddress} username={props.username}/>
+            <MyLocation address={props.address} setAddress={props.setAddress} username={props.username} selectedStatus={props.selectedStatus}/>
             </Row>
           </Col>
         </Container>
@@ -158,10 +158,11 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
             {(restaurant == null) ? 
             <Button variant="primary" onClick={() => {navigate(`/addInfo`)}} style={{marginTop: 20}}>Create a restaurant page</Button>
             : 
-            <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20, marginBottom: 20}}>
-                <Button variant="primary" onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit</Button>
+            <>
+                <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Information</Button>
+                <Button variant="primary" style={{marginTop: "0px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${1}/`)}}>Edit your Restaurant Menu</Button>
                 <Button variant="danger" onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
-            </div>
+            </>
             }
             </Row>
           </Col>
@@ -236,7 +237,7 @@ function Profile(props) {
     return (
       <>
         <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
-          <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} />
+          <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus}/>
           <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
           {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} /> : <></>}
         </Container>

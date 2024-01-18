@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Header } from './Header';
 import { UserContext } from './userContext';
 import dayjs from 'dayjs';
-
+import InfoPopup from './InfoPopup';
 function getHappinessSolidClass(index) {
     switch (index) {
         case 1:
@@ -42,6 +42,7 @@ function getHappinessColor(index) {
 function SearchBar(props) {
     const { search, setSearch, setRestaurantList, restaurantInitialList} = props;
     const navigate = useNavigate();
+    const [showInfo, setShowInfo] = useState(false);
 
     const handleSearch = (ev) => {
         setSearch(ev.target.value);
@@ -52,7 +53,9 @@ function SearchBar(props) {
 
 
     return (
-        <>
+        <>        <InfoPopup  show={showInfo} setShow={setShowInfo} action={() => {
+          navigate('/')
+        }} />
             <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
             <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
                 <Col xs={1} className="d-flex align-items-center" style={{ marginRight: "2%" }}>
@@ -65,12 +68,15 @@ function SearchBar(props) {
                     <i className="bi bi-sliders" style={{ fontSize: "1.5rem" }} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
-            <Row>
+            <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
+                <Col xs={6} style={{textAlign:"end"}}>
+                <b>More info</b>
+                </Col>
                 <Col>
-                Have you doubts? Take a look!
-                <FontAwesomeIcon style={{ fontSize: "2rem", color: "#B0fff0" }} icon="fa-solid fa-circle-info" />
+                <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "2rem", color: "#007bff" }} icon="fa-solid fa-circle-info" />
                 </Col>
             </Row>
+            
         </>
     )
 }
