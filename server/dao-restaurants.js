@@ -42,6 +42,19 @@ exports.getRestaurantInserted = () => {
     });
 };
 
+// This function returns a review given an username and a restaurantId, to see if there is already a review.
+exports.getNumberOfReviews = (restaurantId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT COUNT(*) as count FROM reviews WHERE restaurantId=?';
+        db.get(sql, [restaurantId], (err, row) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(row.count);
+        });
+    });
+};
+
 // This function returns a restaurant given his id.
 exports.getRestaurant = (id) => {
     return new Promise((resolve, reject) => {
