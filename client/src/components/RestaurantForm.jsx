@@ -828,7 +828,7 @@ function InnerForm(props) {
         <>
             <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
             <Form noValidate onSubmit={handleSubmit}>
-                <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom:'3%' }}>
+                <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">

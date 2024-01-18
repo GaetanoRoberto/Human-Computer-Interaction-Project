@@ -211,7 +211,7 @@ function DishForm(props) {
 
     return (
         <>
-            <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '3%' }}>
+            <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>
                 <Form.Group >
                     <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Info</Form.Label>
                     <Row className="mb-3">
