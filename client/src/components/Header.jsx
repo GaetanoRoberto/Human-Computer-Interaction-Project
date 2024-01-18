@@ -76,7 +76,7 @@ function Header(props) {
          
           {location.pathname === "/settings" ?
 
-            <Dropdown drop="down" align="end" style={{ marginRight: "-12px" }}>
+            <Dropdown className='headerDropdown' drop="down" align="end" style={{ marginRight: "-12px" }}>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 {props.selectedStatus === 'User' ? (
                   <FontAwesomeIcon icon="fa-solid fa-user" style={{

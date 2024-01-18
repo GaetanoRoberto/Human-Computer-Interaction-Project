@@ -42,7 +42,8 @@ function App() {
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
   const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
-
+  // Restaurant Form State
+  const [progress, setProgress] = useState(1);
 
   // Define doLogIn function outside of useEffect
   const doLogIn = () => {
@@ -162,7 +163,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
             <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus} categoriesOptions={categoriesOptions} setCategoriesOptions={setCategoriesOptions} allergensOptions={allergensOptions} setAllergensOptions={setAllergensOptions}/>} />{/* DAVE [o chi finisce prima] */}
-            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} />} />{/* DAVE*/}
+            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} setProgress={setProgress} />} />{/* DAVE*/}
             <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
@@ -170,8 +171,8 @@ function App() {
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
-            <Route path='/addInfo' element={<RestaurantForm />} />  {/* DOME*/}
-            <Route path='/editInfo/:id' element={<RestaurantForm />} />{/* DOME*/}
+            <Route path='/addInfo' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />  {/* DOME*/}
+            <Route path='/editInfo/:id' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />{/* DOME*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>
