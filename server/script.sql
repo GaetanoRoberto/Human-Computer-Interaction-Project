@@ -316,7 +316,7 @@ INSERT INTO "ingredients" VALUES (146, 48, 'IP_ADDRESS_AND_PORT/ingredients/parm
 INSERT INTO "ingredients" VALUES (147, 48, 'IP_ADDRESS_AND_PORT/ingredients/basil.jpg', 'Fresh Basil', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (148, 48, 'IP_ADDRESS_AND_PORT/ingredients/garlic.jpg', 'Garlic', NULL, 'Local Farm', NULL);
 
-INSERT INTO "ingredients" VALUES (149, 55, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', 'lactose', 'Home Made', NULL);
+INSERT INTO "ingredients" VALUES (149, 55, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (150, 55, 'IP_ADDRESS_AND_PORT/ingredients/chickenkebab.jpg', 'Chicken Kebab', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (151, 55, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (152, 55, 'IP_ADDRESS_AND_PORT/ingredients/yogurt_sauce.jpg', 'Lactose Free Yogurt Sauce', NULL, 'Home Made', NULL);
