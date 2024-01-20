@@ -112,7 +112,9 @@ function Filters(props) {
                     filterKey != 'qualityRating' &&
                     filterKey != 'safetyRating' &&
                     filterKey != 'openNow' &&
-                    filterKey != 'nearby'){
+                    filterKey != 'nearby' &&
+                    filterKey != 'label' &&
+                    filterKey != 'order'){
 
                 }
                 // Update your switch case to correctly identify and remove the filter
@@ -135,9 +137,14 @@ function Filters(props) {
                     case 'nearby':
                         updatedFilters.nearby = false; // Reset or update as needed
                         break;
+                    case 'label':
+                        updatedFilters.label = 'NOTHING'; // Reset or update as needed
+                        break;
+                    case 'order':
+                        updatedFilters.order = ''; // Reset or update as needed
+                        break;
                     default: //categories
                         if (filterKey.startsWith("No ")){
-                            console.log("ciao");
                             updatedFilters.allergens = updatedFilters.allergens.filter(item => item !== filterKey.split("No ")[1]);
                             break;
                         } else {
@@ -371,6 +378,9 @@ function Home(props) {
         if (props.filtersToApply.nearby) {
             filter.push({ nearby: "Nearby" });
         }
+        if (props.filtersToApply.label != "NOTHING" && props.filtersToApply.order != '') {
+            filter.push({ label: "SORTED BY " + props.filtersToApply.order + " " + props.filtersToApply.label });
+        }
 
         return filter;
     };
@@ -403,7 +413,7 @@ function Home(props) {
     
         restaurantList.forEach(restaurant => {
             let passesAllFilters = true;
-    
+            
             // Price Range Filter
             if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 110) {
                 if (restaurant.dishes_avg_price < props.filtersToApply.priceRange[0] ||
@@ -414,8 +424,10 @@ function Home(props) {
 
             // Categories Filter
             if (passesAllFilters && props.filtersToApply.categories.length > 0) {
-                const hasMatchingCategory = props.filtersToApply.categories.some(filter_dish_type => 
-                    restaurant.dish_types.includes(filter_dish_type.toLowerCase())
+                const hasMatchingCategory = props.filtersToApply.categories.some(filter_category => 
+                    restaurant.dishes.some(dish => 
+                        dish.type.toLowerCase() == filter_category.toLowerCase()
+                    )
                 );
                 if (!hasMatchingCategory) {
                     passesAllFilters = false;
@@ -434,24 +446,26 @@ function Home(props) {
                 passesAllFilters = false;
             }
     
-            // Allergens Filter
+            // Allergens Filter --> IN THIS WAY WE SHOW UP ALL THE RESTAURANTS THAT HAVE AT LEAST ONE DISH (DRINKS EXCLUDED) WITHOUT THE SPECIFIED ALLERGENS
             if (passesAllFilters && props.filtersToApply.allergens.length > 0) {
-                const containsAllergen = props.filtersToApply.allergens.some(filter_allergen => 
-                    restaurant.allergens.includes(filter_allergen.toLowerCase())
-                );
-                if (containsAllergen) {
+                // Check if every dish contains an allergen; if not, the restaurant passes the filter
+                const allDishesContainAllergen = restaurant.dishes.every(dish => {
+                    // Skip checking allergens for dishes in the "drinks" category
+                    if (dish.type.toLowerCase() == "drinks") {
+                        return true;
+                    }
+                    // Check if the dish contains any of the specified allergens
+                    return props.filtersToApply.allergens.some(filter_allergen => 
+                        dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
+                    );
+                });
+
+                // If every dish (excluding drinks) contains an allergen, then the restaurant does not pass the filter
+                if (allDishesContainAllergen) {
                     passesAllFilters = false;
                 }
             }
-    
-            // Max Distance Filter
-            if (passesAllFilters && props.filtersToApply.maxDistance !== '') {
-                let lat2 = restaurant.location.split(";")[1].replace("lat:", "");
-                let lon2 = restaurant.location.split(";")[2].replace("lng:", "");
-                if (calculateDistance(userAddress.lat1.replace("lat:", ""), userAddress.lon1.replace("lng:", ""), lat2, lon2) > parseFloat(props.filtersToApply.maxDistance)){
-                    passesAllFilters = false;
-                }
-            }
+
     
             // Open Now Filter
             if (passesAllFilters && props.filtersToApply.openNow) {
@@ -463,10 +477,7 @@ function Home(props) {
                 if (!isOpen) {
                     passesAllFilters = false;
                 }
-            }
-    
-            // Nearby Filter - This seems to be handled separately. 
-            // You might want to integrate it here if it's intended to be part of the main filters.
+            }            
     
             // If the restaurant passes all filters, add it to the filteredRestaurants list
             if (passesAllFilters) {
@@ -474,30 +485,66 @@ function Home(props) {
             }
         });
 
-        let nearby = 2;
-        if (props.filtersToApply.nearby === true) {
+         // Max Distance Filter
+        //  if (passesAllFilters && props.filtersToApply.maxDistance !== '') {
+        //     let lat2 = restaurant.location.split(";")[1].replace("lat:", "");
+        //     let lon2 = restaurant.location.split(";")[2].replace("lng:", "");
+        //     if (calculateDistance(userAddress.lat1.replace("lat:", ""), userAddress.lon1.replace("lng:", ""), lat2, lon2) > parseFloat(props.filtersToApply.maxDistance)){
+        //         passesAllFilters = false;
+        //     }
+        // }
+
+        //BAD CODING BY TANUCC
+        if (props.filtersToApply.label != 'NOTHING') {
+            const field = props.filtersToApply.label === "REVIEW QUALITY" ? "avg_quality" : props.filtersToApply.label === "REVIEW PRICE" ? "avg_price" : "avg_safety";
+            const order = props.filtersToApply.order;
+            //SORT BY TANUCC
+            const sortedList = order === 'ASC' ?
+            filteredRestaurants.sort((a, b) => a[field]===null ?1 : a[field] - b[field])
+            :
+            filteredRestaurants.sort((a, b) => b[field] - a[field])
+            filteredRestaurants = sortedList;
+            //console.log(field,order)
+            // console.log(filteredRestaurants)
+        }
+
+        //Nearby AND Max Distance Filter
+        let nearby;
+        if (props.filtersToApply.nearby == true) {
+            nearby = 2;
+        } 
+        if (props.filtersToApply.maxDistance != '') {
+            nearby = parseFloat(props.filtersToApply.maxDistance);
+        } 
+        if (props.filtersToApply.nearby == true || props.filtersToApply.maxDistance != '') {
+            // Map restaurants to include calculated distances
             filteredRestaurants = filteredRestaurants
                 .map(restaurant => {
-                    let lat2 = restaurant.location.split(";")[1].replace("lat:", "");
-                    let lon2 = restaurant.location.split(";")[2].replace("lng:", "");
-                    let distance = calculateDistance(userAddress.lat1.replace("lat:", ""), userAddress.lon1.replace("lng:", ""), lat2, lon2);
+                    let lat2 = parseFloat(restaurant.location.split(";")[1].replace("lat:", ""));
+                    let lon2 = parseFloat(restaurant.location.split(";")[2].replace("lng:", ""));
+                    let distance = calculateDistance(
+                        parseFloat(userAddress.lat1.replace("lat:", "")), 
+                        parseFloat(userAddress.lon1.replace("lng:", "")), 
+                        lat2, 
+                        lon2
+                    );
                     return { ...restaurant, distance };
-                })
+                });
+
+            // Log distances for debugging
+            console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
+
+            // Filter and sort by distance
+            filteredRestaurants = filteredRestaurants
                 .filter(restaurant => restaurant.distance <= nearby)
                 .sort((a, b) => a.distance - b.distance);
-        }
-        console.log(filteredRestaurants)
 
-        const field = props.filtersToApply.label === "QUALITY" ? "avg_quality" : props.filtersToApply.label === "PRICE" ? "avg_price" : "avg_safety";
-        const order = props.filtersToApply.order;
-        //SORT BY TANUCC
-        const sortedList = order === 'ASC' ?
-        filteredRestaurants.sort((a, b) => a[field]===null ?1 : a[field] - b[field])
-        :
-        filteredRestaurants.sort((a, b) => b[field] - a[field])
-        filteredRestaurants = sortedList;
-        //console.log(field,order)
-        console.log(filteredRestaurants)
+                console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
+        }
+
+        // Log the sorted restaurants
+        console.log("Filtered and sorted restaurants:", filteredRestaurants);
+
         return filteredRestaurants;
     }
     

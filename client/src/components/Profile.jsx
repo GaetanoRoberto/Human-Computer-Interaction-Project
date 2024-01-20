@@ -199,7 +199,7 @@ function Profile(props) {
       if (username) {
           getUser(username);
       }
-    }, [username]);
+    }, [username, location.key]);
   
     
     useEffect(() => {

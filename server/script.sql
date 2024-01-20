@@ -160,20 +160,25 @@ INSERT INTO "dishes" VALUES (72,9, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS
 INSERT INTO "dishes" VALUES (73,9, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
 INSERT INTO "dishes" VALUES (74,9, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 
+-- INSERT INTO "dishes" VALUES (75,6, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
+-- INSERT INTO "dishes" VALUES (76,7, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
+-- INSERT INTO "dishes" VALUES (77,8, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
+-- INSERT INTO "dishes" VALUES (78,9, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
+
 
 INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
 INSERT INTO "ingredients" VALUES (2,1, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (3,1, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (4,1, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
 INSERT INTO "ingredients" VALUES (5,1, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (6,2, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (6,2, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (7,2, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (8, 2, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
-INSERT INTO "ingredients" VALUES (9,3, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (9,3, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (10,3, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (11, 3, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (12, 3, 'IP_ADDRESS_AND_PORT/ingredients/pepperoni.jpg', 'Pepperonis', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (13,4, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (13,4, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (14, 4, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (15, 4, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (16, 4, 'IP_ADDRESS_AND_PORT/ingredients/aubergine.jpg', 'Aubergines', NULL, 'Local Farm', NULL);
@@ -185,7 +190,7 @@ INSERT INTO "ingredients" VALUES (21, 5, 'IP_ADDRESS_AND_PORT/ingredients/mozzar
 INSERT INTO "ingredients" VALUES (22,5, 'IP_ADDRESS_AND_PORT/ingredients/bacon.jpg', 'Bacon', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (23, 6, 'IP_ADDRESS_AND_PORT/ingredients/tuna.jpg', 'Tuna', NULL, 'Rio Mare', 'http://www.riomare.it');
 INSERT INTO "ingredients" VALUES (24, 6, 'IP_ADDRESS_AND_PORT/ingredients/onions.jpg', 'Onions', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (25,7, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (25,7, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (26, 7, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (27, 7, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (28,7, 'IP_ADDRESS_AND_PORT/ingredients/egg.jpg','Eggs', NULL, 'Local Breeding', NULL);
@@ -200,7 +205,7 @@ INSERT INTO "ingredients" VALUES (36,9, 'IP_ADDRESS_AND_PORT/ingredients/blackpe
 INSERT INTO "ingredients" VALUES (37,10, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
 INSERT INTO "ingredients" VALUES (38,10, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
 INSERT INTO "ingredients" VALUES (39,10, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (40, 11, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (40, 11, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (41, 11, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (42, 11, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (43,11, 'IP_ADDRESS_AND_PORT/ingredients/egg.jpg','Eggs', NULL, 'Local Breeding', NULL);
@@ -229,14 +234,14 @@ INSERT INTO "ingredients" VALUES (64,22, 'IP_ADDRESS_AND_PORT/ingredients/guanci
 INSERT INTO "ingredients" VALUES (65,22, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (66,22, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
 INSERT INTO "ingredients" VALUES (67,22, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (68,23, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (68,23, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (69,23, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (70, 23, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
-INSERT INTO "ingredients" VALUES (71, 24, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (71, 24, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (72,24, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (73, 24, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (74, 24, 'IP_ADDRESS_AND_PORT/ingredients/pepperoni.jpg', 'Pepperonis', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (75, 25, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (75, 25, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (76, 25, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (77, 25, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (78, 25, 'IP_ADDRESS_AND_PORT/ingredients/aubergine.jpg', 'Aubergines', NULL, 'Local Farm', NULL);
@@ -248,7 +253,7 @@ INSERT INTO "ingredients" VALUES (83, 26, 'IP_ADDRESS_AND_PORT/ingredients/mozza
 INSERT INTO "ingredients" VALUES (84,26, 'IP_ADDRESS_AND_PORT/ingredients/bacon.jpg', 'Bacon', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (85, 27, 'IP_ADDRESS_AND_PORT/ingredients/tuna.jpg', 'Tuna', NULL, 'Rio Mare', 'http://www.riomare.it');
 INSERT INTO "ingredients" VALUES (86, 27, 'IP_ADDRESS_AND_PORT/ingredients/onions.jpg', 'Onions', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (87,28, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (87,28, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (88, 28, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (89, 28, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (90,28, 'IP_ADDRESS_AND_PORT/ingredients/egg.jpg','Eggs', NULL, 'Local Breeding', NULL);
@@ -263,7 +268,7 @@ INSERT INTO "ingredients" VALUES (98,30, 'IP_ADDRESS_AND_PORT/ingredients/blackp
 INSERT INTO "ingredients" VALUES (99,31, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
 INSERT INTO "ingredients" VALUES (100,31, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
 INSERT INTO "ingredients" VALUES (101,31, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (102,32, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
+INSERT INTO "ingredients" VALUES (102,32, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com');
 INSERT INTO "ingredients" VALUES (103, 32, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (104, 32, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil.jpg', 'Olive Oil', NULL, 'Monini', 'http://www.monini.com');
 INSERT INTO "ingredients" VALUES (105,32, 'IP_ADDRESS_AND_PORT/ingredients/egg.jpg','Eggs', NULL, 'Local Breeding', NULL);
@@ -311,7 +316,7 @@ INSERT INTO "ingredients" VALUES (146, 48, 'IP_ADDRESS_AND_PORT/ingredients/parm
 INSERT INTO "ingredients" VALUES (147, 48, 'IP_ADDRESS_AND_PORT/ingredients/basil.jpg', 'Fresh Basil', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (148, 48, 'IP_ADDRESS_AND_PORT/ingredients/garlic.jpg', 'Garlic', NULL, 'Local Farm', NULL);
 
-INSERT INTO "ingredients" VALUES (149, 55, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
+INSERT INTO "ingredients" VALUES (149, 55, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', 'lactose', 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (150, 55, 'IP_ADDRESS_AND_PORT/ingredients/chickenkebab.jpg', 'Chicken Kebab', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (151, 55, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (152, 55, 'IP_ADDRESS_AND_PORT/ingredients/yogurt_sauce.jpg', 'Lactose Free Yogurt Sauce', NULL, 'Home Made', NULL);
@@ -344,7 +349,6 @@ INSERT INTO "ingredients" VALUES (181, 68, 'IP_ADDRESS_AND_PORT/ingredients/parm
 INSERT INTO "ingredients" VALUES (182, 68, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (183, 68, 'IP_ADDRESS_AND_PORT/ingredients/chicken.jpg', 'Chicken', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (184, 68, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Nickel Free Tomatoes', NULL, 'Local Farm', NULL);
-
 
 INSERT INTO "users" VALUES ('Andrea','Piazza Carlo Felice, 63, 10123 Torino TO;lat:45.0631586;lng:7.6800018',0);
 INSERT INTO "users" VALUES ('Giuseppe','Via Roma, 357, 10123 Torino TO;lat:45.0644910;lng:7.6804360',0);  

@@ -25,6 +25,7 @@ library.add(fab, fas, far);
 
 function App() {
   const [user, setUser] = useState(null);
+  const username = user && user.username;
   // const [loggedIn, setLoggedIn] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('User'); //User: Default selection, Restaurater
   const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
@@ -37,7 +38,7 @@ function App() {
     allergens: [], // Array to hold added ingredients
     openNow: false,
     nearby: false,
-    label: "QUALITY",
+    label: "NOTHING",
     order: "DESC"
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
@@ -148,6 +149,28 @@ function App() {
     await API.logOut().catch((err) => handleError(err));
     setUser(undefined);
   }
+
+  useEffect(() => {
+    // function used to retrieve restaurant information in detail
+    async function getUser(username) {
+        try {
+            const user1 = await API.getUser(username);
+            if (user1 != null) {
+                setAddress({ text: user1.position.split(";")[0], lat: user1.position.split(";")[1], lng: user1.position.split(";")[2], invalid: false });
+                //console.log(user);
+            } else {
+                // Handle the case when the dish with dishId is not found
+                console.log('User not found');
+            }
+        } catch (err) {
+            // show error message
+            console.log(err);
+        }
+    };
+    if (username) {
+        getUser(username);
+    }
+  }, [username]);
 
   return (
     <UserContext.Provider value={user}>

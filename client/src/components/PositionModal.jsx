@@ -18,7 +18,7 @@ function PositionModal(props) {
     return (
         <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Nearby Filter</Modal.Title>
+                <Modal.Title>Location-based Filters</Modal.Title>
             </Modal.Header>
             <Modal.Body>
             You have not specified your position yet. <br/>Do you want to use your GPS?
