@@ -587,10 +587,10 @@ const FilterPage = (props) => {
                                     (tempFilters.label === "NOTHING") &&
                                     (tempFilters.order === "DESC")
                                 }    
-                                variant="danger" onClick = {() => handleRemoveFilters()} style={{ fontSize: "1rem", padding: "1rem" }}>
+                                variant="danger" onClick = {() => handleRemoveFilters()}>
                                     Remove filters
                                 </Button>
-                                <Button variant="primary" type='submit' style={{ fontSize: "1rem", padding: "1rem" }}
+                                <Button variant="primary" type='submit'
                                     disabled={!!errorMaxDistance}>
                                     Apply filters
                                 </Button>
