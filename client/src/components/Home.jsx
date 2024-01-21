@@ -446,26 +446,46 @@ function Home(props) {
                 passesAllFilters = false;
             }
     
-            // Allergens Filter --> IN THIS WAY WE SHOW UP ALL THE RESTAURANTS THAT HAVE AT LEAST ONE DISH (DRINKS EXCLUDED) WITHOUT THE SPECIFIED ALLERGENS
             if (passesAllFilters && props.filtersToApply.allergens.length > 0) {
-                // Check if every dish contains an allergen; if not, the restaurant passes the filter
+                // Existing logic: Check if every dish contains an allergen
                 const allDishesContainAllergen = restaurant.dishes.every(dish => {
                     // Skip checking allergens for dishes in the "drinks" category
-                    if (dish.type.toLowerCase() == "drinks") {
+                    if (dish.type.toLowerCase() === "drinks") {
                         return true;
                     }
+            
                     // Check if the dish contains any of the specified allergens
-                    return props.filtersToApply.allergens.some(filter_allergen => 
-                        dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
-                    );
+                    if (props.filtersToApply.categories.length > 0) {
+                        return props.filtersToApply.categories.some(category =>
+                            (category.toLowerCase() === dish.type.toLowerCase()) && props.filtersToApply.allergens.some(filter_allergen =>
+                                dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
+                            )
+                        );
+                    } else {
+                        return props.filtersToApply.allergens.some(filter_allergen => 
+                            dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
+                        );
+                    }
                 });
-
-                // If every dish (excluding drinks) contains an allergen, then the restaurant does not pass the filter
-                if (allDishesContainAllergen) {
+            
+                // Check for each category that there is at least one dish without the specified allergens
+                const allCategoriesSatisfied = props.filtersToApply.categories.every(category => {
+                    return restaurant.dishes.some(dish => {
+                        if (dish.type.toLowerCase() !== "drinks" && dish.type.toLowerCase() === category.toLowerCase()) {
+                            return !props.filtersToApply.allergens.some(filter_allergen => 
+                                dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
+                            );
+                        }
+                        return false;
+                    });
+                });
+            
+                // Update the pass filter condition
+                if (allDishesContainAllergen || !allCategoriesSatisfied) {
                     passesAllFilters = false;
                 }
             }
-
+            
     
             // Open Now Filter
             if (passesAllFilters && props.filtersToApply.openNow) {
