@@ -565,7 +565,8 @@ function Home(props) {
                 passesAllFilters = false;
             }
     
-            if (passesAllFilters && props.filtersToApply.allergens.length > 0) {
+            // Allergens Filter
+            if (passesAllFilters && props.filtersToApply.allergens.length > 0 && props.filtersToApply.categories.length == 1) {
                 // Existing logic: Check if every dish contains an allergen
                 const allDishesContainAllergen = restaurant.dishes.every(dish => {
                     // Skip checking allergens for dishes in the "drinks" category
@@ -601,6 +602,32 @@ function Home(props) {
             
                 // Update the pass filter condition
                 if (allDishesContainAllergen || !allCategoriesSatisfied) {
+                    passesAllFilters = false;
+                }
+            }
+            
+            if (passesAllFilters && props.filtersToApply.allergens.length > 0 && props.filtersToApply.categories.length > 1) {
+                let allergenFreeDishFound = false;
+            
+                // Check for each category if there is at least one dish without the specified allergens
+                for (const category of props.filtersToApply.categories) {
+                    const categoryHasAllergenFreeDish = restaurant.dishes.some(dish => {
+                        if (dish.type.toLowerCase() === category.toLowerCase() && dish.type.toLowerCase() !== "drinks") {
+                            return !props.filtersToApply.allergens.some(filter_allergen => 
+                                dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
+                            );
+                        }
+                        return false;
+                    });
+            
+                    if (categoryHasAllergenFreeDish) {
+                        allergenFreeDishFound = true;
+                        break; // Exit loop as soon as a matching dish is found
+                    }
+                }
+            
+                // Update the pass filter condition
+                if (!allergenFreeDishFound) {
                     passesAllFilters = false;
                 }
             }

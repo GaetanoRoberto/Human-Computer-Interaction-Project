@@ -238,6 +238,14 @@ const FilterPage = (props) => {
         return !isNaN(num) && num < 0;
     }
 
+    const validateMaxDistance = () => {
+        if (isNegativeNumber(tempFilters.maxDistance)) {
+            setErrorMaxDistance("Distance not valid!");
+        } else {
+            setErrorMaxDistance("");
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -245,14 +253,11 @@ const FilterPage = (props) => {
             ...prevFilters,
             [name]: value,
         }));
-
-        if (e.target.name == 'maxDistance' && isNegativeNumber(e.target.value)) {
-            setErrorMaxDistance("Distance not valid!");
-        } else {
-            setErrorMaxDistance("");
-        }
     };
 
+    useEffect(() => {
+        validateMaxDistance();
+    }, [tempFilters.maxDistance]);
 
     const handleOpenNowChange = (e) => {
         setTempFilters({ ...tempFilters, openNow: e.target.checked });
@@ -312,9 +317,6 @@ const FilterPage = (props) => {
         console.log("Filters applied:", tempFilters);
         navigate(`/`); // Navigate to the new page after setting filters
     };
-    
-    const [label, setLabel] = useState(tempFilters.label || "NOTHING");
-    const [order, setOrder] = useState(tempFilters.order || "");
 
     const sortByField = (field) => {
 
@@ -322,7 +324,6 @@ const FilterPage = (props) => {
             ...prevFilter,
             label:field.toUpperCase()
         }));
-        setLabel(field.toUpperCase())
         console.log(filtersToApply);
 
       };
@@ -330,11 +331,8 @@ const FilterPage = (props) => {
       const toggleOrder = () => {
         setTempFilters((prevFilter) => ({
             ...prevFilter,
-            order:order === 'ASC' ? 'DESC' : 'ASC'
+            order: tempFilters.order === 'ASC' ? 'DESC' : 'ASC'
         }));
-
-        setOrder(order === 'ASC' ? 'DESC' : 'ASC');
-        console.log(order);
       };
     return (
         <>
@@ -550,7 +548,7 @@ const FilterPage = (props) => {
                             <Row>
                                 <Form.Label>Sort By:</Form.Label>
         <Col xs={8} >
-          <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="light" >
+          <DropdownButton id="dropdown" title={"SORT BY: " + tempFilters.label} variant="light" >
             <Dropdown.Item onClick={() => sortByField("nothing")}>NOTHING</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("review price")}>REVIEW PRICE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("review quality")}>REVIEW QUALITY</Dropdown.Item>
@@ -558,10 +556,10 @@ const FilterPage = (props) => {
           </DropdownButton>
         </Col>
         <Col onClick={toggleOrder} >
-          {order === 'ASC' && label != 'NOTHING' ? (
-            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
-          ) : label == 'NOTHING' ? "" : (
-            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
+          {tempFilters.order === 'ASC' && tempFilters.label != 'NOTHING' ? (
+            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
+          ) : tempFilters.label == 'NOTHING' ? "" : (
+            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
           )}
         </Col>
                             </Row>
