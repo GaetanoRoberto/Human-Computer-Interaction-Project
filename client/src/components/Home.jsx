@@ -258,7 +258,7 @@ function RestaurantsList(props) {
                                         <Card.Title style={{ textAlign: "start" }}>
                                             {restaurant.name}
                                         </Card.Title>
-                                        <Card.Text style={{ fontSize: "0.9rem" }} hidden={!isGlutenFreeRestaurant(restaurant)}>
+                                        <Card.Text style={{ fontSize: "1.2rem" }} hidden={!isGlutenFreeRestaurant(restaurant)}>
                                             <Badge pill bg="success">Only Gluten-Free Dishes</Badge>
                                         </Card.Text>
                                         {restaurant.n_review === 0 ?
