@@ -605,7 +605,7 @@ app.post('/api/restaurants/:id',
       // return it
       res.json(return_struct);
     } catch (error) {
-      res.status(503).json({ error: error })
+      res.status(503).json({ error: error.error })
     }
   }
 );

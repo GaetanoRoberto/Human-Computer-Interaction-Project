@@ -140,11 +140,11 @@ function DishItem(props) {
  * const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
  */
 function AddressSelector(props) {
+    const handleError = useContext(ErrorContext);
     const { address, setAddress, isInProfilePage } = props;
     const inputRef = useRef();
 
     const handlePlaceChanged = async () => {
-        const handleError = useContext(ErrorContext);
         const [place] = inputRef.current.getPlaces();
         if (place) {
             setAddress({

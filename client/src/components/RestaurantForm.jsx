@@ -78,7 +78,7 @@ function InnerForm(props) {
 
     // DISH SECTION STATES
     const [dishName, setDishName] = useState({text:'' , invalid:false});
-    const [price, setPrice] = useState({price: 0.0 , invalid:false});
+    const [price, setPrice] = useState({price: '' , invalid:false});
     const [type, setType] = useState({ text: '', invalid: false });
     const [dishImage, setDishImage] = useState(PLACEHOLDER);
     const [fileNameDish, setFileNameDish] = useState('No File Chosen');
@@ -90,7 +90,6 @@ function InnerForm(props) {
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
-    //const [manageDish, setManageDish] = useState({route: undefined, id: undefined});
 
     // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
     useEffect(() => {
@@ -507,7 +506,7 @@ function InnerForm(props) {
         return invalid;
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event,submit) => {
         event.preventDefault();
         event.stopPropagation();
         let invalid = false;
@@ -665,14 +664,17 @@ function InnerForm(props) {
                 restaurant.description = description.text;
                 restaurant.dishes = dishes;
     
-                if (restaurant_id) {
-                    // update case, add the restaurantId and 
-                    restaurant.id = restaurant_id;
-                    // call the API to update an existing restaurant
-                    await API.editRestaurant(restaurant).catch((err) => handleError(err));
-                } else {
-                    // call the API to add a new restaurant
-                    await API.createRestaurant(restaurant).catch((err) => handleError(err));
+                if (submit) {
+                    if (restaurant_id) {
+                        // update case, add the restaurantId and 
+                        restaurant.id = restaurant_id;
+                        // call the API to update an existing restaurant
+                        console.log(restaurant);
+                        await API.editRestaurant(restaurant).catch((err) => handleError(err));
+                    } else {
+                        // call the API to add a new restaurant
+                        await API.createRestaurant(restaurant).catch((err) => handleError(err));
+                    }
                 }
                 //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4
                 if (manageDish) {
@@ -835,7 +837,7 @@ function InnerForm(props) {
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
                     {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
                     {(progress < 4) ? <Button variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
-                    {(progress === 4 && dishes.length !== 0 && manageDish === undefined) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Save</Button> : ''}
+                    {(progress === 4 && dishes.length !== 0 && manageDish === undefined) ? <Button variant="primary" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
                     {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
                     {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
                 </Container>

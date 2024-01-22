@@ -163,7 +163,7 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
             <>
                 <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${restaurant.id}/`); setProgress(1);}}>Edit your Restaurant Information</Button>
                 <Button variant="primary" style={{marginTop: "0px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${restaurant.id}/`, { state: { from: 'edit_menu' } }); setProgress(4);}}>Edit your Restaurant Menu</Button>
-                <Button variant="danger" onClick={() => handleRemoveRestaurant(restaurant.id)}>Delete</Button>
+                <Button variant="danger" onClick={() => {handleRemoveRestaurant(restaurant.id); setProgress(1);}}>Delete</Button>
             </>
             }
             </Row>

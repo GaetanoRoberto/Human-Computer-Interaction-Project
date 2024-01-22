@@ -161,7 +161,7 @@ function DishForm(props) {
                         <Col>
                             <Form.Select required isInvalid={type.invalid} value={type.text}
                                 onChange={(event) => mainInfoDishValidation({ text: event.target.value, invalid: type.invalid }, setType, false)}>
-                                <option value="">Choose Category</option>
+                                <option value="" hidden>Choose Category</option>
                                 <option value="desserts">Desserts</option>
                                 <option value="drinks">Drinks</option>
                                 <option value="hamburger">Hamburger</option>
