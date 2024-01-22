@@ -72,7 +72,7 @@ const Banner = (props) => {
         // Ref for responsive banner
         if (bannerRef) {
             setDivHeight(bannerRef.current.offsetHeight);
-            console.log('Div Height:', bannerRef.current.offsetHeight);
+            //console.log('Div Height:', bannerRef.current.offsetHeight);
         }
     }, [bannerRef]);
 
