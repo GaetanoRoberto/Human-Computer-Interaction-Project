@@ -156,12 +156,12 @@ function AddressSelector(props) {
                     isRestaurateur: 1, 
                     username: "Restaurateur"
                 };
-                console.log(updatedUser);
+                //console.log(updatedUser);
     
                 // Now call the updateUser API with the updated user information
                 try {
                     const result = await API.updateUser(updatedUser); // Assuming updateUser returns a promise
-                    console.log("User updated successfully:", result);
+                    //console.log("User updated successfully:", result);
                     // You might want to do something with the result or updated user here
                 } catch(error) {
                     console.error("Failed to update user:", error);

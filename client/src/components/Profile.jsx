@@ -21,7 +21,7 @@ function MyLocation(props) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
     } else {
-      console.log("Geolocation not supported");
+      //console.log("Geolocation not supported");
       setIsLoadingLocation(false);
     }
   }
@@ -47,14 +47,14 @@ function MyLocation(props) {
                 isRestaurateur: selectedStatus == "User" ? 0 : 1,
                 username: selectedStatus == "User" ? "User" : "Restaurateur",
               };
-              console.log(updatedUser);
+              //console.log(updatedUser);
 
               // Now call the updateUser API with the updated user information
               try {
                 await API.updateUser(updatedUser); // Assuming updateUser returns a promise
                 resolve(updatedUser); // Resolve with undefined for a valid address
               } catch(error) {
-                console.error("Failed to update user:", error);
+                //console.error("Failed to update user:", error);
                 reject(error); // Reject with the error
               }
           } else {
@@ -145,7 +145,7 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
           await API.deleteRestaurant(1); 
           setRestaurant(null); 
       } catch (error) {
-          console.error("Failed to delete the restaurant:", error);
+          //console.error("Failed to delete the restaurant:", error);
       }
   };
 
@@ -206,7 +206,7 @@ function Profile(props) {
       const getReviewsByUser = async () => {
         try {
             const reviews = await API.getReviewsByUser(username);
-            console.log(reviews);
+            //console.log(reviews);
             setReviews(reviews);
 
         } catch (error) {

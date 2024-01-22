@@ -113,7 +113,7 @@ function Filters(props) {
     }
     
     const handleFadeClick = (filterKey, index) => {
-        console.log(filterKey);
+        //console.log(filterKey);
         // Start fade out effect for the specific button
         setFadeStates(prevStates => prevStates.map((state, idx) => idx === index ? false : state));
     
@@ -125,8 +125,8 @@ function Filters(props) {
             // Update filtersToApply based on the removed filter
             setFiltersToApply(currentFilters => {
                 let updatedFilters = { ...currentFilters };
-                console.log(updatedFilters.categories);
-                console.log(filterKey);
+                //console.log(updatedFilters.categories);
+                //console.log(filterKey);
                 if (filterKey != 'priceRange' && 
                     filterKey != 'maxDistance' &&
                     filterKey != 'qualityRating' &&
@@ -181,7 +181,7 @@ function Filters(props) {
     
     
     
-    console.log(filters);
+    //console.log(filters);
 
     return (
         <Container fluid className="scroll" style={{ marginTop: "0.4rem", display: "flex", overflowX: "auto" }}>
@@ -300,10 +300,10 @@ function RestaurantsList(props) {
                         </Button>
                         { isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase())) &&
                             <Alert variant={"success"} style={{padding: 5, marginBottom: 20}}>
-                                <ListGroup>
+                                <ListGroup className='homeList'>
                                     { restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase())).map((dish, index) => {
                                         return(
-                                            <ListGroup.Item key={index}>
+                                            <ListGroup.Item className='homeListItem' key={index}>
                                                 <Alert.Link style={{marginLeft: 10}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}>
                                                     {dish.name}
                                                 </Alert.Link>
@@ -327,10 +327,10 @@ function RestaurantsList(props) {
                                         </b> offered here
                                     </Accordion.Header>
                                     <Accordion.Body>
-                                        <ListGroup style={{overflowY: "auto", maxHeight: 150}}>
+                                        <ListGroup className='homeList' style={{overflowY: "auto", maxHeight: 150}}>
                                             { restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).map((dish, index) => {
                                                 return(
-                                                    <ListGroup.Item key={index}>
+                                                    <ListGroup.Item className='homeListItem' key={index}>
                                                         <b style={{textDecoration: "underline"}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}> {dish.name} </b>
                                                         {index < restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).length - 1 &&
                                                             <div style={{borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem"}}></div>
@@ -368,7 +368,7 @@ function Home(props) {
         async function getRestaurants() {
             try {
                 const restaurants = await API.getRestaurants();
-                console.log(restaurants);
+                //console.log(restaurants);
                 setRestaurantList(restaurants);
                 setRestaurantInitialList(restaurants);
 
@@ -671,18 +671,18 @@ function Home(props) {
                 });
 
             // Log distances for debugging
-            console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
+            //console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
 
             // Filter and sort by distance
             filteredRestaurants = filteredRestaurants
                 .filter(restaurant => restaurant.distance <= nearby)
                 .sort((a, b) => a.distance - b.distance);
 
-                console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
+                //console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
         }
 
         // Log the sorted restaurants
-        console.log("Filtered and sorted restaurants:", filteredRestaurants);
+        //console.log("Filtered and sorted restaurants:", filteredRestaurants);
 
         return filteredRestaurants;
     }
