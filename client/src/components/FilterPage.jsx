@@ -8,13 +8,14 @@ import makeAnimated from 'react-select/animated';
 import { Range } from 'react-range';
 import PositionModal from './PositionModal';
 import PositionModalAlert from './PositionModalAlert';
-import { UserContext } from './userContext';
+import { UserContext,ErrorContext } from './userContext';
 import API from '../API';
 
 
 const animatedComponents = makeAnimated();
 
 const FilterPage = (props) => {
+    const handleError = useContext(ErrorContext);
     const user = useContext(UserContext);
     const username = user && user.username;
     const [userAddress, setUserAddress] = useState("");
@@ -34,7 +35,7 @@ const FilterPage = (props) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
         } else {
-            console.log("Geolocation not supported");
+            //console.log("Geolocation not supported");
             setIsLoadingLocation(false);
         }
     }
@@ -60,14 +61,14 @@ const FilterPage = (props) => {
                         isRestaurateur: props.selectedStatus == "User" ? 0 : 1,
                         username: props.selectedStatus == "User" ? "User" : "Restaurateur",
                     };
-                    console.log(updatedUser);
+                    //console.log(updatedUser);
 
                     // Now call the updateUser API with the updated user information
                     try {
                         await API.updateUser(updatedUser); // Assuming updateUser returns a promise
                         resolve(updatedUser); // Resolve with undefined for a valid address
                     } catch (error) {
-                        console.error("Failed to update user:", error);
+                        //console.error("Failed to update user:", error);
                         reject(error); // Reject with the error
                     }
                 } else {
@@ -102,8 +103,8 @@ const FilterPage = (props) => {
                     setUserAddress(user1.position.split(";")[0]);
                     //console.log(user);
                 } else {
-                    // Handle the case when the dish with dishId is not found
-                    console.log('User not found');
+                    // Handle the case when the user
+                    handleError('User not found');
                 }
             } catch (err) {
                 // show error message
@@ -151,7 +152,7 @@ const FilterPage = (props) => {
         //             order: "DESC"
         //         });
         // }
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
     };
 
     const capitalizeFirstLetter = (string) => {
@@ -177,7 +178,7 @@ const FilterPage = (props) => {
         async function getCategoriesAndAllergenes() {
             try {
                 const categoriesAndAllergenes = await API.getFilteringInfos();
-                console.log(categoriesAndAllergenes);
+                //console.log(categoriesAndAllergenes);
                 if (categoriesAndAllergenes != null) {
                     // Example of how to use this function when setting the state
                     props.setCategoriesOptions(mapToCategoriesOptions(categoriesAndAllergenes.categories));
@@ -185,12 +186,12 @@ const FilterPage = (props) => {
                     //setUserAddress(user1.position.split(";")[0]);
                     //console.log(user);
                 } else {
-                    // Handle the case when the dish with dishId is not found
-                    console.log('User not found');
+                    // Handle the case when the filtering infos are not found
+                    handleError('Infos not found');
                 }
             } catch (err) {
                 // show error message
-                console.log(err);
+                handleError(err);
             }
         };
         getCategoriesAndAllergenes();
@@ -215,7 +216,7 @@ const FilterPage = (props) => {
             ...prevFilter,
             categories: selectedOptions.map((option) => option.value),
         }));
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
     };
 
     const handleIngredientChange = (selectedOptions) => {
@@ -238,6 +239,14 @@ const FilterPage = (props) => {
         return !isNaN(num) && num < 0;
     }
 
+    const validateMaxDistance = () => {
+        if (isNegativeNumber(tempFilters.maxDistance)) {
+            setErrorMaxDistance("Distance not valid!");
+        } else {
+            setErrorMaxDistance("");
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -245,14 +254,11 @@ const FilterPage = (props) => {
             ...prevFilters,
             [name]: value,
         }));
-
-        if (e.target.name == 'maxDistance' && isNegativeNumber(e.target.value)) {
-            setErrorMaxDistance("Distance not valid!");
-        } else {
-            setErrorMaxDistance("");
-        }
     };
 
+    useEffect(() => {
+        validateMaxDistance();
+    }, [tempFilters.maxDistance]);
 
     const handleOpenNowChange = (e) => {
         setTempFilters({ ...tempFilters, openNow: e.target.checked });
@@ -309,12 +315,9 @@ const FilterPage = (props) => {
     
         // If all conditions are met and no errors are present
         setFiltersToApply(tempFilters);
-        console.log("Filters applied:", tempFilters);
+        //console.log("Filters applied:", tempFilters);
         navigate(`/`); // Navigate to the new page after setting filters
     };
-    
-    const [label, setLabel] = useState(tempFilters.label || "NOTHING");
-    const [order, setOrder] = useState(tempFilters.order || "");
 
     const sortByField = (field) => {
 
@@ -322,23 +325,19 @@ const FilterPage = (props) => {
             ...prevFilter,
             label:field.toUpperCase()
         }));
-        setLabel(field.toUpperCase())
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
 
       };
     
       const toggleOrder = () => {
         setTempFilters((prevFilter) => ({
             ...prevFilter,
-            order:order === 'ASC' ? 'DESC' : 'ASC'
+            order: tempFilters.order === 'ASC' ? 'DESC' : 'ASC'
         }));
-
-        setOrder(order === 'ASC' ? 'DESC' : 'ASC');
-        console.log(order);
       };
     return (
         <>
-            <Container fluid style={{ height: '72vh', overflowY: 'auto', marginBottom: '10%' }}>
+            <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '10%' }}>
                 <Row>
                     <Col>
                         <h2 style={{ marginTop: "3%" }}>Filter by:</h2>
@@ -550,7 +549,7 @@ const FilterPage = (props) => {
                             <Row>
                                 <Form.Label>Sort By:</Form.Label>
         <Col xs={8} >
-          <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="light" >
+          <DropdownButton id="dropdown" title={"SORT BY: " + tempFilters.label} variant="light" >
             <Dropdown.Item onClick={() => sortByField("nothing")}>NOTHING</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("review price")}>REVIEW PRICE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("review quality")}>REVIEW QUALITY</Dropdown.Item>
@@ -558,10 +557,10 @@ const FilterPage = (props) => {
           </DropdownButton>
         </Col>
         <Col onClick={toggleOrder} >
-          {order === 'ASC' && label != 'NOTHING' ? (
-            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
-          ) : label == 'NOTHING' ? "" : (
-            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
+          {tempFilters.order === 'ASC' && tempFilters.label != 'NOTHING' ? (
+            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
+          ) : tempFilters.label == 'NOTHING' ? "" : (
+            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
           )}
         </Col>
                             </Row>

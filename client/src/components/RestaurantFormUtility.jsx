@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Container, Form, ListGroup, Col, Row } from 'react-bootstrap';
 import { PLACEHOLDER, PLACEHOLDER2 } from './Costants';
@@ -9,6 +9,7 @@ import ConfirmModal from './ConfirmModal';
 import dayjs from 'dayjs';
 import { DAYS } from './Costants';
 import API from '../API';
+import {ErrorContext} from "./userContext.jsx";
 
 // Function to calculate the size of base64-encoded data in bytes
 const calculateFileSize = (dataURL) => {
@@ -21,7 +22,9 @@ const calculateFileSize = (dataURL) => {
 
 const handleImageChange = (event, setImage, setFileName, setViewImage) => {
     const file = event.target.files[0];
-    setFileName(file.name);
+    if (file.name) {
+        setFileName(file.name);
+    }
 
     if (file) {
         const reader = new FileReader();
@@ -88,14 +91,14 @@ const address_object_to_string = (addr) => {
  * PLACEHOLDER is a costant declared in Costants.jsx to import 
  */
 function ImageViewer(props) {
-    const [viewImage,setViewImage] = useState(PLACEHOLDER);
+    const [viewImage,setViewImage] = useState(PLACEHOLDER2);
     const { width, height, image, setImage, fileName, setFileName } = props;
     const fileInputRef = useRef(null);
     return (
         <>
             <Container className="d-flex flex-column align-items-center">
-                <img height={height} width={width} style={{ marginBottom: '5%' }} src={(image!==PLACEHOLDER2) ? image : viewImage} />
-                {(image === PLACEHOLDER2 || (Array.isArray(image) && image.includes(PLACEHOLDER2))) ? '' : <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setViewImage(PLACEHOLDER); setImage(PLACEHOLDER2); setFileName('No File Chosen'); }}>Remove Current Image</Button>}
+                <img height={height} width={width} style={{ marginBottom: '5%' }} src={(image!==PLACEHOLDER) ? image : viewImage} />
+                {(image === PLACEHOLDER) ? '' : <Button variant='danger' style={{ marginBottom: '5%' }} onClick={() => { setViewImage(PLACEHOLDER2); setImage(PLACEHOLDER); setFileName('No File Chosen'); }}>Remove Current Image</Button>}
 
             </Container>
             <Container className="d-flex align-items-center custom-input">
@@ -141,6 +144,7 @@ function AddressSelector(props) {
     const inputRef = useRef();
 
     const handlePlaceChanged = async () => {
+        const handleError = useContext(ErrorContext);
         const [place] = inputRef.current.getPlaces();
         if (place) {
             setAddress({
@@ -156,15 +160,15 @@ function AddressSelector(props) {
                     isRestaurateur: 1, 
                     username: "Restaurateur"
                 };
-                console.log(updatedUser);
+                //console.log(updatedUser);
     
                 // Now call the updateUser API with the updated user information
                 try {
                     const result = await API.updateUser(updatedUser); // Assuming updateUser returns a promise
-                    console.log("User updated successfully:", result);
+                    //console.log("User updated successfully:", result);
                     // You might want to do something with the result or updated user here
                 } catch(error) {
-                    console.error("Failed to update user:", error);
+                    handleError("Failed to update user:", error);
                     // Handle the error appropriately
                 }
             }

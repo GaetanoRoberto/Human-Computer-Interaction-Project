@@ -49,7 +49,7 @@ function DishForm(props) {
             if (dish) {
                 // You can access dish properties and use them in your component
                 // set info of the dish
-                console.log(dish);
+                
                 setDishName({ text: dish.name, invalid: false });
                 setPrice({ price: dish.price, invalid: false });
                 setType({ text: dish.type, invalid: false });
@@ -60,7 +60,7 @@ function DishForm(props) {
                 const updatedIngredients = dish.ingredients.map(ingredient => ({
                     id: ingredient.id, // Assuming id is unique for each ingredient
                     text: ingredient.name || '',
-                    allergens: ingredient.allergens || '',
+                    allergens: ingredient.allergens,
                     brandname: ingredient.brandName || '',
                     link: ingredient.link || '',
                     invalid_text: false,
@@ -72,7 +72,7 @@ function DishForm(props) {
                 if (dish.ingredients.length == 0) {
                     // check on dish.type instead of type.text since state update is asynchronous
                     if (dish.type!=='drinks') {
-                        setIngredients([{ id: 0, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+                        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
                     } else {
                         setIngredients([]);
                     }
@@ -105,11 +105,15 @@ function DishForm(props) {
     const addIngredient = () => {
         setIngredients([
             ...ingredients,
-            { id: ingredientTempId, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
+            { id: ingredientTempId, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
         ]);
         setIngredientImage([
             ...ingredientImage,
             PLACEHOLDER
+        ]);
+        setFileNameIngredient([
+            ...fileNameIngredient,
+            'No File Chosen'
         ]);
         setIngredientTempId((old_id) => old_id + 1);
     };
@@ -133,80 +137,6 @@ function DishForm(props) {
         });
         setIngredients(newIngredients); // Update the state with the new ingredients array
         allergen_validation(validation_ingredient);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        let invalid = false;
-
-        // Validate Dish Name
-        let dish_name_invalidity = mainInfoDishValidation(dishName, setDishName, false);
-        if (dish_name_invalidity) {
-            invalid = dish_name_invalidity;
-        }
-        // Validate Dish Price
-        let dish_price_invalidity = priceValidation(price);
-        if (dish_price_invalidity) {
-            invalid = dish_price_invalidity;
-        }
-        // Validate Category type
-        let category_invalidity = mainInfoDishValidation(type, setType, false);
-        if (category_invalidity) {
-            invalid = category_invalidity;
-        }
-
-        // Validate each ingredient
-        ingredients.forEach((ingredient) => {
-            // Validate Ingredient Name
-            let ingredient_name_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'text');
-            if (ingredient_name_invalidity) {
-                invalid = ingredient_name_invalidity;
-            }
-            // Validate Ingredient Brand Name
-            let ingredient_Brandname_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'brandname');
-            if (ingredient_Brandname_invalidity) {
-                invalid = ingredient_Brandname_invalidity;
-            }
-            // Validate Ingredient Brand Link
-            let ingredient_Brandlink_invalidity = ingredientLinkValidation(ingredient, setIngredients);
-            if (ingredient_Brandlink_invalidity) {
-                invalid = ingredient_Brandlink_invalidity;
-            }
-            // Validate Allergens
-            let ingredient_allergens_invalidity = allergen_validation(ingredient);
-            if (ingredient_allergens_invalidity) {
-                invalid = ingredient_allergens_invalidity;
-            }
-        });
-
-
-        // go on if all ok
-        if (!invalid) {
-            console.log("tutto ok");
-            /* construct the object to call the API
-            const restaurant_to_submit = restaurant;
-            
-            restaurant_to_submit.location = address_object_to_string(restaurant.location);
-            
-            restaurant_to_submit.hours = time_object_to_string(restaurant.hours);
-            
-            restaurant_to_submit.dishes = dishes;
-
-            if (id) {
-                // update case, add the restaurantId and 
-                restaurant_to_submit.id = id;
-                console.log(restaurant_to_submit);
-                // call the API to update an existing restaurant
-                await API.editRestaurant(restaurant_to_submit);
-            } else {
-                console.log(restaurant_to_submit);
-                // call the API to add a new restaurant
-                await API.createRestaurant(restaurant_to_submit);
-            }
-            //then return home
-            navigate('/');*/
-        }
     };
 
     return (
@@ -310,8 +240,8 @@ function DishForm(props) {
                                     isClearable={true}
                                     options={foodAllergens}
                                     value={ingredients.map((ingredient, inner_index) => {
-                                        if (inner_index === index) {
-                                            return ingredient.allergens.split(',').map(item => ({ value: item, label: item }));
+                                        if (inner_index === index && ingredient.allergens) {
+                                            return ingredient.allergens.split(',').map(item => ({ value: item.trim(), label: item.trim() }));
                                         }
                                     }).filter((item) => item !== undefined).flat().filter((item) => item.value !== '' && item.label !== '')}
                                     onChange={(event) => addAllergen(ingredient.id, event)}
@@ -321,7 +251,21 @@ function DishForm(props) {
                             <div style={{ marginBottom: '5%' }}>
                                 <Form.Group className="mb-3" >
                                     <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image</Form.Label>
-                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={setIngredientImage} fileName={fileNameIngredient} setFileName={setFileNameIngredient} />
+                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
+                                        return oldIngredientsImage.map((oldingredient,inner_index) => {
+                                            if (inner_index === index) {
+                                                return new_image;
+                                            }
+                                            return oldingredient;
+                                        })
+                                    })}} fileName={fileNameIngredient[index]} setFileName={(new_filename) => {setFileNameIngredient((oldFileNames) => {
+                                        return oldFileNames.map((oldFileName,inner_index) => {
+                                            if (inner_index === index) {
+                                                return new_filename;
+                                            }
+                                            return oldFileName;
+                                        })
+                                    })}} />
                                 </Form.Group>
                             </div>
                         </div>

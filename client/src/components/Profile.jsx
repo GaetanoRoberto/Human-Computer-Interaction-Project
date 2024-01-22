@@ -10,9 +10,10 @@ import { BannerProfile } from './Restaurant';
 import { Header } from './Header.jsx';
 import ConfirmModal from './ConfirmModal';
 import { address_object_to_string } from './RestaurantFormUtility';
-import { UserContext } from './userContext';
+import { UserContext,ErrorContext } from './userContext';
 
 function MyLocation(props) {
+  const handleError = useContext(ErrorContext);
   const { address, setAddress, username, selectedStatus } = props;
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
@@ -21,7 +22,7 @@ function MyLocation(props) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
     } else {
-      console.log("Geolocation not supported");
+      //console.log("Geolocation not supported");
       setIsLoadingLocation(false);
     }
   }
@@ -47,14 +48,14 @@ function MyLocation(props) {
                 isRestaurateur: selectedStatus == "User" ? 0 : 1,
                 username: selectedStatus == "User" ? "User" : "Restaurateur",
               };
-              console.log(updatedUser);
+              //console.log(updatedUser);
 
               // Now call the updateUser API with the updated user information
               try {
                 await API.updateUser(updatedUser); // Assuming updateUser returns a promise
                 resolve(updatedUser); // Resolve with undefined for a valid address
               } catch(error) {
-                console.error("Failed to update user:", error);
+                //console.error("Failed to update user:", error);
                 reject(error); // Reject with the error
               }
           } else {
@@ -69,8 +70,8 @@ function MyLocation(props) {
   }
 
   function error(err) {
-    console.log("Unable to retrieve your location");
-    console.warn(`ERROR(${err.code}): ${err.message}`);
+    handleError("Unable to retrieve your location");
+    //console.warn(`ERROR(${err.code}): ${err.message}`);
   }
 
   return (
@@ -132,6 +133,7 @@ const ReviewRow = (props) => {  {/*ME LO PASSA GAETANO*/}
 }
 
 const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
+    const handleError = useContext(ErrorContext);
     const [showModal, setShowModal] = useState(false);
     const { restaurant, setRestaurant , setProgress } = props;
     const navigate = useNavigate();
@@ -142,10 +144,10 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
 
     const removeRestaurant = async () => {
       try {
-          await API.deleteRestaurant(1); 
+          await API.deleteRestaurant(restaurant.id); 
           setRestaurant(null); 
       } catch (error) {
-          console.error("Failed to delete the restaurant:", error);
+          handleError(`Failed to delete the restaurant:${error}`);
       }
   };
 
@@ -172,6 +174,7 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
 }
 
 function Profile(props) {
+    const handleError = useContext(ErrorContext);
     const user = useContext(UserContext);
     const username = user && user.username;
     const isRestaurateur = user && user.isRestaurateur; //se è definito prendo isRestaurater
@@ -189,11 +192,11 @@ function Profile(props) {
                   //console.log(user);
               } else {
                   // Handle the case when the dish with dishId is not found
-                  console.log('User not found');
+                  handleError('User not found');
               }
           } catch (err) {
               // show error message
-              console.log(err);
+              handleError(err);
           }
       };
       if (username) {
@@ -206,11 +209,11 @@ function Profile(props) {
       const getReviewsByUser = async () => {
         try {
             const reviews = await API.getReviewsByUser(username);
-            console.log(reviews);
+            //console.log(reviews);
             setReviews(reviews);
 
         } catch (error) {
-            console.log(error);
+            handleError(error);
         }
       }
 
@@ -228,7 +231,7 @@ function Profile(props) {
                   setRestaurant(restaurant);
                 }
             } catch (error) {
-                console.log(error);
+                handleError(error);
             }
         }
 
