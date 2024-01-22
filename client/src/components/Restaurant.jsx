@@ -1,5 +1,5 @@
-import {useContext, useEffect, useRef, useState} from 'react'
-import {Link, useLocation, useParams, useNavigate} from 'react-router-dom'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { Link, useLocation, useParams, useNavigate } from 'react-router-dom'
 
 import {
     ListGroup,
@@ -11,17 +11,17 @@ import {
     Form,
     Modal, Badge, Stack
 } from 'react-bootstrap';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import instagramImage from "../restaurantPng/instagram.png";
 import facebookImage from "../restaurantPng/facebook.png";
 import phoneImage from "../restaurantPng/phone.png";
 import webImage from "../restaurantPng/domain-registration.png";
 import twitterImage from "../restaurantPng/twitter.png";
 import API from "../API.jsx";
-import {NavigationButtons} from "./NavigationButtons.jsx";
-import {Reviews} from "./ReviewsList.jsx";
-import {address_string_to_object, time_string_to_object} from "./RestaurantFormUtility.jsx";
-import {ErrorContext} from "./userContext.jsx";
+import { NavigationButtons } from "./NavigationButtons.jsx";
+import { Reviews } from "./ReviewsList.jsx";
+import { address_string_to_object, time_string_to_object } from "./RestaurantFormUtility.jsx";
+import { ErrorContext } from "./userContext.jsx";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -86,14 +86,14 @@ const Banner = (props) => {
                 </h6>
             );
         } else {
-            const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
-            const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
+            const averageQuality = (restaurant.reviews.reduce((sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
+            const averageSafety = (restaurant.reviews.reduce((sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
             // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
             return (
                 <h6>
-                    Quality: <i className="bi bi-star-fill" style={{color: "#FFC107"}}></i> {averageQuality.toFixed(1)}
-                    <br/>
-                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{color: getHappinessColor(Math.round(averageSafety))}} /> {averageSafety.toFixed(1)}
+                    Quality: <i className="bi bi-star-fill" style={{ color: "#FFC107" }}></i> {averageQuality.toFixed(1)}
+                    <br />
+                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{ color: getHappinessColor(Math.round(averageSafety)) }} /> {averageSafety.toFixed(1)}
                 </h6>
             );
         }
@@ -181,9 +181,9 @@ const Banner = (props) => {
     }
 
 
-    return(
+    return (
         <>
-            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
             <div ref={bannerRef} style={{ position: 'relative', overflow: 'hidden', padding: "0.2rem 0.2rem 0.5rem 0.5rem" }}>
                 {/* Background Image Overlay */}
                 <div
@@ -201,11 +201,11 @@ const Banner = (props) => {
                     }} >
                 </div>
                 {/* Content with Text */}
-                <Row style={{maxHeight: 70}}>
+                <Row style={{ maxHeight: 70 }}>
                     <h1> <b><i>{restaurant.name}</i></b> </h1>
                 </Row>
-                <Row style={{maxHeight: 20}}>
-                    { restaurant.reviews.length === 0 ?
+                <Row style={{ maxHeight: 20 }}>
+                    {restaurant.reviews.length === 0 ?
                         <></>
                         :
                         restaurant.reviews.length === 1 ?
@@ -215,8 +215,8 @@ const Banner = (props) => {
                     }
                 </Row>
                 <Stack direction={"horizontal"}>
-                    <Col xs={"auto"} style={{textAlign: "start", marginTop: "0.2rem"}}> {restaurantStars()} </Col>
-                    <Col xs={"auto"} className="ms-auto" style={{textAlign: "end", marginBottom: "0.4rem"}}>
+                    <Col xs={"auto"} style={{ textAlign: "start", marginTop: "0.2rem" }}> {restaurantStars()} </Col>
+                    <Col xs={"auto"} className="ms-auto" style={{ textAlign: "end", marginBottom: "0.4rem" }}>
                         {iconsData.map((icon, index) => (
                             icon.to && (
                                 <Link key={index} target={"_blank"} style={{ marginLeft: "0.4rem" }} to={icon.to}>
@@ -229,11 +229,11 @@ const Banner = (props) => {
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
                 </Row>
-                <Row style={{maxHeight: 15}}>
+                <Row style={{ maxHeight: 15 }}>
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
             </div>
-            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
         </>
     );
 }
@@ -248,19 +248,19 @@ const BannerProfile = (props) => {
         if (restaurant.reviews.length === 0) {
             return (
                 <p>
-                    <i className="bi bi-star" style={{ color: '#FFD700', marginRight: "5px"}}></i>
+                    <i className="bi bi-star" style={{ color: '#FFD700', marginRight: "5px" }}></i>
                     <i>No reviews yet</i>
                 </p>
             );
         } else {
-            const averageQuality = (restaurant.reviews.reduce( (sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
-            const averageSafety = (restaurant.reviews.reduce( (sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
+            const averageQuality = (restaurant.reviews.reduce((sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
+            const averageSafety = (restaurant.reviews.reduce((sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
             // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
             return (
                 <h6>
-                    Quality: <i className="bi bi-star-fill" style={{color: "#FFC107"}}></i> {averageQuality.toFixed(1)}
-                    <br/>
-                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{color: getHappinessColor(Math.round(averageSafety))}} /> {averageSafety.toFixed(1)}
+                    Quality: <i className="bi bi-star-fill" style={{ color: "#FFC107" }}></i> {averageQuality.toFixed(1)}
+                    <br />
+                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{ color: getHappinessColor(Math.round(averageSafety)) }} /> {averageSafety.toFixed(1)}
                 </h6>
             );
         }
@@ -348,9 +348,9 @@ const BannerProfile = (props) => {
     }
 
 
-    return(
+    return (
         <>
-            <div style={{borderTop: "1px solid #000", margin: 0}} ></div>
+            <div style={{ borderTop: "1px solid #000", margin: 0 }} ></div>
             <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "174px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate('/restaurants/1/menu')}>
                 {/* Background Image Overlay */}
                 <div
@@ -369,19 +369,19 @@ const BannerProfile = (props) => {
                 </div>
                 {/* Content with Text */}
                 <Row>
-                    <h1 style={{fontSize: '2rem', marginTop: '10px'}}> <b><i> {restaurant.name} </i></b> </h1>
+                    <h1 style={{ fontSize: '2rem', marginTop: '10px' }}> <b><i> {restaurant.name} </i></b> </h1>
                 </Row>
                 <Row>
-                    <Col xs={5} style={{marginTop: "0.4rem"}}> {restaurantStars()} </Col>
+                    <Col xs={5} style={{ marginTop: "0.4rem" }}> {restaurantStars()} </Col>
                 </Row>
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
                 </Row>
-                <Row style={{whiteSpace: "nowrap"}}>
+                <Row style={{ whiteSpace: "nowrap" }}>
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
             </Container>
-            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
         </>
     );
 }
@@ -410,8 +410,8 @@ const Menu = (props) => {
             localStorage.setItem(keyType, allDishTypes[0]);
         }
     }, [location.state]);
-    
-    
+
+
     const handleSearch = (ev) => {
         setSearch(ev.target.value);
         localStorage.setItem('selectedSearch', ev.target.value);
@@ -436,20 +436,32 @@ const Menu = (props) => {
             ));
         }
     }
+    const hasGluten = (dish) => {
+        return dish.ingredients.some((ingredient) =>
+        {
+            if(ingredient.allergens!= null){
+                return ingredient.allergens.includes("gluten")
+            }else{
+                return false
+            }
+        }
+        );
+
+    };
 
 
-    return(
+    return (
         <>
             {/*Search bar component*/}
-            <Row className="align-items-center" style={{marginRight: 0, marginTop:"0.2rem", marginLeft: 0, marginBottom: "0.2rem", height: "80px"}}>
-                <Col xs={1} className="d-flex align-items-center" style={{marginRight:"2%"}}>
-                    <i className="bi bi-search" style={{fontSize: "1.5rem"}}></i>
+            <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem", height: "80px" }}>
+                <Col xs={1} className="d-flex align-items-center" style={{ marginRight: "2%" }}>
+                    <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
                 </Col>
                 <Col xs={10}>
-                    <Form.Control type="search" placeholder="Search dish or ingredient" value={search} onChange={handleSearch}/>
+                    <Form.Control type="search" placeholder="Search dish or ingredient" value={search} onChange={handleSearch} />
                 </Col>
                 {/*Allergens multi-select*/}
-                <Col style={{marginTop: "0.5rem"}}>
+                <Col style={{ marginTop: "0.5rem" }}>
                     <Select
                         options={optionsAllergens}
                         value={selectedAllergens}
@@ -475,62 +487,72 @@ const Menu = (props) => {
             </Row>
 
             {/*Menu categories*/}
-            <Col className="scroll" style={{ display: "flex", overflowX: "scroll"}}>
+            <Col className="scroll" style={{ display: "flex", overflowX: "scroll" }}>
                 {allDishTypes.map((currentType, index) => (
-                    <Button key={index} active={currentType === type} size="lg" style={{margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#52b69a" : "#fff", borderColor: "#52b69a", color: currentType === type ? "#fff" : "#52b69a", border: 0}}
-                            onClick={() => {
-                                setType(currentType);
-                                localStorage.setItem(keyType, currentType);
-                            }
-                    }>
+                    <Button key={index} active={currentType === type} size="lg" style={{ margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#52b69a" : "#fff", borderColor: "#52b69a", color: currentType === type ? "#fff" : "#52b69a", border: 0 }}
+                        onClick={() => {
+                            setType(currentType);
+                            localStorage.setItem(keyType, currentType);
+                        }
+                        }>
                         {currentType.charAt(0).toUpperCase() + currentType.slice(1)}
                     </Button>
                 ))}
             </Col>
-            <div style={{borderTop: "1px solid #000", margin: 0}}></div>
+            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
 
             {/*Menu dishes*/}
-            <ListGroup className="scroll" style={{overflowY: "scroll", maxHeight: menuHeight}}>
-                { filteredDishes.filter((dish) => dish.type === type).length === 0 ?
+            <ListGroup className="scroll" style={{ overflowY: "scroll", maxHeight: menuHeight }}>
+                {filteredDishes.filter((dish) => dish.type === type).length === 0 ?
                     <>
-                        { search.trim() === '' ?
-                                <p style={{marginTop: "1rem", marginLeft: "1rem"}}> No result with the selected allergens in this menu section! </p>
-                                :
-                                <p style={{marginTop: "1rem", marginLeft: "0.4rem"}}> No result for "<b>{search.trim()}</b>" in this menu section! </p>
+                        {search.trim() === '' ?
+                            <p style={{ marginTop: "1rem", marginLeft: "1rem" }}> No results with the selected allergens in this menu section! </p>
+                            :
+                            <p style={{ marginTop: "1rem", marginLeft: "0.4rem" }}> No results for "<b>{search.trim()}</b>" in this menu section! </p>
                         }
                     </>
                     :
                     filteredDishes.filter((dish) => dish.type === type).map((dish) => {
-                    return (
-                        <Card key={dish.id} style={{borderRadius: 0, borderTop: 0}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`)}>
-                            <Button variant="light" style={{padding: "0 0 0 0"}}>
-                                <Card.Body>
-                                    <Row>
-                                        <Col style={{textAlign: "start"}}>
-                                            <Card.Title> {dish.name} </Card.Title>
-                                            <Card.Text>
-                                                {
-                                                    dish.ingredients.map((ingredient, index) => (
-                                                        <span key={index}>
-                                                            <span style={{whiteSpace: "nowrap"}}>{ingredient.name}</span>
-                                                            {index < dish.ingredients.length - 1 && ', '}
-                                                        </span>
-                                                    ))
+                        return (
+                            <Card key={dish.id} style={{ borderRadius: 0, borderTop: 0 }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`)}>
+                                <Button variant="light" style={{ padding: "0 0 0 0" }}>
+                                    <Card.Body>
+                                        <Row>
+                                            <Col style={{ textAlign: "start" }}>
+                                                <Card.Title> {dish.name} </Card.Title>
+                                                <Card.Text>
+                                                    {
+                                                        dish.ingredients.map((ingredient, index) => (
+                                                            <span key={index}>
+                                                                <span style={{ whiteSpace: "nowrap" }}>{ingredient.name}</span>
+                                                                {index < dish.ingredients.length - 1 && ', '}
+                                                            </span>
+                                                        ))
+                                                    }
+                                                </Card.Text>
+                                                <Card.Text>
+                                                    <i> {dish.price}<i className="bi bi-currency-euro"></i> </i>
+                                                </Card.Text>
+                                            </Col>
+                                            <Col xs={4} style={{ textAlign: "end" }}>
+                                                <img height={"100px"} width={"100px"} src={dish.image} />
+                                                <Card.Text style={{ fontSize: "0.9rem",marginTop:"2px" }} >
+                                                {hasGluten(dish)?
+                                                <Badge pill bg="danger">
+                                                    <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten
+                                                </Badge>
+                                                :
+                                                    <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
                                                 }
-                                            </Card.Text>
-                                            <Card.Text>
-                                                <i> {dish.price}<i className="bi bi-currency-euro"></i> </i>
-                                            </Card.Text>
-                                        </Col>
-                                        <Col xs={4} style={{textAlign: "end"}}>
-                                            <img height={"100px"} width={"100px"} src={dish.image} />
-                                        </Col>
-                                    </Row>
-                                </Card.Body>
-                            </Button>
-                        </Card>
-                    );
-                })}
+                                                </Card.Text>
+
+                                            </Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Button>
+                            </Card>
+                        );
+                    })}
             </ListGroup>
 
             {/*Ingredient modal*/}
@@ -567,11 +589,11 @@ const Details = (props) => {
                                 <Col>
                                     {day[0]}
                                 </Col>
-                                <Col style={{textAlign: "end"}}>
-                                    {day[1].map((range, index) => <div key={index} style={{marginBottom: "0.4rem"}}> {range}<br/> </div> )}
+                                <Col style={{ textAlign: "end" }}>
+                                    {day[1].map((range, index) => <div key={index} style={{ marginBottom: "0.4rem" }}> {range}<br /> </div>)}
                                 </Col>
                             </Row>
-                            {index < Object.entries(groupedByDay).length - 1 && <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem"}} ></div>}
+                            {index < Object.entries(groupedByDay).length - 1 && <div style={{ borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem" }} ></div>}
                         </div>
                     );
                 })}
@@ -580,25 +602,25 @@ const Details = (props) => {
     }
 
 
-    return(
+    return (
         <>
             {/*Description*/}
-            <Card style={{borderRadius: 0, borderBottom: 0}}>
-                <Card.Header as="h5" style={{textAlign: "center"}}>
+            <Card style={{ borderRadius: 0, borderBottom: 0 }}>
+                <Card.Header as="h5" style={{ textAlign: "center" }}>
                     Description
                 </Card.Header>
-                <Card.Body style={{overflowY: "auto", maxHeight: descriptionHeight}}>
+                <Card.Body style={{ overflowY: "auto", maxHeight: descriptionHeight }}>
                     <Card.Text>
                         {restaurant.description}
                     </Card.Text>
                 </Card.Body>
 
                 {/*Opening Hours*/}
-                <div style={{borderTop: "1px solid #000", margin: 0}}></div>
-                <Card.Header as="h5" style={{textAlign: "center"}}>
+                <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
+                <Card.Header as="h5" style={{ textAlign: "center" }}>
                     Opening Hours
                 </Card.Header>
-                <Card.Body style={{overflowY: "auto", maxHeight: 160}}>
+                <Card.Body style={{ overflowY: "auto", maxHeight: 160 }}>
                     <Card.Title as="h6">
                         {formatTimeRanges(restaurant.hours)}
                     </Card.Title>
@@ -609,7 +631,7 @@ const Details = (props) => {
 }
 
 
-function Restaurant({restaurantAllergens, setRestaurantAllergens, menuType}) {
+function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType }) {
     const { id } = useParams();
     const handleError = useContext(ErrorContext);
     const location = useLocation();
@@ -663,14 +685,14 @@ function Restaurant({restaurantAllergens, setRestaurantAllergens, menuType}) {
 
     return (
         <>
-            { restaurant && (
+            {restaurant && (
                 <>
                     <Banner restaurant={restaurant} bannerRef={bannerRef} setDivHeight={setDivHeight} />
-                    { menu ? (
+                    {menu ? (
                         <Menu restaurant={restaurant} restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType}
-                              filteredDishes={filteredDishes} setFilteredDishes={setFilteredDishes} filteredSearchDishes={filteredSearchDishes}
-                              setFilteredSearchDishes={setFilteredSearchDishes} filteredSelectDishes={filteredSelectDishes} setFilteredSelectDishes={setFilteredSelectDishes}
-                              search={search} setSearch={setSearch} divHeight={divHeight} />
+                            filteredDishes={filteredDishes} setFilteredDishes={setFilteredDishes} filteredSearchDishes={filteredSearchDishes}
+                            setFilteredSearchDishes={setFilteredSearchDishes} filteredSelectDishes={filteredSelectDishes} setFilteredSelectDishes={setFilteredSelectDishes}
+                            search={search} setSearch={setSearch} divHeight={divHeight} />
                     ) : details ? (
                         <Details restaurant={restaurant} />
                     ) : (
