@@ -86,7 +86,7 @@ function InnerForm(props) {
     // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
     const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const [ingredientImage, setIngredientImage] = useState([PLACEHOLDER]);
-    const [fileNameIngredient, setFileNameIngredient] = useState('No File Chosen');
+    const [fileNameIngredient, setFileNameIngredient] = useState(['No File Chosen']);
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
@@ -167,7 +167,7 @@ function InnerForm(props) {
         setIngredients([{ id: 0, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
         setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
         setIngredientImage([PLACEHOLDER]);
-        setFileNameIngredient('No File Chosen');
+        setFileNameIngredient(['No File Chosen']);
     };
           
     function createDishObject(dishId) {

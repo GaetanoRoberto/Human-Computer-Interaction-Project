@@ -9,8 +9,8 @@ const DISHES_PATH = HTTP_AND_IP_ADDRESS_AND_PORT + '/dishes/';
 const RESTAURANTS_PATH = HTTP_AND_IP_ADDRESS_AND_PORT + '/restaurants/';
 
 // placeholder if no image is provided
-const PLACEHOLDER = HTTP_AND_IP_ADDRESS_AND_PORT + '/placeholder.png';
-const PLACEHOLDER2 = HTTP_AND_IP_ADDRESS_AND_PORT + '/placeholder2.png';
+const PLACEHOLDER2 = HTTP_AND_IP_ADDRESS_AND_PORT + '/placeholder.png';
+const PLACEHOLDER = HTTP_AND_IP_ADDRESS_AND_PORT + '/placeholder2.png';
 
 // API KEY for google maps address
 const API_KEY = 'AIzaSyCvuhhqU5FKKc39jRLY1pviZAzcKeNLJdc';

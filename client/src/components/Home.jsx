@@ -410,11 +410,11 @@ function Home(props) {
                     //console.log(user);
                 } else {
                     // Handle the case when the dish with dishId is not found
-                    console.log('User not found');
+                    handleError('User not found');
                 }
             } catch (err) {
                 // show error message
-                console.log(err);
+                handleError(err);
             }
         };
         if (username) {

@@ -111,6 +111,10 @@ function DishForm(props) {
             ...ingredientImage,
             PLACEHOLDER
         ]);
+        setFileNameIngredient([
+            ...fileNameIngredient,
+            'No File Chosen'
+        ]);
         setIngredientTempId((old_id) => old_id + 1);
     };
 
@@ -247,7 +251,21 @@ function DishForm(props) {
                             <div style={{ marginBottom: '5%' }}>
                                 <Form.Group className="mb-3" >
                                     <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image</Form.Label>
-                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={setIngredientImage} fileName={fileNameIngredient} setFileName={setFileNameIngredient} />
+                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
+                                        return oldIngredientsImage.map((oldingredient,inner_index) => {
+                                            if (inner_index === index) {
+                                                return new_image;
+                                            }
+                                            return oldingredient;
+                                        })
+                                    })}} fileName={fileNameIngredient[index]} setFileName={(new_filename) => {setFileNameIngredient((oldFileNames) => {
+                                        return oldFileNames.map((oldFileName,inner_index) => {
+                                            if (inner_index === index) {
+                                                return new_filename;
+                                            }
+                                            return oldFileName;
+                                        })
+                                    })}} />
                                 </Form.Group>
                             </div>
                         </div>

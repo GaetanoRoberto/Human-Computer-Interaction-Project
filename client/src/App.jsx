@@ -8,7 +8,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { Reviews } from './components/ReviewsList';
 import { ReviewForm } from './components/ReviewPage';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useContext } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
 import { Restaurant } from "./components/Restaurant.jsx";
 import { ErrorContext, UserContext } from './components/userContext';
@@ -63,10 +63,10 @@ function App() {
     API.logIn(credentials)
       .then(user => {
         setUser(user);
-        console.log("Login successful with user:", user);
+        //console.log("Login successful with user:", user);
       })
       .catch(err => {
-        console.error("Login failed with error:", err);
+        handleError(`Login failed with error:${err}`);
       });
   };
 
@@ -166,8 +166,8 @@ function App() {
                 setAddress({ text: user1.position.split(";")[0], lat: user1.position.split(";")[1], lng: user1.position.split(";")[2], invalid: false });
                 //console.log(user);
             } else {
-                // Handle the case when the dish with dishId is not found
-                console.log('User not found');
+                // Handle the case when the user is not found
+                handleError('User not found');
             }
         } catch (err) {
             // show error message

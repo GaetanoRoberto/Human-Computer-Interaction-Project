@@ -8,13 +8,14 @@ import makeAnimated from 'react-select/animated';
 import { Range } from 'react-range';
 import PositionModal from './PositionModal';
 import PositionModalAlert from './PositionModalAlert';
-import { UserContext } from './userContext';
+import { UserContext,ErrorContext } from './userContext';
 import API from '../API';
 
 
 const animatedComponents = makeAnimated();
 
 const FilterPage = (props) => {
+    const handleError = useContext(ErrorContext);
     const user = useContext(UserContext);
     const username = user && user.username;
     const [userAddress, setUserAddress] = useState("");
@@ -102,8 +103,8 @@ const FilterPage = (props) => {
                     setUserAddress(user1.position.split(";")[0]);
                     //console.log(user);
                 } else {
-                    // Handle the case when the dish with dishId is not found
-                    console.log('User not found');
+                    // Handle the case when the user
+                    handleError('User not found');
                 }
             } catch (err) {
                 // show error message
@@ -185,12 +186,12 @@ const FilterPage = (props) => {
                     //setUserAddress(user1.position.split(";")[0]);
                     //console.log(user);
                 } else {
-                    // Handle the case when the dish with dishId is not found
-                    console.log('User not found');
+                    // Handle the case when the filtering infos are not found
+                    handleError('Infos not found');
                 }
             } catch (err) {
                 // show error message
-                console.log(err);
+                handleError(err);
             }
         };
         getCategoriesAndAllergenes();
