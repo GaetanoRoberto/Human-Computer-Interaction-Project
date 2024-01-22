@@ -170,9 +170,9 @@ function SearchReview(props) {
   )
 }
 
-function ReviewsList({ reviews }) {
+function ReviewsList({ reviews, divHeight }) {
   const navigate = useNavigate();
-  const reviewsHeight = (window.innerHeight - 342);
+  const reviewsHeight = (divHeight === 166 ? window.innerHeight - 350 : divHeight === 195 ? window.innerHeight - 380 : divHeight === 175 ? window.innerHeight - 360 : window.innerHeight - 330);
   const { id } = useParams();
   //const [list, setList] = useState(reviews);
   const user = useContext(UserContext);
@@ -251,7 +251,7 @@ function ReviewsList({ reviews }) {
 
 function Reviews(props) {
 
-  return <ReviewsList reviews={props.reviews} />
+  return <ReviewsList reviews={props.reviews} divHeight={props.divHeight} />
 }
 
 export { Reviews };

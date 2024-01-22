@@ -36,7 +36,7 @@ function DishIngredientsView(){
                     </h1>
                     <Row>
                         <Col as={"h2"} style={{textAlign: "center"}}>
-                            <Badge pill bg="success"> {dish.type} </Badge>
+                                <Badge pill bg="success"> {dish.type} </Badge>
                         </Col>
                     </Row>
                     <Row>

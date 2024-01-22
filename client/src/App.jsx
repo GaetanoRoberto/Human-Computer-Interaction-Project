@@ -185,10 +185,10 @@ function App() {
         <BrowserRouter>
           <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />
           {errorMessage ?
-            <Toast show={errorMessage !== ''} onClose={() => setErrorMessage('')} delay={6000} autohide bg="danger w-100">
+            <Toast  show={errorMessage !== ''} onClose={() => setErrorMessage('')} delay={6000} autohide bg="danger w-100">
               <Toast.Body>{errorMessage}</Toast.Body>
             </Toast>
-            : ''}
+            : ' '}
           {/*<Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')} >{errorMessage}</Alert>*/}
           <Routes>
             <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} search={search} setSearch={setSearch} setRestaurantAllergens={setRestaurantAllergens} setMenuType={setMenuType} />} />     {/* FATTA*/}

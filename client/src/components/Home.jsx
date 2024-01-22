@@ -64,13 +64,13 @@ function SearchBar(props) {
         const filteredRestaurants = restaurantInitialList.filter((restaurant) => {
             const restaurantNameMatch = restaurant.name.toLowerCase().includes(ev.target.value.trim().toLowerCase());
             const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()));
-            const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(ev.target.value.trim().toLowerCase()));
+            const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase());
             return restaurantNameMatch || dishesMatch || typesMatch;
         });
         // If there are no matches for dishes, set isSearchingDishes to false
         setIsSearchingDishes((ev.target.value.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))));
         // If there are no matches for types, set isSearchingType to false
-        setIsSearchingType((ev.target.value.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(ev.target.value.trim().toLowerCase()))));
+        setIsSearchingType((ev.target.value.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase())));
 
         setRestaurantList(filteredRestaurants);
     }
@@ -94,7 +94,7 @@ function SearchBar(props) {
             <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
                 <Col style={{ textAlign: "center" }}>
                     <b style={{ marginRight: "0.5rem", position: "relative", bottom: 5 }}>More info</b>
-                    <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "2rem", color: "#007bff" }} icon="fa-solid fa-circle-info" />
+                    <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "1.5rem", color: "#007bff" }} icon="fa-solid fa-circle-info" />
                 </Col>
             </Row>
         </>
@@ -242,8 +242,8 @@ function RestaurantsList(props) {
         return val
     };
     return (
-        <ListGroup className="scroll" style={{ overflowY: "auto", maxHeight: listHeight }}>
-            {filterRestaurants().length === 0 ?
+        <ListGroup className="scroll" style={{overflowY: "auto", overflowX: "hidden", maxHeight: listHeight}}>
+            { filterRestaurants().length === 0 ?
                 <>
                     <div style={{ borderTop: "1px solid", margin: 0, color: "lightgray" }}></div>
                     <p style={{ marginTop: "1rem", textAlign: "center" }}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
@@ -251,7 +251,7 @@ function RestaurantsList(props) {
                 :
                 filterRestaurants().map((restaurant) => {
                     return (
-                        <Card key={restaurant.id} style={{ borderRadius: 0, borderBottom: 0 }}>
+                        <Card key={restaurant.id} style={{ borderRadius: 0}}>
                             <Button variant="light" onClick={() => handleClick(restaurant.dishes, restaurant.id)}>
                                 <Row>
                                     <Col>
@@ -290,7 +290,7 @@ function RestaurantsList(props) {
                                                 </Card.Text>
                                             </>
                                         }
-                                    </Col>
+                                        </Col>
                                     <Col style={{ textAlign: "end" }}>
                                         <img height={"100px"} width={"100px"} src={restaurant.image} />
                                         <Card.Text style={{ marginTop: "1.2rem" }}>
@@ -299,58 +299,85 @@ function RestaurantsList(props) {
                                                 :
                                                 <></>
                                             }
-                                        </Card.Text>
-                                    </Col>
-                                </Row>
-                            </Button>
-                            {isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase())) &&
-                                <Alert variant={"success"} style={{ padding: 5, marginBottom: 20 }}>
-                                    <ListGroup className='homeList'>
-                                        {restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase())).map((dish, index) => {
-                                            return (
-                                                <ListGroup.Item className='homeListItem' key={index}>
-                                                    <Alert.Link style={{ marginLeft: 10 }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}>
-                                                        {dish.name}
-                                                    </Alert.Link>
-                                                    {' '}
-                                                    (<i>{dish.type}</i>)
-                                                    {index < restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase())).length - 1 &&
-                                                        <div style={{ borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem" }}></div>
-                                                    }
-                                                </ListGroup.Item>
-                                            )
-                                        })}
-                                    </ListGroup>
-                                </Alert>
-                            }
-                            {isSearchingType && restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())) &&
-                                <Accordion style={{ marginBottom: 20 }}>
-                                    <Accordion.Item eventKey={"0"}>
-                                        <Accordion.Header>
-                                            <b style={{ marginRight: 4 }}>
-                                                {restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.charAt(0).toUpperCase() + restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.slice(1)}
-                                            </b> offered here
-                                        </Accordion.Header>
-                                        <Accordion.Body>
-                                            <ListGroup className='homeList' style={{ overflowY: "auto", maxHeight: 150 }}>
-                                                {restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).map((dish, index) => {
-                                                    return (
-                                                        <ListGroup.Item className='homeListItem' key={index}>
-                                                            <b style={{ textDecoration: "underline" }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}> {dish.name} </b>
-                                                            {index < restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).length - 1 &&
-                                                                <div style={{ borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem" }}></div>
-                                                            }
-                                                        </ListGroup.Item>
-                                                    )
-                                                })}
-                                            </ListGroup>
-                                        </Accordion.Body>
-                                    </Accordion.Item>
-                                </Accordion>
-                            }
-                        </Card>
-                    );
-                })}
+                                    </Card.Text>
+                                </Col>
+                            </Row>
+                        </Button>
+                        { isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))) &&
+                            <Alert variant={"success"} style={{padding: 5, marginBottom: 20}}>
+                                <ListGroup className='homeList'>
+                                    { restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) &&
+                                        !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
+                                        return(
+                                            <ListGroup.Item className='homeListItem' key={index}>
+                                                <Row>
+                                                    <Col xs={8}>
+                                                        <Alert.Link style={{marginLeft: 10}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}>
+                                                            {dish.name}
+                                                        </Alert.Link>
+                                                        {' '}
+                                                        (<i>{dish.type}</i>)
+                                                    </Col>
+                                                    <Col style={{textAlign: "center"}}>
+                                                        { dish.allergens.some(allergen => allergen === 'gluten') ?
+                                                            <Badge pill bg="danger"> <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten </Badge>
+                                                            :
+                                                            <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
+                                                        }
+                                                    </Col>
+                                                </Row>
+                                                {index < array.length - 1 &&
+                                                    <div style={{borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem"}}></div>
+                                                }
+                                            </ListGroup.Item>
+                                        )
+                                    })}
+                                </ListGroup>
+                            </Alert>
+                        }
+                        { isSearchingType && restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) &&
+                            <Accordion style={{marginBottom: 20}}>
+                                <Accordion.Item eventKey={"0"}>
+                                    <Accordion.Header>
+                                        <b style={{marginRight: 4}}>
+                                            {restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.charAt(0).toUpperCase() + restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.slice(1)}
+                                        </b> offered here
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <ListGroup className='homeList' style={{overflowY: "auto", overflowX: "hidden", maxHeight: 150}}>
+                                            { restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase()) &&
+                                                !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
+                                                return(
+                                                    <ListGroup.Item className='homeListItem' key={index}>
+                                                        <Row>
+                                                            <Col xs={7}>
+                                                                <b style={{textDecoration: "underline"}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}> {dish.name} </b>
+                                                            </Col>
+                                                            <Col style={{textAlign: "center"}}>
+                                                                { dish.allergens.some(allergen => allergen === 'gluten') ?
+                                                                    <Badge pill bg="danger"> <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten </Badge>
+                                                                    :
+                                                                    <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
+                                                                }
+                                                            </Col>
+                                                        </Row>
+
+                                                        {index < array.length - 1 && <div style={{borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem"}}></div>}
+                                                    </ListGroup.Item>
+                                                )
+                                            })}
+                                            { restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase()) &&
+                                                !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).length === 0 &&
+                                                <h6>No dishes found with the selected allergens</h6>
+                                            }
+                                        </ListGroup>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                        }
+                    </Card>
+                );
+            })}
         </ListGroup>
     );
 }
@@ -382,13 +409,13 @@ function Home(props) {
                 const filteredRestaurants = restaurants.filter((restaurant) => {
                     const restaurantNameMatch = restaurant.name.toLowerCase().includes(props.search.trim().toLowerCase());
                     const dishesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()));
-                    const typesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(props.search.trim().toLowerCase()));
+                    const typesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase());
                     return restaurantNameMatch || dishesMatch || typesMatch;
                 });
                 // If there are no matches for dishes, set isSearchingDishes to false
                 setIsSearchingDishes((props.search.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()))));
                 // If there are no matches for types, set isSearchingType to false
-                setIsSearchingType((props.search.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase().includes(props.search.trim().toLowerCase()))));
+                setIsSearchingType((props.search.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase())));
 
                 setRestaurantList(filteredRestaurants);
 
