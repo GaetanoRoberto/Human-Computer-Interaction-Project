@@ -16,6 +16,7 @@ function Header(props) {
   const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo');
   const formPages = location.pathname.includes("add") || location.pathname.includes("edit");
   const dishView = location.pathname.includes("menu/dish");
+  const settings = location.pathname === ("/settings");
   //console.log(formPages)
   //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
@@ -58,13 +59,13 @@ function Header(props) {
           navigate('/')
         }} />
         <ConfirmModal text={afterSettings?"go to Settings":'go Back'} show={show2} setShow={setShow2} action={() => {
-                      afterSettings ? navigate("/settings") : navigate(-1)
+                      afterSettings ? navigate("/settings", { state: { previousLocationPathname: location.pathname } }) : navigate(-1)
           
         }} />
 
         <Container fluid >
           {location.pathname != "/" ?
-            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={location.pathname === ("/settings") || detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : (dishView && location.state && location.state.previousLocationPathname === '/') ? () => navigate(-1) : (dishView && !location.state) ? () => navigate(location.pathname.split("/dish")[0]) : () => navigate(-1)} />
+            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : (dishView && location.state && location.state.previousLocationPathname === '/') ? () => navigate(-1) : (dishView && !location.state) ? () => navigate(location.pathname.split("/dish")[0]) : (settings && location.state && location.state.previousLocationPathname.includes("editInfo" || "addInfo")) ? () => navigate('/') : () => navigate(-1)} />
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }

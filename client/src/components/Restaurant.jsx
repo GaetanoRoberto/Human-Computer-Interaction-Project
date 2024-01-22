@@ -470,6 +470,14 @@ const Menu = (props) => {
                         isClearable={true}
                         placeholder="Choose Allergens to avoid"
                         components={animatedComponents}
+                        theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                                ...theme.colors,
+                                primary25: '#D1E7DD',
+                                primary: '#52b69a',
+                            },
+                        })}
                     />
                 </Col>
             </Row>
@@ -674,7 +682,7 @@ function Restaurant({restaurantAllergens, setRestaurantAllergens, menuType}) {
                     ) : details ? (
                         <Details restaurant={restaurant} />
                     ) : (
-                        <Reviews reviews={restaurant.reviews} />
+                        <Reviews reviews={restaurant.reviews} divHeight={divHeight} />
                     )}
                     <NavigationButtons
                         id={id}
