@@ -189,7 +189,7 @@ function RestaurantsList(props) {
             { filterRestaurants().length === 0 ?
                 <>
                     <div style={{borderTop: "1px solid", margin: 0, color: "lightgray"}}></div>
-                    <p style={{marginTop: "1rem", textAlign: "center"}}> No result for "<b>{search.trim()}</b>" with the selected filters! </p>
+                    <p style={{marginTop: "1rem", textAlign: "center"}}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
                 </>
                 :
                 filterRestaurants().map((restaurant) => {
@@ -208,7 +208,7 @@ function RestaurantsList(props) {
                                         </Card.Text>
                                         :
                                         <>
-                                            <Card.Text style={{textAlign: "start"}}>
+                                            <Card.Text style={{textAlign: "start", marginTop: "-10px"}}>
                                                 {
                                                     Array.from({ length: Math.round(restaurant.avg_quality) }, (_, index) => (
                                                         <i key={index} className="bi bi-star-fill " style={{color: '#FFD700', marginRight:"5px", fontSize:"1.2em"}}></i>
@@ -216,14 +216,14 @@ function RestaurantsList(props) {
                                                 }
                                             </Card.Text>
 
-                                            <Card.Text style={{textAlign: "start"}}>
+                                            <Card.Text style={{textAlign: "start", marginTop: "-10px"}}>
                                                 {
                                                     Array.from({ length: Math.round(restaurant.avg_price) }, (_, index) => (
                                                         <i key={index} className="bi bi-currency-euro" style={{marginRight:"5px" , fontSize:"1.2em"}}></i>
                                                     ))
                                                 }
                                             </Card.Text>
-                                            <Card.Text style={{textAlign: "start"}}>
+                                            <Card.Text style={{textAlign: "start", marginTop: "-10px"}}>
                                             <b>Safety: </b> <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{color: getHappinessColor(Math.round(restaurant.avg_safety))}} />  ({restaurant.avg_safety.toFixed(1)}/5.0)         
                                             </Card.Text>
                                         </>
