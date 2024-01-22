@@ -20,7 +20,7 @@ const reviewsDao = require('./dao-reviews'); // module for accessing the reviews
 const usersDao = require('./dao-users'); // module for accessing the users table in the DB
 const retrieveIp = require('./retrieve-ip');
 const IP_ADDRESS_AND_PORT = retrieveIp.getLocalWirelessIP();
-const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder.png';
+const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder2.png';
 
 /*** init express and set-up the middlewares ***/
 const app = express();
@@ -191,19 +191,20 @@ app.get('/api/restaurants', async (req, res) => {
     const restaurants = await restaurantsDao.getRestaurants().catch(() => { throw { error: 'Database Error in Getting the Restaurants' } });
     const return_struct = restaurants;
     for (const restaurant of return_struct) {
-      const types = await dishesDao.getRestaurantFilters(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the type of dishes of the Restaurants' } });
-      restaurant.dish_types = types;
+      // get number of reviews for each restaurant
+      const n_review = await restaurantsDao.getNumberOfReviews(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the Number of Reviews linked to the Restaurant' }});
+      restaurant.n_review = n_review;
       const dishes_avg_price = await dishesDao.getDishesAvgPrice(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the Average Price of the Dishes linked to the Restaurant' }});
       restaurant.dishes_avg_price = dishes_avg_price;
       // getting all the dishes for each restaurant
-      const dishes = await dishesDao.getDishes(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the dishes of the Restaurants' } });
-      let allergens = [];
+      const full_dishes = await dishesDao.getDishes(restaurant.id).catch(() => { throw { error: 'Database Error in Getting the dishes of the Restaurants' } });
+      const dishes = full_dishes.map((dish) => ({ id: dish.id, name: dish.name, type: dish.type}));
       for (const dish of dishes) {
         const dish_allergens = await dishesDao.getDishAllergens(dish.id).catch(() => { throw { error: 'Database Error in Getting the allergens of the Dishes' } });
-        allergens = [...allergens,...dish_allergens];
+        dish.allergens = dish_allergens;
       }
-      // remove duplicates and assign to restaurant
-      restaurant.allergens = [...new Set(allergens)];
+      // assign to restaurant
+      restaurant.dishes = dishes;
     }
     // return all the restaurant along with their dishes
     res.json(return_struct);
@@ -296,14 +297,6 @@ app.get('/api/ingredients/:id', (req, res) => {
   ingredientsDao.getIngredient(req.params.id)
     .then(ingredient => res.json(ingredient))
     .catch(() => res.status(503).json({ error: 'Database Error in Getting the Ingredient' }));
-});
-
-// GET /api/dishes/
-// This route is used to get all the possible type of dishes, for filter in the home page.
-app.get('/api/dishes/', (req, res) => {
-  dishesDao.getFilters()
-    .then(filters => res.json(filters))
-    .catch(() => res.status(503).json({ error: 'Database Error in Getting all Possible type of dishes' }));
 });
 
 // GET /api/dishes/:id

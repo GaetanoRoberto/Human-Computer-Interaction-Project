@@ -7,6 +7,7 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { Range } from 'react-range';
 import PositionModal from './PositionModal';
+import PositionModalAlert from './PositionModalAlert';
 import { UserContext } from './userContext';
 import API from '../API';
 
@@ -21,6 +22,7 @@ const FilterPage = (props) => {
     const [tempFilters, setTempFilters] = useState({ ...filtersToApply });
     const [menuOpen, setMenuOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
     const [fadeStates, setFadeStates] = useState([]);
     const [errorMaxDistance, setErrorMaxDistance] = useState("");
     const navigate = useNavigate();
@@ -76,7 +78,8 @@ const FilterPage = (props) => {
             });
         }).finally(() => {
             setIsLoadingLocation(false); // Set loading state to false when the geocoding is complete
-            setTempFilters({ ...tempFilters, nearby: true })
+            //setTempFilters({ ...tempFilters, nearby: true })
+            setShowModal2(true);
         });
     }
 
@@ -111,6 +114,45 @@ const FilterPage = (props) => {
             getUser(username);
         }
     }, [username]);
+
+    const handleRemoveFilters = () => {
+        setTempFilters({categories: [],
+            priceRange: [0, 110],
+            maxDistance: '',
+            qualityRating: '',
+            safetyRating: '', 
+            allergens: [], // Array to hold added ingredients
+            openNow: false,
+            nearby: false,
+            label: "NOTHING",
+            order: "DESC"
+        });
+        //SE VOLESSI RIMUOVERE ANCHE I FILTRI GIà SELEZIONATI PRECEDENTEMENTE
+        // if ((filtersToApply.categories.length === 0) &&
+        //     (filtersToApply.priceRange[0] === 0 && filtersToApply.priceRange[1] === 110) &&
+        //     (filtersToApply.maxDistance === '') &&
+        //     (filtersToApply.qualityRating === '') &&
+        //     (filtersToApply.safetyRating === '') &&
+        //     (filtersToApply.allergens.length === 0) && // Added check for allergens
+        //     (filtersToApply.openNow === false) &&
+        //     (filtersToApply.nearby === false) &&
+        //     (filtersToApply.label === "NOTHING") &&
+        //     (filtersToApply.order === "DESC")) {
+        //         setFiltersToApply({
+        //             categories: [],
+        //             priceRange: [0, 110],
+        //             maxDistance: '',
+        //             qualityRating: '',
+        //             safetyRating: '', 
+        //             allergens: [], // Array to hold added ingredients
+        //             openNow: false,
+        //             nearby: false,
+        //             label: "NOTHING",
+        //             order: "DESC"
+        //         });
+        // }
+        console.log(filtersToApply);
+    };
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -217,18 +259,13 @@ const FilterPage = (props) => {
     };
 
     const handleNearbyChange = (e) => {
-        if (userAddress == '') {
-            e.preventDefault(); // Prevent the toggle action
-            setShowModal(true); // Show the modal
-        } else {
+        // if (props.address.text == '') {
+        //     e.preventDefault(); // Prevent the toggle action
+        //     setShowModal(true); // Show the modal
+        // } else {
             setTempFilters({ ...tempFilters, nearby: e.target.checked });
-        }
+        //}
     };
-
-    const handleModalClose = () => {
-        setShowModal(false);
-    };
-
 
     const handleFadeClick = (index) => {
         setFadeStates((prevStates) => {
@@ -256,17 +293,28 @@ const FilterPage = (props) => {
 
     // Handle form submission
     const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        if (errorMaxDistance == "") {
-            setFiltersToApply(tempFilters);
-            console.log("Filters applied:", tempFilters);
-            navigate(`/`); // Navigate to the new page after setting filters
-        } else {
-            console.log("Error present, not submitting:", errorMaxDistance);
+        // Check if the necessary conditions for the address and maxDistance are not met
+        if ((tempFilters.nearby || tempFilters.maxDistance !== '') && props.address.text === '') {
+            e.preventDefault(); // Prevent default form submission behavior
+            setShowModal(true); // Show the modal
+            return; // Stop further execution
         }
+    
+        // Check for any errors
+        if (errorMaxDistance !== "") {
+            console.log("Error present, not submitting:", errorMaxDistance);
+            e.preventDefault(); // Prevent default form submission if there is an error
+            return; // Stop further execution
+        }
+    
+        // If all conditions are met and no errors are present
+        setFiltersToApply(tempFilters);
+        console.log("Filters applied:", tempFilters);
+        navigate(`/`); // Navigate to the new page after setting filters
     };
-    const [label, setLabel] = useState(tempFilters.label || "QUALITY");
-    const [order, setOrder] = useState(tempFilters.order || "DESC");
+    
+    const [label, setLabel] = useState(tempFilters.label || "NOTHING");
+    const [order, setOrder] = useState(tempFilters.order || "");
 
     const sortByField = (field) => {
 
@@ -290,7 +338,7 @@ const FilterPage = (props) => {
       };
     return (
         <>
-            <Container fluid style={{ height: '74vh', overflowY: 'auto', marginBottom: '10%' }}>
+            <Container fluid style={{ height: '72vh', overflowY: 'auto', marginBottom: '10%' }}>
                 <Row>
                     <Col>
                         <h2 style={{ marginTop: "3%" }}>Filter by:</h2>
@@ -315,7 +363,13 @@ const FilterPage = (props) => {
                             style={{ marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
                         >
                             <PositionModal show={showModal} setShow={setShowModal} action={handleLocationClick} />
-                            {tempFilters.nearby ? <FontAwesomeIcon icon="fa-solid fa-check" /> : ''} Nearby
+                            <PositionModalAlert text={props.address.text} show={showModal2} setShow={setShowModal2} />
+                            {isLoadingLocation ? (
+                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
+                            ) : (
+                                tempFilters.nearby ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
+                            )}
+                            Nearby
                         </ToggleButton>
                         <Form noValidate onSubmit={handleSubmit}>
                             <Row>
@@ -345,7 +399,7 @@ const FilterPage = (props) => {
                                             <Col>
                                                 <Select
                                                     closeMenuOnSelect={false}
-                                                    placeholder="Choose Category"
+                                                    placeholder="Choose Allergens"
                                                     components={animatedComponents}
                                                     isMulti
                                                     isSearchable={true}
@@ -391,6 +445,24 @@ const FilterPage = (props) => {
                                     </Row>
                                 </Col>
                                 <Col md={3} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
+                                {isLoadingLocation ? <Form.Group controlId="formMaxDistance">
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            {isLoadingLocation && (
+                                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
+                                            )}
+                                            <Form.Control
+                                                type="number"
+                                                name="maxDistance"
+                                                placeholder="Max Distance (km)"
+                                                value={tempFilters.maxDistance}
+                                                onChange={handleChange}
+                                                isInvalid={!!errorMaxDistance}
+                                            />
+                                        </div>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errorMaxDistance}
+                                        </Form.Control.Feedback>
+                                    </Form.Group> : 
                                     <Form.Group controlId="formMaxDistance">
                                         <Form.Control
                                             type="number"
@@ -400,10 +472,10 @@ const FilterPage = (props) => {
                                             onChange={handleChange}
                                             isInvalid={!!errorMaxDistance}
                                         />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errorMaxDistance}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
+                                    <Form.Control.Feedback type="invalid">
+                                        {errorMaxDistance}
+                                    </Form.Control.Feedback>
+                                    </Form.Group>}
                                 </Col>
                                 <Col xs={12} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
                                     <Form.Label>Price Range: {tempFilters.priceRange[0] == 100 && tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>100€+</span> : tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1] - 10}€+</span> : <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1]}€</span>}</Form.Label>
@@ -479,29 +551,46 @@ const FilterPage = (props) => {
                                 <Form.Label>Sort By:</Form.Label>
         <Col xs={8} >
           <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="light" >
-            <Dropdown.Item onClick={() => sortByField("price")}>PRICE</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("quality")}>QUALITY</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("safety")}>SAFETY</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("nothing")}>NOTHING</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("review price")}>REVIEW PRICE</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("review quality")}>REVIEW QUALITY</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("review safety")}>REVIEW SAFETY</Dropdown.Item>
           </DropdownButton>
         </Col>
         <Col onClick={toggleOrder} >
-          {order === 'ASC' ? (
-            <i className="bi bi-sort-down" style={{ fontSize: "1.5rem" }} />
-          ) : (
-            <i className="bi bi-sort-up"  style={{ fontSize: "1.5rem" }} />
-          )} { order.toUpperCase()}
+          {order === 'ASC' && label != 'NOTHING' ? (
+            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
+          ) : label == 'NOTHING' ? "" : (
+            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ order.toUpperCase()}</span></>
+          )}
         </Col>
                             </Row>
                             <Col style={{
                                 position: "fixed",  // Fixed position
-                                bottom: "2.5%",       // 5% from the bottom of the viewport
+                                bottom: "2.4%",       // 5% from the bottom of the viewport
                                 left: "50%",        // Initially, put it halfway across the screen
                                 transform: "translateX(-50%)",  // Adjust horizontally to truly center it
                                 display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center"
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                width: "85%",
                             }}>
-                                <Button variant="primary" type='submit' style={{ fontSize: "1.4rem", padding: "1rem" }}
+                                <Button disabled={
+                                    (tempFilters.categories.length === 0) &&
+                                    (tempFilters.priceRange[0] === 0 && tempFilters.priceRange[1] === 110) &&
+                                    (tempFilters.maxDistance === '') &&
+                                    (tempFilters.qualityRating === '') &&
+                                    (tempFilters.safetyRating === '') &&
+                                    (tempFilters.allergens.length === 0) && // Added check for allergens
+                                    (tempFilters.openNow === false) &&
+                                    (tempFilters.nearby === false) &&
+                                    (tempFilters.label === "NOTHING") &&
+                                    (tempFilters.order === "DESC")
+                                }    
+                                variant="danger" onClick = {() => handleRemoveFilters()}>
+                                    Remove filters
+                                </Button>
+                                <Button variant="primary" type='submit'
                                     disabled={!!errorMaxDistance}>
                                     Apply filters
                                 </Button>

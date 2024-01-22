@@ -18,10 +18,10 @@ function PositionModal(props) {
     return (
         <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Location</Modal.Title>
+                <Modal.Title>Location-based Filters</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            You have not specified your position yet. <br/>Do you want to use your location?
+            You have not specified your position yet. <br/>Do you want to use your GPS?
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>

@@ -14,7 +14,7 @@ import { DishForm } from './DishForm';
 import ConfirmModal from './ConfirmModal';
 
 function ProgressLabel(props) {
-    const { progress } = props;
+    const { progress, editMenu } = props;
 
     let text;
     switch (progress) {
@@ -36,7 +36,7 @@ function ProgressLabel(props) {
     }
 
     return (
-        <h1 className="text-center">{text}({props.progress}/4)</h1>
+        <h1 className="text-center">{text}{(editMenu) ? '' : `(${progress}/4)`}</h1>
     );
 }
 
@@ -45,7 +45,7 @@ function InnerForm(props) {
     const navigate = useNavigate();
     const handleError = useContext(ErrorContext);
     const restaurant_id = useParams().id;
-    const { progress, setProgress } = props;
+    const { progress, setProgress, editMenu } = props;
     // states for progress 1/4
     const [activityName, setActivityName] = useState({ text: '', invalid: false });
     const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
@@ -678,6 +678,7 @@ function InnerForm(props) {
                 if (manageDish) {
                     setProgress(4);
                 } else {
+                    setProgress(1);
                     navigate('/');
                 }  
             }
@@ -827,12 +828,12 @@ function InnerForm(props) {
         <>
             <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
             <Form noValidate onSubmit={handleSubmit}>
-                <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom:'3%' }}>
+                <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
-                    {(progress > 1 && manageDish === undefined) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
+                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
                     {(progress < 4) ? <Button variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
                     {(progress === 4 && dishes.length !== 0 && manageDish === undefined) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Save</Button> : ''}
                     {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
@@ -844,12 +845,22 @@ function InnerForm(props) {
 }
 
 function RestaurantForm(props) {
-    const [progress, setProgress] = useState(1);
+    const location = useLocation();
+    const {progress, setProgress} = props;
+    const [editMenu,setEditMenu] = useState(false);
+
+    useEffect(() => {
+        // Access the information about the previous location
+        // If i came from the settings route and i click edit your menu do logic for masking 
+        if(location.state?.from && location.state?.from==='edit_menu') {
+            setEditMenu(true);
+        }
+    }, []);
 
     return (
         <>
-            <ProgressLabel progress={progress}/>
-            <InnerForm progress={progress} setProgress={setProgress}/>
+            <ProgressLabel progress={progress} editMenu={editMenu}/>
+            <InnerForm progress={progress} setProgress={setProgress} editMenu={editMenu}/>
         </>
     );
 }

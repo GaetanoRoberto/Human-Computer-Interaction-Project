@@ -35,19 +35,19 @@ function DishIngredientsView(){
                         {dish.name}
                     </h1>
                     <Row>
-                        <Col style={{textAlign: "center"}}>
+                        <Col as={"h2"} style={{textAlign: "center"}}>
                             <Badge pill bg="success"> {dish.type} </Badge>
                         </Col>
                     </Row>
                     <Row>
-                        <Col style={{textAlign: "center", marginLeft: "0.4rem", marginTop: "0.4rem"}}>
+                        <Col as={"h1"} style={{textAlign: "center", marginLeft: "0.4rem", marginTop: "0.4rem"}}>
                             <i><b>{dish.price}<i className="bi bi-currency-euro"></i></b></i>
                         </Col>
                     </Row>
                     {dish.ingredients.length !== 0 ?
-                        <h5 style={{textAlign: "center", marginTop: "2rem", marginBottom: "0.4rem"}}>
+                        <h2 style={{textAlign: "center", marginTop: "2rem", marginBottom: "0.4rem"}}>
                             Ingredients
-                        </h5>
+                        </h2>
                         :
                         <></>
                     }
@@ -94,7 +94,7 @@ function DishIngredientsView(){
                                                     <h6 style={{marginTop: "3rem"}}>
                                                         Brand :
                                                     </h6>
-                                                    <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink}> {ingredient.brandName} </Button>
+                                                    <Button variant="light" size="lg" className="custom-link-button" href={ingredient.brandLink} target={"_blank"}> {ingredient.brandName} </Button>
                                                 </>
                                             }
                                         </Col>

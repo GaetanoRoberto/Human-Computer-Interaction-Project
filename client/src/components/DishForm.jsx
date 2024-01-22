@@ -70,7 +70,12 @@ function DishForm(props) {
                 }));
 
                 if (dish.ingredients.length == 0) {
-                    setIngredients([{ id: 0, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+                    // check on dish.type instead of type.text since state update is asynchronous
+                    if (dish.type!=='drinks') {
+                        setIngredients([{ id: 0, text: '', allergens: '', brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+                    } else {
+                        setIngredients([]);
+                    }
                 } else {
                     setIngredients(updatedIngredients);
                 }
@@ -206,7 +211,7 @@ function DishForm(props) {
 
     return (
         <>
-            <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '3%' }}>
+            <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>
                 <Form.Group >
                     <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Info</Form.Label>
                     <Row className="mb-3">
@@ -250,7 +255,7 @@ function DishForm(props) {
                     {ingredients.map((ingredient, index) => (
                         <div key={ingredient.id} style={{ paddingBottom: 30, borderBottom: "4px solid lightgray", marginTop: "2%" }}>
                             <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold', marginBottom: 20, paddingRight: '5%' }}>Ingredient {index + 1}</Form.Label>
-                            {(ingredients.length > 1) ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
+                            {(ingredients.length > 1 || type.text==='drinks') ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
                             <Row style={{ marginBottom: '5%' }}>
                                 <Col>
                                     <Form.Control

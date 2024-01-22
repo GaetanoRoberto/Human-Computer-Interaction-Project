@@ -25,6 +25,7 @@ library.add(fab, fas, far);
 
 function App() {
   const [user, setUser] = useState(null);
+  const username = user && user.username;
   // const [loggedIn, setLoggedIn] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('User'); //User: Default selection, Restaurater
   const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
@@ -37,11 +38,19 @@ function App() {
     allergens: [], // Array to hold added ingredients
     openNow: false,
     nearby: false,
-    label: "QUALITY",
+    label: "NOTHING",
     order: "DESC"
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
   const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
+  // Restaurant Form State
+  const [progress, setProgress] = useState(1);
+  // Home Search bar
+  const [search, setSearch] = useState("");
+  // Allergens state
+  const [restaurantAllergens, setRestaurantAllergens] = useState([]);
+  // Menu category state
+  const [menuType, setMenuType] = useState([]);
 
 
   // Define doLogIn function outside of useEffect
@@ -148,6 +157,28 @@ function App() {
     setUser(undefined);
   }
 
+  useEffect(() => {
+    // function used to retrieve restaurant information in detail
+    async function getUser(username) {
+        try {
+            const user1 = await API.getUser(username);
+            if (user1 != null) {
+                setAddress({ text: user1.position.split(";")[0], lat: user1.position.split(";")[1], lng: user1.position.split(";")[2], invalid: false });
+                //console.log(user);
+            } else {
+                // Handle the case when the dish with dishId is not found
+                console.log('User not found');
+            }
+        } catch (err) {
+            // show error message
+            console.log(err);
+        }
+    };
+    if (username) {
+        getUser(username);
+    }
+  }, [username]);
+
   return (
     <UserContext.Provider value={user}>
       <ErrorContext.Provider value={handleError}>
@@ -160,18 +191,18 @@ function App() {
             : ''}
           {/*<Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')} >{errorMessage}</Alert>*/}
           <Routes>
-            <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
+            <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} search={search} setSearch={setSearch} setRestaurantAllergens={setRestaurantAllergens} setMenuType={setMenuType} />} />     {/* FATTA*/}
             <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus} categoriesOptions={categoriesOptions} setCategoriesOptions={setCategoriesOptions} allergensOptions={allergensOptions} setAllergensOptions={setAllergensOptions}/>} />{/* DAVE [o chi finisce prima] */}
-            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} />} />{/* DAVE*/}
-            <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
+            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} setProgress={setProgress} />} />{/* DAVE*/}
+            <Route path='/restaurants/:id/details' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
+            <Route path='/restaurants/:id/menu' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/reviews' element={<Restaurant />} />{/* TANUCC*/}
+            <Route path='/restaurants/:id/reviews' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
-            <Route path='/addInfo' element={<RestaurantForm />} />  {/* DOME*/}
-            <Route path='/editInfo/:id' element={<RestaurantForm />} />{/* DOME*/}
+            <Route path='/addInfo' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />  {/* DOME*/}
+            <Route path='/editInfo/:id' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />{/* DOME*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>
