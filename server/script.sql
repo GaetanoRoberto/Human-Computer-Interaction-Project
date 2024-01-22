@@ -84,9 +84,9 @@ INSERT INTO "restaurants" VALUES (9,0, 'IP_ADDRESS_AND_PORT/restaurants/lapiadin
 
 
 INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
-INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
-INSERT INTO "dishes" VALUES (3,2, 'Pepperoni Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
-INSERT INTO "dishes" VALUES (4,2, 'Vegetarian Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
+INSERT INTO "dishes" VALUES (2,1, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
+INSERT INTO "dishes" VALUES (3,2, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
+INSERT INTO "dishes" VALUES (4,2, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
 INSERT INTO "dishes" VALUES (5,3, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (6,3, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
 INSERT INTO "dishes" VALUES (7,1, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
@@ -105,9 +105,9 @@ INSERT INTO "dishes" VALUES (19,2, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT
 INSERT INTO "dishes" VALUES (20,3, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 INSERT INTO "dishes" VALUES (21,2, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
 INSERT INTO "dishes" VALUES (22,4, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
-INSERT INTO "dishes" VALUES (23,4, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
-INSERT INTO "dishes" VALUES (24,5, 'Pepperoni Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
-INSERT INTO "dishes" VALUES (25,5, 'Vegetarian Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
+INSERT INTO "dishes" VALUES (23,4, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
+INSERT INTO "dishes" VALUES (24,5, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
+INSERT INTO "dishes" VALUES (25,5, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
 INSERT INTO "dishes" VALUES (26,4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (27,5, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
 INSERT INTO "dishes" VALUES (28,4, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
@@ -165,8 +165,7 @@ INSERT INTO "dishes" VALUES (74,9, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_POR
 -- INSERT INTO "dishes" VALUES (77,8, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
 -- INSERT INTO "dishes" VALUES (78,9, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
 
-
-INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'http://www.barilla.com');
+INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'https://www.barilla.com');
 INSERT INTO "ingredients" VALUES (2,1, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (3,1, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (4,1, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'http://www.volpetti.com');
@@ -276,7 +275,7 @@ INSERT INTO "ingredients" VALUES (106, 32, 'IP_ADDRESS_AND_PORT/ingredients/mush
 INSERT INTO "ingredients" VALUES (107,32, 'IP_ADDRESS_AND_PORT/ingredients/bakedham.jpg','Baked ham', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (108, 33, 'IP_ADDRESS_AND_PORT/ingredients/buns.jpg', 'Buns', 'gluten', 'Mulino Bianco', 'http://www.mulinobianco.it');
 INSERT INTO "ingredients" VALUES (109, 33, 'IP_ADDRESS_AND_PORT/ingredients/beef.jpg', 'Ground Beef', NULL, 'GrassFed', 'http://www.grassfed.com');
-INSERT INTO "ingredients" VALUES (110, 33, 'IP_ADDRESS_AND_PORT/ingredients/cheddar_no_lactose.jpg.jpg', 'Lactose Free Cheddar', NULL, 'Paradise Island', 'https://paradise-foods.com');
+INSERT INTO "ingredients" VALUES (110, 33, 'IP_ADDRESS_AND_PORT/ingredients/cheddar_no_lactose.jpg', 'Lactose Free Cheddar', NULL, 'Paradise Island', 'https://paradise-foods.com');
 INSERT INTO "ingredients" VALUES (111, 33, 'IP_ADDRESS_AND_PORT/ingredients/onions.jpg', 'Onions', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (112, 33, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Tomatoes', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (113, 33, 'IP_ADDRESS_AND_PORT/ingredients/pickles.jpg', 'Pickles', NULL, 'Local Farm', NULL);
@@ -333,18 +332,22 @@ INSERT INTO "ingredients" VALUES (162, 58, 'IP_ADDRESS_AND_PORT/ingredients/turk
 INSERT INTO "ingredients" VALUES (163, 58, 'IP_ADDRESS_AND_PORT/ingredients/radish.jpg', 'Radish', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (164, 58, 'IP_ADDRESS_AND_PORT/ingredients/maionese.jpg', 'Mayonnaise', NULL, 'Kraft', 'http://www.kraft.com');
 
+INSERT INTO "ingredients" VALUES (165, 65, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (169, 65, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella_nolactose.jpg', 'Lactose Free Mozzarella Cheese', NULL, 'Galbani', 'http://www.galbani.com');
 INSERT INTO "ingredients" VALUES (170, 65, 'IP_ADDRESS_AND_PORT/ingredients/chicken.jpg', 'Chicken', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (171, 65, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (172, 65, 'IP_ADDRESS_AND_PORT/ingredients/paprica.jpg', 'Paprika', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (166, 66, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (173, 66, 'IP_ADDRESS_AND_PORT/ingredients/maionese.jpg', 'Mayonnaise', NULL, 'Kraft', 'http://www.kraft.com');
 INSERT INTO "ingredients" VALUES (174, 66, 'IP_ADDRESS_AND_PORT/ingredients/avocado.jpg', 'Avocado', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (175, 66, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (176, 66, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Nickel Free Tomatoes', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (167, 67, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (177, 67, 'IP_ADDRESS_AND_PORT/ingredients/maionese.jpg', 'Mayonnaise', NULL, 'Kraft', 'http://www.kraft.com');
 INSERT INTO "ingredients" VALUES (178, 67, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (179, 67, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Nickel Free Tomatoes', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (180, 67, 'IP_ADDRESS_AND_PORT/ingredients/potatoes.jpg', 'Potatoes', NULL, 'McCain', 'http://www.mccain.com');
+INSERT INTO "ingredients" VALUES (168, 68, 'IP_ADDRESS_AND_PORT/ingredients/flatbread.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (181, 68, 'IP_ADDRESS_AND_PORT/ingredients/parmesan_cheese.png', 'Parmesan Cheese', 'lactose', 'Kraft', 'http://www.kraft.com');
 INSERT INTO "ingredients" VALUES (182, 68, 'IP_ADDRESS_AND_PORT/ingredients/lettuce.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (183, 68, 'IP_ADDRESS_AND_PORT/ingredients/chicken.jpg', 'Chicken', NULL, 'Local Breeding', NULL);
