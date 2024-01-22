@@ -125,7 +125,7 @@ const FilterPage = (props) => {
             allergens: [], // Array to hold added ingredients
             openNow: false,
             nearby: false,
-            label: "NOTHING",
+            label: "Nothing",
             order: "DESC"
         });
         //SE VOLESSI RIMUOVERE ANCHE I FILTRI GIà SELEZIONATI PRECEDENTEMENTE
@@ -323,7 +323,7 @@ const FilterPage = (props) => {
 
         setTempFilters((prevFilter) => ({
             ...prevFilter,
-            label:field.toUpperCase()
+            label:capitalizeFirstLetter(field)
         }));
         //console.log(filtersToApply);
 
@@ -340,7 +340,7 @@ const FilterPage = (props) => {
             <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '10%' }}>
                 <Row>
                     <Col>
-                        <h2 style={{ marginTop: "3%" }}>Filter by:</h2>
+                        <h2 style={{ marginTop: "3%", fontWeight: "bold"}}>Filter by:</h2>
                         <ToggleButton
                             id="toggle-check1"
                             type="checkbox"
@@ -477,7 +477,7 @@ const FilterPage = (props) => {
                                     </Form.Group>}
                                 </Col>
                                 <Col xs={12} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
-                                    <Form.Label>Price Range: {tempFilters.priceRange[0] == 100 && tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>100€+</span> : tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1] - 10}€+</span> : <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1]}€</span>}</Form.Label>
+                                    <Form.Label>Price Range: </Form.Label><>{tempFilters.priceRange[0] == 100 && tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>100€+</span> : tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1] - 10}€+</span> : <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1]}€</span>}</>
                                     <div style={{ margin: '1em' }}>
                                         <Range
                                             step={10}
@@ -549,18 +549,18 @@ const FilterPage = (props) => {
                             <Row>
                                 <Form.Label>Sort By:</Form.Label>
         <Col xs={8} >
-          <DropdownButton id="dropdown" title={"SORT BY: " + tempFilters.label} variant="light" >
-            <Dropdown.Item onClick={() => sortByField("nothing")}>NOTHING</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("review price")}>REVIEW PRICE</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("review quality")}>REVIEW QUALITY</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("review safety")}>REVIEW SAFETY</Dropdown.Item>
+          <DropdownButton id="dropdown" title={tempFilters.label} variant="light" >
+            <Dropdown.Item onClick={() => sortByField("Nothing")}>Nothing</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("Reviews' average price")}>Reviews' average price</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("Reviews' average quality")}>Reviews' average quality</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("Reviews' average safety")}>Reviews' average safety</Dropdown.Item>
           </DropdownButton>
         </Col>
         <Col onClick={toggleOrder} >
-          {tempFilters.order === 'ASC' && tempFilters.label != 'NOTHING' ? (
-            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
-          ) : tempFilters.label == 'NOTHING' ? "" : (
-            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order.toUpperCase()}</span></>
+          {tempFilters.order === 'ASC' && tempFilters.label != 'Nothing' ? (
+            <><i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order}</span></>
+          ) : tempFilters.label == 'Nothing' ? "" : (
+            <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order}</span></>
           )}
         </Col>
                             </Row>
@@ -583,8 +583,8 @@ const FilterPage = (props) => {
                                     (tempFilters.allergens.length === 0) && // Added check for allergens
                                     (tempFilters.openNow === false) &&
                                     (tempFilters.nearby === false) &&
-                                    (tempFilters.label === "NOTHING") &&
-                                    (tempFilters.order === "DESC")
+                                    (tempFilters.label === "Nothing") &&
+                                    (tempFilters.order === "DESC" || tempFilters.order === "ASC")
                                 }    
                                 variant="danger" onClick = {() => handleRemoveFilters()}>
                                     Remove filters
