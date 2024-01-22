@@ -87,7 +87,7 @@ INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_P
 INSERT INTO "dishes" VALUES (2,1, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
 INSERT INTO "dishes" VALUES (3,2, 'Pepperoni Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
 INSERT INTO "dishes" VALUES (4,2, 'Vegetarian Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
-INSERT INTO "dishes" VALUES (5,3, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (5,3, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (6,3, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
 INSERT INTO "dishes" VALUES (7,1, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
 INSERT INTO "dishes" VALUES (8,2, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
@@ -98,7 +98,7 @@ INSERT INTO "dishes" VALUES (12,6, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRE
 INSERT INTO "dishes" VALUES (13,2, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" VALUES (14,2, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (15,1, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
-INSERT INTO "dishes" VALUES (16,2, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (16,2, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (17,3, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
 INSERT INTO "dishes" VALUES (18,1, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (19,2, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
@@ -108,7 +108,7 @@ INSERT INTO "dishes" VALUES (22,4, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_
 INSERT INTO "dishes" VALUES (23,4, 'Margherita Pizza', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
 INSERT INTO "dishes" VALUES (24,5, 'Pepperoni Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
 INSERT INTO "dishes" VALUES (25,5, 'Vegetarian Pizza', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
-INSERT INTO "dishes" VALUES (26,4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (26,4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (27,5, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
 INSERT INTO "dishes" VALUES (28,4, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
 INSERT INTO "dishes" VALUES (29,5, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
@@ -119,20 +119,20 @@ INSERT INTO "dishes" VALUES (33,8, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRE
 INSERT INTO "dishes" VALUES (34,5, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" VALUES (35,3, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" VALUES (36,4, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
-INSERT INTO "dishes" VALUES (37,5, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (37,5, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (38,6, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
 INSERT INTO "dishes" VALUES (39,4, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (40,5, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
 INSERT INTO "dishes" VALUES (41,6, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 INSERT INTO "dishes" VALUES (42,5, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
 INSERT INTO "dishes" VALUES (43,7, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
-INSERT INTO "dishes" VALUES (44,7, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (44,7, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (45,7, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
 INSERT INTO "dishes" VALUES (46,7, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
 INSERT INTO "dishes" VALUES (47,7, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
 INSERT INTO "dishes" VALUES (48,7, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
 INSERT INTO "dishes" VALUES (49,7, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
-INSERT INTO "dishes" VALUES (50,7, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (50,7, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (51,7, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
 INSERT INTO "dishes" VALUES (52,7, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (53,7, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
@@ -143,7 +143,7 @@ INSERT INTO "dishes" VALUES (56,8, 'Little Italy', 13.00, 'kebab', 'IP_ADDRESS_A
 INSERT INTO "dishes" VALUES (57,8, 'Chicken Classic', 14.00, 'kebab', 'IP_ADDRESS_AND_PORT/dishes/chickenclassic.jpg');
 INSERT INTO "dishes" VALUES (58,8, 'Kebby King', 15.00, 'kebab', 'IP_ADDRESS_AND_PORT/dishes/kebbyking.jpg');
 INSERT INTO "dishes" VALUES (59,8, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
-INSERT INTO "dishes" VALUES (60,8, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (60,8, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (61,8, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
 INSERT INTO "dishes" VALUES (62,8, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (63,8, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');
@@ -154,7 +154,7 @@ INSERT INTO "dishes" VALUES (66,9, "L'avopollo", 13.00, 'piadina', 'IP_ADDRESS_A
 INSERT INTO "dishes" VALUES (67,9, 'Il patapollo', 13.00, 'piadina', 'IP_ADDRESS_AND_PORT/dishes/patapollo.jpg');
 INSERT INTO "dishes" VALUES (68,9, 'Il parmipollo', 13.00, 'piadina', 'IP_ADDRESS_AND_PORT/dishes/parmipollo.jpg');
 INSERT INTO "dishes" VALUES (69,9, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
-INSERT INTO "dishes" VALUES (70,9, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder.png');
+INSERT INTO "dishes" VALUES (70,9, 'Sparkling Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (71,9, 'Coca cola', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacola.jpeg');
 INSERT INTO "dishes" VALUES (72,9, 'Coca cola zero', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/cocacolazero.jpg');
 INSERT INTO "dishes" VALUES (73,9, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta.jpg');

@@ -399,7 +399,7 @@ const FilterPage = (props) => {
                                             <Col>
                                                 <Select
                                                     closeMenuOnSelect={false}
-                                                    placeholder="Choose Category"
+                                                    placeholder="Choose Allergens"
                                                     components={animatedComponents}
                                                     isMulti
                                                     isSearchable={true}

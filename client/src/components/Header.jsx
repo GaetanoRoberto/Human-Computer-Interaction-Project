@@ -15,6 +15,7 @@ function Header(props) {
   const detailsMenuReviews = location.pathname.endsWith('/details') || location.pathname.endsWith('/menu') || location.pathname.endsWith('/reviews')
   const afterSettings = location.pathname.startsWith('/addInfo') || location.pathname.startsWith('/editInfo');
   const formPages = location.pathname.includes("add") || location.pathname.includes("edit");
+  const dishView = location.pathname.includes("menu/dish");
   //console.log(formPages)
   //console.log("header", detailsMenuReviews, afterSettings, location.pathname)
 
@@ -63,7 +64,7 @@ function Header(props) {
 
         <Container fluid >
           {location.pathname != "/" ?
-            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={location.pathname === ("/settings") || detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : () => navigate(-1)} />
+            <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={location.pathname === ("/settings") || detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : (dishView && location.state && location.state.previousLocationPathname === '/') ? () => navigate(-1) : (dishView && !location.state) ? () => navigate(location.pathname.split("/dish")[0]) : () => navigate(-1)} />
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }

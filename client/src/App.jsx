@@ -45,6 +45,13 @@ function App() {
   const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
   // Restaurant Form State
   const [progress, setProgress] = useState(1);
+  // Home Search bar
+  const [search, setSearch] = useState("");
+  // Allergens state
+  const [restaurantAllergens, setRestaurantAllergens] = useState([]);
+  // Menu category state
+  const [menuType, setMenuType] = useState([]);
+
 
   // Define doLogIn function outside of useEffect
   const doLogIn = () => {
@@ -184,13 +191,13 @@ function App() {
             : ''}
           {/*<Alert style={{marginBottom:'0px'}} variant='danger' dismissible onClick={() => setErrorMessage('')} >{errorMessage}</Alert>*/}
           <Routes>
-            <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply}/>} />     {/* FATTA*/}
+            <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} search={search} setSearch={setSearch} setRestaurantAllergens={setRestaurantAllergens} setMenuType={setMenuType} />} />     {/* FATTA*/}
             <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus} categoriesOptions={categoriesOptions} setCategoriesOptions={setCategoriesOptions} allergensOptions={allergensOptions} setAllergensOptions={setAllergensOptions}/>} />{/* DAVE [o chi finisce prima] */}
             <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} setProgress={setProgress} />} />{/* DAVE*/}
-            <Route path='/restaurants/:id/details' element={<Restaurant />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/menu' element={<Restaurant />} />{/* QUEEN*/}
+            <Route path='/restaurants/:id/details' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
+            <Route path='/restaurants/:id/menu' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/reviews' element={<Restaurant />} />{/* TANUCC*/}
+            <Route path='/restaurants/:id/reviews' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
