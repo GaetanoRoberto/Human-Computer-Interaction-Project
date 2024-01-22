@@ -106,7 +106,7 @@ INSERT INTO "dishes" VALUES (20,3, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_POR
 INSERT INTO "dishes" VALUES (21,2, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
 INSERT INTO "dishes" VALUES (22,4, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara1.jpg');
 INSERT INTO "dishes" VALUES (23,4, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita1.jpg');
-INSERT INTO "dishes" VALUES (24,5, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza2.png');
+INSERT INTO "dishes" VALUES (24,5, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza1.png');
 INSERT INTO "dishes" VALUES (25,5, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana2.jpg');
 INSERT INTO "dishes" VALUES (26,4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
 INSERT INTO "dishes" VALUES (27,5, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla1.jpg');
