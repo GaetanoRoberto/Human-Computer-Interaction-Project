@@ -34,7 +34,7 @@ const FilterPage = (props) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
         } else {
-            console.log("Geolocation not supported");
+            //console.log("Geolocation not supported");
             setIsLoadingLocation(false);
         }
     }
@@ -60,14 +60,14 @@ const FilterPage = (props) => {
                         isRestaurateur: props.selectedStatus == "User" ? 0 : 1,
                         username: props.selectedStatus == "User" ? "User" : "Restaurateur",
                     };
-                    console.log(updatedUser);
+                    //console.log(updatedUser);
 
                     // Now call the updateUser API with the updated user information
                     try {
                         await API.updateUser(updatedUser); // Assuming updateUser returns a promise
                         resolve(updatedUser); // Resolve with undefined for a valid address
                     } catch (error) {
-                        console.error("Failed to update user:", error);
+                        //console.error("Failed to update user:", error);
                         reject(error); // Reject with the error
                     }
                 } else {
@@ -151,7 +151,7 @@ const FilterPage = (props) => {
         //             order: "DESC"
         //         });
         // }
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
     };
 
     const capitalizeFirstLetter = (string) => {
@@ -177,7 +177,7 @@ const FilterPage = (props) => {
         async function getCategoriesAndAllergenes() {
             try {
                 const categoriesAndAllergenes = await API.getFilteringInfos();
-                console.log(categoriesAndAllergenes);
+                //console.log(categoriesAndAllergenes);
                 if (categoriesAndAllergenes != null) {
                     // Example of how to use this function when setting the state
                     props.setCategoriesOptions(mapToCategoriesOptions(categoriesAndAllergenes.categories));
@@ -215,7 +215,7 @@ const FilterPage = (props) => {
             ...prevFilter,
             categories: selectedOptions.map((option) => option.value),
         }));
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
     };
 
     const handleIngredientChange = (selectedOptions) => {
@@ -314,7 +314,7 @@ const FilterPage = (props) => {
     
         // If all conditions are met and no errors are present
         setFiltersToApply(tempFilters);
-        console.log("Filters applied:", tempFilters);
+        //console.log("Filters applied:", tempFilters);
         navigate(`/`); // Navigate to the new page after setting filters
     };
 
@@ -324,7 +324,7 @@ const FilterPage = (props) => {
             ...prevFilter,
             label:field.toUpperCase()
         }));
-        console.log(filtersToApply);
+        //console.log(filtersToApply);
 
       };
     
@@ -336,7 +336,7 @@ const FilterPage = (props) => {
       };
     return (
         <>
-            <Container fluid style={{ height: '72vh', overflowY: 'auto', marginBottom: '10%' }}>
+            <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '10%' }}>
                 <Row>
                     <Col>
                         <h2 style={{ marginTop: "3%" }}>Filter by:</h2>

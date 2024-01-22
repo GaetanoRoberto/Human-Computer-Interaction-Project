@@ -280,7 +280,15 @@ app.get('/api/filterinfos/', async (req, res) => {
     // get categories
     const categories = await dishesDao.getCategories().catch(() => { throw { error: 'Database Error in Getting all the Available Categories' } });
     // get allergens
-    const allergens = await ingredientsDao.getAllergens().catch(() => { throw { error: 'Database Error in Getting all the Available Allergens' } });
+    let allergens = await ingredientsDao.getAllergens().catch(() => { throw { error: 'Database Error in Getting all the Available Allergens' } });
+    allergens = allergens.flatMap((allergen) => {
+      if (allergen.includes(',')) {
+        return allergen.split(',').map(item => item.trim());
+      }
+      return allergen;
+    });
+    // remove duplicates
+    allergens = [...new Set(allergens)];
     // assign them to the struct
     return_struct.categories = categories;
     return_struct.allergens = allergens;

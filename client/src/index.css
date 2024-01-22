@@ -195,12 +195,12 @@
   --bs-accordion-btn-padding-y: 0.5rem;
   --bs-accordion-body-padding-y: 0.5rem;
 }
-.list-group {
+.homeList {
   --bs-list-group-border-color: #0A3622;
   --bs-list-group-item-padding-x: 0;
   --bs-list-group-item-padding-y: 0;
 }
-.list-group-item {
+.homeListItem {
   background-color: #D1E7DD;
   border: none;
 }
