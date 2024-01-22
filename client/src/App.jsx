@@ -38,7 +38,7 @@ function App() {
     allergens: [], // Array to hold added ingredients
     openNow: false,
     nearby: false,
-    label: "NOTHING",
+    label: "Nothing",
     order: "DESC"
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);

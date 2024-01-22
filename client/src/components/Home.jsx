@@ -158,7 +158,7 @@ function Filters(props) {
                         updatedFilters.nearby = false; // Reset or update as needed
                         break;
                     case 'label':
-                        updatedFilters.label = 'NOTHING'; // Reset or update as needed
+                        updatedFilters.label = 'Nothing'; // Reset or update as needed
                         break;
                     case 'order':
                         updatedFilters.order = ''; // Reset or update as needed
@@ -502,8 +502,8 @@ function Home(props) {
         if (props.filtersToApply.nearby) {
             filter.push({ nearby: "Nearby" });
         }
-        if (props.filtersToApply.label != "NOTHING" && props.filtersToApply.order != '') {
-            filter.push({ label: "SORTED BY " + props.filtersToApply.order + " " + props.filtersToApply.label });
+        if (props.filtersToApply.label != "Nothing" && props.filtersToApply.order != '') {
+            filter.push({ label: "Sorted by " + props.filtersToApply.order + " " + props.filtersToApply.label });
         }
 
         return filter;
@@ -666,8 +666,8 @@ function Home(props) {
         // }
 
         //BAD CODING BY TANUCC
-        if (props.filtersToApply.label != 'NOTHING') {
-            const field = props.filtersToApply.label === "REVIEW QUALITY" ? "avg_quality" : props.filtersToApply.label === "REVIEW PRICE" ? "avg_price" : "avg_safety";
+        if (props.filtersToApply.label != 'Nothing') {
+            const field = props.filtersToApply.label === "Reviews' average quality" ? "avg_quality" : props.filtersToApply.label === "Reviews' average price" ? "avg_price" : "avg_safety";
             const order = props.filtersToApply.order;
             //SORT BY TANUCC
             const sortedList = order === 'ASC' ?

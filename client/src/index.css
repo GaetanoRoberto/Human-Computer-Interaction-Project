@@ -160,9 +160,9 @@
   padding-bottom: 0px;
 }
 
-.dropdown-toggle::after {
+/* .dropdown-toggle::after {
   margin-bottom: 3px;
-}
+} */
 
 #formBasicQualityRating {
    color: hsl(0, 0%, 50%);
@@ -173,11 +173,11 @@
 }
 
 .dropdown button::after {
-  margin-bottom: 0;
+  margin-bottom: -2px;
 }
 
 .headerDropdown button::after {
-  margin-bottom: 15%; /* Adjust this value based on your design */
+  margin-bottom: 8%; /* Adjust this value based on your design */
 }
 
 /* Home Accordion */
@@ -203,4 +203,9 @@
 .homeListItem {
   background-color: #D1E7DD;
   border: none;
+}
+
+.form-label {
+  font-size: large;
+  font-weight: bold;
 }
