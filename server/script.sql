@@ -83,7 +83,7 @@ INSERT INTO "restaurants" VALUES (9,0, 'IP_ADDRESS_AND_PORT/restaurants/lapiadin
 -- INSERT INTO "restaurants" VALUES (18,0, 'IP_ADDRESS_AND_PORT/restaurants/miscusi.jpg', 'Posto GlutenFree', "Via Principi d'Acaja, 32, 10138 Torino TO;lat:45.0739081;lng:7.6625995", '+393386292876', 'https://www.miscusi.com/', 'https://www.facebook.com/miscusi.official', 'https://www.instagram.com/miscusi.family/', NULL, 'Sun=12:00-15:00;19:00-22:00', 'Miscusi exists to make people happy by spreading a Mediterranean lifestyle. In 2017, the first restaurant launched in Milan and in just five years, the brand expanded to 12 restaurants across six Italian cities and 2 restaurants in London. Miscusi obtained B-Corp certification in the summer of 2021, thus becoming part of a movement of companies with a common goal, to be protagonists of global change and regenerate society through business, by creating a positive social and environmental impact.');
 
 
-INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara0.jpg');
+INSERT INTO "dishes" VALUES (1,1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
 INSERT INTO "dishes" VALUES (2,1, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
 INSERT INTO "dishes" VALUES (3,2, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
 INSERT INTO "dishes" VALUES (4,2, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
