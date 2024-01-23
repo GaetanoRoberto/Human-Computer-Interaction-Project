@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ListGroup, Card, Col, Row, Button, FormControl } from 'react-bootstrap';
 import { UserContext } from './userContext';
@@ -174,16 +174,30 @@ function ReviewsList({ reviews, divHeight }) {
   const navigate = useNavigate();
   const reviewsHeight = (divHeight === 166 ? window.innerHeight - 350 : divHeight === 195 ? window.innerHeight - 380 : divHeight === 175 ? window.innerHeight - 360 : window.innerHeight - 330);
   const { id } = useParams();
+  const reviewsRef = useRef();
   //const [list, setList] = useState(reviews);
   const user = useContext(UserContext);
   const [filteredReviews, setFilteredReviews] = useState(reviews);
   const [search, setSearch] = useState("")
 
 
+  useEffect(() => {
+    if (reviewsRef.current) {
+      setTimeout(() => {
+        reviewsRef.current.scrollTop = localStorage.getItem('scrollPositionReviews') || 0;
+      }, 1);
+    }
+  }, []);
+
+  const handleScrollReviews = () => {
+    localStorage.setItem('scrollPositionReviews', reviewsRef.current.scrollTop);
+  };
+
+
   return (
     <>
       <SearchReview filteredReviews={filteredReviews} reviews={reviews} search={search} setSearch={setSearch} setFilteredReviews={setFilteredReviews} />
-      <ListGroup className="scroll" style={{ overflowY: "auto", maxHeight: reviewsHeight }}>
+      <ListGroup onScroll={handleScrollReviews} ref={reviewsRef} style={{ overflowY: "scroll", maxHeight: reviewsHeight }}>
         {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
           //   list.map((item) => {
           reviews.length === 0 ?

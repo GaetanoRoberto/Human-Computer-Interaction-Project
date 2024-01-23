@@ -391,12 +391,14 @@ const Menu = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const animatedComponents = makeAnimated();
+    const dishesRef = useRef();
+    const menuTypeRef = useRef();
 
     const allDishTypes = [...new Set(restaurant.dishes.map(dish => dish.type))];
     const keyType = 'selectedDishType';
     // Load the selected type from localStorage or use the first type
     const initialType = (location.state && location.state.previousLocationPathname === '/') ? allDishTypes[0] : (localStorage.getItem(keyType) || allDishTypes[0]);
-    const [type, setType] = useState(menuType.length !== 0 ? menuType[0] : initialType);
+    const [type, setType] = useState((menuType.length !== 0 && location.state && location.state.previousLocationPathname === '/') ? menuType[0] : initialType);
     const allAllergens = [...new Set(restaurant.dishes.flatMap(dish => dish.ingredients.map(ingredient => ingredient.allergens)).filter(allergen => allergen !== null))];
     const optionsAllergens = allAllergens.map(allergen => ({ label: 'No ' + allergen, value: allergen }));
     const [selectedAllergens, setSelectedAllergens] = useState(restaurantAllergens.length !== 0 ? restaurantAllergens : []);
@@ -407,10 +409,33 @@ const Menu = (props) => {
     useEffect(() => {
         if (location.state && location.state.previousLocationPathname === '/') {
             localStorage.setItem('selectedSearch', "");
-            localStorage.setItem(keyType, allDishTypes[0]);
+            if (menuType.length !== 0)
+                localStorage.setItem(keyType, menuType[0]);
+            else
+                localStorage.setItem(keyType, allDishTypes[0]);
         }
+        if (dishesRef.current) {
+            if (location.state && location.state.previousLocationPathname === '/')
+                dishesRef.current.scrollTop = 0;
+            else
+                dishesRef.current.scrollTop = localStorage.getItem('scrollPositionDishes') || 0;
+        }
+        if (menuTypeRef.current) {
+            if (location.state && location.state.previousLocationPathname === '/')
+                menuTypeRef.current.scrollLeft = 0;
+            else
+                menuTypeRef.current.scrollLeft = localStorage.getItem('scrollPositionMenuType') || 0;
+        }
+
     }, [location.state]);
 
+    const handleScrollMenuType = () => {
+        localStorage.setItem('scrollPositionMenuType', menuTypeRef.current.scrollLeft);
+    };
+
+    const handleScrollDishes = () => {
+        localStorage.setItem('scrollPositionDishes', dishesRef.current.scrollTop);
+    };
 
     const handleSearch = (ev) => {
         setSearch(ev.target.value);
@@ -495,7 +520,7 @@ const Menu = (props) => {
             </Row>
 
             {/*Menu categories*/}
-            <Col className="scroll" style={{ display: "flex", overflowX: "scroll" }}>
+            <Col onScroll={handleScrollMenuType} ref={menuTypeRef} className="scroll" style={{ display: "flex", overflowX: "scroll" }}>
                 {allDishTypes.map((currentType, index) => (
                     <Button key={index} active={currentType === type} size="lg" style={{ margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#52b69a" : "#fff", borderColor: "#52b69a", color: currentType === type ? "#fff" : "#52b69a", border: 0 }}
                         onClick={() => {
@@ -510,7 +535,7 @@ const Menu = (props) => {
             <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
 
             {/*Menu dishes*/}
-            <ListGroup className="scroll" style={{ overflowY: "scroll", maxHeight: menuHeight }}>
+            <ListGroup onScroll={handleScrollDishes} ref={dishesRef} className="scroll" style={{ overflowY: "scroll", maxHeight: menuHeight }}>
                 {filteredDishes.filter((dish) => dish.type === type).length === 0 ?
                     <>
                         {search.trim() === '' ?
