@@ -631,7 +631,7 @@ app.delete('/api/restaurants/:id', async (req, res) => {
     }));
     // iterate through the server images of dishes
     await Promise.all(dishes_images.map(async (dish) => {
-      // if is not present in the body arrays and not placeholder delete it, otherwise it's still needed
+      // if is not placeholder delete it, otherwise it's still needed
       if (dish.image !== PLACEHOLDER) {
         const image_to_delete = getServerPath(dish.image, DISH_PATH);
         await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Dish Image from the Server' } });
@@ -639,7 +639,7 @@ app.delete('/api/restaurants/:id', async (req, res) => {
     }));
     // iterate through the server images of ingredients
     await Promise.all(ingredients_images.map(async (ingredient_image) => {
-      // if is not present in the body arrays and not placeholder delete it, otherwise it's still needed
+      // if is not placeholder delete it, otherwise it's still needed
       if (ingredient_image !== PLACEHOLDER) {
         const image_to_delete = getServerPath(ingredient_image, INGREDIENT_PATH);
         await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Ingredient Image from the Server' } });
