@@ -156,9 +156,9 @@ const RestaurantManagement = (props) => {  {/*ME LO PASSA GAETANO*/}
           <Col className="mb-2" style={{marginTop: 35}}>
             <Row as="h2" style={{marginBottom: 14, borderBottom: '1px solid lightgray'}}>Your Restaurant</Row>
             <Row className="text-secondary">
-            {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant</Row> : <BannerProfile restaurant={restaurant}/>}
+            {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant.</Row> : <BannerProfile restaurant={restaurant}/>}
             {(restaurant == null) ? 
-            <Button variant="primary" onClick={() => {navigate(`/addInfo`); setProgress(1);}} style={{marginTop: 20}}>Create a restaurant page</Button>
+            <Button variant="primary" onClick={() => {navigate(`/addInfo`); setProgress(1);}} style={{marginTop: 20}}>Create a Restaurant Page</Button>
             : 
             <>
                 <Button variant="primary" style={{marginTop: "20px", marginBottom: "20px"}} onClick={() => {navigate(`/editInfo/${restaurant.id}/`); setProgress(1);}}>Edit your Restaurant Information</Button>
