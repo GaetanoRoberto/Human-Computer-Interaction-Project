@@ -737,6 +737,7 @@ function InnerForm(props) {
         case 2:
             componentToRender = (
                 <Container fluid>
+                    <div style={{marginTop: '2%'}}><strong style={{fontSize: 'large'}}>Your Temporary Timetable:</strong></div>
                     <Container>
                         <p style={(errorMsg !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{errorMsg}</p>
                         <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Mon', clicked: true}) }}>Mon</span>

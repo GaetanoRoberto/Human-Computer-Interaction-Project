@@ -612,10 +612,46 @@ app.post('/api/restaurants/:id',
 
 // DELETE /api/restaurants/:id
 // This route is used to delete a restaurant with all the infos (restaurant,dishes,ingredients) as atomic operation
-app.delete('/api/restaurants/:id', (req, res) => {
-  restaurantsDao.deleteRestaurant(req.params.id)
-    .then(msg => res.json(msg))
-    .catch(() => res.status(503).json({ error: 'Database Error in Deleting the Restaurant' }));
+app.delete('/api/restaurants/:id', async (req, res) => {
+  try {
+    // Delete all Related Images
+    // Restaurant Image
+    const restaurant_path = await restaurantsDao.getRestaurantImage(req.params.id).catch(() => { throw { error: 'Error in Getting the Restaurant image from The Server' } });
+    const restaurant_image_path = getServerPath(restaurant_path.image, RESTAURANT_PATH);
+    // delete only if not placeholder
+    if (restaurant_path.image !== PLACEHOLDER) {
+      await fs.unlink(restaurant_image_path).catch(() => { throw { error: 'Error in deleting the Restaurant Image from the Server' } });
+    }
+    // Dishes and Ingredients Images
+    const dishes_images = await dishesDao.getAllDishesImages(req.params.id).catch(() => { throw { error: 'Database Error in Getting all The Dishes Images' } });
+    const ingredients_images = [];
+    await Promise.all(dishes_images.map(async (dish) => {
+      const vett = await ingredientsDao.getAllIngredientsImages(dish.id).catch(() => { throw { error: 'Database Error in Getting all The Ingredients Images' } });
+      ingredients_images.push(...vett);
+    }));
+    // iterate through the server images of dishes
+    await Promise.all(dishes_images.map(async (dish) => {
+      // if is not placeholder delete it, otherwise it's still needed
+      if (dish.image !== PLACEHOLDER) {
+        const image_to_delete = getServerPath(dish.image, DISH_PATH);
+        await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Dish Image from the Server' } });
+      }
+    }));
+    // iterate through the server images of ingredients
+    await Promise.all(ingredients_images.map(async (ingredient_image) => {
+      // if is not placeholder delete it, otherwise it's still needed
+      if (ingredient_image !== PLACEHOLDER) {
+        const image_to_delete = getServerPath(ingredient_image, INGREDIENT_PATH);
+        await fs.unlink(image_to_delete).catch(() => { throw { error: 'Error in deleting the Ingredient Image from the Server' } });
+      }
+    }));
+
+    // Now Delete all from the Db (ON CASCADE)
+    const msg = await restaurantsDao.deleteRestaurant(req.params.id).catch(() => res.status(503).json({ error: 'Database Error in Deleting the Restaurant' }));
+    res.json(msg);
+  } catch (error) {
+    res.status(503).json({ error: error.error })
+  }
 });
 
 // GET /api/reviews/:username
