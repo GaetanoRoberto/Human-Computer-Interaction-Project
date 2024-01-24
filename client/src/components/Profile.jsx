@@ -70,9 +70,14 @@ function MyLocation(props) {
   }
 
   function error(err) {
-    handleError("Unable to retrieve your location");
-    //console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
+    setIsLoadingLocation(true); // Assuming you want to show loading before the error
+
+    // Simulate 1 second loading before showing the error
+    setTimeout(() => {
+        setIsLoadingLocation(false);
+        handleError({ error: `Unable to retrieve your location` });
+    }, 1000); // 1000 milliseconds = 1 second
+  } 
 
   return (
     <div>

@@ -24,7 +24,7 @@ function PositionModal(props) {
             You have not specified your position yet. <br/>Do you want to use your GPS?
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="danger" onClick={handleClose}>
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={perform_action}>Ok</Button>

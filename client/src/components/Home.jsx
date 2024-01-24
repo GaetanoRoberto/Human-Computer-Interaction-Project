@@ -1,4 +1,4 @@
-import {useState, useEffect, useContext, useRef} from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { ErrorContext } from './userContext';
 import API from '../API';
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -54,7 +54,7 @@ function getHappinessColor(index) {
 }
 
 function SearchBar(props) {
-    const { search, setSearch, setIsSearchingDishes, setIsSearchingType, setRestaurantList, restaurantInitialList, filters } = props;
+    const { search, setSearch, setIsSearchingDishes, setIsSearchingType, setRestaurantList, restaurantInitialList } = props;
     const navigate = useNavigate();
     const [showInfo, setShowInfo] = useState(false);
 
@@ -63,7 +63,7 @@ function SearchBar(props) {
 
         const filteredRestaurants = restaurantInitialList.filter((restaurant) => {
             const restaurantNameMatch = restaurant.name.toLowerCase().includes(ev.target.value.trim().toLowerCase());
-            const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase()))));
+            const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()));
             const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase());
             return restaurantNameMatch || dishesMatch || typesMatch;
         });
@@ -207,53 +207,13 @@ function Filters(props) {
 function RestaurantsList(props) {
     const navigate = useNavigate();
     const location = useLocation();
-    const restaurantsRef = useRef();
-    const [expandedAccordions, setExpandedAccordions] = useState(() => {
-        const savedExpandedAccordions = localStorage.getItem('expandedAccordions');
-        try {
-            return savedExpandedAccordions ? JSON.parse(savedExpandedAccordions) : [];
-        } catch (error) {
-            console.error('Error parsing expandedAccordions from localStorage:', error);
-            return [];
-        }
-    });
     const { filterRestaurants, filters, search, isSearchingDishes, isSearchingType, filtersToApply, setFiltersToApply, setRestaurantAllergens, setMenuType } = props;
     // Used for scrollable restaurant list
     const listHeight = (filters.length === 0 ? (window.innerHeight - 140) : (window.innerHeight - 185));
 
-
-    useEffect(() => {
-        if (restaurantsRef.current) {
-            setTimeout(() => {
-                restaurantsRef.current.scrollTop = localStorage.getItem('scrollPositionRestaurants') || 0;
-            }, 100);
-        }
-    }, [location.state]);
-
-    useEffect(() => {
-        try {
-            localStorage.setItem('expandedAccordions', JSON.stringify(expandedAccordions));
-        } catch (error) {
-            console.error('Error stringifying expandedAccordions for localStorage:', error);
-        }
-    }, [expandedAccordions]);
-
-    const handleAccordionChange = (restaurantId) => {
-        setExpandedAccordions((prevExpandedAccordions) => {
-            const updatedAccordions = Array.isArray(prevExpandedAccordions) ? prevExpandedAccordions : [];
-            return updatedAccordions.includes(restaurantId)
-                ? updatedAccordions.filter((id) => id !== restaurantId)
-                : [...updatedAccordions, restaurantId];
-        });
-    };
-
-    const handleScrollRestaurants = () => {
-        localStorage.setItem('scrollPositionRestaurants', restaurantsRef.current.scrollTop);
-    };
-
     const handleClick = (dishes, id) => {
-        const isAllergenExcluded = allergen => filters.some(filter => filter.toLowerCase().startsWith('no') && filter.toLowerCase().includes(allergen.toLowerCase()));
-        const isTypeExcluded = type => filters.some(filter => filter.toLowerCase().includes(type.toLowerCase()));
+        const isAllergenExcluded = allergen => filters.some(filter => String(filter).toLowerCase().startsWith('no') && String(filter).toLowerCase().includes(allergen.toLowerCase()));
+        const isTypeExcluded = type => filters.some(filter => String(filter).toLowerCase().includes(type.toLowerCase()));
 
         let foundAllergens = [];
         let foundTypes = [];
@@ -282,15 +242,11 @@ function RestaurantsList(props) {
         return val
     };
     return (
-        <ListGroup onScroll={handleScrollRestaurants} ref={restaurantsRef} style={{overflowY: "scroll", overflowX: "hidden", maxHeight: listHeight}}>
+        <ListGroup className="scroll" style={{overflowY: "auto", overflowX: "hidden", maxHeight: listHeight}}>
             { filterRestaurants().length === 0 ?
                 <>
                     <div style={{ borderTop: "1px solid", margin: 0, color: "lightgray" }}></div>
-                    {search.trim() === '' ?
-                        <p style={{ marginTop: "1rem", textAlign: "center" }}> No results with the selected filters! </p>
-                        :
-                        <p style={{ marginTop: "1rem", textAlign: "center" }}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
-                    }
+                    <p style={{ marginTop: "1rem", textAlign: "center" }}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
                 </>
                 :
                 filterRestaurants().map((restaurant) => {
@@ -347,11 +303,11 @@ function RestaurantsList(props) {
                                 </Col>
                             </Row>
                         </Button>
-                        { isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))) &&
+                        { isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))) &&
                             <Alert variant={"success"} style={{padding: 5, marginBottom: 20}}>
                                 <ListGroup className='homeList'>
                                     { restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) &&
-                                        !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
+                                        !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
                                         return(
                                             <ListGroup.Item className='homeListItem' key={index}>
                                                 <Row>
@@ -380,8 +336,8 @@ function RestaurantsList(props) {
                             </Alert>
                         }
                         { isSearchingType && restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) &&
-                            <Accordion style={{ marginBottom: 20 }} activeKey={expandedAccordions} onSelect={(key) => handleAccordionChange(key)}>
-                                <Accordion.Item eventKey={restaurant.id.toString()}>
+                            <Accordion style={{marginBottom: 20}}>
+                                <Accordion.Item eventKey={"0"}>
                                     <Accordion.Header>
                                         <b style={{marginRight: 4}}>
                                             {restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.charAt(0).toUpperCase() + restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.slice(1)}
@@ -390,7 +346,7 @@ function RestaurantsList(props) {
                                     <Accordion.Body>
                                         <ListGroup className='homeList' style={{overflowY: "auto", overflowX: "hidden", maxHeight: 150}}>
                                             { restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase()) &&
-                                                !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
+                                                !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
                                                 return(
                                                     <ListGroup.Item className='homeListItem' key={index}>
                                                         <Row>
@@ -411,7 +367,7 @@ function RestaurantsList(props) {
                                                 )
                                             })}
                                             { restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase()) &&
-                                                !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))).length === 0 &&
+                                                !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).length === 0 &&
                                                 <h6>No dishes found with the selected allergens</h6>
                                             }
                                         </ListGroup>
@@ -452,9 +408,9 @@ function Home(props) {
                 props.setSearch(props.search);
                 const filteredRestaurants = restaurants.filter((restaurant) => {
                     const restaurantNameMatch = restaurant.name.toLowerCase().includes(props.search.trim().toLowerCase());
-                    const dishesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase()))));
+                    const dishesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()));
                     const typesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase());
-                    return restaurantNameMatch || dishesMatch || typesMatch ;
+                    return restaurantNameMatch || dishesMatch || typesMatch;
                 });
                 // If there are no matches for dishes, set isSearchingDishes to false
                 setIsSearchingDishes((props.search.trim().toLowerCase() !== '') && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()))));
@@ -600,6 +556,25 @@ function Home(props) {
         });
     };
 
+    const handleFilteringRestaurants = () => {
+        const filteredRestaurants = filterRestaurants();
+        setIsSearchingDishes(props.search.trim().toLowerCase() !== '' && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()))));
+        setIsSearchingType(props.search.trim().toLowerCase() !== '' && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase())));
+        setRestaurantList(filteredRestaurants);
+        if (props.search == "" && (props.filtersToApply.categories.length === 0) &&
+        (props.filtersToApply.priceRange[0] === 0 && props.filtersToApply.priceRange[1] === 110) &&
+        (props.filtersToApply.maxDistance === '') &&
+        (props.filtersToApply.qualityRating === '') &&
+        (props.filtersToApply.safetyRating === '') &&
+        (props.filtersToApply.allergens.length === 0) && // Added check for allergens
+        (props.filtersToApply.openNow === false) &&
+        (props.filtersToApply.nearby === false) &&
+        (props.filtersToApply.label === "Nothing") &&
+        (props.filtersToApply.order === "DESC")) {
+            setRestaurantList(restaurantInitialList);
+        } 
+    };
+
     /*
     * Function to filter the restaurants based on the selected filters for the home page
     */
@@ -646,9 +621,10 @@ function Home(props) {
                 // Existing logic: Check if every dish contains an allergen
                 const allDishesContainAllergen = restaurant.dishes.every(dish => {
                     // Skip checking allergens for dishes in the "drinks" category
-                    if (dish.type.toLowerCase() === "drinks") {
-                        return true;
-                    }
+                    
+                    // if (dish.type.toLowerCase() === "drinks") {
+                    //     return true;
+                    // }
 
                     // Check if the dish contains any of the specified allergens
                     if (props.filtersToApply.categories.length > 0) {
@@ -667,7 +643,8 @@ function Home(props) {
                 // Check for each category that there is at least one dish without the specified allergens
                 const allCategoriesSatisfied = props.filtersToApply.categories.every(category => {
                     return restaurant.dishes.some(dish => {
-                        if (dish.type.toLowerCase() !== "drinks" && dish.type.toLowerCase() === category.toLowerCase()) {
+                        if (//dish.type.toLowerCase() !== "drinks" && 
+                            dish.type.toLowerCase() === category.toLowerCase()) {
                             return !props.filtersToApply.allergens.some(filter_allergen =>
                                 dish.allergens.map(allergen => allergen.toLowerCase()).includes(filter_allergen.toLowerCase())
                             );
@@ -717,6 +694,19 @@ function Home(props) {
                 // Check if the restaurant is open
                 const isOpen = isRestaurantOpen(restaurant.hours, currentDayOfTheWeek, currentTime);
                 if (!isOpen) {
+                    passesAllFilters = false;
+                }
+            }
+
+            // Add Search Term Filter
+            if (props.search.trim().toLowerCase() !== '') {
+                const searchTerm = props.search.trim().toLowerCase();
+            
+                const searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
+                                    restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm)) ||
+                                    restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm);
+            
+                if (!searchMatch) {
                     passesAllFilters = false;
                 }
             }
@@ -781,7 +771,7 @@ function Home(props) {
                 .filter(restaurant => restaurant.distance <= nearby)
                 .sort((a, b) => a.distance - b.distance);
 
-                //console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
+            //console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
         }
 
         // Log the sorted restaurants
@@ -790,10 +780,23 @@ function Home(props) {
         return filteredRestaurants;
     }
 
+    useEffect(() => {
+        // ... (existing logic)
+        handleFilteringRestaurants();
+    }, [props.search, props.filtersToApply, props.filtersToApply.categories.length,
+        props.filtersToApply.priceRange[0], props.filtersToApply.priceRange[1],
+        props.filtersToApply.maxDistance,
+        props.filtersToApply.qualityRating,
+        props.filtersToApply.safetyRating,
+        props.filtersToApply.allergens.length,
+        props.filtersToApply.openNow,
+        props.filtersToApply.nearby,
+        props.filtersToApply.label,
+        props.filtersToApply.order]);
 
     return (
         <>
-            <SearchBar search={props.search} setSearch={props.setSearch} setIsSearchingDishes={setIsSearchingDishes} setIsSearchingType={setIsSearchingType} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} filters={filters} />
+            <SearchBar search={props.search} setSearch={props.setSearch} setIsSearchingDishes={setIsSearchingDishes} setIsSearchingType={setIsSearchingType} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} />
             <Filters filters={convertToFilterArray()} setFilters={setFilters} setFiltersToApply={props.setFiltersToApply} fadeStates={fadeStates} setFadeStates={setFadeStates} />
             <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} search={props.search} isSearchingDishes={isSearchingDishes} isSearchingType={isSearchingType} filtersToApply={props.filtersToApply} setFiltersToApply={props.setFiltersToApply} setRestaurantAllergens={props.setRestaurantAllergens} setMenuType={props.setMenuType} />
         </>

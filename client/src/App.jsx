@@ -75,7 +75,7 @@ function App() {
 
   // function to handle the application errors
   function handleError(err) {
-    let errMsg = 'Unkwnown error';
+    let errMsg = 'Unknown error';
     if (err.error) {
       errMsg = err.error;
     }

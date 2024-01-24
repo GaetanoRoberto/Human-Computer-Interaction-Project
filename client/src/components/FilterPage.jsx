@@ -25,6 +25,7 @@ const FilterPage = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [fadeStates, setFadeStates] = useState([]);
+    const [locationError, setLocationError] = useState(false);
     const [errorMaxDistance, setErrorMaxDistance] = useState("");
     const navigate = useNavigate();
 
@@ -80,13 +81,27 @@ const FilterPage = (props) => {
         }).finally(() => {
             setIsLoadingLocation(false); // Set loading state to false when the geocoding is complete
             //setTempFilters({ ...tempFilters, nearby: true })
+            setLocationError(false);
             setShowModal2(true);
         });
     }
 
     function error(err) {
-        console.log("Unable to retrieve your location");
-        console.warn(`ERROR(${err.code}): ${err.message}`);
+        setIsLoadingLocation(true); // Assuming you want to show loading before the error
+
+        // Simulate 1 second loading before showing the error
+        setTimeout(() => {
+            setIsLoadingLocation(false);
+            setLocationError(true);
+            setShowModal2(true);
+            setTempFilters((prevFilters) => ({
+                ...prevFilters,
+                nearby: false,
+                maxDistance:  ''
+            }));
+            console.log("Unable to retrieve your location");
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }, 1000); // 1000 milliseconds = 1 second
     }
     // Initialize fadeStates array when filters.allergens change
     useEffect(() => {
@@ -299,6 +314,7 @@ const FilterPage = (props) => {
 
     // Handle form submission
     const handleSubmit = (e) => {
+        e.preventDefault();
         // Check if the necessary conditions for the address and maxDistance are not met
         if ((tempFilters.nearby || tempFilters.maxDistance !== '') && props.address.text === '') {
             e.preventDefault(); // Prevent default form submission behavior
@@ -356,9 +372,10 @@ const FilterPage = (props) => {
                             id="toggle-check2"
                             type="checkbox"
                             variant="outline-primary"
-                            checked={tempFilters.nearby}
+                            checked={tempFilters.nearby && !locationError}
                             value="1"
                             onChange={handleNearbyChange}
+                            disabled={locationError}
                             style={{ marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
                         >
                             <PositionModal show={showModal} setShow={setShowModal} action={handleLocationClick} />
@@ -366,7 +383,7 @@ const FilterPage = (props) => {
                             {isLoadingLocation ? (
                                 <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
                             ) : (
-                                tempFilters.nearby ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
+                                tempFilters.nearby && !locationError ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
                             )}
                             Nearby
                         </ToggleButton>
@@ -456,6 +473,7 @@ const FilterPage = (props) => {
                                                 value={tempFilters.maxDistance}
                                                 onChange={handleChange}
                                                 isInvalid={!!errorMaxDistance}
+                                                disabled={locationError}
                                             />
                                         </div>
                                         <Form.Control.Feedback type="invalid">
@@ -469,6 +487,7 @@ const FilterPage = (props) => {
                                             placeholder="Max Distance (km)"
                                             value={tempFilters.maxDistance}
                                             onChange={handleChange}
+                                            disabled={locationError}
                                             isInvalid={!!errorMaxDistance}
                                         />
                                     <Form.Control.Feedback type="invalid">
@@ -590,7 +609,7 @@ const FilterPage = (props) => {
                                     Remove filters
                                 </Button>
                                 <Button variant="primary" type='submit'
-                                    disabled={!!errorMaxDistance}>
+                                    disabled={!!errorMaxDistance || isLoadingLocation}>
                                     Apply filters
                                 </Button>
                             </Col>
