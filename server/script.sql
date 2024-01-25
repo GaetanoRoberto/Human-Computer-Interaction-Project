@@ -254,10 +254,10 @@ INSERT INTO "ingredients" VALUES (48, 12, 'IP_ADDRESS_AND_PORT/ingredients/chedd
 INSERT INTO "ingredients" VALUES (49, 12, 'IP_ADDRESS_AND_PORT/ingredients/onions1.jpg', 'Onions', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (50, 12, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Tomatoes', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (51, 12, 'IP_ADDRESS_AND_PORT/ingredients/pickles.jpg', 'Pickles', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (52,13, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/nero/fondente-51');
+INSERT INTO "ingredients" VALUES (52,13, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
 INSERT INTO "ingredients" VALUES (53,13, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
 INSERT INTO "ingredients" VALUES (54,13, 'IP_ADDRESS_AND_PORT/ingredients/egg2.jpg','Eggs', NULL, 'Local Breeding', NULL);
-INSERT INTO "ingredients" VALUES (55,14, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate1.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/nero/fondente-51');
+INSERT INTO "ingredients" VALUES (55,14, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate1.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
 INSERT INTO "ingredients" VALUES (56,14, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks1.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (57,14, 'IP_ADDRESS_AND_PORT/ingredients/rumbacardi.jpg' , 'White rum', 'alcohol', 'Bacardi', 'https://www.bacardi.com/our-rums/carta-blanca-rum/');
 INSERT INTO "ingredients" VALUES (58,14, 'IP_ADDRESS_AND_PORT/ingredients/coffee.png' , 'Coffee', NULL, 'Lavazza', 'https://www.lavazza.it/it/capsule/a-modo-mio-crema-e-gusto');
