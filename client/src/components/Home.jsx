@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import {useState, useEffect, useContext, useRef} from 'react'
 import { ErrorContext } from './userContext';
 import API from '../API';
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -54,7 +54,7 @@ function getHappinessColor(index) {
 }
 
 function SearchBar(props) {
-    const { search, setSearch, setIsSearchingDishes, setIsSearchingType, setRestaurantList, restaurantInitialList } = props;
+    const { search, setSearch, setIsSearchingDishes, setIsSearchingType, setRestaurantList, restaurantInitialList, filters } = props;
     const navigate = useNavigate();
     const [showInfo, setShowInfo] = useState(false);
 
@@ -63,7 +63,7 @@ function SearchBar(props) {
 
         const filteredRestaurants = restaurantInitialList.filter((restaurant) => {
             const restaurantNameMatch = restaurant.name.toLowerCase().includes(ev.target.value.trim().toLowerCase());
-            const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()));
+            const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => typeof filter === 'string' && filter.toLowerCase().includes(allergen.toLowerCase()))));
             const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase());
             return restaurantNameMatch || dishesMatch || typesMatch;
         });
@@ -207,9 +207,49 @@ function Filters(props) {
 function RestaurantsList(props) {
     const navigate = useNavigate();
     const location = useLocation();
+    const restaurantsRef = useRef();
+    const [expandedAccordions, setExpandedAccordions] = useState(() => {
+        const savedExpandedAccordions = localStorage.getItem('expandedAccordions');
+        try {
+            return savedExpandedAccordions ? JSON.parse(savedExpandedAccordions) : [];
+        } catch (error) {
+            console.error('Error parsing expandedAccordions from localStorage:', error);
+            return [];
+        }
+    });
+
     const { filterRestaurants, filters, search, isSearchingDishes, isSearchingType, filtersToApply, setFiltersToApply, setRestaurantAllergens, setMenuType } = props;
     // Used for scrollable restaurant list
     const listHeight = (filters.length === 0 ? (window.innerHeight - 140) : (window.innerHeight - 185));
+
+    useEffect(() => {
+        if (restaurantsRef.current) {
+            setTimeout(() => {
+                restaurantsRef.current.scrollTop = localStorage.getItem('scrollPositionRestaurants') || 0;
+            }, 100);
+        }
+    }, [location.state]);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('expandedAccordions', JSON.stringify(expandedAccordions));
+        } catch (error) {
+            console.error('Error stringifying expandedAccordions for localStorage:', error);
+        }
+    }, [expandedAccordions]);
+
+    const handleAccordionChange = (restaurantId) => {
+        setExpandedAccordions((prevExpandedAccordions) => {
+            const updatedAccordions = Array.isArray(prevExpandedAccordions) ? prevExpandedAccordions : [];
+            return updatedAccordions.includes(restaurantId)
+                ? updatedAccordions.filter((id) => id !== restaurantId)
+                : [...updatedAccordions, restaurantId];
+        });
+    };
+
+    const handleScrollRestaurants = () => {
+        localStorage.setItem('scrollPositionRestaurants', restaurantsRef.current.scrollTop);
+    };
 
     const handleClick = (dishes, id) => {
         const isAllergenExcluded = allergen => filters.some(filter => String(filter).toLowerCase().startsWith('no') && String(filter).toLowerCase().includes(allergen.toLowerCase()));
@@ -242,11 +282,15 @@ function RestaurantsList(props) {
         return val
     };
     return (
-        <ListGroup className="scroll" style={{overflowY: "auto", overflowX: "hidden", maxHeight: listHeight}}>
+        <ListGroup onScroll={handleScrollRestaurants} ref={restaurantsRef} style={{overflowY: "scroll", overflowX: "hidden", maxHeight: listHeight}}>
             { filterRestaurants().length === 0 ?
                 <>
                     <div style={{ borderTop: "1px solid", margin: 0, color: "lightgray" }}></div>
-                    <p style={{ marginTop: "1rem", textAlign: "center" }}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
+                    {search.trim() === '' ?
+                        <p style={{ marginTop: "1rem", textAlign: "center" }}> No results with the selected filters! </p>
+                        :
+                        <p style={{ marginTop: "1rem", textAlign: "center" }}> No results for "<b>{search.trim()}</b>" with the selected filters! </p>
+                    }
                 </>
                 :
                 filterRestaurants().map((restaurant) => {
@@ -336,8 +380,8 @@ function RestaurantsList(props) {
                             </Alert>
                         }
                         { isSearchingType && restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) &&
-                            <Accordion style={{marginBottom: 20}}>
-                                <Accordion.Item eventKey={"0"}>
+                            <Accordion style={{ marginBottom: 20 }} activeKey={expandedAccordions} onSelect={(key) => handleAccordionChange(key)}>
+                                <Accordion.Item eventKey={restaurant.id.toString()}>
                                     <Accordion.Header>
                                         <b style={{marginRight: 4}}>
                                             {restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.charAt(0).toUpperCase() + restaurant.dishes.find((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase())).type.slice(1)}
@@ -408,7 +452,7 @@ function Home(props) {
                 props.setSearch(props.search);
                 const filteredRestaurants = restaurants.filter((restaurant) => {
                     const restaurantNameMatch = restaurant.name.toLowerCase().includes(props.search.trim().toLowerCase());
-                    const dishesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()));
+                    const dishesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(props.search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => typeof filter === 'string' && filter.toLowerCase().includes(allergen.toLowerCase()))));
                     const typesMatch = (props.search.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase());
                     return restaurantNameMatch || dishesMatch || typesMatch;
                 });
@@ -580,8 +624,9 @@ function Home(props) {
     */
     function filterRestaurants() {
         let filteredRestaurants = [];
+        console.log(props.filtersToApply);
 
-        restaurantList.forEach(restaurant => {
+        restaurantInitialList.forEach(restaurant => {
             let passesAllFilters = true;
 
             // Price Range Filter
@@ -701,10 +746,18 @@ function Home(props) {
             // Add Search Term Filter
             if (props.search.trim().toLowerCase() !== '') {
                 const searchTerm = props.search.trim().toLowerCase();
-            
-                const searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
-                                    restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm)) ||
-                                    restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm);
+                let searchMatch;
+
+                if (props.filtersToApply.allergens.length > 0) {
+                    searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
+                                  restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm) && !dish.allergens.some((allergen) => props.filtersToApply.allergens.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))) ||
+                                  restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm);
+                } else {
+                    searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
+                                  restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm)) ||
+                                  restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm);
+                }
+
             
                 if (!searchMatch) {
                     passesAllFilters = false;
@@ -796,7 +849,7 @@ function Home(props) {
 
     return (
         <>
-            <SearchBar search={props.search} setSearch={props.setSearch} setIsSearchingDishes={setIsSearchingDishes} setIsSearchingType={setIsSearchingType} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} />
+            <SearchBar filters={filters} search={props.search} setSearch={props.setSearch} setIsSearchingDishes={setIsSearchingDishes} setIsSearchingType={setIsSearchingType} setRestaurantList={setRestaurantList} restaurantInitialList={restaurantInitialList} />
             <Filters filters={convertToFilterArray()} setFilters={setFilters} setFiltersToApply={props.setFiltersToApply} fadeStates={fadeStates} setFadeStates={setFadeStates} />
             <RestaurantsList filterRestaurants={filterRestaurants} filters={filters} search={props.search} isSearchingDishes={isSearchingDishes} isSearchingType={isSearchingType} filtersToApply={props.filtersToApply} setFiltersToApply={props.setFiltersToApply} setRestaurantAllergens={props.setRestaurantAllergens} setMenuType={props.setMenuType} />
         </>
