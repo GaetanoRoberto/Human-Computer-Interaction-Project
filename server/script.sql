@@ -418,8 +418,9 @@ INSERT INTO "reviews" VALUES (6,'Davide', 6, DATE('2023-08-20'), 'I will not com
 INSERT INTO "reviews" VALUES (7,'Luca', 4, DATE('2023-06-21'), 'Delicious pizza', 'Enjoyed the pizza!', 5, 5, 5);
 INSERT INTO "reviews" VALUES (8,'Luca', 5, DATE('2023-03-26'), 'Delicious spaghetti', 'I really enjoyed the Gricia!', 4, 5, 5);
 INSERT INTO "reviews" VALUES (9,'User', 7, DATE('2024-01-15'), 'Best pasta of my life', "Genuinely one of the most delicious pasta dishes I've had. The flavours were just amazing. Never expected it to be so good.", 5, 5, 5);
-INSERT INTO "reviews" VALUES (10,'Restaurateur', 5, DATE('2023-05-27'), 'Fantastic location, but we waited a bit', "Overall satisfied by this place, but they could be faster in serving the dishes", 4, 4, 5);
-INSERT INTO "reviews" VALUES (11,'Restaurateur', 4, DATE('2023-02-21'), 'Cool place', 'Extremely positive experience. I will come back!', 5, 5, 5);
+INSERT INTO "reviews" VALUES (10,'User', 5, DATE('2024-02-02'), 'Exceptional dining experience', "Visited the restaurant and had an exceptional time. The ambiance was delightful, and the service was impeccable. The dish I ordered exceeded all expectations, leaving me thoroughly satisfied. Highly recommend!", 5, 4, 5);
+INSERT INTO "reviews" VALUES (11,'Restaurateur', 5, DATE('2023-05-27'), 'Fantastic location, but we waited a bit', "Overall satisfied by this place, but they could be faster in serving the dishes", 4, 4, 5);
+INSERT INTO "reviews" VALUES (12,'Restaurateur', 4, DATE('2023-02-21'), 'Cool place', 'Extremely positive experience. I will come back!', 5, 5, 5);
 
 
 COMMIT;
