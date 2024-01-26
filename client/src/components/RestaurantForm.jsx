@@ -82,7 +82,7 @@ function InnerForm(props) {
     const [type, setType] = useState({ text: '', invalid: false });
     const [dishImage, setDishImage] = useState(PLACEHOLDER);
     const [fileNameDish, setFileNameDish] = useState('No File Chosen');
-    const [ingredients, setIngredients] = useState([{ id: 0, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
+    const [ingredients, setIngredients] = useState([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
     // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
     const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const [ingredientImage, setIngredientImage] = useState([PLACEHOLDER]);
@@ -163,7 +163,7 @@ function InnerForm(props) {
         setType({ text: '', invalid: false });
         setDishImage(PLACEHOLDER);
         setFileNameDish('No File Chosen');
-        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
         setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
         setIngredientImage([PLACEHOLDER]);
         setFileNameIngredient(['No File Chosen']);
@@ -183,7 +183,7 @@ function InnerForm(props) {
                 name: ingredient.text,
                 allergens: ingredient.allergens,
                 brandName: ingredient.brandname,
-                brandLink: ingredient.link || null,
+                brandLink: ingredient.brandLink || null,
             })),
         };
     
@@ -459,22 +459,22 @@ function InnerForm(props) {
     function ingredientLinkValidation(info, setState) {
         let invalid = undefined;
         // if link null from the db, return undefined directly (field not required)
-        if (!info.link) {
+        if (!info.brandLink) {
             return undefined;
         }
 
-        if ((info.link.length !== 0 && !validator.isURL(info.link))) {
+        if ((info.brandLink.length !== 0 && !validator.isURL(info.brandLink))) {
             invalid = true;
             setState((oldIngredients) => oldIngredients.map((oldingredient) => {
                 if (oldingredient.id === info.id) {
-                    return { ...oldingredient, link: info.link, invalid_link: true };
+                    return { ...oldingredient, brandLink: info.brandLink, invalid_link: true };
                 }
                 return oldingredient;
             }));
         } else {
             setState((oldIngredients) => oldIngredients.map((oldingredient) => {
                 if (oldingredient.id === info.id) {
-                    return { ...oldingredient, link: info.link, invalid_link: false };
+                    return { ...oldingredient, brandLink: info.brandLink, invalid_link: false };
                 }
                 return oldingredient;
             }));

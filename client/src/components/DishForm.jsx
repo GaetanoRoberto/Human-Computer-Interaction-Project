@@ -62,17 +62,17 @@ function DishForm(props) {
                     text: ingredient.name || '',
                     allergens: ingredient.allergens,
                     brandname: ingredient.brandName || '',
-                    link: ingredient.link || '',
+                    brandLink: ingredient.brandLink || '',
                     invalid_text: false,
                     invalid_allergens: false,
                     invalid_brandname: false,
                     invalid_link: false
                 }));
-
+                console.log(updatedIngredients);
                 if (dish.ingredients.length == 0) {
                     // check on dish.type instead of type.text since state update is asynchronous
                     if (dish.type!=='drinks') {
-                        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+                        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
                     } else {
                         setIngredients([]);
                     }
@@ -105,7 +105,7 @@ function DishForm(props) {
     const addIngredient = () => {
         setIngredients([
             ...ingredients,
-            { id: ingredientTempId, text: '', allergens: null, brandname: '', link: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
+            { id: ingredientTempId, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
         ]);
         setIngredientImage([
             ...ingredientImage,
@@ -221,12 +221,12 @@ function DishForm(props) {
                                     onChange={(event) => {
                                         setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
                                             if (oldingredient.id === ingredient.id) {
-                                                return { ...oldingredient, link: event.target.value.trim(), invalid_link: (event.target.value.length === 0) ? false : ingredient.invalid_link };
+                                                return { ...oldingredient, brandLink: event.target.value.trim(), invalid_link: (event.target.value.length === 0) ? false : ingredient.invalid_link };
                                             }
                                             return oldingredient;
                                         }))
                                     }}
-                                    defaultValue={ingredient.link}
+                                    defaultValue={ingredient.brandLink}
                                 />
                                 <Form.Control.Feedback type="invalid">Insert A Valid Ingredient Link</Form.Control.Feedback>
                             </div>

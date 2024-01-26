@@ -25,7 +25,8 @@ const PLACEHOLDER = IP_ADDRESS_AND_PORT + '/placeholder2.png';
 /*** init express and set-up the middlewares ***/
 const app = express();
 app.use(morgan('dev'));
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 
 // static middleware to serve static contents through express 
 app.use(express.static('./public'));
