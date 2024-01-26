@@ -624,7 +624,6 @@ function Home(props) {
     */
     function filterRestaurants() {
         let filteredRestaurants = [];
-        console.log(props.filtersToApply);
 
         restaurantInitialList.forEach(restaurant => {
             let passesAllFilters = true;
