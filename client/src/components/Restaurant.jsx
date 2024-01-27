@@ -126,7 +126,9 @@ const Banner = (props) => {
                 });
 
                 for (const { start, end } of dayTimeRanges) {
-                    if (
+                    if (start === 0 && end === 0)
+                        return 'Open 24 hours today'
+                    else if (
                         (currentTime >= start && currentTime <= end) ||
                         (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end)
                     ) {
@@ -293,7 +295,9 @@ const BannerProfile = (props) => {
                 });
 
                 for (const { start, end } of dayTimeRanges) {
-                    if (
+                    if (start === 0 && end === 0)
+                        return 'Open 24 hours today'
+                    else if (
                         (currentTime >= start && currentTime <= end) ||
                         (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end)
                     ) {
@@ -623,7 +627,12 @@ const Details = (props) => {
                                     {day[0]}
                                 </Col>
                                 <Col style={{ textAlign: "end" }}>
-                                    {day[1].map((range, index) => <div key={index} style={{ marginBottom: "0.4rem" }}> {range}<br /> </div>)}
+                                    {day[1].map((range, index) => {
+                                        if (range === '00:00-00:00')
+                                            return <div key={index} style={{ marginBottom: "0.4rem" }}> Open 24 hours </div>
+                                        else
+                                            return <div key={index} style={{ marginBottom: "0.4rem" }}> {range}<br /> </div>
+                                    })}
                                 </Col>
                             </Row>
                             {index < Object.entries(groupedByDay).length - 1 && <div style={{ borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem" }} ></div>}
@@ -642,7 +651,7 @@ const Details = (props) => {
                 <Card.Header as="h5" style={{ textAlign: "center" }}>
                     Description
                 </Card.Header>
-                <Card.Body style={{ overflowY: "auto", maxHeight: descriptionHeight }}>
+                <Card.Body style={{ overflowY: "auto", height: 245 }}>
                     <Card.Text>
                         {restaurant.description}
                     </Card.Text>

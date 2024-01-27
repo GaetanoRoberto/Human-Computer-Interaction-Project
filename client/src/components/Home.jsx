@@ -348,7 +348,7 @@ function RestaurantsList(props) {
                             </Row>
                         </Button>
                         { isSearchingDishes && !restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))) &&
-                            <Alert variant={"success"} style={{padding: 5, marginBottom: 20}}>
+                            <Alert variant={"success"} style={{padding: 5, marginBottom: 20, marginLeft: 5, marginRight: 5}}>
                                 <ListGroup className='homeList'>
                                     { restaurant.dishes.filter((dish) => dish.name.toLowerCase().includes(search.trim().toLowerCase()) &&
                                         !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).map((dish, index, array) => {
@@ -356,7 +356,7 @@ function RestaurantsList(props) {
                                             <ListGroup.Item className='homeListItem' key={index}>
                                                 <Row>
                                                     <Col xs={8}>
-                                                        <Alert.Link style={{marginLeft: 10}} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}>
+                                                        <Alert.Link onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}>
                                                             {dish.name}
                                                         </Alert.Link>
                                                         {' '}
@@ -380,7 +380,7 @@ function RestaurantsList(props) {
                             </Alert>
                         }
                         { isSearchingType && restaurant.dishes.some((dish) => dish.type.toLowerCase() === search.trim().toLowerCase()) &&
-                            <Accordion style={{ marginBottom: 20 }} activeKey={expandedAccordions} onSelect={(key) => handleAccordionChange(key)}>
+                            <Accordion style={{ marginBottom: 20, marginLeft: 5, marginRight: 5 }} activeKey={expandedAccordions} onSelect={(key) => handleAccordionChange(key)}>
                                 <Accordion.Item eventKey={restaurant.id.toString()}>
                                     <Accordion.Header>
                                         <b style={{marginRight: 4}}>
