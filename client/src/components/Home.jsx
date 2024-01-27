@@ -650,13 +650,16 @@ function Home(props) {
 
             // Quality Rating Filter
             if (passesAllFilters && props.filtersToApply.qualityRating !== '' &&
-                Math.round(restaurant.avg_quality) < props.filtersToApply.qualityRating) {
+                restaurant.avg_quality < props.filtersToApply.qualityRating) {
                 passesAllFilters = false;
             }
 
             // Safety Rating Filter
             if (passesAllFilters && props.filtersToApply.safetyRating !== '' &&
-                Math.round(restaurant.avg_safety) < props.filtersToApply.safetyRating) {
+                restaurant.avg_safety < props.filtersToApply.safetyRating) {
+                if (props.filtersToApply.safetyRating == '5' && restaurant.avg_safety != 5){
+                    passesAllFilters = false;
+                }
                 passesAllFilters = false;
             }
     
@@ -795,7 +798,7 @@ function Home(props) {
         //Nearby AND Max Distance Filter
         let nearby;
         if (props.filtersToApply.nearby == true) {
-            nearby = 2;
+            nearby = 2.5;
         }
         if (props.filtersToApply.maxDistance != '') {
             nearby = parseFloat(props.filtersToApply.maxDistance);
