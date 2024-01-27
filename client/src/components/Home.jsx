@@ -593,12 +593,17 @@ function Home(props) {
         // Extract the hours for the current day
         const hours = dayHours.split('=')[1].split(';');
 
+        // Check for always open condition (start and end times are "00:00")
+        const alwaysOpen = hours.some(hourRange => hourRange === "00:00-00:00");
+        if (alwaysOpen) return true;
+
         // Check if currentTime is within any of the time ranges
         return hours.some(hourRange => {
             const [start, end] = hourRange.split('-');
             return currentTime >= start && currentTime <= end;
         });
     };
+
 
     const handleFilteringRestaurants = () => {
         const filteredRestaurants = filterRestaurants();
