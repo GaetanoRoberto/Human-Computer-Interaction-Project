@@ -651,6 +651,9 @@ function Home(props) {
             // Quality Rating Filter
             if (passesAllFilters && props.filtersToApply.qualityRating !== '' &&
                 restaurant.avg_quality < props.filtersToApply.qualityRating) {
+                if (props.filtersToApply.qualityRating == '5' && restaurant.avg_quality != 5){
+                    passesAllFilters = false;
+                }
                 passesAllFilters = false;
             }
 
