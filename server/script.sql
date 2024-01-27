@@ -421,9 +421,10 @@ INSERT INTO "reviews" VALUES (9,'User', 7, DATE('2024-01-15'), 'Best pasta of my
 INSERT INTO "reviews" VALUES (10,'User', 6, DATE('2024-02-02'), 'Exceptional dining experience', "Visited the restaurant and had an exceptional time. The ambiance was delightful, and the service was impeccable. The dish I ordered exceeded all expectations, leaving me thoroughly satisfied. Highly recommend!", 5, 4, 5);
 INSERT INTO "reviews" VALUES (11,'Restaurateur', 5, DATE('2023-05-27'), 'Fantastic location, but we waited a bit', "Overall satisfied by this place, but they could be faster in serving the dishes", 4, 4, 5);
 INSERT INTO "reviews" VALUES (12,'Restaurateur', 4, DATE('2023-02-21'), 'Cool place', 'Extremely positive experience. I will come back!', 5, 5, 5);
-INSERT INTO "reviews" VALUES (13,'Andrea', 5, DATE('2023-07-15'), 'Not satisfied at all!', 'Cold food and not respecting hygiene standards', 1, 1, 4);
-INSERT INTO "reviews" VALUES (14,'Giuseppe', 5, DATE('2023-01-20'), 'Bad experience', 'The food was already cold when it was brought to us and the guanciale was burnt', 1, 2, 3);
-INSERT INTO "reviews" VALUES (15,'Giovanni', 5, DATE('2023-01-19'), "They should be more organized", 'The food is not bad, but we waited more than 1 hour before being served', 3, 4, 5);
+INSERT INTO "reviews" VALUES (13,'Andrea', 5, DATE('2023-07-15'), 'Not satisfied at all!', 'Cold food and not respecting hygiene standards', 1, 1, 3);
+INSERT INTO "reviews" VALUES (14,'Giuseppe', 5, DATE('2023-01-20'), 'Disappointing experience', 'The food was already cold when it was brought to us and the guanciale was burnt', 3, 3, 1);
+INSERT INTO "reviews" VALUES (15,'Giovanni', 5, DATE('2023-01-19'), "They should be more organized", 'The food is not bad, but we waited more than 1 hour before being served', 4, 4, 4);
+INSERT INTO "reviews" VALUES (16,'Davide', 5, DATE('2022-07-21'), "The overall experience didn't match up with the high cost", "I visited Assaje with some friends for dinner, and sadly, the experience didn't meet our expectations.", 2, 2, 2);
 
 
 COMMIT;
