@@ -150,6 +150,17 @@ function InnerForm(props) {
             );
             // Update the length
             prevTimesLength.current = times.length;
+        } else {
+            // merged interval reset it anyway
+            setTemporaryTimes([
+                {
+                    id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
+                    day: '',
+                    first: '',
+                    last: '',
+                    invalid: false,
+                },
+            ]);
         }
         // Check if the length of dishes array has changed
         if (dishes.length !== prevDishesLength.current) {
