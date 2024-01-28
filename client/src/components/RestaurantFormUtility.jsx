@@ -251,7 +251,7 @@ const filter_by_day = (times, day) => {
 };
 
 function sort_and_merge_times(times) {
-    const sortedIntervals = times.sort((a, b) => {
+    let sortedIntervals = times.sort((a, b) => {
       // Sort by day
       const dayComparison = DAYS.indexOf(a.day) - DAYS.indexOf(b.day);
   
@@ -267,7 +267,25 @@ function sort_and_merge_times(times) {
   
       return (firstComparison === true) ? -1 : 1;
     });
-  
+    
+    // Merge Open 24 Hours
+    const open_24_intervals = [];
+    for (const interval of sortedIntervals) {
+        // if open 24 hours, add the day
+        if(interval.first === "00:00" && interval.last === "00:00") {
+            // add only 1 time
+            if (open_24_intervals.filter((open_24_interval) => open_24_interval == interval).length === 0) {
+                open_24_intervals.push(interval);
+            }
+        }
+    }
+
+    // loop over the open 24 hours day, remove all the intervals and add only one of 00:00-00:00
+    for (const open_24_interval of open_24_intervals) {
+        sortedIntervals = sortedIntervals.filter((interval) => interval.day !== open_24_interval.day);
+        sortedIntervals.push({...open_24_interval,first: "00:00",last: "00:00"});
+    }
+    
     // Merge overlapping intervals
     const mergedIntervals = [];
     let currentInterval = sortedIntervals[0];
