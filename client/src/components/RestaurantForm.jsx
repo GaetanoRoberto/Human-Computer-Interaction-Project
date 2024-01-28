@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './Home';
-import { Button, Container, Form, ListGroup, Col, Row, Dropdown } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup, Col, Row, Dropdown, Modal } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import dayjs from 'dayjs';
 import validator from 'validator';
@@ -12,6 +12,34 @@ import { ImageViewer, DishItem, EditTimeSelector, AddressSelector, address_strin
 import { ErrorContext } from './userContext';
 import { DishForm } from './DishForm';
 import ConfirmModal from './ConfirmModal';
+
+function SuccessModal(props) {
+    const {text,show,setShow,action,parameter} = props;
+    
+    const perform_action = () => {
+        if(parameter == undefined){
+            action();
+            setShow(false);
+        } else {
+            action(parameter);
+            setShow(false);
+        }
+    };
+
+    return (
+        <Modal show={show} onHide={perform_action} backdrop="static" keyboard={false}>
+            <Modal.Header closeButton>
+                <Modal.Title>Operation Successful</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{display:'flex',alignItems:'center'}}>
+                {text}&nbsp;&nbsp;<i className="bi bi-check-circle-fill" style={{ fontSize: '24px', color: '#198754' }}></i>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="success" onClick={perform_action}>Ok</Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
 
 function ProgressLabel(props) {
     const { progress, editMenu } = props;
@@ -91,6 +119,18 @@ function InnerForm(props) {
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
 
+    // state for operation confirmed
+    const [showConfirm,setShowConfirm] = useState(false);
+    const [confirmText,setConfirmText] = useState('');
+    const action_to_perform = () => {
+        //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4
+        if (manageDish) {
+            setProgress(4);
+        } else {
+            setProgress(1);
+            navigate('/');
+        }
+    };
     // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
     useEffect(() => {
         // Check if the length of times array has changed
@@ -159,7 +199,7 @@ function InnerForm(props) {
     function resetStates() {
         setManageDish(undefined);
         setDishName({ text: '', invalid: false });
-        setPrice({ price: 0.0, invalid: false });
+        setPrice({ price: '', invalid: false });
         setType({ text: '', invalid: false });
         setDishImage(PLACEHOLDER);
         setFileNameDish('No File Chosen');
@@ -671,18 +711,22 @@ function InnerForm(props) {
                         // call the API to update an existing restaurant
                         console.log(restaurant);
                         await API.editRestaurant(restaurant).catch((err) => handleError(err));
+                        setShowConfirm(true);
+                        setConfirmText('Restaurant Edited Successfully');
                     } else {
                         // call the API to add a new restaurant
                         await API.createRestaurant(restaurant).catch((err) => handleError(err));
+                        setShowConfirm(true);
+                        setConfirmText('Restaurant Added Successfully');
                     }
                 }
                 //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4
-                if (manageDish) {
+                /*if (manageDish) {
                     setProgress(4);
                 } else {
                     setProgress(1);
                     navigate('/');
-                }  
+                }*/
             }
         }
     };
@@ -696,18 +740,18 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={activityName.invalid} type="text" placeholder="Enter The Activity's Name" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
-                            <Form.Control.Feedback type="invalid">Insert The Activity's Name</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
-                            <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Insert a Valid Phone Number' : ''}</p>
+                            <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Enter a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={description.invalid} as="textarea" rows={4} placeholder="Enter The Description" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
-                            <Form.Control.Feedback type="invalid">Insert A Description</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
 
@@ -715,19 +759,19 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
-                            <Form.Control.Feedback type="invalid">Insert A Valid Link</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
 
@@ -830,6 +874,7 @@ function InnerForm(props) {
     return (
         <>
             <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
+            <SuccessModal text={confirmText} show={showConfirm} setShow={setShowConfirm} action={action_to_perform}/>
             <Form noValidate onSubmit={handleSubmit}>
                 <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom:'3%' }}>
                     {componentToRender}
