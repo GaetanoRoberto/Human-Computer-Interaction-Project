@@ -653,7 +653,9 @@ const Details = (props) => {
                 </Card.Header>
                 <Card.Body style={{ overflowY: "auto", height: 245 }}>
                     <Card.Text>
-                        {restaurant.description}
+                        {restaurant.description.split("\n").map((row) => {
+                            return <><span>{row}</span><br/></>
+                        })}
                     </Card.Text>
                 </Card.Body>
 
