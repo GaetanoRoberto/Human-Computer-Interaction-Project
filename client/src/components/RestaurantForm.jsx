@@ -91,7 +91,6 @@ function InnerForm(props) {
     const [errorMsg,setErrorMsg] = useState('');
     // temporary client id for managing the time intervals (find the max id in the times array and add 1)
     const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
-    const prevTimesLength = useRef(times.length);
 
     // states for progress 3/4
     const [image, setImage] = useState(PLACEHOLDER);
@@ -131,47 +130,38 @@ function InnerForm(props) {
             navigate('/');
         }
     };
+    
     // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
     useEffect(() => {
-        // Check if the length of times array has changed
-        if (times.length !== prevTimesLength.current) {
-            // Update temporaryTimes and timetempId when times state changes
-            setTemporaryTimes([
-                {
-                    id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
-                    day: '',
-                    first: '',
-                    last: '',
-                    invalid: false,
-                },
-            ]);
-            setTimeTempId(
-                times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2
-            );
-            // Update the length
-            prevTimesLength.current = times.length;
-        } else {
-            // merged interval reset it anyway
-            setTemporaryTimes([
-                {
-                    id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
-                    day: '',
-                    first: '',
-                    last: '',
-                    invalid: false,
-                },
-            ]);
-        }
         // Check if the length of dishes array has changed
+        // TRIGGERED BY DISHES
         if (dishes.length !== prevDishesLength.current) {
-            // Update dishtempId when times state changes
+            // Update dishtempId when dishes state changes
             setDishTempId(
                 dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1
             );
             // Update the length
             prevDishesLength.current = dishes.length;
         }
-    }, [times,dishes]);
+    }, [dishes]);
+
+    useEffect(() => {
+        // TRIGGERED BY TIMES
+        // Always do, even if length does not changed, means times merged so update it anyway
+        // Update temporaryTimes and timetempId when times state changes
+        setTemporaryTimes([
+            {
+                id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
+                day: '',
+                first: '',
+                last: '',
+                invalid: false,
+            },
+        ]);
+        setTimeTempId(
+            times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2
+        );
+    }, [times]);
 
     // to retrieve info of the restaurant if in edit
     useEffect(() => {
@@ -750,18 +740,22 @@ function InnerForm(props) {
                     <Form.Group className="mb-3" >
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={activityName.invalid} type="text" placeholder="Enter The Activity's Name" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
+                            <Form.Label className='formLabelRestaurant'>Activity Name</Form.Label>
+                            <Form.Control isInvalid={activityName.invalid} type="text" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
                             <Form.Control.Feedback type="invalid">Enter The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
+                            <Form.Label className='formLabelRestaurant'>Location</Form.Label>
                             <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' placeholder="Enter The Phone Number" value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
+                            <Form.Label className='formLabelRestaurant'>Phone Number</Form.Label>
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Enter a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} placeholder="Enter The Description" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
+                            <Form.Label className='formLabelRestaurant'>Description</Form.Label>
+                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
                             <Form.Control.Feedback type="invalid">Enter A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -769,19 +763,23 @@ function InnerForm(props) {
                     <Form.Group className="mb-3">
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={website.invalid} type="text" placeholder="Enter The Website Link" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
+                            <Form.Label className='formLabelRestaurant'>Website Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Control isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={instagram.invalid} type="text" placeholder="Enter The Instagram Link" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
+                            <Form.Label className='formLabelRestaurant'>Instagram Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Control isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={facebook.invalid} type="text" placeholder="Enter The Facebook Link" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
+                            <Form.Label className='formLabelRestaurant'>Facebook Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Control isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Control isInvalid={twitter.invalid} type="text" placeholder="Enter The Twitter Link" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
+                            <Form.Label className='formLabelRestaurant'>Twitter Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Control isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>

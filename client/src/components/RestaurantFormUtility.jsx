@@ -182,7 +182,7 @@ function AddressSelector(props) {
                 <Form.Control
                     isInvalid={address.invalid}
                     type="text"
-                    placeholder="Enter The Location"
+                    placeholder=""
                     // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
                     onChange={(event) => { setAddress({ text: event.target.value.trim(), lat: address.lat, lng: address.lng, invalid: address.invalid }); }}
                     defaultValue={address.text}

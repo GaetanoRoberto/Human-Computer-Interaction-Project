@@ -146,27 +146,32 @@ function DishForm(props) {
                     <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Info</Form.Label>
                     <Row className="mb-3">
                         <Col>
-                            <Form.Control required isInvalid={dishName.invalid} type="text" placeholder="Dish Name" defaultValue={dishName.text}
+                            <Form.Label className='formLabelRestaurant'>* Dish Name</Form.Label>
+                            <Form.Control required isInvalid={dishName.invalid} type="text" defaultValue={dishName.text}
                                 onChange={(event) => mainInfoDishValidation({ text: event.target.value.trim(), invalid: dishName.invalid }, setDishName, false)} />
                             <Form.Control.Feedback type="invalid" >Choose a Name</Form.Control.Feedback>
                         </Col>
 
                         <Col>
-                            <Form.Control required isInvalid={price.invalid} type="number" placeholder="Price (€)" value={price.price}
+                            <Form.Label className='formLabelRestaurant'>* Price (€)</Form.Label>
+                            <Form.Control required isInvalid={price.invalid} type="number" value={price.price}
                                 onInput={(event) => priceValidation({ price: event.target.value.trim(), invalid: price.invalid })} />
                             <Form.Control.Feedback type="invalid" >Insert a Valid Price</Form.Control.Feedback>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
+                            <Form.Label className='formLabelRestaurant'>* Category</Form.Label>
                             <Form.Select required isInvalid={type.invalid} value={type.text}
                                 onChange={(event) => mainInfoDishValidation({ text: event.target.value, invalid: type.invalid }, setType, false)}>
-                                <option value="" hidden>Choose Category</option>
+                                <option value="" hidden>Choose one Category</option>
                                 <option value="desserts">Desserts</option>
                                 <option value="drinks">Drinks</option>
                                 <option value="hamburger">Hamburger</option>
                                 <option value="pasta">Pasta</option>
                                 <option value="pizza">Pizza</option>
+                                <option value="kebab">Kebab</option>
+                                <option value="piadina">Piadina</option>
                             </Form.Select>
                             <Form.Control.Feedback type="invalid" >
                                 Choose a category
@@ -188,11 +193,11 @@ function DishForm(props) {
                             {(ingredients.length > 1 || type.text==='drinks') ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
                             <Row style={{ marginBottom: '5%' }}>
                                 <Col>
+                                    <Form.Label className='formLabelRestaurant'>* Ingredient Name</Form.Label>
                                     <Form.Control
                                         required
                                         type="text"
                                         name="name"
-                                        placeholder={`Ingredient ${index + 1}`}
                                         isInvalid={ingredient.invalid_text}
                                         onChange={(event) => mainInfoDishValidation({ ...ingredient, text: event.target.value.trim() }, setIngredients, 'text')}
                                         defaultValue={ingredient.text}
@@ -200,11 +205,11 @@ function DishForm(props) {
                                     <Form.Control.Feedback type="invalid">Insert The Ingredient Name</Form.Control.Feedback>
                                 </Col>
                                 <Col>
+                                    <Form.Label className='formLabelRestaurant'>* Brand Name</Form.Label>
                                     <Form.Control
                                         required
                                         type="text"
                                         name="brandname"
-                                        placeholder="Brand Name"
                                         isInvalid={ingredient.invalid_brandname}
                                         onChange={(event) => mainInfoDishValidation({ ...ingredient, brandname: event.target.value.trim() }, setIngredients, 'brandname')}
                                         defaultValue={ingredient.brandname}
@@ -213,10 +218,10 @@ function DishForm(props) {
                                 </Col>
                             </Row>
                             <div style={{ marginBottom: '5%' }}>
+                                <Form.Label className='formLabelRestaurant'>Link</Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="link"
-                                    placeholder="Link"
                                     isInvalid={ingredient.invalid_link}
                                     onChange={(event) => {
                                         setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
@@ -231,9 +236,10 @@ function DishForm(props) {
                                 <Form.Control.Feedback type="invalid">Insert A Valid Ingredient Link</Form.Control.Feedback>
                             </div>
                             <div style={{ marginBottom: '5%' }}>
+                                <Form.Label className='formLabelRestaurant'>Allergens</Form.Label>
                                 <CreatableSelect
                                     closeMenuOnSelect={false}
-                                    placeholder={`Allergens of Ingredient ${index + 1}`}
+                                    placeholder={'Choose one or more Allergens'}
                                     components={animatedComponents}
                                     isMulti
                                     isSearchable={true}
