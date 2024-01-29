@@ -146,14 +146,14 @@ function DishForm(props) {
                     <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Info</Form.Label>
                     <Row className="mb-3">
                         <Col>
-                            <Form.Label className='formLabelRestaurant'>* Dish Name</Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Dish Name</Form.Label>
                             <Form.Control required isInvalid={dishName.invalid} type="text" defaultValue={dishName.text}
                                 onChange={(event) => mainInfoDishValidation({ text: event.target.value.trim(), invalid: dishName.invalid }, setDishName, false)} />
                             <Form.Control.Feedback type="invalid" >Choose a Name</Form.Control.Feedback>
                         </Col>
 
                         <Col>
-                            <Form.Label className='formLabelRestaurant'>* Price (€)</Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Price (€)</Form.Label>
                             <Form.Control required isInvalid={price.invalid} type="number" value={price.price}
                                 onInput={(event) => priceValidation({ price: event.target.value.trim(), invalid: price.invalid })} />
                             <Form.Control.Feedback type="invalid" >Insert a Valid Price</Form.Control.Feedback>
@@ -161,7 +161,7 @@ function DishForm(props) {
                     </Row>
                     <Row>
                         <Col>
-                            <Form.Label className='formLabelRestaurant'>* Category</Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Category</Form.Label>
                             <Form.Select required isInvalid={type.invalid} value={type.text}
                                 onChange={(event) => mainInfoDishValidation({ text: event.target.value, invalid: type.invalid }, setType, false)}>
                                 <option value="" hidden>Choose one Category</option>
@@ -179,8 +179,8 @@ function DishForm(props) {
                         </Col>
                     </Row>
 
-                    <Form.Group className="mb-3" >
-                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Image</Form.Label>
+                    <Form.Group className="mb-3" style={{marginTop: '3%'}}>
+                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                         <ImageViewer width={"200px"} height={"200px"} image={dishImage} setImage={setDishImage} fileName={fileNameDish} setFileName={setFileNameDish} />
                     </Form.Group>
                 </Form.Group>
@@ -193,7 +193,7 @@ function DishForm(props) {
                             {(ingredients.length > 1 || type.text==='drinks') ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
                             <Row style={{ marginBottom: '5%' }}>
                                 <Col>
-                                    <Form.Label className='formLabelRestaurant'>* Ingredient Name</Form.Label>
+                                    <Form.Label className='formLabelRestaurant'>Ingredient Name</Form.Label>
                                     <Form.Control
                                         required
                                         type="text"
@@ -205,7 +205,7 @@ function DishForm(props) {
                                     <Form.Control.Feedback type="invalid">Insert The Ingredient Name</Form.Control.Feedback>
                                 </Col>
                                 <Col>
-                                    <Form.Label className='formLabelRestaurant'>* Brand Name</Form.Label>
+                                    <Form.Label className='formLabelRestaurant'>Brand Name</Form.Label>
                                     <Form.Control
                                         required
                                         type="text"
@@ -218,7 +218,7 @@ function DishForm(props) {
                                 </Col>
                             </Row>
                             <div style={{ marginBottom: '5%' }}>
-                                <Form.Label className='formLabelRestaurant'>Link</Form.Label>
+                                <Form.Label className='formLabelRestaurant'>Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="link"
@@ -236,7 +236,7 @@ function DishForm(props) {
                                 <Form.Control.Feedback type="invalid">Insert A Valid Ingredient Link</Form.Control.Feedback>
                             </div>
                             <div style={{ marginBottom: '5%' }}>
-                                <Form.Label className='formLabelRestaurant'>Allergens</Form.Label>
+                                <Form.Label className='formLabelRestaurant'>Allergens <i style={{color:'gray'}}>(optional)</i></Form.Label>
                                 <CreatableSelect
                                     closeMenuOnSelect={false}
                                     placeholder={'Choose one or more Allergens'}
@@ -256,7 +256,7 @@ function DishForm(props) {
                             </div>
                             <div style={{ marginBottom: '5%' }}>
                                 <Form.Group className="mb-3" >
-                                    <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image</Form.Label>
+                                    <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                                     <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
                                         return oldIngredientsImage.map((oldingredient,inner_index) => {
                                             if (inner_index === index) {

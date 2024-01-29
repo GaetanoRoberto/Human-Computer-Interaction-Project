@@ -823,7 +823,7 @@ function InnerForm(props) {
             componentToRender = (
                 <Container fluid>
                     <Form.Group className="mb-3" >
-                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Activity Image</Form.Label>
+                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Activity Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                         <ImageViewer width={"300px"} height={"300px"} image={image} setImage={setImage} fileName={fileName} setFileName={setFileName} />
                     </Form.Group>
                 </Container>
