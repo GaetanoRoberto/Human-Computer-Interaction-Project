@@ -153,9 +153,15 @@ const Banner = (props) => {
 
             if (nextDayRanges) {
                 const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
+                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[1].split('-')[1];
                 const opensTomorrow = i === 1;
-                if (!opensTomorrow)
+                const h24 = nextOpeningTime === "00:00" && lastClosingTime === "00:00";
+                if (!opensTomorrow && !h24)
                     return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
+                else if (!opensTomorrow && h24)
+                    return `Closed today, opens 24 hours on ${fullDays[nextDayIndex]}`;
+                else if (opensTomorrow && h24)
+                    return `Closed today, opens 24 hours tomorrow`;
                 else
                     return `Closed today, opens tomorrow at ${nextOpeningTime}`;
             }
@@ -322,9 +328,15 @@ const BannerProfile = (props) => {
 
             if (nextDayRanges) {
                 const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
+                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[1].split('-')[1];
                 const opensTomorrow = i === 1;
-                if (!opensTomorrow)
-                    return `Closed today, opens on ${dayAbbreviations[nextDayIndex]} at ${nextOpeningTime}`;
+                const h24 = nextOpeningTime === "00:00" && lastClosingTime === "00:00";
+                if (!opensTomorrow && !h24)
+                    return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
+                else if (!opensTomorrow && h24)
+                    return `Closed today, opens 24 hours on ${fullDays[nextDayIndex]}`;
+                else if (opensTomorrow && h24)
+                    return `Closed today, opens 24 hours tomorrow`;
                 else
                     return `Closed today, opens tomorrow at ${nextOpeningTime}`;
             }
