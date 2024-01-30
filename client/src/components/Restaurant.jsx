@@ -153,7 +153,7 @@ const Banner = (props) => {
 
             if (nextDayRanges) {
                 const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
-                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[1].split('-')[1];
+                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[1];
                 const opensTomorrow = i === 1;
                 const h24 = nextOpeningTime === "00:00" && lastClosingTime === "00:00";
                 if (!opensTomorrow && !h24)
@@ -328,7 +328,7 @@ const BannerProfile = (props) => {
 
             if (nextDayRanges) {
                 const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
-                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[1].split('-')[1];
+                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[1];
                 const opensTomorrow = i === 1;
                 const h24 = nextOpeningTime === "00:00" && lastClosingTime === "00:00";
                 if (!opensTomorrow && !h24)
