@@ -13,7 +13,7 @@ async function logIn(credentials) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(credentials),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const user = await response.json();
@@ -36,7 +36,7 @@ async function getUserInfo() {
   const response = await fetch(SERVER_URL + '/sessions/current', {
     method: 'GET',
     credentials: 'include' // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const user = await response.json();
@@ -58,7 +58,7 @@ async function logOut() {
   const response = await fetch(SERVER_URL + '/sessions/current', {
     method: 'DELETE',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const emptyUser = await response.json();
@@ -78,7 +78,7 @@ async function getUser(username) {
   const response = await fetch(SERVER_URL + `/users/${username}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const users = await response.json();
@@ -102,7 +102,7 @@ async function updateUser(user) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(Object.assign({}, user)),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const response_user = await response.json();
@@ -122,7 +122,7 @@ async function getRestaurants() {
   const response = await fetch(SERVER_URL + '/restaurants', {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const restaurants = await response.json();
@@ -142,7 +142,7 @@ async function getRestaurant(restaurantId) {
   const response = await fetch(SERVER_URL + `/restaurants/${restaurantId}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const restaurant = await response.json();
@@ -162,7 +162,7 @@ async function getInsertedRestaurant() {
   const response = await fetch(SERVER_URL + '/insertedrestaurants', {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const restaurant = await response.json();
@@ -182,7 +182,7 @@ async function getFilteringInfos() {
   const response = await fetch(SERVER_URL + '/filterinfos', {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const filterinfos = await response.json();
@@ -202,7 +202,7 @@ async function getIngredient(ingredientId) {
   const response = await fetch(SERVER_URL + `/ingredients/${ingredientId}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const ingredient = await response.json();
@@ -222,7 +222,7 @@ async function getDish(id) {
   const response = await fetch(SERVER_URL + `/dishes/${id}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const ingredients = await response.json();
@@ -246,7 +246,7 @@ async function createRestaurant(restaurant) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(Object.assign({}, restaurant)),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const response_restaurant = await response.json();
@@ -270,7 +270,7 @@ async function editRestaurant(restaurant) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(Object.assign({}, restaurant)),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const response_restaurant = await response.json();
@@ -290,7 +290,7 @@ async function deleteRestaurant(restaurantId) {
   const response = await fetch(SERVER_URL + `/restaurants/${restaurantId}`, {
     method: 'DELETE',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const emptyRestaurant = await response.json();
@@ -310,7 +310,7 @@ async function getReview(review_id) {
   const response = await fetch(SERVER_URL + `/reviews/${review_id}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const review = await response.json();
@@ -334,7 +334,7 @@ async function createReview(review) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(Object.assign({}, review)),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const response_review = await response.json();
@@ -358,7 +358,7 @@ async function updateReview(review) {
     },
     credentials: 'include',  // this parameter specifies that authentication cookie must be forwared
     body: JSON.stringify(Object.assign({}, review)),
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const response_review = await response.json();
@@ -378,7 +378,7 @@ async function deleteReview(reviewId) {
   const response = await fetch(SERVER_URL + `/reviews/${reviewId}`, {
     method: 'DELETE',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, parse and return the object
     const review = await response.json();
@@ -398,7 +398,7 @@ async function getReviewsByUser(username) {
   const response = await fetch(SERVER_URL + `/reviews/users/${username}`, {
     method: 'GET',
     credentials: 'include'  // this parameter specifies that authentication cookie must be forwared
-  }).catch(() => { throw { error: "Connection Error" } });
+  }).catch(() => { throw { error: "Connection Error: Server Unavailable" } });
   if (response.ok) {
     // 200 status code, return the object
     const reviews = await response.json();
