@@ -567,13 +567,13 @@ const Menu = (props) => {
                                 <Button variant="light" style={{ padding: "0 0 0 0" }}>
                                     <Card.Body>
                                         <Row>
-                                            <Col style={{ textAlign: "start" }}>
+                                            <Col xs={8} style={{ textAlign: "start" }}>
                                                 <Card.Title> {dish.name} </Card.Title>
                                                 <Card.Text>
                                                     {
                                                         dish.ingredients.map((ingredient, index) => (
                                                             <span key={index}>
-                                                                <span style={{ whiteSpace: "nowrap" }}>{ingredient.name}</span>
+                                                                <span>{ingredient.name}</span>
                                                                 {index < dish.ingredients.length - 1 && ', '}
                                                             </span>
                                                         ))

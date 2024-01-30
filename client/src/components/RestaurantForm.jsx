@@ -384,7 +384,12 @@ function InnerForm(props) {
             })
             
             // if all ok, add the temporary times
-            setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
+            if (isChecked) {
+                setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, {id: timetempId, first: '00:00', last: '00:00', day:day.text, invalid: false }]) });
+                setTimeTempId((oldid) => oldid + 1);
+            } else {
+                setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
+            }
             //setTemporaryTimes([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2, day: '', first: '', last: '', invalid: false}]);
             setDay({text:'', clicked: false});
             setErrorMsg('');
@@ -832,7 +837,7 @@ function InnerForm(props) {
                                     // checked case (true) => reset and put only 00:00-00:00
                                     // reset and add only 24 hours range
                                     setTemporaryTimes([]);
-                                    addTime(setTemporaryTimes, { first: '00:00', last: '00:00' });
+                                    //addTime(setTemporaryTimes, { first: '00:00', last: '00:00' });
                                 } else {
                                     // unchecked case (false) => reset to empty range
                                     setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
