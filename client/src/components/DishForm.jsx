@@ -276,7 +276,7 @@ function DishForm(props) {
                             </div>
                         </div>
                     ))}
-                    <Button variant="success" onClick={addIngredient} style={{ marginRight: "2%", marginTop: "2%" }}>Add New Ingredient</Button>
+                    <Button variant="success" onClick={addIngredient} style={{ display:'block', marginRight: "2%", marginTop: "2%" }}>Add New Ingredient</Button>
                 </Form.Group>
             </Container>
             {/*<Container className="d-flex justify-content-between mt-auto">

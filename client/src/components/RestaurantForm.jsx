@@ -90,6 +90,8 @@ function InnerForm(props) {
     const [times, setTimes] = useState([]);
     const [day,setDay] = useState({text:'', clicked: false});
     const [temporaryTimes,setTemporaryTimes] = useState([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false}]);
+    // state for open 24 hours checkbox
+    const [isChecked, setIsChecked] = useState(false);
     const [errorMsg,setErrorMsg] = useState('');
     // temporary client id for managing the time intervals (find the max id in the times array and add 1)
     const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
@@ -325,13 +327,11 @@ function InnerForm(props) {
 
     function deleteTime(timeId,setTimeArrays) {
         setTimeArrays((timeList) => timeList.filter((time) => {
-            if (timeList.length > 1) {
                 if (time.id !== timeId) {
                     return true;
                 } else {
                     return false;
                 }
-            }
             return true;
         }
         ));
@@ -824,12 +824,26 @@ function InnerForm(props) {
                         <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Fry', clicked: true}) }}>Fry</span>
                         <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
                         <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
+                        <Container style={{ marginBottom: '3%' }}>
+                            <Form.Check checked={isChecked} onChange={() => {
+                                if (!isChecked) {
+                                    // reset and add only 24 hours range
+                                    setTemporaryTimes([]);
+                                    addTime(setTemporaryTimes, { first: '00:00', last: '00:00' });
+                                } else {
+                                    setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
+                                }
+                                setIsChecked((old_checked) => !old_checked);
+                            }}
+                            style={{ display: 'inline-block', marginRight:'3%' }} />
+                            <span>Open 24 hours</span>
+                        </Container>
                         {temporaryTimes.map((temp_time) => {
                             return <EditTimeSelector key={temp_time.id} n_times={temporaryTimes.length} time={temp_time} addTime={addTime} setTimeArrays={setTemporaryTimes} saveTime={saveTime} deleteTime={deleteTime} checkTime={checkTime} />;
                         })}
                     </Container>
-                    <Container className="d-flex justify-content-between mt-auto">
-                        <Button variant="secondary" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); }}>Reset</Button>
+                    <Container className="d-flex justify-content-between" style={{marginTop: '3%'}}>
+                        <Button variant="secondary" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); setIsChecked(false);}}>Reset</Button>
                         <Button variant="primary" size='sm' onClick={addTempTimesToTimes}>Save</Button>
                     </Container>
                     <div style={{borderTop: "1px solid #000", marginTop: '2%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>

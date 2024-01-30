@@ -341,7 +341,7 @@ function EditTimeSelector(props) {
                     checkTime(new_time, setTimeArrays);
                 }
             }} onKeyDown={(event) => { event.preventDefault() }} />
-            <Button size='sm' variant="success" onClick={() => { addTime(setTimeArrays,time.day) }} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>
+            { (time.first === '00:00' && time.last === '00:00') ? '' : <Button size='sm' variant="success" onClick={() => { addTime(setTimeArrays,time.day) }} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>}
             {(n_times > 1) ? <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button> : ''}
             <p style={{ display: 'block', color: '#dc3545' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
@@ -363,7 +363,7 @@ function ViewTimeSelector(props) {
                 //saveTime(new_time, setTimeArrays);
                 checkTime(new_time, setTimeArrays);
             }} onKeyDown={(event) => { event.preventDefault() }} />
-            {(n_times > 1) ? <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button> : ''}
+            <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button>
             <p style={{ display: 'block', color: '#dc3545' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
     );
