@@ -66,7 +66,7 @@ function App() {
         //console.log("Login successful with user:", user);
       })
       .catch(err => {
-        handleError(`Login failed with error:${err}`);
+        handleError({error: `Login failed with error:${err.error}`});
       });
   };
 
@@ -167,7 +167,7 @@ function App() {
                 //console.log(user);
             } else {
                 // Handle the case when the user is not found
-                handleError('User not found');
+                handleError({error: 'User not found'});
             }
         } catch (err) {
             // show error message

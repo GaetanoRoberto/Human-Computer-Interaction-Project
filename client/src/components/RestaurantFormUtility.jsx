@@ -168,7 +168,7 @@ function AddressSelector(props) {
                     //console.log("User updated successfully:", result);
                     // You might want to do something with the result or updated user here
                 } catch(error) {
-                    handleError("Failed to update user:", error);
+                    handleError({error: `Failed to update user:${error.error}`});
                     // Handle the error appropriately
                 }
             }

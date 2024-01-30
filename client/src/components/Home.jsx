@@ -491,7 +491,7 @@ function Home(props) {
                     //console.log(user);
                 } else {
                     // Handle the case when the dish with dishId is not found
-                    handleError('User not found');
+                    handleError({error: 'User not found'});
                 }
             } catch (err) {
                 // show error message
