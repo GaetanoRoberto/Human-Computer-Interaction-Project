@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useContext, useEffect } from 'react';
-import { ButtonGroup, Form, Button, Alert, Row, Col, Image, Container,Card,Badge } from 'react-bootstrap';
+import { ButtonGroup, Form, Button, Alert, Row, Col, Image, Container, Card, Badge } from 'react-bootstrap';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,6 +47,8 @@ const ReviewForm = (props) => {
   const [euroValid, setEuroValid] = useState(true);
   const [titleInvalid, setTitleInvalid] = useState(false);
   const [descInvalid, setDescInvalid] = useState(false);
+  // disabled flag
+  const disabled_flag = title === '' || description === '' || quality === 0 || safety === 0 || price === 0;
 
   const [show, setShow] = useState(false);
   // USE EFFECT 
@@ -76,7 +78,7 @@ const ReviewForm = (props) => {
   const editReview = (review) => {
     API.updateReview(review)
       .then(() => { })
-      .catch(e => handleError( e));
+      .catch(e => handleError(e));
   }
   const deleteReview = (review) => {
     API.deleteReview(review)
@@ -243,140 +245,136 @@ const ReviewForm = (props) => {
   return (
     <>
       <Container>
-        {view ? 
-        <Card className="mt-4 border">
-        <Card.Body className="p-4">
-          <div>
-          <Badge bg="info">Title</Badge>
-          <Card.Title className="mb-3">{title}</Card.Title>
-          </div>
-          <div className="mb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <Badge bg="info">Username</Badge>
-              <p>{username}</p>
-            </div>
-            <div>
-              <Badge bg="info">Date</Badge>
-              <p>{dayjs(date).format("YYYY-MM-DD")}</p>
-            </div>
-          </div>
-          <div className="mb-3">
-            <Badge bg="info">Description</Badge>
-            <p>{description}</p>
-          </div>
-          <div className="mb-2">
-            <Badge bg="info">Quality</Badge>
-            <p>    <Rating view={view} quality={quality} />
-</p>
-          </div>
-          <div className="mb-2">
-            <Badge className="mb-2" bg="info">Safety</Badge>
-            <p>    <HappinessRating view={view} safety={safety} />
-</p>
-          </div>
-          <div className="mb-2">
-            <Badge className="mb-q" bg="info">Prices</Badge>
-            <p>    <Prices view={view} price={price} />
-</p>
-          </div>
-          {/* Aggiungi altre informazioni se necessario */}
-        </Card.Body>
-      </Card>
-        : (
-          <Form noValidate onSubmit={handleSubmit}>
-            <Row>
-              <Col lg={true}  >
-                <Form.Label>Username</Form.Label>
-                <Form.Control disabled readOnly type="text" name="username" value={username} />
-              </Col>
-              <Col lg={true} >
-                <Form.Label>Date</Form.Label>
-                <Form.Control disabled readOnly type="date" name="date" value={dayjs(date).format("YYYY-MM-DD")} />
-              </Col>
-            </Row>
-            <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
-              <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
-              <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="formQuality">
+        {view ?
+          <Card className="mt-4 border">
+            <Card.Body className="p-4">
+              <div>
+                <Badge bg="info">Title</Badge>
+                <Card.Title className="mb-3">{title}</Card.Title>
+              </div>
+              <div className="mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                  <Badge bg="info">Username</Badge>
+                  <p>{username}</p>
+                </div>
+                <div>
+                  <Badge bg="info">Date</Badge>
+                  <p>{dayjs(date).format("YYYY-MM-DD")}</p>
+                </div>
+              </div>
+              <div className="mb-3">
+                <Badge bg="info">Description</Badge>
+                <p>{description}</p>
+              </div>
+              <div className="mb-2">
+                <Badge bg="info">Quality</Badge>
+                <p>    <Rating view={view} quality={quality} />
+                </p>
+              </div>
+              <div className="mb-2">
+                <Badge className="mb-2" bg="info">Safety</Badge>
+                <p>    <HappinessRating view={view} safety={safety} />
+                </p>
+              </div>
+              <div className="mb-2">
+                <Badge className="mb-q" bg="info">Prices</Badge>
+                <p>    <Prices view={view} price={price} />
+                </p>
+              </div>
+              {/* Aggiungi altre informazioni se necessario */}
+            </Card.Body>
+          </Card>
+          : (
+            <Form noValidate onSubmit={handleSubmit}>
               <Row>
-                <Col xs={3} className="d-flex align-items-center justify-content-start">
-                  <Form.Label className="me-5">Quality</Form.Label>
+                <Col lg={true}  >
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control disabled readOnly type="text" name="username" value={username} />
                 </Col>
-                <Col xs={6} className="d-flex align-items-center">
-                  <Rating view={view} quality={quality} />
+                <Col lg={true} >
+                  <Form.Label>Date</Form.Label>
+                  <Form.Control disabled readOnly type="date" name="date" value={dayjs(date).format("YYYY-MM-DD")} />
+                </Col>
+              </Row>
+              <Form.Group controlId="formTitle">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
+                <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
+                <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group controlId="formQuality">
+                <Row>
+                  <Col xs={3} className="d-flex align-items-center justify-content-start">
+                    <Form.Label className="me-5">Quality</Form.Label>
+                  </Col>
+                  <Col xs={6} className="d-flex align-items-center">
+                    <Rating view={view} quality={quality} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Text hidden={qualityValid} className="text-danger">Please select a Quality Value.</Form.Text>
+                </Row>
+              </Form.Group>
+
+              <Form.Group controlId="formSafety">
+                <Row>
+                  <Col xs={3} className="d-flex align-items-center justify-content-start">
+                    <Form.Label className="me-5">Safety</Form.Label>
+                  </Col>
+                  <Col xs={6} className="d-flex align-items-center">
+                    <HappinessRating view={view} safety={safety} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Text hidden={safetyValid} className="text-danger">Please select a Safety Value.</Form.Text>
+                </Row>
+              </Form.Group>
+
+              <Form.Group controlId="formPrice">
+                <Row>
+                  <Col xs={3} className="d-flex align-items-center justify-content-start">
+                    <Form.Label className="me-5">Price</Form.Label>
+                  </Col>
+                  <Col xs={6} className="d-flex align-items-center">
+                    <Prices view={view} price={price} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Form.Text hidden={euroValid} className="text-danger">Please select a Price Value.</Form.Text>
+                </Row>
+              </Form.Group>
+
+              <Row hidden={view} ><hr />
+                <Col xs={6}>
+                  <Button
+                    className="btn-lg mx-1 mb-2"
+                    hidden={!reviewId ? true : !(user && username === user.username)}
+                    variant="danger"
+                    onClick={() => { setShow(true) }}
+                  >Delete
+                  </Button>
+                </Col>
+                <Col xs={6} className="text-end">
+                  <Button disabled={disabled_flag} className="btn-lg mx-1 mb-2" type='submit' variant="primary">
+                    {reviewId ? 'Update' : 'Add'}
+                  </Button>
                 </Col>
               </Row>
               <Row>
-                <Form.Text hidden={qualityValid} className="text-danger">Please select a Quality Value.</Form.Text>
+                <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow} action={() => {
+                  deleteReview(reviewId);
+                  navigate(`/restaurants/${id}/reviews`);
+                }} />
               </Row>
-            </Form.Group>
+            </Form>
 
-            <Form.Group controlId="formSafety">
-              <Row>
-                <Col xs={3} className="d-flex align-items-center justify-content-start">
-                  <Form.Label className="me-5">Safety</Form.Label>
-                </Col>
-                <Col xs={6} className="d-flex align-items-center">
-                  <HappinessRating view={view} safety={safety} />
-                </Col>
-              </Row>
-              <Row>
-                <Form.Text hidden={safetyValid} className="text-danger">Please select a Safety Value.</Form.Text>
-              </Row>
-            </Form.Group>
-
-            <Form.Group controlId="formPrice">
-              <Row>
-                <Col xs={3} className="d-flex align-items-center justify-content-start">
-                  <Form.Label className="me-5">Price</Form.Label>
-                </Col>
-                <Col xs={6} className="d-flex align-items-center">
-                  <Prices view={view} price={price} />
-                </Col>
-              </Row>
-              <Row>
-                <Form.Text hidden={euroValid} className="text-danger">Please select a Price Value.</Form.Text>
-              </Row>
-            </Form.Group>
-
-            {
-              
-            }
-
-<Row hidden={view} ><hr />
-  <Col xs={6}>
-    <Button
-      className="btn-lg mx-1 mb-2"
-      hidden={!reviewId ? true : !(user && username === user.username)}
-      variant="danger"
-      onClick={() => { setShow(true) }}
-    >Delete
-    </Button>
-  </Col>
-  <Col xs={6} className="text-end">
-    <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">
-      {reviewId ? 'Update' : 'Add'}
-    </Button>
-  </Col>
-</Row>
-<Row>
-  <ConfirmModal text={'Delete the Review'} show={show} setShow={setShow} action={() => {
-    deleteReview(reviewId);
-    navigate(`/restaurants/${id}/reviews`);
-  }} />
-</Row>
-          </Form>
-
-        )}
+          )}
       </Container>    </>
   )
 

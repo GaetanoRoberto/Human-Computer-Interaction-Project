@@ -68,7 +68,7 @@ function DishForm(props) {
                     invalid_brandname: false,
                     invalid_link: false
                 }));
-                console.log(updatedIngredients);
+
                 if (dish.ingredients.length == 0) {
                     // check on dish.type instead of type.text since state update is asynchronous
                     if (dish.type!=='drinks') {

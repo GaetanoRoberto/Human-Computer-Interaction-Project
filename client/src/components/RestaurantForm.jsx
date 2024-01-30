@@ -83,6 +83,8 @@ function InnerForm(props) {
     const [instagram, setInstagram] = useState({ link: '', invalid: false });
     const [facebook, setFacebook] = useState({ link: '', invalid: false });
     const [twitter, setTwitter] = useState({ link: '', invalid: false });
+    // disabled flag for progress 1/4
+    const disabled_1 = activityName.test === '' || address.text === '' || phone.text === '' || description.text === '';
 
     // states for progress 2/4
     const [times, setTimes] = useState([]);
@@ -91,17 +93,37 @@ function InnerForm(props) {
     const [errorMsg,setErrorMsg] = useState('');
     // temporary client id for managing the time intervals (find the max id in the times array and add 1)
     const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
+    // disabled flag for progress 2/4
+    const disabled_2 = times.length <= 0;
 
     // states for progress 3/4
     const [image, setImage] = useState(PLACEHOLDER);
     const [fileName, setFileName] = useState('No File Chosen');
-
+ 
     // states for progress 4/4
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
     const [dishes, setDishes] = useState([]);
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const prevDishesLength = useRef(dishes.length);
+    const disabled_4 = dishes.length <= 0;
+
+    // next button disabled flag
+    let next_disabled;
+    switch (progress) {
+        case 1:
+            next_disabled = disabled_1;
+            break;
+        case 2:
+            next_disabled = disabled_2;
+            break;
+        case 3:
+            next_disabled = false;
+            break;
+        default:
+            next_disabled = true;
+            break;
+    }
 
     // DISH SECTION STATES
     const [dishName, setDishName] = useState({text:'' , invalid:false});
@@ -117,6 +139,8 @@ function InnerForm(props) {
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
+    // disabled flag for add edit dish
+    const disabled_dish = dishName.text === '' || price.text === '' || type.text === '' || ingredients.some((ingredient) => ingredient.text === '' || ingredient.brandname === '');
 
     // state for operation confirmed
     const [showConfirm,setShowConfirm] = useState(false);
@@ -891,10 +915,10 @@ function InnerForm(props) {
                 <Container className="d-flex justify-content-between mt-auto">
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
                     {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
-                    {(progress < 4) ? <Button variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
-                    {(progress === 4 && dishes.length !== 0 && manageDish === undefined) ? <Button variant="primary" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button variant="primary" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
+                    {(progress < 4) ? <Button disabled={next_disabled} variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
+                    {(progress === 4 && manageDish === undefined) ? <Button disabled={disabled_4} variant="primary" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button disabled={disabled_dish} variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button disabled={disabled_dish} variant="primary" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
                 </Container>
             </Form>
         </>
