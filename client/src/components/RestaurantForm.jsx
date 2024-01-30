@@ -826,11 +826,14 @@ function InnerForm(props) {
                         <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
                         <Container style={{ marginBottom: '3%' }}>
                             <Form.Check checked={isChecked} onChange={() => {
+                                // opposite control, since we set the status after and it is async
                                 if (!isChecked) {
+                                    // checked case (true) => reset and put only 00:00-00:00
                                     // reset and add only 24 hours range
                                     setTemporaryTimes([]);
                                     addTime(setTemporaryTimes, { first: '00:00', last: '00:00' });
                                 } else {
+                                    // unchecked case (false) => reset to empty range
                                     setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
                                 }
                                 setIsChecked((old_checked) => !old_checked);
