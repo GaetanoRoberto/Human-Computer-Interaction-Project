@@ -84,7 +84,7 @@ function InnerForm(props) {
     const [facebook, setFacebook] = useState({ link: '', invalid: false });
     const [twitter, setTwitter] = useState({ link: '', invalid: false });
     // disabled flag for progress 1/4
-    const disabled_1 = activityName.test === '' || address.text === '' || phone.text === '' || description.text === '';
+    const disabled_1 = activityName.text === '' || address.text === '' || phone.text === '' || description.text === '';
 
     // states for progress 2/4
     const [times, setTimes] = useState([]);
@@ -388,6 +388,7 @@ function InnerForm(props) {
             //setTemporaryTimes([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2, day: '', first: '', last: '', invalid: false}]);
             setDay({text:'', clicked: false});
             setErrorMsg('');
+            setIsChecked(false);
         } else {
             setErrorMsg('Select a Day of The Week');
         }
@@ -532,14 +533,14 @@ function InnerForm(props) {
             invalid = true;
             setState((oldIngredients) => oldIngredients.map((oldingredient) => {
                 if (oldingredient.id === info.id) {
-                    return { ...oldingredient, brandLink: info.brandLink, invalid_link: true };
+                    return { ...oldingredient, invalid_link: true };
                 }
                 return oldingredient;
             }));
         } else {
             setState((oldIngredients) => oldIngredients.map((oldingredient) => {
                 if (oldingredient.id === info.id) {
-                    return { ...oldingredient, brandLink: info.brandLink, invalid_link: false };
+                    return { ...oldingredient, invalid_link: false };
                 }
                 return oldingredient;
             }));
@@ -547,7 +548,7 @@ function InnerForm(props) {
         return invalid;
     }
 
-    function allergen_validation(info) {
+    /*function allergen_validation(info) {
         let invalid = undefined;
         const allergens = (info.allergens && info.allergens.length > 0) ? info.allergens.split(',') : [];
         for (const allergen of allergens) {
@@ -569,7 +570,7 @@ function InnerForm(props) {
             }
         }
         return invalid;
-    }
+    }*/
 
     const handleSubmit = async (event,submit) => {
         event.preventDefault();
@@ -688,11 +689,11 @@ function InnerForm(props) {
                         if (ingredient_Brandlink_invalidity) {
                             invalid = ingredient_Brandlink_invalidity;
                         }
-                        // Validate Allergens
+                        /* Validate Allergens
                         let ingredient_allergens_invalidity = allergen_validation(ingredient);
                         if (ingredient_allergens_invalidity) {
                             invalid = ingredient_allergens_invalidity;
-                        }
+                        }*/
                     });
                 }
                 break;
@@ -765,7 +766,7 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Activity Name</Form.Label>
-                            <Form.Control isInvalid={activityName.invalid} type="text" onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: activityName.invalid }, setActivityName)} defaultValue={activityName.text} />
+                            <Form.Control isInvalid={activityName.invalid} type="text" onChange={(event) => setActivityName({ text: event.target.value.trim(), invalid: false })} defaultValue={activityName.text} />
                             <Form.Control.Feedback type="invalid">Enter The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
@@ -774,12 +775,12 @@ function InnerForm(props) {
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Phone Number</Form.Label>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' value={phone.text} onChange={(event) => { phoneValidation({ text: event, invalid: phone.invalid }, setPhone) }} />
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' value={phone.text} onChange={(event) => { setPhone({ text: event, invalid: false }) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Enter a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Description</Form.Label>
-                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} onChange={(event) => mainInfoValidation({ text: event.target.value.trim(), invalid: description.invalid }, setDescription)} defaultValue={description.text} />
+                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} onChange={(event) => setDescription({ text: event.target.value.trim(), invalid: false })} defaultValue={description.text} />
                             <Form.Control.Feedback type="invalid">Enter A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -788,22 +789,22 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Website Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : website.invalid }))} />
+                            <Form.Control isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Instagram Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : instagram.invalid }))} />
+                            <Form.Control isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Facebook Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : facebook.invalid }))} />
+                            <Form.Control isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Twitter Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter(() => ({ link: event.target.value.trim(), invalid: (event.target.value.length === 0) ? false : twitter.invalid }))} />
+                            <Form.Control isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -893,10 +894,6 @@ function InnerForm(props) {
                         setIngredientImage={setIngredientImage}
                         fileNameIngredient={fileNameIngredient}
                         setFileNameIngredient={setFileNameIngredient}
-                        mainInfoDishValidation={mainInfoDishValidation}
-                        priceValidation={priceValidation}
-                        ingredientLinkValidation={ingredientLinkValidation}
-                        allergen_validation={allergen_validation}
                     />
                 ) :
                 componentToRender = (

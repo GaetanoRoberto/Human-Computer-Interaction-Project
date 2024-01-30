@@ -34,11 +34,7 @@ function DishForm(props) {
         ingredientImage,
         setIngredientImage,
         fileNameIngredient,
-        setFileNameIngredient,
-        mainInfoDishValidation,
-        priceValidation,
-        ingredientLinkValidation,
-        allergen_validation,
+        setFileNameIngredient
     } = props;
 
     // to retrieve info of the restaurant if in edit
@@ -124,19 +120,19 @@ function DishForm(props) {
     };
 
     const addAllergen = (outer_id, selected_allergens) => {
-        let validation_ingredient = {};
+        //let validation_ingredient = {};
         const newIngredients = ingredients.map((ingredient) => {
             if (outer_id === ingredient.id) {
                 // ingredient to edit the allergens
-                validation_ingredient = { ...ingredient, allergens: selected_allergens.map((allergen) => allergen.value).join(',') };
-                return { ...ingredient, allergens: selected_allergens.map((allergen) => allergen.value).join(',') }
+                //validation_ingredient = { ...ingredient, allergens: selected_allergens.map((allergen) => allergen.value).join(',') };
+                return { ...ingredient, allergens: selected_allergens.filter((allergen) => allergen.value.trim().length!==0).map((allergen) => allergen.value).join(',') }
             } else {
-                validation_ingredient = ingredient;
+                //validation_ingredient = ingredient;
                 return ingredient;
             }
         });
         setIngredients(newIngredients); // Update the state with the new ingredients array
-        allergen_validation(validation_ingredient);
+        //allergen_validation(validation_ingredient);
     };
 
     return (
@@ -148,14 +144,14 @@ function DishForm(props) {
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Dish Name</Form.Label>
                             <Form.Control required isInvalid={dishName.invalid} type="text" defaultValue={dishName.text}
-                                onChange={(event) => mainInfoDishValidation({ text: event.target.value.trim(), invalid: dishName.invalid }, setDishName, false)} />
+                                onChange={(event) => setDishName({ text: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid" >Choose a Name</Form.Control.Feedback>
                         </Col>
 
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Price (€)</Form.Label>
                             <Form.Control required isInvalid={price.invalid} type="number" value={price.price}
-                                onInput={(event) => priceValidation({ price: event.target.value.trim(), invalid: price.invalid })} />
+                                onInput={(event) => setPrice({ price: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid" >Insert a Valid Price</Form.Control.Feedback>
                         </Col>
                     </Row>
@@ -163,7 +159,7 @@ function DishForm(props) {
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Category</Form.Label>
                             <Form.Select required isInvalid={type.invalid} value={type.text}
-                                onChange={(event) => mainInfoDishValidation({ text: event.target.value, invalid: type.invalid }, setType, false)}>
+                                onChange={(event) => setType({ text: event.target.value, invalid: false })}>
                                 <option value="" hidden>Choose one Category</option>
                                 <option value="desserts">Desserts</option>
                                 <option value="drinks">Drinks</option>
@@ -199,7 +195,12 @@ function DishForm(props) {
                                         type="text"
                                         name="name"
                                         isInvalid={ingredient.invalid_text}
-                                        onChange={(event) => mainInfoDishValidation({ ...ingredient, text: event.target.value.trim() }, setIngredients, 'text')}
+                                        onChange={(event) => setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
+                                            if (oldingredient.id === ingredient.id) {
+                                                return { ...ingredient, text: event.target.value.trim(), invalid_text: false };
+                                            }
+                                            return oldingredient;
+                                        }))}
                                         defaultValue={ingredient.text}
                                     />
                                     <Form.Control.Feedback type="invalid">Insert The Ingredient Name</Form.Control.Feedback>
@@ -211,7 +212,12 @@ function DishForm(props) {
                                         type="text"
                                         name="brandname"
                                         isInvalid={ingredient.invalid_brandname}
-                                        onChange={(event) => mainInfoDishValidation({ ...ingredient, brandname: event.target.value.trim() }, setIngredients, 'brandname')}
+                                        onChange={(event) => setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
+                                            if (oldingredient.id === ingredient.id) {
+                                                return { ...ingredient, brandname: event.target.value.trim(), invalid_brandname: false };
+                                            }
+                                            return oldingredient;
+                                        }))}
                                         defaultValue={ingredient.brandname}
                                     />
                                     <Form.Control.Feedback type="invalid">Insert The Ingredient Brand Name</Form.Control.Feedback>
@@ -226,7 +232,7 @@ function DishForm(props) {
                                     onChange={(event) => {
                                         setIngredients((oldIngredients) => oldIngredients.map((oldingredient) => {
                                             if (oldingredient.id === ingredient.id) {
-                                                return { ...oldingredient, brandLink: event.target.value.trim(), invalid_link: (event.target.value.length === 0) ? false : ingredient.invalid_link };
+                                                return { ...oldingredient, brandLink: event.target.value.trim(), invalid_link: false };
                                             }
                                             return oldingredient;
                                         }))
