@@ -133,11 +133,29 @@ function SearchReview(props) {
         <Col xs={1} >
           <i className="bi bi-search " style={{ fontSize: "1.5rem", marginLeft: "1%" }}></i>
         </Col>
-        <Col xs={6}>
-          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search" />
+        <Col xs={10}>
+          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search By Title or Description" />
+        </Col>
+      </Row>
+      <Row className='my-1 mx-0 '>
+        <Col style={{padding:'5px'}}>
+          <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="info" >
+            <Dropdown.Item onClick={() => sortByField("date", filteredReviews)}>DATE</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("price", filteredReviews)}>PRICE</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("quality", filteredReviews)}>QUALITY</Dropdown.Item>
+            <Dropdown.Item onClick={() => sortByField("safety", filteredReviews)}>SAFETY</Dropdown.Item>
+          </DropdownButton>
+        </Col>
+        <Col style={{padding:'5px'}} onClick={toggleOrder}>
+          {order === 'ASC' ? (
+            <i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }} />
+          ) : (
+            <i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }} />
+          )} {label === "DATE" ? (order === "ASC" ? "OLD" : "NEW") : order.toUpperCase()}
+
         </Col>
         {!yourRestaur ?
-          <Col xs={2}>
+          <Col style={{padding:'5px'}}>
             {userReview ?
               <Button style={{ whiteSpace: "nowrap" }} variant="warning" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
               :
@@ -147,24 +165,6 @@ function SearchReview(props) {
           :
           " "
         }
-      </Row>
-      <Row className='my-1 mb-3  mx-0 '>
-        <Col xs={8} >
-          <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="info" >
-            <Dropdown.Item onClick={() => sortByField("date", filteredReviews)}>DATE</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("price", filteredReviews)}>PRICE</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("quality", filteredReviews)}>QUALITY</Dropdown.Item>
-            <Dropdown.Item onClick={() => sortByField("safety", filteredReviews)}>SAFETY</Dropdown.Item>
-          </DropdownButton>
-        </Col>
-        <Col onClick={toggleOrder}>
-          {order === 'ASC' ? (
-            <i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }} />
-          ) : (
-            <i className="bi bi-sort-up" style={{ fontSize: "1.5rem" }} />
-          )} {label === "DATE" ? (order === "ASC" ? "OLD" : "NEW") : order.toUpperCase()}
-
-        </Col>
       </Row>
     </>
   )
@@ -219,8 +219,8 @@ function ReviewsList({ reviews, divHeight }) {
                           <Col><Card.Subtitle>{item.description}</Card.Subtitle></Col>
                         </Row>
                       </Row>
-                      <Row>
-                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Quality:</Card.Text></Col>
+                      <Row className='mt-2'>
+                      <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em" }}>Quality:</Card.Text></Col>
                         <Col xs={8}><Card.Text>
                           {Array.from({ length: item.quality }, (_, index) => (
                             <i key={index} className="bi bi-star-fill" style={{ color: '#FFD700', marginRight: "5px", fontSize: "1.4em" }} ></i>
@@ -229,7 +229,7 @@ function ReviewsList({ reviews, divHeight }) {
                       </Row>
 
                       <Row>
-                        <Col xs={4}><Card.Text style={{ fontSize: "1.2em" }}>Safety:</Card.Text></Col>
+                      <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em" }}>Safety:</Card.Text></Col>
                         <Col xs={8}>
                           <Card.Text>
                             {Array.from({ length: 5 }, (_, index) => (
@@ -242,7 +242,7 @@ function ReviewsList({ reviews, divHeight }) {
                       </Row>
 
                       <Row>
-                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
+                      <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
                         <Col xs={8} ><Card.Text>
                           {Array.from({ length: item.price }, (_, index) => (
                             <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
@@ -250,7 +250,7 @@ function ReviewsList({ reviews, divHeight }) {
                         </Card.Text></Col>
                       </Row>
                       <Row >
-                        <footer style={{ fontSize: "1em" }} className="blockquote-footer">By {item.username}, {dayjs(item.date).format("DD-MM-YYYY")}</footer>
+                        <footer style={{ fontSize: "1em", margin:'0' }} className="blockquote-footer">By {item.username}, {dayjs(item.date).format("DD-MM-YYYY")}</footer>
                       </Row>
 
                     </Card.Body>

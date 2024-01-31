@@ -64,7 +64,7 @@ function ProgressLabel(props) {
     }
 
     return (
-        <h1 className="text-center">{text}{(editMenu) ? '' : `(${progress}/4)`}</h1>
+        <h1 className="text-center" style={{marginTop:'3%'}}>{text}{(editMenu) ? '' : `(${progress}/4)`}</h1>
     );
 }
 
@@ -820,16 +820,18 @@ function InnerForm(props) {
         case 2:
             componentToRender = (
                 <Container fluid>
-                    <div style={{marginTop: '2%'}}><strong style={{fontSize: 'large'}}>Your Temporary Timetable:</strong></div>
+                    <div style={{marginTop: '2%', marginBottom:'2%'}}><strong style={{fontSize: 'large'}}>Your Temporary Timetable:</strong></div>
                     <Container>
                         <p style={(errorMsg !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{errorMsg}</p>
-                        <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Mon', clicked: true}) }}>Mon</span>
-                        <span className={(day.text === 'Tue') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Tue', clicked: true}) }}>Tue</span>
-                        <span className={(day.text === 'Wed') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Wed', clicked: true}) }}>Wed</span>
-                        <span className={(day.text === 'Thu') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Thu', clicked: true}) }}>Thu</span>
-                        <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Fry', clicked: true}) }}>Fry</span>
-                        <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
-                        <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
+                        <Container>
+                            <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Mon', clicked: true}) }}>Mon</span>
+                            <span className={(day.text === 'Tue') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Tue', clicked: true}) }}>Tue</span>
+                            <span className={(day.text === 'Wed') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Wed', clicked: true}) }}>Wed</span>
+                            <span className={(day.text === 'Thu') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Thu', clicked: true}) }}>Thu</span>
+                            <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Fry', clicked: true}) }}>Fry</span>
+                            <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
+                            <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
+                        </Container>
                         <Container style={{ marginBottom: '3%' }}>
                             <Form.Check checked={isChecked} onChange={() => {
                                 // opposite control, since we set the status after and it is async
@@ -844,7 +846,7 @@ function InnerForm(props) {
                                 }
                                 setIsChecked((old_checked) => !old_checked);
                             }}
-                            style={{ display: 'inline-block', marginRight:'3%' }} />
+                            style={{ display: 'inline-block', marginRight:'3%', marginBottom:'3%' }} />
                             <span>Open 24 hours</span>
                         </Container>
                         {temporaryTimes.map((temp_time) => {
@@ -855,7 +857,8 @@ function InnerForm(props) {
                         <Button variant="secondary" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); setIsChecked(false);}}>Reset</Button>
                         <Button variant="primary" size='sm' onClick={addTempTimesToTimes}>Save</Button>
                     </Container>
-                    <div style={{borderTop: "1px solid #000", marginTop: '2%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>
+                    <hr style={{borderTop: "1px solid #000"}}/>
+                    <div style={{marginTop: '7%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>
                     {(filter_by_day(times, 'Mon').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Mon')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
                     {(filter_by_day(times, 'Tue').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Tue')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
                     {(filter_by_day(times, 'Wed').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Wed')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}

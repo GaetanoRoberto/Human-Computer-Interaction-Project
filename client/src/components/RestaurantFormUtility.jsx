@@ -50,15 +50,15 @@ const handleImageChange = (event, setImage, setFileName, setViewImage) => {
                 let compressedDataURL = canvas.toDataURL('image/jpeg', compressionQuality);
 
                 // Calculate the initial size of the compressed image in bytes
-                let compressedImageSizeInBytes = calculateFileSize(compressedDataURL);
+                //let compressedImageSizeInBytes = calculateFileSize(compressedDataURL);
 
                 // Check if the initial size exceeds the maximum allowed size
-                while (compressedImageSizeInBytes > maxFileSizeInBytes) {
+                /*while (compressedImageSizeInBytes > maxFileSizeInBytes) {
                     // Reduce compression quality and recalculate
                     compressionQuality -= 0.1;
                     compressedDataURL = canvas.toDataURL('image/jpeg', compressionQuality);
                     compressedImageSizeInBytes = calculateFileSize(compressedDataURL);
-                }
+                }*/
 
                 // Set the compressed image data URL in the state
                 setImage(compressedDataURL);

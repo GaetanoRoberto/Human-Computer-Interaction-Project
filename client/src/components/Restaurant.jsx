@@ -250,7 +250,7 @@ const Banner = (props) => {
 const BannerProfile = (props) => {
     const { restaurant } = props;
     const navigate = useNavigate();
-
+    const location = useLocation();
     // Used to show the restaurant rating based on the reviews
     const restaurantStars = () => {
         if (restaurant.reviews.length === 0) {
@@ -367,7 +367,7 @@ const BannerProfile = (props) => {
     return (
         <>
             <div style={{ borderTop: "1px solid #000", margin: 0 }} ></div>
-            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "174px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate('/restaurants/1/menu')}>
+            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "174px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu`, { state: { previousLocationPathname: location.pathname } })}>
                 {/* Background Image Overlay */}
                 <div
                     style={{
@@ -478,11 +478,10 @@ const Menu = (props) => {
         }
     }
     const hasGluten = (dish) => {
-        return dish.ingredients.some((ingredient) =>
-        {
-            if(ingredient.allergens!= null){
+        return dish.ingredients.some((ingredient) => {
+            if (ingredient.allergens != null) {
                 return ingredient.allergens.includes("gluten")
-            }else{
+            } else {
                 return false
             }
         }
@@ -585,14 +584,14 @@ const Menu = (props) => {
                                             </Col>
                                             <Col xs={4} style={{ textAlign: "end" }}>
                                                 <img height={"100px"} width={"100px"} src={dish.image} />
-                                                <Card.Text style={{ fontSize: "0.9rem",marginTop:"2px" }} >
-                                                {hasGluten(dish)?
-                                                <Badge pill bg="danger">
-                                                    <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten
-                                                </Badge>
-                                                :
-                                                    <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
-                                                }
+                                                <Card.Text style={{ fontSize: "0.9rem", marginTop: "2px" }} >
+                                                    {hasGluten(dish) ?
+                                                        <Badge pill bg="danger">
+                                                            <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten
+                                                        </Badge>
+                                                        :
+                                                        <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
+                                                    }
                                                 </Card.Text>
 
                                             </Col>
@@ -635,7 +634,7 @@ const Details = (props) => {
                     return (
                         <div key={index}>
                             <Row>
-                                <Col>
+                                <Col style={{ fontSize: 'large' }}>
                                     {day[0]}
                                 </Col>
                                 <Col style={{ textAlign: "end" }}>
@@ -658,28 +657,29 @@ const Details = (props) => {
 
     return (
         <>
-            {/*Description*/}
+            {/*Opening Hours*/}
             <Card style={{ borderRadius: 0, borderBottom: 0 }}>
-                <Card.Header as="h5" style={{ textAlign: "center" }}>
-                    Description
-                </Card.Header>
-                <Card.Body style={{ overflowY: "auto", height: 245 }}>
-                    <Card.Text>
-                        {restaurant.description.split("\n").map((row,index) => {
-                            return <span key={index}><span>{row}</span><br/></span>
-                        })}
-                    </Card.Text>
-                </Card.Body>
-
-                {/*Opening Hours*/}
-                <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
                 <Card.Header as="h5" style={{ textAlign: "center" }}>
                     Opening Hours
                 </Card.Header>
-                <Card.Body style={{ overflowY: "auto", maxHeight: 160 }}>
+                <Card.Body style={{ overflowY: "auto", maxHeight: 170 }}>
                     <Card.Title as="h6">
                         {formatTimeRanges(restaurant.hours)}
                     </Card.Title>
+                </Card.Body>
+
+
+                {/*Description*/}
+                <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
+                <Card.Header as="h5" style={{ textAlign: "center" }}>
+                    Description
+                </Card.Header>
+                <Card.Body style={{ overflowY: "auto", height: 180 }}>
+                    <Card.Text>
+                        {restaurant.description.split("\n").map((row, index) => {
+                            return <span key={index}><span>{row}</span><br /></span>
+                        })}
+                    </Card.Text>
                 </Card.Body>
             </Card>
         </>

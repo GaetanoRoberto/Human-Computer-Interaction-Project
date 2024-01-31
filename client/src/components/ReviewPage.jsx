@@ -248,37 +248,38 @@ const ReviewForm = (props) => {
         {view ?
           <Card className="mt-4 border">
             <Card.Body className="p-4">
-              <div>
-                <Badge bg="info">Title</Badge>
-                <Card.Title className="mb-3">{title}</Card.Title>
-              </div>
-              <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div className="mb-2 d-flex justify-content-between align-items-center">
                 <div>
-                  <Badge bg="info">Username</Badge>
+                <Form.Label style={{fontSize:'large'}}>Username:</Form.Label>
                   <p>{username}</p>
                 </div>
                 <div>
-                  <Badge bg="info">Date</Badge>
+                <Form.Label style={{fontSize:'large'}}>Date:</Form.Label>
                   <p>{dayjs(date).format("YYYY-MM-DD")}</p>
                 </div>
               </div>
-              <div className="mb-3">
-                <Badge bg="info">Description</Badge>
+              <div>
+                <Form.Label style={{fontSize:'large'}}>Title:</Form.Label>
+                <p>{title}</p>
+              </div>
+              <div className="mb-2">
+              <Form.Label style={{fontSize:'large'}}>Description:</Form.Label>
                 <p>{description}</p>
               </div>
               <div className="mb-2">
-                <Badge bg="info">Quality</Badge>
+              <Form.Label style={{fontSize:'large'}}>Quality:</Form.Label>
                 <p>    <Rating view={view} quality={quality} />
                 </p>
               </div>
               <div className="mb-2">
-                <Badge className="mb-2" bg="info">Safety</Badge>
+              <Form.Label style={{fontSize:'large', marginBottom:'5%'}}>Safety:</Form.Label>
                 <p>    <HappinessRating view={view} safety={safety} />
                 </p>
               </div>
               <div className="mb-2">
-                <Badge className="mb-q" bg="info">Prices</Badge>
+              <Form.Label style={{fontSize:'large'}}>Prices:</Form.Label>
                 <p>    <Prices view={view} price={price} />
+                <h6>Price Range: {approssimaValoreAlRange(price)} €</h6>
                 </p>
               </div>
               {/* Aggiungi altre informazioni se necessario */}
@@ -287,31 +288,31 @@ const ReviewForm = (props) => {
           : (
             <Form noValidate onSubmit={handleSubmit}>
               <Row>
-                <Col lg={true}  >
-                  <Form.Label>Username</Form.Label>
+                <Col lg={true}>
+                  <Form.Label style={{marginTop:'2%'}}>Username:</Form.Label>
                   <Form.Control disabled readOnly type="text" name="username" value={username} />
                 </Col>
                 <Col lg={true} >
-                  <Form.Label>Date</Form.Label>
+                  <Form.Label style={{marginTop:'2%'}}>Date:</Form.Label>
                   <Form.Control disabled readOnly type="date" name="date" value={dayjs(date).format("YYYY-MM-DD")} />
                 </Col>
               </Row>
               <Form.Group controlId="formTitle">
-                <Form.Label>Title</Form.Label>
+                <Form.Label style={{marginTop:'2%'}}>Title:</Form.Label>
                 <Form.Control type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
                 <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="formDescription">
-                <Form.Label>Description</Form.Label>
+                <Form.Label style={{marginTop:'2%'}}>Description:</Form.Label>
                 <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
                 <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="formQuality">
-                <Row>
+                <Row style={{marginTop:'3%'}}>
                   <Col xs={3} className="d-flex align-items-center justify-content-start">
-                    <Form.Label className="me-5">Quality</Form.Label>
+                    <Form.Label className="me-5 mb-0" style={{marginTop:'2%'}}>Quality:</Form.Label>
                   </Col>
                   <Col xs={6} className="d-flex align-items-center">
                     <Rating view={view} quality={quality} />
@@ -323,9 +324,9 @@ const ReviewForm = (props) => {
               </Form.Group>
 
               <Form.Group controlId="formSafety">
-                <Row>
+                <Row style={{marginTop:'3%'}}>
                   <Col xs={3} className="d-flex align-items-center justify-content-start">
-                    <Form.Label className="me-5">Safety</Form.Label>
+                    <Form.Label className="me-5 mb-0" style={{marginTop:'2%'}}>Safety:</Form.Label>
                   </Col>
                   <Col xs={6} className="d-flex align-items-center">
                     <HappinessRating view={view} safety={safety} />
@@ -337,9 +338,9 @@ const ReviewForm = (props) => {
               </Form.Group>
 
               <Form.Group controlId="formPrice">
-                <Row>
+                <Row style={{marginTop:'3%'}}>
                   <Col xs={3} className="d-flex align-items-center justify-content-start">
-                    <Form.Label className="me-5">Price</Form.Label>
+                    <Form.Label className="me-5 mb-0" style={{marginTop:'2%'}}>Price:</Form.Label>
                   </Col>
                   <Col xs={6} className="d-flex align-items-center">
                     <Prices view={view} price={price} />
