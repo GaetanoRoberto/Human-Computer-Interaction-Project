@@ -54,24 +54,25 @@ function InfoPopup(props) {
                 <Modal.Title>Help and Info</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Row className="mb-1">
-                    <Col>
-                        For each restaurant the number of:
-                    </Col>
+            <Row  className="mb-1">
+                <Col>
+                According to users reviews:
+                </Col>
                 </Row>
                 <Row >
                     <Col style={{ textAlign: "start" }}>
                         <i className="bi bi-star-fill" style={{ color: '#FFD700', fontSize: "1.25em" }}></i> indicates the <b>Average Quality</b>
                     </Col>
                 </Row>
-                <Row>
-                    <Col style={{ textAlign: "start" }}>
-                        <i className="bi bi-currency-euro" style={{ fontSize: "1.25em" }} ></i> indicates the <b>Average Price</b> from the Reviews
-                    </Col>
+                <Row className="mb-2">
+                <Col style={{textAlign: "start"}}>
+                <i className="bi bi-currency-euro" style={{fontSize:"1.25em"}} ></i> indicates the <b>Average Price</b>, based on how much users spent (per person).
+                </Col>
                 </Row>
-                <Row className="mb-1 " >
+                <Row className="mb-3 " >
                     <Col>
-                        For the <b>Average Safety</b> we mean the degree of security perceived by customers after eating Gluten-Free dishes in restaurants. Those are the metrics:
+                    <b>Average Safety</b> refers to the degree of security perceived by customers after eating Gluten-Free dishes in restaurants.<br/>
+                     These are the metrics:
                     </Col>
                 </Row>
                 {Array.from({ length: 5 }, (_, index) => (
