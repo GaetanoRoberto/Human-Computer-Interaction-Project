@@ -277,10 +277,11 @@ const ReviewForm = (props) => {
                 </p>
               </div>
               <div className="mb-2">
-              <Form.Label style={{fontSize:'large'}}>Prices:</Form.Label>
+              <Form.Label style={{fontSize:'large'}}>Price:</Form.Label>
                 <p>    <Prices view={view} price={price} />
-                <h6>Price Range: {approssimaValoreAlRange(price)} €</h6>
                 </p>
+                <h6>Price Range: {approssimaValoreAlRange(price)} €</h6>
+
               </div>
             </Card.Body>
           </Card>

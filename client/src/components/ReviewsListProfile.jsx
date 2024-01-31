@@ -98,7 +98,7 @@ function ReviewsListProfile(props) {
                 </Row>
 
                 <Row>
-                  <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em"}}>Prices:</Card.Text></Col>
+                  <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em"}}>Price:</Card.Text></Col>
                   <Col xs={8} ><Card.Text>
                   <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
                                 {approssimaValoreAlRange(item.price)}
