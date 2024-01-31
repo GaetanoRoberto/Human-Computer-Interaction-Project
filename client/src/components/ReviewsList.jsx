@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ErrorContext } from './userContext';
 import API from '../API';
 import dayjs from 'dayjs';
-
+import { approssimaValoreAlRange } from './Costants';
 function getHappinessClass(index) {
   switch (index) {
     case 0:
@@ -242,11 +242,10 @@ function ReviewsList({ reviews, divHeight }) {
                       </Row>
 
                       <Row>
-                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
-                        <Col xs={8} ><Card.Text>
-                          {Array.from({ length: item.price }, (_, index) => (
-                            <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
-                          ))}
+                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Price:</Card.Text></Col>
+                        <Col xs={8} ><Card.Text style={{ fontSize: "1.2em" }}>
+                        <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
+                                {approssimaValoreAlRange(item.price)}
                         </Card.Text></Col>
                       </Row>
                       <Row >

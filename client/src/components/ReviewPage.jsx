@@ -9,7 +9,7 @@ import { UserContext } from './userContext';
 import ConfirmModal from './ConfirmModal';
 import API from '../API';
 import { ErrorContext } from './userContext';
-
+import { approssimaValoreAlRange } from './Costants';
 
 
 /*
@@ -48,7 +48,7 @@ const ReviewForm = (props) => {
   const [titleInvalid, setTitleInvalid] = useState(false);
   const [descInvalid, setDescInvalid] = useState(false);
   // disabled flag
-  const disabled_flag = title === '' || description === '' || quality === 0 || safety === 0 || price === 0;
+  //const disabled_flag = title === '' || description === '' || quality === 0 || safety === 0 || price === 0;
 
   const [show, setShow] = useState(false);
   // USE EFFECT 
@@ -281,7 +281,6 @@ const ReviewForm = (props) => {
                 <p>    <Prices view={view} price={price} />
                 </p>
               </div>
-              {/* Aggiungi altre informazioni se necessario */}
             </Card.Body>
           </Card>
           : (
@@ -344,6 +343,7 @@ const ReviewForm = (props) => {
                   <Col xs={6} className="d-flex align-items-center">
                     <Prices view={view} price={price} />
                   </Col>
+                  <h6 hidden={price === 0}>Price Range: {approssimaValoreAlRange(price)} €</h6>
                 </Row>
                 <Row>
                   <Form.Text hidden={euroValid} className="text-danger">Please select a Price Value.</Form.Text>
@@ -361,7 +361,7 @@ const ReviewForm = (props) => {
                   </Button>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <Button disabled={disabled_flag} className="btn-lg mx-1 mb-2" type='submit' variant="primary">
+                  <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">
                     {reviewId ? 'Update' : 'Add'}
                   </Button>
                 </Col>

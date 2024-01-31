@@ -24,4 +24,18 @@ const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"];
 // Allergens
 const foodAllergens = ['Peanuts', 'Tree nuts', 'Lactose', 'Eggs', 'Soy', 'Gluten', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries', 'Nickel'].map(item => ({ value: item.toLowerCase(), label: item.toLowerCase() }));
 
-export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS,foodAllergens,PLACEHOLDER2};
+function approssimaValoreAlRange(valore) {
+    if (valore == 1 ) {
+      return "1-10";
+    } else if (valore == 2 ) {
+      return "10-20";
+    } else if (valore == 3 ) {
+      return "20-30";
+    } else if (valore == 4 ) {
+      return "30-40";
+    } else if (valore >4) {
+      return "40+";
+    }
+  }
+
+export{SERVER_URL,DISHES_PATH,RESTAURANTS_PATH,PLACEHOLDER,API_KEY,DAYS,foodAllergens,PLACEHOLDER2,approssimaValoreAlRange};
