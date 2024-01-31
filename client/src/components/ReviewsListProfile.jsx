@@ -4,6 +4,7 @@ import { ListGroup, Card, Col, Row, Button, FormControl } from 'react-bootstrap'
 import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import API from '../API';
+import { approssimaValoreAlRange } from './Costants';
 
 function getHappinessClass(index) {
     switch (index) {
@@ -81,16 +82,15 @@ function ReviewsListProfile(props) {
                                     <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Quality:</Card.Text></Col>
                                     <Col xs={8}><Card.Text>
                                     {Array.from({ length: item.quality }, (_, index) => (
-                                        <i key={index} className="bi bi-star-fill" style={{ color: '#FFD700', marginRight: "5px", fontSize: "1.4em" }} ></i>
+                                        <i key={index} className="bi bi-star-fill" style={{ color: '#FFD700', marginRight: "5px", fontSize: "1.2em" }} ></i>
                                     ))}
                                     </Card.Text></Col>
                                 </Row>
                                 <Row>
                                     <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Prices:</Card.Text></Col>
                                     <Col xs={8} ><Card.Text>
-                                    {Array.from({ length: item.price }, (_, index) => (
-                                        <i key={index} className="bi bi-currency-euro" style={{ marginRight: "5px", fontSize: "1.4em" }}></i>
-                                    ))}
+                                    <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
+                                {approssimaValoreAlRange(item.price)}
                                     </Card.Text></Col>
                                 </Row>
                                 <Row>
@@ -101,7 +101,7 @@ function ReviewsListProfile(props) {
                                         <FontAwesomeIcon
                                             key={index}
                                             icon={(index + 1 != item.safety) ? getHappinessClass(index) : getHappinessSolidClass(index)}
-                                            style={{ color: (index < 5) ? getHappinessColor(index) : "", marginRight: "5px", fontSize: "1.4em" }} />))}
+                                            style={{ color: (index < 5) ? getHappinessColor(index) : "", marginRight: "5px", fontSize: "1.2em" }} />))}
                                     </Card.Text>
                                     </Col>
                                 </Row>
