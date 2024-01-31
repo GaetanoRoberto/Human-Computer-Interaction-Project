@@ -207,6 +207,7 @@ function InnerForm(props) {
                 // retrieve hours
                 setTimes(sort_and_merge_times(time_string_to_object(restaurant.hours)));
                 setImage(restaurant.image);
+                setFileName(restaurant.image.split('/')[restaurant.image.split('/').length - 1]);
                 setDishes(restaurant.dishes);
                 //setDishTempId(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
             } catch (err) {
@@ -909,15 +910,23 @@ function InnerForm(props) {
                             <Container>
                                 <ListGroup>
                                     {
-                                        dishes.map((dish, index) => {
+                                        dishes.sort((a, b) => {
+                                            const nameA = a.name.toUpperCase(); 
+                                            const nameB = b.name.toUpperCase();
+                                          
+                                            if (nameA < nameB) {
+                                              return -1;
+                                            }
+                                            if (nameA > nameB) {
+                                              return 1;
+                                            }
+                                            return 0;
+                                          }).map((dish, index) => {
                                             return (<DishItem key={index} dish={dish} deleteDish={deleteDish} setManageDish={setManageDish} />);
                                         })
                                     }
                                 </ListGroup>
-                            </Container>
-                            <Container className="d-flex flex-column align-items-center width-100">
-                                <Button variant='primary' onClick={() => { setManageDish({route: 'add_dish', id: undefined}) }}>Add Dish</Button>
-                            </Container>
+                            </Container> 
                         </>
                 );
             }
@@ -931,9 +940,13 @@ function InnerForm(props) {
             <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
             <SuccessModal text={confirmText} show={showConfirm} setShow={setShowConfirm} action={action_to_perform}/>
             <Form noValidate onSubmit={handleSubmit}>
-                <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom:'3%' }}>
-                    {componentToRender}
-                </Container>
+                {(progress === 4 && manageDish === undefined) ?
+                <>
+                    <Container fluid style={{ height: '65vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
+                    <Container className="d-flex flex-column align-items-center width-100">
+                        <Button variant='primary' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
+                    </Container>
+                </> : <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
                 <Container className="d-flex justify-content-between mt-auto">
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
                     {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}

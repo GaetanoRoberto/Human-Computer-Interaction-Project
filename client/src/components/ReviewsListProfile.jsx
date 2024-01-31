@@ -99,10 +99,12 @@ function ReviewsListProfile(props) {
 
                 <Row>
                   <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em"}}>Price:</Card.Text></Col>
-                  <Col xs={8} ><Card.Text>
-                  <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
-                                {approssimaValoreAlRange(item.price)}
-                  </Card.Text></Col>
+                  <Col xs={8} style={{display:'flex', alignItems:'center' }}>
+                    <Card.Text>
+                    <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
+                    {approssimaValoreAlRange(item.price)}
+                    </Card.Text>
+                  </Col>
                 </Row>
                 <Row >
                   <footer style={{ fontSize: "1em", margin: '0' }}>{dayjs(item.date).format("DD-MM-YYYY")}</footer>

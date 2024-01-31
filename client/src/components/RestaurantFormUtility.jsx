@@ -22,8 +22,9 @@ const calculateFileSize = (dataURL) => {
 
 const handleImageChange = (event, setImage, setFileName, setViewImage) => {
     const file = event.target.files[0];
+    const fileName_length = 18;
     if (file.name) {
-        setFileName(file.name);
+        setFileName((file.name.length > fileName_length) ? file.name.slice(0, fileName_length) + "..." : file.name);
     }
 
     if (file) {
