@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 
 -- filters in home and categories when add/edit restaurant hardcoded without backend (a costant array in costants.jsx)
 
-INSERT INTO "restaurants" VALUES (1,0, 'IP_ADDRESS_AND_PORT/restaurants/sorbillo.jpg', 'Sorbillo', 'Via Bruno Buozzi, 3, 10121 Torino TO;lat:45.0658389;lng:7.6797594', '+3901119234672', 'https://www.sorbillo.it/', 'https://www.facebook.com/PizzeriaGinoSorbillo/', 'https://www.instagram.com/sorbillo/', 'https://www.twitter.com/sorbillo/', 'Mon=8:30-10:30;12:30-15:30/Tue=8:30-10:30;12:30-15:30/Wed=8:30-10:30;12:30-15:30/Thu=8:30-10:30;12:30-15:30/Fri=8:30-10:30;12:30-15:30/Sat=8:30-10:30;12:30-15:30/Sun=8:30-10:30;12:30-15:30', 'Gino Sorbillo belongs to one of the oldest pizza chef families in Naples. he grew up in the family pizzeria and soon learned the secrets of real Neapolitan pizza. With Gino Sorbillo, Neapolitan Pizza has reached very high quality levels and has rightfully earned its place among the best Italian gastronomic excellences.');
+INSERT INTO "restaurants" VALUES (1,1, 'IP_ADDRESS_AND_PORT/restaurants/sorbillo.jpg', 'Sorbillo', 'Via Bruno Buozzi, 3, 10121 Torino TO;lat:45.0658389;lng:7.6797594', '+3901119234672', 'https://www.sorbillo.it/', 'https://www.facebook.com/PizzeriaGinoSorbillo/', 'https://www.instagram.com/sorbillo/', 'https://www.twitter.com/sorbillo/', 'Mon=8:30-10:30;12:30-15:30/Tue=8:30-10:30;12:30-15:30/Wed=8:30-10:30;12:30-15:30/Thu=8:30-10:30;12:30-15:30/Fri=8:30-10:30;12:30-15:30/Sat=8:30-10:30;12:30-15:30/Sun=8:30-10:30;12:30-15:30', 'Gino Sorbillo belongs to one of the oldest pizza chef families in Naples. he grew up in the family pizzeria and soon learned the secrets of real Neapolitan pizza. With Gino Sorbillo, Neapolitan Pizza has reached very high quality levels and has rightfully earned its place among the best Italian gastronomic excellences.');
 INSERT INTO "restaurants" VALUES (2,0, 'IP_ADDRESS_AND_PORT/restaurants/anticovinaio.jpg', "All'Antico Vinaio", "Via Sant'Ottavio, 18, 10124 Torino TO;lat:45.0674448;lng:7.6941677", '+390116988025', 'https://www.allanticovinaio.com/', 'https://www.facebook.com/AllAnticoVinaio/', 'https://www.instagram.com/allanticovinaiofirenze/', NULL , 'Tue=11:00-22:00/Wed=11:00-22:00/Thu=11:00-22:00/Fri=11:00-22:00/Sat=11:00-22:00/Sun=11:00-22:00', 'The history of Antico Vinaio began in 1989, when the Mazzanti family took over a small rotisserie in via dei Neri, just 250 meters from the Uffizi Gallery. After Tommaso joined the company in 2006, the rotisserie transformed into a squash shop and in a short time the place became a point of reference for Florence and street food lovers. More than as an entrepreneur, and since the end of 2016 as owner of the family business, Tommaso simply feels like a winemaker. He never liked studying, but he already had a B plan.');
 INSERT INTO "restaurants" VALUES (3,0, 'IP_ADDRESS_AND_PORT/restaurants/pizzium.jpg', 'Pizzium', 'Via Torquato Tasso, 5, 10122 Torino TO;lat:45.0738869;lng:7.6825461', '+3901119585395', 'https://pizzium.com/', 'https://www.facebook.com/pizzium', 'https://www.instagram.com/pizzium/', NULL , 'Mon=12:30-15:00;19:00-23:30/Tue=12:30-15:00;19:00-23:30/Wed=12:30-15:00;19:00-23:30/Thu=12:30-15:00;19:00-23:30/Fri=12:30-15:00;19:00-23:30/Sat=12:30-15:00;19:00-23:30/Sun=12:30-15:00;19:00-23:30', 'Born in 2017 in Milan from an idea by Stefano Saturnino, Giovanni Arbellini and Ilaria Puddu, Pizzium offers classic Neapolitan pizza using the best of Italian raw materials. The Pizzium style is unmistakable, but each venue is unique because it draws inspiration from the land that hosts it, without giving up the best of Naples and Campania.');
 INSERT INTO "restaurants" VALUES (4,0, 'IP_ADDRESS_AND_PORT/restaurants/rossopomodoro.jpg', 'Rossopomodoro', 'Via Nizza, 2, 10126 Torino TO;lat:45.0623010;lng:7.6781004', '+3901119781792', 'https://www.rossopomodoro.it/', 'https://www.facebook.com/rossopomodoroofficial', 'https://www.instagram.com/rossopomodoro_italia/', 'https://twitter.com/i/flow/login?redirect_after_login=%2FRossopomodoroOF', 'Mon=00:00-00:00/Tue=00:00-00:00/Wed=00:00-00:00/Thu=00:00-00:00/Fri=00:00-00:00/Sat=00:00-00:00/Sun=00:00-00:00', 'Founded in Naples - the home of pizza - in 1998, by three young people passionate about artisanal Neapolitan cuisine and pizza, Rossopomodoro has grown to become a point of reference for millions of people around the world. With over 100 restaurants in Italy and around the world, we have built an enviable reputation over 20 years, offering true Neapolitan pizza, with long-leavened dough cooked in a wood-fired oven, traditional Campania recipes and the best Italian excellences.');
@@ -205,11 +205,10 @@ INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (
 
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (6, 'Vegetarian burger', 11.00, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/veggieburger.jpg');
 
-
--- INSERT INTO "dishes" VALUES (75,6, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
--- INSERT INTO "dishes" VALUES (76,7, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
--- INSERT INTO "dishes" VALUES (77,8, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
--- INSERT INTO "dishes" VALUES (78,9, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Moretti beer (33cl)', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/moretti.png');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Moretti beer (33cl)', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/moretti1.png');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (9, 'Gluten Free beer (33cl)', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/peronisenzaglutine.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (6, 'Moretti beer (33cl)', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/moretti2.png');
 
 INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/strawberry.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (2,1, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
@@ -464,6 +463,22 @@ INSERT INTO "ingredients" VALUES (238, 109, 'IP_ADDRESS_AND_PORT/ingredients/sei
 INSERT INTO "ingredients" VALUES (239, 109, 'IP_ADDRESS_AND_PORT/ingredients/cheddar1.jpg', 'Cheddar', 'lactose', 'Kraft', 'https://www.mealswithkraft.com/en/products/kraft-cheddar-blocks/');
 INSERT INTO "ingredients" VALUES (240, 109, 'IP_ADDRESS_AND_PORT/ingredients/lettuce6.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (241, 109, 'IP_ADDRESS_AND_PORT/ingredients/paprica1.jpg', 'Paprika', NULL, 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (242, 110, 'IP_ADDRESS_AND_PORT/ingredients/luppolo.jpg', 'Hop', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (243, 110, 'IP_ADDRESS_AND_PORT/ingredients/lievitobirra.jpg', 'Yeast', NULL, 'Lievital', 'https://lievital.it/');
+INSERT INTO "ingredients" VALUES (244, 110, 'IP_ADDRESS_AND_PORT/ingredients/orzo-perlato.jpg', 'Pearl barley', 'gluten', 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (245, 111, 'IP_ADDRESS_AND_PORT/ingredients/luppolo1.jpg', 'Hop', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (246, 111, 'IP_ADDRESS_AND_PORT/ingredients/lievitobirra1.jpg', 'Yeast', NULL, 'Lievital', 'https://lievital.it/');
+INSERT INTO "ingredients" VALUES (247, 111, 'IP_ADDRESS_AND_PORT/ingredients/orzo-perlato1.jpg', 'Pearl barley', 'gluten', 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (248, 112, 'IP_ADDRESS_AND_PORT/ingredients/luppolo2.jpg', 'Hop', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (249, 112, 'IP_ADDRESS_AND_PORT/ingredients/lievitobirra2.jpg', 'Yeast', NULL, 'Lievital', 'https://lievital.it/');
+INSERT INTO "ingredients" VALUES (250, 112, 'IP_ADDRESS_AND_PORT/ingredients/granosaraceno.webp', 'Buckwheat', NULL, 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (251, 113, 'IP_ADDRESS_AND_PORT/ingredients/luppolo3.jpg', 'Hop', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (252, 113, 'IP_ADDRESS_AND_PORT/ingredients/lievitobirra3.jpg', 'Yeast', NULL, 'Lievital', 'https://lievital.it/');
+INSERT INTO "ingredients" VALUES (253, 113, 'IP_ADDRESS_AND_PORT/ingredients/orzo-perlato2.jpg', 'Pearl barley', 'gluten', 'Local Farm', NULL);
 
 INSERT INTO "users" VALUES ('Andrea','Piazza Carlo Felice, 63, 10123 Torino TO;lat:45.0631586;lng:7.6800018',0);
 INSERT INTO "users" VALUES ('Giuseppe','Via Roma, 357, 10123 Torino TO;lat:45.0644910;lng:7.6804360',0);  
