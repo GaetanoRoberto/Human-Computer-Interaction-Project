@@ -479,7 +479,7 @@ INSERT INTO "reviews" VALUES (2,'Giuseppe', 2, DATE('2023-07-28'), 'Awesome food
 INSERT INTO "reviews" VALUES (3,'Luca', 3, DATE('2023-06-21'), 'Delicious pasta', "Nice location! Can't wait to come back!", 4, 4, 3);
 INSERT INTO "reviews" VALUES (4,'Giovanni', 4, DATE('2023-04-22'), "Pizza lover’s paradise", 'Great variety of pizzas!', 5, 5, 5);
 INSERT INTO "reviews" VALUES (5,'Alessandro', 5, DATE('2024-01-26'), 'Cool place', 'Extremely positive experience. I will come back!', 5, 5, 5);
-INSERT INTO "reviews" VALUES (6,'Davide', 6, DATE('2023-08-20'), 'I will not come back definitely', "We waited two hours for five pasta dishes and they tasted really bad. I don't recommend it.", 1, 1, 1);
+INSERT INTO "reviews" VALUES (6,'Davide', 6, DATE('2023-08-20'), 'I will not come back definitely', "We waited two hours for five hamburgers and they tasted really bad. I don't recommend it.", 1, 1, 1);
 INSERT INTO "reviews" VALUES (7,'Luca', 4, DATE('2023-06-21'), 'Delicious pizza', 'Enjoyed the pizza!', 5, 5, 5);
 INSERT INTO "reviews" VALUES (8,'Luca', 5, DATE('2023-03-26'), 'Delicious spaghetti', 'I really enjoyed the Gricia!', 4, 5, 5);
 INSERT INTO "reviews" VALUES (9,'User', 7, DATE('2024-01-15'), 'Best pasta of my life', "Genuinely one of the most delicious pasta dishes I've had. The flavours were just amazing. Never expected it to be so good.", 5, 5, 5);
