@@ -83,18 +83,18 @@ INSERT INTO "restaurants" VALUES (9,0, 'IP_ADDRESS_AND_PORT/restaurants/lapiadin
 -- INSERT INTO "restaurants" VALUES (18,0, 'IP_ADDRESS_AND_PORT/restaurants/miscusi.jpg', 'Posto GlutenFree', "Via Principi d'Acaja, 32, 10138 Torino TO;lat:45.0739081;lng:7.6625995", '+393386292876', 'https://www.miscusi.com/', 'https://www.facebook.com/miscusi.official', 'https://www.instagram.com/miscusi.family/', NULL, 'Sun=12:00-15:00;19:00-22:00', 'Miscusi exists to make people happy by spreading a Mediterranean lifestyle. In 2017, the first restaurant launched in Milan and in just five years, the brand expanded to 12 restaurants across six Italian cities and 2 restaurants in London. Miscusi obtained B-Corp certification in the summer of 2021, thus becoming part of a movement of companies with a common goal, to be protagonists of global change and regenerate society through business, by creating a positive social and environmental impact.');
 
 
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza.png');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Bismark', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/bismark.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe.jpg');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (6, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Capricciosa', 11.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (6, 'Cheeseburger', 11.00, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater.jpg');
@@ -105,7 +105,7 @@ INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (1, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Pesto pasta', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastapesto.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Carbonara', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacarbonara1.jpg');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita1.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita2.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Pepperoni', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/pepperonipizza1.png');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Vegetarian', 9.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/vegetariana2.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Pumpkin Lasagna', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/placeholder2.png');
@@ -114,8 +114,8 @@ INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Amatriciana', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastaamatriciana1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Gricia', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastagricia1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Cacio e pepe', 10.00, 'pasta', 'IP_ADDRESS_AND_PORT/dishes/pastacacioepepe1.jpg');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Capricciosa', 10.99, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa1.jpg');
-INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (8, 'Cheeseburger', 10.99, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/cheeseburger1.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (4, 'Capricciosa', 11.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/capricciosa1.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (8, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu1.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Natural Water', 1.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/naturalwater1.jpg');
@@ -189,6 +189,21 @@ INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (9, 'Fanta', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/fanta8.jpg');
 INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (9, 'Sprite', 2.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/sprite8.jpg');
 
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake2.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake3.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake4.jpg');
+
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (7, 'Strawberry Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/strawberrycheesecake5.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (7, 'Chocolate Cheesecake', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/chocolatecheesecake2.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (7, 'Tiramisù', 5.00, 'desserts', 'IP_ADDRESS_AND_PORT/dishes/tiramisu2.jpg');
+
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Tonno e cipolla', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tonnoCipolla.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (3, 'Tedesca', 10.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/tedesca.png');
+
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (2, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita3.jpg');
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (5, 'Margherita', 7.00, 'pizza', 'IP_ADDRESS_AND_PORT/dishes/margherita4.jpg');
+
+INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (6, 'Vegetarian burger', 11.00, 'hamburger', 'IP_ADDRESS_AND_PORT/dishes/veggieburger.jpg');
 
 
 -- INSERT INTO "dishes" VALUES (75,6, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
@@ -196,11 +211,10 @@ INSERT INTO "dishes" ("restaurantId", "name", "price", "type", "image") VALUES (
 -- INSERT INTO "dishes" VALUES (77,8, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
 -- INSERT INTO "dishes" VALUES (78,9, 'Moretti Beer 33cl', 3.00, 'drinks', 'IP_ADDRESS_AND_PORT/dishes/birramoretti.jpg');
 
-INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/spaghetti.jpg' , 'Spaghetti', 'gluten', 'Barilla', 'https://www.barilla.com/it-it/prodotti/pasta/i-classici/spaghetti');
-INSERT INTO "ingredients" VALUES (2,1, 'IP_ADDRESS_AND_PORT/ingredients/guanciale.jpg' , 'Guanciale', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (3,1, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (4,1, 'IP_ADDRESS_AND_PORT/ingredients/pecorinoromano.jpg' , 'Pecorino Romano cheese', 'lactose', 'Volpetti', 'https://www.volpetti.com/prodotto/pecorino-romano-dop-12-mesi/');
-INSERT INTO "ingredients" VALUES (5,1, 'IP_ADDRESS_AND_PORT/ingredients/blackpepper.jpg' , 'Black pepper', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (1,1, 'IP_ADDRESS_AND_PORT/ingredients/strawberry.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (2,1, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (3,1, 'IP_ADDRESS_AND_PORT/ingredients/egg2.jpg','Eggs', NULL, 'Local Breeding', NULL);
+
 INSERT INTO "ingredients" VALUES (6,2, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
 INSERT INTO "ingredients" VALUES (7,2, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
 INSERT INTO "ingredients" VALUES (8,2, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
@@ -221,9 +235,12 @@ INSERT INTO "ingredients" VALUES (19, 5, 'IP_ADDRESS_AND_PORT/ingredients/lasagn
 INSERT INTO "ingredients" VALUES (20, 5, 'IP_ADDRESS_AND_PORT/ingredients/pumpkin.jpg', 'Pumpkins', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (21, 5, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella3.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
 INSERT INTO "ingredients" VALUES (22,5, 'IP_ADDRESS_AND_PORT/ingredients/bacon.jpg', 'Bacon', NULL, 'Local Breeding', NULL);
-INSERT INTO "ingredients" VALUES (23,6, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour3.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
-INSERT INTO "ingredients" VALUES (24, 6, 'IP_ADDRESS_AND_PORT/ingredients/tuna.jpg', 'Tuna', NULL, 'Rio Mare', 'https://www.riomare.it/prodotti/tonno-olio-di-oliva/tonno-allolio-di-oliva/');
-INSERT INTO "ingredients" VALUES (188, 6, 'IP_ADDRESS_AND_PORT/ingredients/onions.jpg', 'Onions', NULL, 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (23,6, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour6.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
+INSERT INTO "ingredients" VALUES (24,6, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce13.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
+INSERT INTO "ingredients" VALUES (188,6, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella13.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
+INSERT INTO "ingredients" VALUES (219, 6, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil10.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
+
 INSERT INTO "ingredients" VALUES (25,7, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour4.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
 INSERT INTO "ingredients" VALUES (26,7, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce3.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
 INSERT INTO "ingredients" VALUES (27, 7, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella4.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
@@ -248,15 +265,15 @@ INSERT INTO "ingredients" VALUES (43, 11, 'IP_ADDRESS_AND_PORT/ingredients/olive
 INSERT INTO "ingredients" VALUES (44,11, 'IP_ADDRESS_AND_PORT/ingredients/egg1.jpg','Eggs', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (45, 11, 'IP_ADDRESS_AND_PORT/ingredients/mushrooms.jpg', 'Mushrooms', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (190,11, 'IP_ADDRESS_AND_PORT/ingredients/bakedham.jpg','Baked ham', NULL, 'Local Breeding', NULL);
-INSERT INTO "ingredients" VALUES (46, 12, 'IP_ADDRESS_AND_PORT/ingredients/buns.jpg', 'Buns', 'gluten', 'Mulino Bianco', 'https://www.mulinobianco.it/pagnottelle-classiche');
+INSERT INTO "ingredients" VALUES (46, 12, 'IP_ADDRESS_AND_PORT/ingredients/buns.jpg', 'Buns', 'gluten', 'Mulino Bianco', 'https://www.mulinobianco.it/gran-pagnottelle');
 INSERT INTO "ingredients" VALUES (47, 12, 'IP_ADDRESS_AND_PORT/ingredients/beef.jpg', 'Ground Beef', NULL, 'GrassFed', 'https://grassrunfarms.com/grass-fed-beef-products/85-15-ground-beef-brick/');
 INSERT INTO "ingredients" VALUES (48, 12, 'IP_ADDRESS_AND_PORT/ingredients/cheddar.jpg', 'Cheddar', 'lactose', 'Kraft', 'https://www.mealswithkraft.com/en/products/kraft-cheddar-blocks/');
 INSERT INTO "ingredients" VALUES (49, 12, 'IP_ADDRESS_AND_PORT/ingredients/onions1.jpg', 'Onions', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (50, 12, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes.jpg', 'Tomatoes', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (51, 12, 'IP_ADDRESS_AND_PORT/ingredients/pickles.jpg', 'Pickles', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (52,13, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
-INSERT INTO "ingredients" VALUES (53,13, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
-INSERT INTO "ingredients" VALUES (54,13, 'IP_ADDRESS_AND_PORT/ingredients/egg2.jpg','Eggs', NULL, 'Local Breeding', NULL);
+INSERT INTO "ingredients" VALUES (53,13, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese1.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (54,13, 'IP_ADDRESS_AND_PORT/ingredients/egg3.jpg','Eggs', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (55,14, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate1.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
 INSERT INTO "ingredients" VALUES (56,14, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks1.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (57,14, 'IP_ADDRESS_AND_PORT/ingredients/rumbacardi.jpg' , 'White rum', 'alcohol', 'Bacardi', 'https://www.bacardi.com/our-rums/carta-blanca-rum/');
@@ -299,7 +316,7 @@ INSERT INTO "ingredients" VALUES (87,28, 'IP_ADDRESS_AND_PORT/ingredients/gluten
 INSERT INTO "ingredients" VALUES (88,28, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce8.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
 INSERT INTO "ingredients" VALUES (89, 28, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella10.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
 INSERT INTO "ingredients" VALUES (195, 28, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil8.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
-INSERT INTO "ingredients" VALUES (90,28, 'IP_ADDRESS_AND_PORT/ingredients/egg3.jpg','Eggs', NULL, 'Local Breeding', NULL);
+INSERT INTO "ingredients" VALUES (90,28, 'IP_ADDRESS_AND_PORT/ingredients/egg4.jpg','Eggs', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (91,29, 'IP_ADDRESS_AND_PORT/ingredients/rigatoniglutenfree1.jpg' , 'Gluten-free short rigatoni', NULL, 'Rummo', 'https://www.pastarummo.it/prodotti/senza-glutine/mezzi-rigatoni-gluten-free-51/');
 INSERT INTO "ingredients" VALUES (92,29, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce11.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
 INSERT INTO "ingredients" VALUES (93,29, 'IP_ADDRESS_AND_PORT/ingredients/guanciale4.jpg' , 'Guanciale', NULL, 'Local Farm', NULL);
@@ -316,18 +333,13 @@ INSERT INTO "ingredients" VALUES (102,32, 'IP_ADDRESS_AND_PORT/ingredients/glute
 INSERT INTO "ingredients" VALUES (103,32, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce9.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
 INSERT INTO "ingredients" VALUES (104, 32, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella11.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
 INSERT INTO "ingredients" VALUES (105, 32, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil9.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
-INSERT INTO "ingredients" VALUES (106,32, 'IP_ADDRESS_AND_PORT/ingredients/egg4.jpg','Eggs', NULL, 'Local Breeding', NULL);
+INSERT INTO "ingredients" VALUES (106,32, 'IP_ADDRESS_AND_PORT/ingredients/egg5.jpg','Eggs', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (107, 32, 'IP_ADDRESS_AND_PORT/ingredients/mushrooms1.jpg', 'Mushrooms', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (196,32, 'IP_ADDRESS_AND_PORT/ingredients/bakedham1.jpg','Baked ham', NULL, 'Local Breeding', NULL);
-INSERT INTO "ingredients" VALUES (108, 33, 'IP_ADDRESS_AND_PORT/ingredients/buns1.jpg', 'Buns', 'gluten', 'Mulino Bianco', 'https://www.mulinobianco.it/pagnottelle-classiche');
-INSERT INTO "ingredients" VALUES (109, 33, 'IP_ADDRESS_AND_PORT/ingredients/beef1.jpg', 'Ground Beef', NULL, 'GrassFed', 'https://grassrunfarms.com/grass-fed-beef-products/85-15-ground-beef-brick/');
-INSERT INTO "ingredients" VALUES (110, 33, 'IP_ADDRESS_AND_PORT/ingredients/cheddar_no_lactose.jpg', 'Lactose Free Cheddar', NULL, 'Paradise Island', 'https://paradise-foods.com');
-INSERT INTO "ingredients" VALUES (111, 33, 'IP_ADDRESS_AND_PORT/ingredients/onions3.jpg', 'Onions', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (112, 33, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes1.jpg', 'Tomatoes', NULL, 'Local Farm', NULL);
-INSERT INTO "ingredients" VALUES (113, 33, 'IP_ADDRESS_AND_PORT/ingredients/pickles1.jpg', 'Pickles', NULL, 'Local Farm', NULL);
+
 INSERT INTO "ingredients" VALUES (114,34, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate2.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
-INSERT INTO "ingredients" VALUES (115,34, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese1.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
-INSERT INTO "ingredients" VALUES (116,34, 'IP_ADDRESS_AND_PORT/ingredients/egg5.jpg','Eggs', NULL, 'Local Breeding', NULL);
+INSERT INTO "ingredients" VALUES (115,34, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese2.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (116,34, 'IP_ADDRESS_AND_PORT/ingredients/egg6.jpg','Eggs', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (117,35, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate3.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
 INSERT INTO "ingredients" VALUES (118,35, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks3.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (119,35, 'IP_ADDRESS_AND_PORT/ingredients/rumbacardi1.jpg' , 'White rum', 'alcohol', 'Bacardi', 'https://www.bacardi.com/our-rums/carta-blanca-rum/');
@@ -378,6 +390,9 @@ INSERT INTO "ingredients" VALUES (161, 58, 'IP_ADDRESS_AND_PORT/ingredients/flat
 INSERT INTO "ingredients" VALUES (162, 58, 'IP_ADDRESS_AND_PORT/ingredients/turkeykebab.jpg', 'Turkey Kebab', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (163, 58, 'IP_ADDRESS_AND_PORT/ingredients/radish.jpg', 'Radish', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (164, 58, 'IP_ADDRESS_AND_PORT/ingredients/maionese.jpg', 'Mayonnaise', NULL, 'Calvé', 'https://www.calve.it/prodotti/maionese/maionese-calve.html');
+INSERT INTO "ingredients" VALUES (108,33, 'IP_ADDRESS_AND_PORT/ingredients/strawberry1.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (109,33, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese3.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (110,33, 'IP_ADDRESS_AND_PORT/ingredients/egg7.jpg','Eggs', NULL, 'Local Breeding', NULL);
 
 INSERT INTO "ingredients" VALUES (165, 65, 'IP_ADDRESS_AND_PORT/ingredients/flatbread4.jpg', 'Gluten Free Flat Bread', NULL, 'Home Made', NULL);
 INSERT INTO "ingredients" VALUES (169, 65, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella_nolactose.jpg', 'Lactose Free Mozzarella Cheese', NULL, 'Galbani', 'https://galbanicheese.com/our-cheeses/dairy-aisle');
@@ -399,6 +414,56 @@ INSERT INTO "ingredients" VALUES (181, 68, 'IP_ADDRESS_AND_PORT/ingredients/parm
 INSERT INTO "ingredients" VALUES (182, 68, 'IP_ADDRESS_AND_PORT/ingredients/lettuce5.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
 INSERT INTO "ingredients" VALUES (183, 68, 'IP_ADDRESS_AND_PORT/ingredients/chicken1.jpg', 'Chicken', NULL, 'Local Breeding', NULL);
 INSERT INTO "ingredients" VALUES (184, 68, 'IP_ADDRESS_AND_PORT/ingredients/tomatoes6.jpg', 'Nickel Free Tomatoes', NULL, 'Local Farm', NULL);
+
+INSERT INTO "ingredients" VALUES (200,99, 'IP_ADDRESS_AND_PORT/ingredients/strawberry2.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (201,99, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese4.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (202,99, 'IP_ADDRESS_AND_PORT/ingredients/egg8.jpg','Eggs', NULL, 'Local Breeding', NULL);
+
+INSERT INTO "ingredients" VALUES (203,100, 'IP_ADDRESS_AND_PORT/ingredients/strawberry3.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (204,100, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese5.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (205,100, 'IP_ADDRESS_AND_PORT/ingredients/egg9.jpg','Eggs', NULL, 'Local Breeding', NULL);
+
+INSERT INTO "ingredients" VALUES (206,101, 'IP_ADDRESS_AND_PORT/ingredients/strawberry4.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (207,101, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese6.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (208,101, 'IP_ADDRESS_AND_PORT/ingredients/egg10.jpg','Eggs', NULL, 'Local Breeding', NULL);
+
+INSERT INTO "ingredients" VALUES (209,102, 'IP_ADDRESS_AND_PORT/ingredients/strawberry5.jpg' , 'Strawberries', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (210,102, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese7.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (211,102, 'IP_ADDRESS_AND_PORT/ingredients/egg11.jpg','Eggs', NULL, 'Local Breeding', NULL);
+
+INSERT INTO "ingredients" VALUES (212,103, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate4.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
+INSERT INTO "ingredients" VALUES (213,103, 'IP_ADDRESS_AND_PORT/ingredients/cottagecheese8.jpg' , 'Cottage cheese', 'lactose', 'Exquisa', 'https://www.exquisa.com/products/cottage-cheese/');
+INSERT INTO "ingredients" VALUES (214,103, 'IP_ADDRESS_AND_PORT/ingredients/egg12.jpg','Eggs', NULL, 'Local Breeding', NULL);
+INSERT INTO "ingredients" VALUES (215,104, 'IP_ADDRESS_AND_PORT/ingredients/darkchocolate5.jpg' , 'Dark chocolate', 'gluten', 'Perugina', 'https://www.perugina.com/it/prodotti/granblocco/granblocco-extra-fondente');
+INSERT INTO "ingredients" VALUES (216,104, 'IP_ADDRESS_AND_PORT/ingredients/eggyolks5.jpg' , 'Egg yolks', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (217,104, 'IP_ADDRESS_AND_PORT/ingredients/rumbacardi2.jpg' , 'White rum', 'alcohol', 'Bacardi', 'https://www.bacardi.com/our-rums/carta-blanca-rum/');
+INSERT INTO "ingredients" VALUES (218,104, 'IP_ADDRESS_AND_PORT/ingredients/coffee2.png' , 'Coffee', NULL, 'Lavazza', 'https://www.lavazza.it/it/capsule/a-modo-mio-crema-e-gusto');
+
+INSERT INTO "ingredients" VALUES (220,105, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour3.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
+INSERT INTO "ingredients" VALUES (221, 105, 'IP_ADDRESS_AND_PORT/ingredients/tuna.jpg', 'Tuna', NULL, 'Rio Mare', 'https://www.riomare.it/prodotti/tonno-olio-di-oliva/tonno-allolio-di-oliva/');
+INSERT INTO "ingredients" VALUES (222, 105, 'IP_ADDRESS_AND_PORT/ingredients/onions.jpg', 'Onions', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (223,106, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour7.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
+INSERT INTO "ingredients" VALUES (224,106, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce14.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
+INSERT INTO "ingredients" VALUES (225,106, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella14.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
+INSERT INTO "ingredients" VALUES (226, 106, 'IP_ADDRESS_AND_PORT/ingredients/potatoes3.jpg', 'Potatoes', NULL, 'McCain', 'https://www.mccainpotatoes.com/products/classic-cut-fries');
+INSERT INTO "ingredients" VALUES (227, 106, 'IP_ADDRESS_AND_PORT/ingredients/wurstel.png', 'Wurstel', NULL, 'Wuber', 'https://wuber.com/prodotto/delicatessen-frankfurter');
+INSERT INTO "ingredients" VALUES (228, 106, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil11.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
+
+INSERT INTO "ingredients" VALUES (229,107, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour7.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
+INSERT INTO "ingredients" VALUES (230,107, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce14.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
+INSERT INTO "ingredients" VALUES (231,107, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella14.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
+INSERT INTO "ingredients" VALUES (232, 107, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil11.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
+
+INSERT INTO "ingredients" VALUES (233,108, 'IP_ADDRESS_AND_PORT/ingredients/whiteflour8.jpg' , 'White Flour', 'gluten', 'NaturaSI', 'https://www.naturasi.it/prodotti/farina-di-farro-bianca-naturasi-42883');
+INSERT INTO "ingredients" VALUES (234,108, 'IP_ADDRESS_AND_PORT/ingredients/tomatosauce15.jpg', 'Tomato Sauce', 'nickel', 'Mutti', 'https://mutti-parma.com/product-category/tomato-puree/');
+INSERT INTO "ingredients" VALUES (235,108, 'IP_ADDRESS_AND_PORT/ingredients/mozzarella15.jpg', 'Mozzarella Cheese', 'lactose', 'Galbani', 'https://www.galbani.com/products.php');
+INSERT INTO "ingredients" VALUES (236, 108, 'IP_ADDRESS_AND_PORT/ingredients/olive_oil12.jpg', 'Extra Virgin Olive Oil', NULL, 'Monini', 'https://www.monini.com/it/p/olio-extra-vergine-classico');
+
+INSERT INTO "ingredients" VALUES (237, 109, 'IP_ADDRESS_AND_PORT/ingredients/bunclassico.jpg', 'Buns', 'gluten', 'Mulino Bianco', 'https://www.mulinobianco.it/pagnottelle-classiche');
+INSERT INTO "ingredients" VALUES (238, 109, 'IP_ADDRESS_AND_PORT/ingredients/seitan.jpg', 'Seitan', 'gluten', 'Carrefour', 'https://www.carrefour.it/p/carrefour-bio-seitan-al-naturale-2-x-100-g/8012666061723.html');
+INSERT INTO "ingredients" VALUES (239, 109, 'IP_ADDRESS_AND_PORT/ingredients/cheddar1.jpg', 'Cheddar', 'lactose', 'Kraft', 'https://www.mealswithkraft.com/en/products/kraft-cheddar-blocks/');
+INSERT INTO "ingredients" VALUES (240, 109, 'IP_ADDRESS_AND_PORT/ingredients/lettuce6.jpg', 'Lettuce', NULL, 'Local Farm', NULL);
+INSERT INTO "ingredients" VALUES (241, 109, 'IP_ADDRESS_AND_PORT/ingredients/paprica1.jpg', 'Paprika', NULL, 'Local Farm', NULL);
 
 INSERT INTO "users" VALUES ('Andrea','Piazza Carlo Felice, 63, 10123 Torino TO;lat:45.0631586;lng:7.6800018',0);
 INSERT INTO "users" VALUES ('Giuseppe','Via Roma, 357, 10123 Torino TO;lat:45.0644910;lng:7.6804360',0);  
