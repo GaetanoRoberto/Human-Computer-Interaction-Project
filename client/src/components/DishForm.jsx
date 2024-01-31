@@ -139,7 +139,7 @@ function DishForm(props) {
         <>
             <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>
                 <Form.Group >
-                    <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Info</Form.Label>
+                    <Form.Label style={{ fontSize: 'x-large', fontWeight: 'bold', margin:'0' }}>Dish Info</Form.Label>
                     <Row className="mb-3">
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Dish Name</Form.Label>
@@ -176,16 +176,16 @@ function DishForm(props) {
                     </Row>
 
                     <Form.Group className="mb-3" style={{marginTop: '3%'}}>
-                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Dish Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                        <Form.Label style={{ fontSize: 'x-large', fontWeight: 'bold' }}>Dish Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                         <ImageViewer width={"200px"} height={"200px"} image={dishImage} setImage={setDishImage} fileName={fileNameDish} setFileName={setFileNameDish} />
                     </Form.Group>
                 </Form.Group>
 
                 <Form.Group className="mb-3" style={{ borderTop: "4px solid black" }}>
-                    <Form.Label style={{ fontSize: 'large', fontWeight: 'bold', paddingTop: 16 }}>List of Ingredients </Form.Label>
+                    <Form.Label  style={{ fontSize: 'x-large', fontWeight: 'bold', paddingTop: 16 }}>List of Ingredients </Form.Label>
                     {ingredients.map((ingredient, index) => (
                         <div key={ingredient.id} style={{ paddingBottom: 30, borderBottom: "4px solid lightgray", marginTop: "2%" }}>
-                            <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold', marginBottom: 20, paddingRight: '5%' }}>Ingredient {index + 1}</Form.Label>
+                            <Form.Label style={{ fontSize: 'large', fontWeight: 'bold', paddingRight:'5%' }}>Ingredient {index + 1}</Form.Label>
                             {(ingredients.length > 1 || type.text==='drinks') ? <Button size='sm' variant="danger" onClick={() => removeIngredient(ingredient.id)}><i className="bi bi-trash"></i></Button> : ''}
                             <Row style={{ marginBottom: '5%' }}>
                                 <Col>
@@ -260,7 +260,7 @@ function DishForm(props) {
                                 />
                                 {(ingredient.invalid_allergens) ? <div className="invalid-feedback" style={{ display: 'block' }}>Remove Empty-Spaces Allergens</div> : ''}
                             </div>
-                            <div style={{ marginBottom: '5%' }}>
+                            <div style={{ marginBottom: '2%' }}>
                                 <Form.Group className="mb-3" >
                                     <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                                     <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
