@@ -21,7 +21,7 @@ import API from './API';
 import { Header } from './components/Home';
 import {DishIngredientsView} from "./components/DishIngredientsView.jsx";
 library.add(fab, fas, far);
-
+ 
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,13 +31,12 @@ function App() {
   const [address, setAddress] = useState({ text: '', lat: 0.0, lng: 0.0, invalid: false });
   const [filtersToApply, setFiltersToApply] = useState({
     categories: [],
-    priceRange: [0, 110],
-    maxDistance: '',
+    priceRange: [0, 50],
     qualityRating: '',
     safetyRating: '', 
     allergens: [], // Array to hold added ingredients
     openNow: false,
-    nearby: false,
+    distance: false,
     label: "Nothing",
     order: "DESC"
   });

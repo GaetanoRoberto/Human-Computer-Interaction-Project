@@ -128,11 +128,10 @@ function Filters(props) {
                 //console.log(updatedFilters.categories);
                 //console.log(filterKey);
                 if (filterKey != 'priceRange' &&
-                    filterKey != 'maxDistance' &&
                     filterKey != 'qualityRating' &&
                     filterKey != 'safetyRating' &&
                     filterKey != 'openNow' &&
-                    filterKey != 'nearby' &&
+                    filterKey != 'distance' &&
                     filterKey != 'label' &&
                     filterKey != 'order') {
 
@@ -140,10 +139,7 @@ function Filters(props) {
                 // Update your switch case to correctly identify and remove the filter
                 switch (filterKey) {
                     case 'priceRange':
-                        updatedFilters.priceRange = [0, 110]; // Reset or update as needed
-                        break;
-                    case 'maxDistance':
-                        updatedFilters.maxDistance = ''; // Reset or update as needed
+                        updatedFilters.priceRange = [0, 50]; // Reset or update as needed
                         break;
                     case 'qualityRating':
                         updatedFilters.qualityRating = ''; // Reset or update as needed
@@ -154,8 +150,8 @@ function Filters(props) {
                     case 'openNow':
                         updatedFilters.openNow = false; // Reset or update as needed
                         break;
-                    case 'nearby':
-                        updatedFilters.nearby = false; // Reset or update as needed
+                    case 'distance':
+                        updatedFilters.distance = false; // Reset or update as needed
                         break;
                     case 'label':
                         updatedFilters.label = 'Nothing'; // Reset or update as needed
@@ -533,11 +529,11 @@ function Home(props) {
 
         // Add other properties if they are not empty or in their default state
         let priceRangeLabel;
-        if (props.filtersToApply.priceRange[0] !== 0 || props.filtersToApply.priceRange[1] !== 110) {
-            if (props.filtersToApply.priceRange[0] == 100 && props.filtersToApply.priceRange[1] == 110) {
-                priceRangeLabel = "100€+";
+        if (props.filtersToApply.priceRange[0] !== 0 || props.filtersToApply.priceRange[1] !== 50) {
+            if (props.filtersToApply.priceRange[0] == 40 && props.filtersToApply.priceRange[1] == 50) {
+                priceRangeLabel = "40€+";
                 filter.push({ priceRange: priceRangeLabel });
-            } else if (props.filtersToApply.priceRange[1] === 110) {
+            } else if (props.filtersToApply.priceRange[1] === 50) {
                 let lowerBound = props.filtersToApply.priceRange[0] === 0 ? 1 : props.filtersToApply.priceRange[0];
                 priceRangeLabel = `${lowerBound}€ - ${props.filtersToApply.priceRange[1] - 10}€+`;
                 filter.push({ priceRange: priceRangeLabel });
@@ -548,9 +544,6 @@ function Home(props) {
             }
         }
 
-        if (props.filtersToApply.maxDistance !== '') {
-            filter.push({ maxDistance: "Max distance: " + props.filtersToApply.maxDistance + "km" });
-        }
         if (props.filtersToApply.qualityRating !== '') {
             if (props.filtersToApply.qualityRating != 5) {
                 filter.push({ qualityRating: "Quality: " + props.filtersToApply.qualityRating + " Stars & above" });
@@ -568,8 +561,8 @@ function Home(props) {
         if (props.filtersToApply.openNow) {
             filter.push({ openNow: "Open Now" });
         }
-        if (props.filtersToApply.nearby) {
-            filter.push({ nearby: "Nearby" });
+        if (props.filtersToApply.distance) {
+            filter.push({ distance: "Distance" });
         }
         if (props.filtersToApply.label != "Nothing" && props.filtersToApply.order != '') {
             filter.push({ label: "Sorted by " + props.filtersToApply.order + " " + props.filtersToApply.label });
@@ -609,13 +602,12 @@ function Home(props) {
         setIsSearchingType(props.search.trim().toLowerCase() !== '' && filteredRestaurants.some((restaurant) => restaurant.dishes.some((dish) => dish.type.toLowerCase() === props.search.trim().toLowerCase())));
         setRestaurantList(filteredRestaurants);
         if (props.search == "" && (props.filtersToApply.categories.length === 0) &&
-            (props.filtersToApply.priceRange[0] === 0 && props.filtersToApply.priceRange[1] === 110) &&
-            (props.filtersToApply.maxDistance === '') &&
+            (props.filtersToApply.priceRange[0] === 0 && props.filtersToApply.priceRange[1] === 50) &&
             (props.filtersToApply.qualityRating === '') &&
             (props.filtersToApply.safetyRating === '') &&
             (props.filtersToApply.allergens.length === 0) && // Added check for allergens
             (props.filtersToApply.openNow === false) &&
-            (props.filtersToApply.nearby === false) &&
+            (props.filtersToApply.distance === false) &&
             (props.filtersToApply.label === "Nothing") &&
             (props.filtersToApply.order === "DESC")) {
             setRestaurantList(restaurantInitialList);
@@ -632,9 +624,9 @@ function Home(props) {
             let passesAllFilters = true;
 
             // Price Range Filter
-            if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 110) {
+            if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 50) {
                 if (restaurant.dishes_avg_price < props.filtersToApply.priceRange[0] ||
-                    (props.filtersToApply.priceRange[1] !== 110 && restaurant.dishes_avg_price > props.filtersToApply.priceRange[1])) {
+                    (props.filtersToApply.priceRange[1] !== 50 && restaurant.dishes_avg_price > props.filtersToApply.priceRange[1])) {
                     passesAllFilters = false;
                 }
             }
@@ -801,15 +793,12 @@ function Home(props) {
             // console.log(filteredRestaurants)
         }
 
-        //Nearby AND Max Distance Filter
-        let nearby;
-        if (props.filtersToApply.nearby == true) {
-            nearby = 2.5;
-        }
-        if (props.filtersToApply.maxDistance != '') {
-            nearby = parseFloat(props.filtersToApply.maxDistance);
-        }
-        if (props.filtersToApply.nearby == true || props.filtersToApply.maxDistance != '') {
+        //Distance Filter
+        let distance;
+        // if (props.filtersToApply.distance == true) {
+        //     distance = 2.5;
+        // }
+        if (props.filtersToApply.distance == true) {
             // Map restaurants to include calculated distances
             filteredRestaurants = filteredRestaurants
                 .map(restaurant => {
@@ -829,7 +818,8 @@ function Home(props) {
 
             // Filter and sort by distance
             filteredRestaurants = filteredRestaurants
-                .filter(restaurant => restaurant.distance <= nearby)
+                .filter(restaurant => restaurant.distance //<= distance
+                )
                 .sort((a, b) => a.distance - b.distance);
 
             //console.log("Distances before sorting:", filteredRestaurants.map(r => r.distance));
@@ -846,12 +836,11 @@ function Home(props) {
         handleFilteringRestaurants();
     }, [props.search, props.filtersToApply, props.filtersToApply.categories.length,
     props.filtersToApply.priceRange[0], props.filtersToApply.priceRange[1],
-    props.filtersToApply.maxDistance,
     props.filtersToApply.qualityRating,
     props.filtersToApply.safetyRating,
     props.filtersToApply.allergens.length,
     props.filtersToApply.openNow,
-    props.filtersToApply.nearby,
+    props.filtersToApply.distance,
     props.filtersToApply.label,
     props.filtersToApply.order]);
 

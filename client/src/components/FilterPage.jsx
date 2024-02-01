@@ -26,7 +26,6 @@ const FilterPage = (props) => {
     const [showModal2, setShowModal2] = useState(false);
     const [fadeStates, setFadeStates] = useState([]);
     const [locationError, setLocationError] = useState(false);
-    const [errorMaxDistance, setErrorMaxDistance] = useState("");
     const navigate = useNavigate();
 
     const [isLoadingLocation, setIsLoadingLocation] = useState(false);
@@ -80,7 +79,7 @@ const FilterPage = (props) => {
             });
         }).finally(() => {
             setIsLoadingLocation(false); // Set loading state to false when the geocoding is complete
-            //setTempFilters({ ...tempFilters, nearby: true })
+            //setTempFilters({ ...tempFilters, distance: true })
             setLocationError(false);
             setShowModal2(true);
         });
@@ -96,8 +95,7 @@ const FilterPage = (props) => {
             setShowModal2(true);
             setTempFilters((prevFilters) => ({
                 ...prevFilters,
-                nearby: false,
-                maxDistance:  ''
+                distance: false,
             }));
             console.log("Unable to retrieve your location");
             console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -133,13 +131,12 @@ const FilterPage = (props) => {
 
     const handleRemoveFilters = () => {
         setTempFilters({categories: [],
-            priceRange: [0, 110],
-            maxDistance: '',
+            priceRange: [0, 50],
             qualityRating: '',
             safetyRating: '', 
             allergens: [], // Array to hold added ingredients
             openNow: false,
-            nearby: false,
+            distance: false,
             label: "Nothing",
             order: "DESC"
         });
@@ -151,7 +148,7 @@ const FilterPage = (props) => {
         //     (filtersToApply.safetyRating === '') &&
         //     (filtersToApply.allergens.length === 0) && // Added check for allergens
         //     (filtersToApply.openNow === false) &&
-        //     (filtersToApply.nearby === false) &&
+        //     (filtersToApply.distance === false) &&
         //     (filtersToApply.label === "NOTHING") &&
         //     (filtersToApply.order === "DESC")) {
         //         setFiltersToApply({
@@ -162,7 +159,7 @@ const FilterPage = (props) => {
         //             safetyRating: '', 
         //             allergens: [], // Array to hold added ingredients
         //             openNow: false,
-        //             nearby: false,
+        //             distance: false,
         //             label: "NOTHING",
         //             order: "DESC"
         //         });
@@ -175,14 +172,20 @@ const FilterPage = (props) => {
     };
 
     const mapToCategoriesOptions = (array) => {
-        return array.map((item) => ({
+        // Sort the array in alphabetical order before mapping
+        const sortedArray = array.sort((a, b) => a.localeCompare(b));
+    
+        return sortedArray.map((item) => ({
             value: capitalizeFirstLetter(item),
             label: capitalizeFirstLetter(item)
         }));
     };
 
     const mapToAllergensOptions = (array) => {
-        return array.map((item) => ({
+        // Sort the array in alphabetical order before mapping
+        const sortedArray = array.sort((a, b) => a.localeCompare(b));
+    
+        return sortedArray.map((item) => ({
             value: capitalizeFirstLetter(item),
             label: capitalizeFirstLetter(item)
         }));
@@ -254,14 +257,6 @@ const FilterPage = (props) => {
         return !isNaN(num) && num < 0;
     }
 
-    const validateMaxDistance = () => {
-        if (isNegativeNumber(tempFilters.maxDistance)) {
-            setErrorMaxDistance("Distance not valid!");
-        } else {
-            setErrorMaxDistance("");
-        }
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -271,20 +266,16 @@ const FilterPage = (props) => {
         }));
     };
 
-    useEffect(() => {
-        validateMaxDistance();
-    }, [tempFilters.maxDistance]);
-
     const handleOpenNowChange = (e) => {
         setTempFilters({ ...tempFilters, openNow: e.target.checked });
     };
 
-    const handleNearbyChange = (e) => {
+    const handleDistanceChange = (e) => {
         // if (props.address.text == '') {
         //     e.preventDefault(); // Prevent the toggle action
         //     setShowModal(true); // Show the modal
         // } else {
-            setTempFilters({ ...tempFilters, nearby: e.target.checked });
+            setTempFilters({ ...tempFilters, distance: e.target.checked });
         //}
     };
 
@@ -316,19 +307,12 @@ const FilterPage = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Check if the necessary conditions for the address and maxDistance are not met
-        if ((tempFilters.nearby || tempFilters.maxDistance !== '') && props.address.text === '') {
+        if ((tempFilters.distance) && props.address.text === '') {
             e.preventDefault(); // Prevent default form submission behavior
             setShowModal(true); // Show the modal
             return; // Stop further execution
         }
-    
-        // Check for any errors
-        if (errorMaxDistance !== "") {
-            console.log("Error present, not submitting:", errorMaxDistance);
-            e.preventDefault(); // Prevent default form submission if there is an error
-            return; // Stop further execution
-        }
-    
+
         // If all conditions are met and no errors are present
         setFiltersToApply(tempFilters);
         //console.log("Filters applied:", tempFilters);
@@ -374,11 +358,11 @@ const FilterPage = (props) => {
                             id="toggle-check2"
                             type="checkbox"
                             variant="outline-primary"
-                            checked={tempFilters.nearby && !locationError}
+                            checked={tempFilters.distance && !locationError}
                             value="1"
-                            onChange={handleNearbyChange}
+                            onChange={handleDistanceChange}
                             disabled={locationError}
-                            style={(tempFilters.nearby)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
+                            style={(tempFilters.distance)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
                             {backgroundColor:"#ffff", color:"#52b69a",borderColor:"#52b69a", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }
                         }
                         >
@@ -387,9 +371,9 @@ const FilterPage = (props) => {
                             {isLoadingLocation ? (
                                 <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
                             ) : (
-                                tempFilters.nearby && !locationError ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
+                                tempFilters.distance && !locationError ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
                             )}
-                            Nearby
+                            Distance
                         </ToggleButton>
                         <Form noValidate onSubmit={handleSubmit}>
                             <Row>
@@ -422,7 +406,7 @@ const FilterPage = (props) => {
                                                     placeholder="Choose Allergens"
                                                     components={animatedComponents}
                                                     isMulti
-                                                    isSearchable={true}
+                                                    isSearchable={false}
                                                     isClearable={true}
                                                     options={props.allergensOptions}
                                                     value={props.allergensOptions.filter((option) => tempFilters.allergens.includes(option.value))}
@@ -464,48 +448,13 @@ const FilterPage = (props) => {
                                         </Form.Group>
                                     </Row>
                                 </Col>
-                                <Col md={3} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
-                                {isLoadingLocation ? <Form.Group controlId="formMaxDistance">
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            {isLoadingLocation && (
-                                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
-                                            )}
-                                            <Form.Control
-                                                type="number"
-                                                name="maxDistance"
-                                                placeholder="Max Distance (km)"
-                                                value={tempFilters.maxDistance}
-                                                onChange={handleChange}
-                                                isInvalid={!!errorMaxDistance}
-                                                disabled={locationError}
-                                            />
-                                        </div>
-                                        <Form.Control.Feedback type="invalid">
-                                            {errorMaxDistance}
-                                        </Form.Control.Feedback>
-                                    </Form.Group> : 
-                                    <Form.Group controlId="formMaxDistance">
-                                        <Form.Control
-                                            type="number"
-                                            name="maxDistance"
-                                            placeholder="Max Distance (km)"
-                                            value={tempFilters.maxDistance}
-                                            onChange={handleChange}
-                                            disabled={locationError}
-                                            isInvalid={!!errorMaxDistance}
-                                        />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errorMaxDistance}
-                                    </Form.Control.Feedback>
-                                    </Form.Group>}
-                                </Col>
                                 <Col xs={12} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
-                                    <Form.Label>Price Range: </Form.Label><>{tempFilters.priceRange[0] == 100 && tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>100€+</span> : tempFilters.priceRange[1] == 110 ? <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1] - 10}€+</span> : <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1]}€</span>}</>
+                                    <Form.Label>Price Range: </Form.Label><>{tempFilters.priceRange[0] == 40 && tempFilters.priceRange[1] == 50 ? <span style={{ marginLeft: "1rem" }}>40€+</span> : tempFilters.priceRange[1] == 50 ? <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1] - 10}€+</span> : <span style={{ marginLeft: "1rem" }}>{tempFilters.priceRange[0] == 0 ? (tempFilters.priceRange[0] + 1) : tempFilters.priceRange[0]}€ - {tempFilters.priceRange[1]}€</span>}</>
                                     <div style={{ margin: '1em' }}>
                                         <Range
                                             step={10}
                                             min={0}
-                                            max={110}
+                                            max={50}
                                             values={tempFilters.priceRange}
                                             onChange={(values) => {
                                                 let [minValue, maxValue] = values;
@@ -519,8 +468,8 @@ const FilterPage = (props) => {
                                             }}
 
                                             renderTrack={({ props, children, isDragged }) => {
-                                                const percentageStart = (tempFilters.priceRange[0] - 0) / (110 - 0) * 100; // Assuming min is 0 and max is 110
-                                                const percentageEnd = (tempFilters.priceRange[1] - 0) / (110 - 0) * 100;
+                                                const percentageStart = (tempFilters.priceRange[0] - 0) / (50 - 0) * 100; // Assuming min is 0 and max is 110
+                                                const percentageEnd = (tempFilters.priceRange[1] - 0) / (50 - 0) * 100;
 
                                                 return (
                                                     <div
@@ -599,13 +548,12 @@ const FilterPage = (props) => {
                             }}>
                                 <Button disabled={
                                     (tempFilters.categories.length === 0) &&
-                                    (tempFilters.priceRange[0] === 0 && tempFilters.priceRange[1] === 110) &&
-                                    (tempFilters.maxDistance === '') &&
+                                    (tempFilters.priceRange[0] === 0 && tempFilters.priceRange[1] === 50) &&
                                     (tempFilters.qualityRating === '') &&
                                     (tempFilters.safetyRating === '') &&
                                     (tempFilters.allergens.length === 0) && // Added check for allergens
                                     (tempFilters.openNow === false) &&
-                                    (tempFilters.nearby === false) &&
+                                    (tempFilters.distance === false) &&
                                     (tempFilters.label === "Nothing") &&
                                     (tempFilters.order === "DESC" || tempFilters.order === "ASC")
                                 }    
@@ -613,7 +561,7 @@ const FilterPage = (props) => {
                                     Remove filters
                                 </Button>
                                 <Button variant="success" type='submit'
-                                    disabled={!!errorMaxDistance || isLoadingLocation}>
+                                    disabled={isLoadingLocation}>
                                     Apply filters
                                 </Button>
                             </Col>
