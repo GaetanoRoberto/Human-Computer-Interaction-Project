@@ -37,8 +37,8 @@ function App() {
     allergens: [], // Array to hold added ingredients
     openNow: false,
     distance: false,
-    label: "Nothing",
-    order: "DESC"
+    // label: "Nothing",
+    // order: "DESC"
   });
   const [categoriesOptions, setCategoriesOptions] = useState([{ value: '', label: '' }]);
   const [allergensOptions, setAllergensOptions] = useState([{ value: '', label: '' }]);
@@ -67,7 +67,7 @@ function App() {
         //console.log("Login successful with user:", user);
       })
       .catch(err => {
-        handleError({error: `Login failed with error:${err.error}`});
+        handleError({error: `Login failed with error: ${err.error}`});
       });
   };
 

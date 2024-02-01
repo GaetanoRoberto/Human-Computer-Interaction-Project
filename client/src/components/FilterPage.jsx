@@ -137,8 +137,8 @@ const FilterPage = (props) => {
             allergens: [], // Array to hold added ingredients
             openNow: false,
             distance: false,
-            label: "Nothing",
-            order: "DESC"
+            // label: "Nothing",
+            // order: "DESC"
         });
         //SE VOLESSI RIMUOVERE ANCHE I FILTRI GIà SELEZIONATI PRECEDENTEMENTE
         // if ((filtersToApply.categories.length === 0) &&
@@ -319,22 +319,22 @@ const FilterPage = (props) => {
         navigate(`/`); // Navigate to the new page after setting filters
     };
 
-    const sortByField = (field) => {
+    // const sortByField = (field) => {
 
-        setTempFilters((prevFilter) => ({
-            ...prevFilter,
-            label:capitalizeFirstLetter(field)
-        }));
-        //console.log(filtersToApply);
+    //     setTempFilters((prevFilter) => ({
+    //         ...prevFilter,
+    //         label:capitalizeFirstLetter(field)
+    //     }));
+    //     //console.log(filtersToApply);
 
-      };
+    //   };
     
-      const toggleOrder = () => {
-        setTempFilters((prevFilter) => ({
-            ...prevFilter,
-            order: tempFilters.order === 'ASC' ? 'DESC' : 'ASC'
-        }));
-      };
+    //   const toggleOrder = () => {
+    //     setTempFilters((prevFilter) => ({
+    //         ...prevFilter,
+    //         order: tempFilters.order === 'ASC' ? 'DESC' : 'ASC'
+    //     }));
+    //   };
     return (
         <>
             <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '10%' }}>
@@ -478,7 +478,7 @@ const FilterPage = (props) => {
                                                             ...props.style,
                                                             height: '2.5px',
                                                             width: '100%',
-                                                            background: `linear-gradient(to right, lightblue ${percentageStart}%, blue ${percentageStart}%, blue ${percentageEnd}%, lightblue ${percentageEnd}%)`
+                                                            background: `linear-gradient(to right, #badbcb ${percentageStart}%, #198754 ${percentageStart}%, #198754 ${percentageEnd}%, #badbcb ${percentageEnd}%)`
                                                         }}
                                                     >
                                                         {children}
@@ -494,7 +494,7 @@ const FilterPage = (props) => {
                                                         height: '13px',
                                                         width: '13px',
                                                         borderRadius: '100%',
-                                                        backgroundColor: '#0d6efd'//"#52b69a"
+                                                        backgroundColor: '#198754'//"#52b69a"
                                                     }}
                                                 />
                                             )}
@@ -518,7 +518,7 @@ const FilterPage = (props) => {
                                     </Form.Group> 
                                 </Col> */}
                             </Row>
-                            <Row>
+                            {/* <Row>
                                 <Form.Label>Sort By:</Form.Label>
         <Col xs={8} >
           <DropdownButton id="dropdown" title={tempFilters.label} variant="light" >
@@ -535,7 +535,7 @@ const FilterPage = (props) => {
             <><i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }}></i><span>{ tempFilters.order}</span></>
           )}
         </Col>
-                            </Row>
+                            </Row> */}
                             <Col style={{
                                 position: "fixed",  // Fixed position
                                 bottom: "2.4%",       // 5% from the bottom of the viewport
@@ -553,9 +553,9 @@ const FilterPage = (props) => {
                                     (tempFilters.safetyRating === '') &&
                                     (tempFilters.allergens.length === 0) && // Added check for allergens
                                     (tempFilters.openNow === false) &&
-                                    (tempFilters.distance === false) &&
-                                    (tempFilters.label === "Nothing") &&
-                                    (tempFilters.order === "DESC" || tempFilters.order === "ASC")
+                                    (tempFilters.distance === false)
+                                    // && (tempFilters.label === "Nothing") &&
+                                    // (tempFilters.order === "DESC" || tempFilters.order === "ASC")
                                 }    
                                 variant="danger" onClick = {() => handleRemoveFilters()}>
                                     Remove filters

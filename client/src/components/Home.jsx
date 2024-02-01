@@ -131,9 +131,10 @@ function Filters(props) {
                     filterKey != 'qualityRating' &&
                     filterKey != 'safetyRating' &&
                     filterKey != 'openNow' &&
-                    filterKey != 'distance' &&
-                    filterKey != 'label' &&
-                    filterKey != 'order') {
+                    filterKey != 'distance'
+                    // && filterKey != 'label' &&
+                    // filterKey != 'order'
+                    ) {
 
                 }
                 // Update your switch case to correctly identify and remove the filter
@@ -153,12 +154,12 @@ function Filters(props) {
                     case 'distance':
                         updatedFilters.distance = false; // Reset or update as needed
                         break;
-                    case 'label':
-                        updatedFilters.label = 'Nothing'; // Reset or update as needed
-                        break;
-                    case 'order':
-                        updatedFilters.order = ''; // Reset or update as needed
-                        break;
+                    // case 'label':
+                    //     updatedFilters.label = 'Nothing'; // Reset or update as needed
+                    //     break;
+                    // case 'order':
+                    //     updatedFilters.order = ''; // Reset or update as needed
+                    //     break;
                     default: //categories
                         if (filterKey.startsWith("No ")) {
                             updatedFilters.allergens = updatedFilters.allergens.filter(item => item !== filterKey.split("No ")[1]);
@@ -564,9 +565,9 @@ function Home(props) {
         if (props.filtersToApply.distance) {
             filter.push({ distance: "Distance" });
         }
-        if (props.filtersToApply.label != "Nothing" && props.filtersToApply.order != '') {
-            filter.push({ label: "Sorted by " + props.filtersToApply.order + " " + props.filtersToApply.label });
-        }
+        // if (props.filtersToApply.label != "Nothing" && props.filtersToApply.order != '') {
+        //     filter.push({ label: "Sorted by " + props.filtersToApply.order + " " + props.filtersToApply.label });
+        // }
 
         return filter;
     };
@@ -607,9 +608,10 @@ function Home(props) {
             (props.filtersToApply.safetyRating === '') &&
             (props.filtersToApply.allergens.length === 0) && // Added check for allergens
             (props.filtersToApply.openNow === false) &&
-            (props.filtersToApply.distance === false) &&
-            (props.filtersToApply.label === "Nothing") &&
-            (props.filtersToApply.order === "DESC")) {
+            (props.filtersToApply.distance === false) 
+            // && (props.filtersToApply.label === "Nothing") &&
+            // (props.filtersToApply.order === "DESC")
+            ) {
             setRestaurantList(restaurantInitialList);
         }
     };
@@ -780,18 +782,18 @@ function Home(props) {
         // }
 
         //BAD CODING BY TANUCC
-        if (props.filtersToApply.label != 'Nothing') {
-            const field = props.filtersToApply.label === "Reviews' average quality" ? "avg_quality" : props.filtersToApply.label === "Reviews' average price" ? "avg_price" : "avg_safety";
-            const order = props.filtersToApply.order;
-            //SORT BY TANUCC
-            const sortedList = order === 'ASC' ?
-                filteredRestaurants.sort((a, b) => a[field] === null ? 1 : a[field] - b[field])
-                :
-                filteredRestaurants.sort((a, b) => b[field] - a[field])
-            filteredRestaurants = sortedList;
-            //console.log(field,order)
-            // console.log(filteredRestaurants)
-        }
+        // if (props.filtersToApply.label != 'Nothing') {
+        //     const field = props.filtersToApply.label === "Reviews' average quality" ? "avg_quality" : props.filtersToApply.label === "Reviews' average price" ? "avg_price" : "avg_safety";
+        //     const order = props.filtersToApply.order;
+        //     //SORT BY TANUCC
+        //     const sortedList = order === 'ASC' ?
+        //         filteredRestaurants.sort((a, b) => a[field] === null ? 1 : a[field] - b[field])
+        //         :
+        //         filteredRestaurants.sort((a, b) => b[field] - a[field])
+        //     filteredRestaurants = sortedList;
+        //     //console.log(field,order)
+        //     // console.log(filteredRestaurants)
+        // }
 
         //Distance Filter
         let distance;
@@ -832,7 +834,6 @@ function Home(props) {
     }
 
     useEffect(() => {
-        // ... (existing logic)
         handleFilteringRestaurants();
     }, [props.search, props.filtersToApply, props.filtersToApply.categories.length,
     props.filtersToApply.priceRange[0], props.filtersToApply.priceRange[1],
@@ -841,8 +842,9 @@ function Home(props) {
     props.filtersToApply.allergens.length,
     props.filtersToApply.openNow,
     props.filtersToApply.distance,
-    props.filtersToApply.label,
-    props.filtersToApply.order]);
+    // props.filtersToApply.label,
+    // props.filtersToApply.order
+    ]);
 
     return (
         <>
