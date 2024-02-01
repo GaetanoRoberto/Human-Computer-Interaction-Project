@@ -50,7 +50,7 @@ function DishForm(props) {
                 setPrice({ price: dish.price, invalid: false });
                 setType({ text: dish.type, invalid: false });
                 setDishImage(dish.image);
-                //setFileNameDish({ text: dish.name, invalid: false });
+                setFileNameDish(dish.image.split('/')[dish.image.split('/').length - 1]);
                 //setIngredients([{, name: '', allergens: [''], brandname: '', link: '', invalid: false }  ]);
                 // Fill the ingredients state based on dish.ingredients
                 const updatedIngredients = dish.ingredients.map(ingredient => ({
@@ -76,16 +76,19 @@ function DishForm(props) {
                     setIngredients(updatedIngredients);
                 }
 
-                // Fill the ingredientImage state with placeholders or actual images if available
-                const updatedIngredientImages = dish.ingredients.map((ingredient, index) => {
-                    // Assuming you have an 'image' property for each ingredient
-                    return ingredient.image || PLACEHOLDER;
-                });
-
                 if (dish.ingredients.length == 0) {
-                    setIngredientImage([PLACEHOLDER]);
+                    setIngredientImage([{id: 0, image: PLACEHOLDER}]);
+                    setFileNameIngredient([{id: 0, fileName: PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]}]);
                 } else {
+                    // Fill image and filename and set them
+                    const updatedIngredientImages = dish.ingredients.map((ingredient, index) => {
+                        return {id:ingredient.id, image: ingredient.image || PLACEHOLDER};
+                    });
+                    const updatedIngredientFileNames = dish.ingredients.map((ingredient, index) => {
+                        return {id:ingredient.id, fileName: ingredient.image.split('/')[ingredient.image.split('/').length - 1] || PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]};
+                    });
                     setIngredientImage(updatedIngredientImages);
+                    setFileNameIngredient(updatedIngredientFileNames);
                 }
 
             } else {
@@ -105,18 +108,22 @@ function DishForm(props) {
         ]);
         setIngredientImage([
             ...ingredientImage,
-            PLACEHOLDER
+            {id: ingredientTempId, image: PLACEHOLDER}
         ]);
         setFileNameIngredient([
             ...fileNameIngredient,
-            'No File Chosen'
+            {id: ingredientTempId, fileName: 'No File Chosen'}
         ]);
         setIngredientTempId((old_id) => old_id + 1);
     };
 
     const removeIngredient = (ingredient_id) => {
         const newIngredients = ingredients.filter((item) => item.id !== ingredient_id);
+        const newIngredientsImages = ingredientImage.filter((item) => item.id !== ingredient_id);
+        const newIngredientsFileNames = fileNameIngredient.filter((item) => item.id !== ingredient_id);
         setIngredients(newIngredients);
+        setIngredientImage(newIngredientsImages);
+        setFileNameIngredient(newIngredientsFileNames);
     };
 
     const addAllergen = (outer_id, selected_allergens) => {
@@ -263,17 +270,17 @@ function DishForm(props) {
                             <div style={{ marginBottom: '2%' }}>
                                 <Form.Group className="mb-3" >
                                     <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index]} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
+                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index].image} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
                                         return oldIngredientsImage.map((oldingredient,inner_index) => {
                                             if (inner_index === index) {
-                                                return new_image;
+                                                return {id: oldingredient.id, image: new_image};
                                             }
                                             return oldingredient;
                                         })
-                                    })}} fileName={fileNameIngredient[index]} setFileName={(new_filename) => {setFileNameIngredient((oldFileNames) => {
+                                    })}} fileName={fileNameIngredient[index].fileName} setFileName={(new_filename) => {setFileNameIngredient((oldFileNames) => {
                                         return oldFileNames.map((oldFileName,inner_index) => {
                                             if (inner_index === index) {
-                                                return new_filename;
+                                                return {id: oldFileName.id, fileName: new_filename};
                                             }
                                             return oldFileName;
                                         })
