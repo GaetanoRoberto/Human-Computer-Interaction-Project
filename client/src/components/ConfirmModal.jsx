@@ -24,10 +24,8 @@ function ConfirmModal(props) {
                 Are you Sure to {text} ?
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button variant="primary" onClick={perform_action}>Ok</Button>
+                <Button variant="danger" onClick={handleClose}>No</Button>
+                <Button variant="success" onClick={perform_action}>Yes</Button>
             </Modal.Footer>
         </Modal>
     );

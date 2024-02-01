@@ -76,11 +76,10 @@ function InfoPopup(props) {
                     </Col>
                 </Row>
                 {Array.from({ length: 5 }, (_, index) => (
-                    <Row key={index} className="mb-2">
-                        <Col style={{ textAlign: "end" }} >
-                            <FontAwesomeIcon key={index} icon={getHappinessSolidClass(index + 1)} style={{ color: getHappinessColor(index + 1), marginRight: "5px", fontSize: "1.5em" }} />
-                        </Col>
-                        <Col>
+                    <Row key={index} className="mb-2" style={{ textAlign: "center", fontSize: "1.4em" }} >
+                        <Col >
+                            <FontAwesomeIcon key={index} icon={getHappinessSolidClass(index + 1)} style={{ color: getHappinessColor(index + 1), marginRight: "30px",fontSize:"1.8rem",marginTop:"5px"}} />
+                            
                             {
                                 (() => {
                                     switch (index) {
@@ -95,7 +94,7 @@ function InfoPopup(props) {
                                         case 4:
                                             return '4.5 - 5.0';
                                         default:
-                                            return null; // or whatever you want to render for other cases
+                                            return null; 
                                     }
                                 })()
                             }

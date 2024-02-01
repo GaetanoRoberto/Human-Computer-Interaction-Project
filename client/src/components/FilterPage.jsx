@@ -360,13 +360,15 @@ const FilterPage = (props) => {
                         <ToggleButton
                             id="toggle-check1"
                             type="checkbox"
-                            variant="outline-primary"
+                            //variant="outline-primary"
                             checked={tempFilters.openNow}
                             value="1"
                             onChange={(e) => handleOpenNowChange(e)}
-                            style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
+                            
+                                style={(tempFilters.openNow)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff",paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
+                                {backgroundColor:"#ffff", color:"#52b69a",borderColor:"#52b69a",paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
                         >
-                            {tempFilters.openNow ? <FontAwesomeIcon icon="fa-solid fa-check" /> : ''} Open Now
+                            {tempFilters.openNow ? <FontAwesomeIcon  icon="fa-solid fa-check" /> : ''} Open Now
                         </ToggleButton>
                         <ToggleButton
                             id="toggle-check2"
@@ -376,7 +378,9 @@ const FilterPage = (props) => {
                             value="1"
                             onChange={handleNearbyChange}
                             disabled={locationError}
-                            style={{ marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
+                            style={(tempFilters.nearby)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
+                            {backgroundColor:"#ffff", color:"#52b69a",borderColor:"#52b69a", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }
+                        }
                         >
                             <PositionModal show={showModal} setShow={setShowModal} action={handleLocationClick} />
                             <PositionModalAlert text={props.address.text} show={showModal2} setShow={setShowModal2} />
@@ -541,7 +545,7 @@ const FilterPage = (props) => {
                                                         height: '13px',
                                                         width: '13px',
                                                         borderRadius: '100%',
-                                                        backgroundColor: '#0d6efd'
+                                                        backgroundColor: '#0d6efd'//"#52b69a"
                                                     }}
                                                 />
                                             )}
@@ -608,7 +612,7 @@ const FilterPage = (props) => {
                                 variant="danger" onClick = {() => handleRemoveFilters()}>
                                     Remove filters
                                 </Button>
-                                <Button variant="primary" type='submit'
+                                <Button variant="success" type='submit'
                                     disabled={!!errorMaxDistance || isLoadingLocation}>
                                     Apply filters
                                 </Button>

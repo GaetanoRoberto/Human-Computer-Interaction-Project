@@ -854,8 +854,8 @@ function InnerForm(props) {
                         })}
                     </Container>
                     <Container className="d-flex justify-content-between" style={{marginTop: '3%'}}>
-                        <Button variant="secondary" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); setIsChecked(false);}}>Reset</Button>
-                        <Button variant="primary" size='sm' onClick={addTempTimesToTimes}>Save</Button>
+                        <Button variant="danger" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); setIsChecked(false);}}>Reset</Button>
+                        <Button variant="success" size='sm' onClick={addTempTimesToTimes}>Add</Button>
                     </Container>
                     <hr style={{borderTop: "1px solid #000"}}/>
                     <div style={{marginTop: '7%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>
@@ -916,7 +916,7 @@ function InnerForm(props) {
                                 </ListGroup>
                             </Container>
                             <Container className="d-flex flex-column align-items-center width-100">
-                                <Button variant='primary' onClick={() => { setManageDish({route: 'add_dish', id: undefined}) }}>Add Dish</Button>
+                                <Button variant='success' onClick={() => { setManageDish({route: 'add_dish', id: undefined}) }}>Add Dish</Button>
                             </Container>
                         </>
                 );
@@ -935,12 +935,12 @@ function InnerForm(props) {
                     {componentToRender}
                 </Container>
                 <Container className="d-flex justify-content-between mt-auto">
-                    {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="warning" onClick={() => { setShow(true) }}>Back</Button> : ''}
-                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="warning" onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
-                    {(progress < 4) ? <Button disabled={next_disabled} variant="info" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
-                    {(progress === 4 && manageDish === undefined) ? <Button disabled={disabled_4} variant="primary" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button disabled={disabled_dish} variant="primary" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button disabled={disabled_dish} variant="primary" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
+                    {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="danger" onClick={() => { setShow(true) }}>Back</Button> : ''}
+                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="danger"  onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
+                    {(progress < 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
+                    {(progress === 4 && manageDish === undefined) ? <Button  variant="success" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
                 </Container>
             </Form>
         </>

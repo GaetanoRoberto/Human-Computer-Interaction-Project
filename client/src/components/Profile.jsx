@@ -81,7 +81,7 @@ function MyLocation(props) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Button variant="primary" onClick={handleLocationClick} style={{ width: '330px', marginTop: 10 }}>
+      <Button variant="success" onClick={handleLocationClick} style={{ width: '330px', marginTop: 10 }}>
         {isLoadingLocation ?
           <FontAwesomeIcon icon="fas fa-spinner" spin style={{ "marginRight": 10 }} /> :
           <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{ "marginRight": 10 }} />Use your GPS</>
@@ -165,15 +165,17 @@ const RestaurantManagement = (props) => {
         <Row className="text-secondary">
           {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant.</Row> : <BannerProfile restaurant={restaurant} />}
           {(restaurant == null) ?
-            <Button variant="primary" onClick={() => { navigate(`/addInfo`); setProgress(1); }} style={{ marginTop: 20 }}>Create a Restaurant Page</Button>
+            <Col style={{textAlign:'center'}}>
+              <Button variant="success" onClick={() => { navigate(`/addInfo`); setProgress(1); }} style={{ width: '330px', marginTop: 20 }}>Create a Restaurant Page</Button>
+            </Col>
             :
             <Container>
               <Row style={{ textAlign: 'center' }}>
                 <Col>
-                  <Button variant="primary" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`); setProgress(1); }}>Edit Information</Button>
+                  <Button variant="success" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`); setProgress(1); }}>Edit Information</Button>
                 </Col>
                 <Col>
-                  <Button variant="primary" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`, { state: { from: 'edit_menu' } }); setProgress(4); }}>Edit Menu</Button>
+                  <Button variant="success" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`, { state: { from: 'edit_menu' } }); setProgress(4); }}>Edit Menu</Button>
                 </Col>
               </Row>
               <Row>

@@ -363,7 +363,7 @@ const ReviewForm = (props) => {
                   </Button>
                 </Col>
                 <Col xs={6} className="text-end">
-                  <Button className="btn-lg mx-1 mb-2" type='submit' variant="primary">
+                  <Button className="btn-lg mx-1 mb-2" type='submit' variant="success">
                     {reviewId ? 'Update' : 'Add'}
                   </Button>
                 </Col>

@@ -58,6 +58,8 @@ function App() {
     const credentials = {
       username: selectedStatus == "User" ? "User" : "Restaurateur",
       isRestaurateur: selectedStatus == "User" ? "0" : "1",
+      position: ""
+      
       //isRestaurateur: selectedStatus == "User" ? 0 : 1,
     };
     API.logIn(credentials)
@@ -134,6 +136,7 @@ function App() {
           setSelectedStatus("User");
         }
       } catch (err) {
+        console.log(err)
         doLogIn(); // Attempt login if not authenticated
       }
     };

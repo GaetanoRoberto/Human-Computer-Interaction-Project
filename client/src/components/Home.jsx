@@ -327,8 +327,8 @@ function RestaurantsList(props) {
                                                     <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
                                                     {approssimaValoreAlRange(Math.round(restaurant.avg_price))}
                                                 </Card.Text>
-                                                <Card.Text style={{ textAlign: "start", fontSize: "1.2em",marginTop: "-10px" }}>
-                                                 <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{ color: getHappinessColor(Math.round(restaurant.avg_safety)) }} />  ({restaurant.avg_safety.toFixed(1)}/5.0)
+                                                <Card.Text style={{ textAlign: "start", marginTop: "-10px",  fontSize: "1.2em" }}>
+                                                   <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{ color: getHappinessColor(Math.round(restaurant.avg_safety)) }} />  ({restaurant.avg_safety.toFixed(1)})
                                                 </Card.Text>
                                             </>
                                         }

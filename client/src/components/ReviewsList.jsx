@@ -139,7 +139,7 @@ function SearchReview(props) {
       </Row>
       <Row className='my-1 mx-0 '>
         <Col style={{padding:'5px'}}>
-          <DropdownButton id="dropdown" title={"SORT BY: " + label} variant="info" >
+          <DropdownButton id="dropdown-Review" title={"SORT BY: " + label} variant="success" >
             <Dropdown.Item onClick={() => sortByField("date", filteredReviews)}>DATE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("price", filteredReviews)}>PRICE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("quality", filteredReviews)}>QUALITY</Dropdown.Item>
@@ -157,9 +157,9 @@ function SearchReview(props) {
         {!yourRestaur ?
           <Col style={{padding:'5px'}}>
             {userReview ?
-              <Button style={{ whiteSpace: "nowrap" }} variant="warning" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
+              <Button style={{ whiteSpace: "nowrap" }} variant="success" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
               :
-              <Button style={{ whiteSpace: "nowrap" }} variant="primary" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
+              <Button style={{ whiteSpace: "nowrap" }} variant="success" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
             }
           </Col>
           :
