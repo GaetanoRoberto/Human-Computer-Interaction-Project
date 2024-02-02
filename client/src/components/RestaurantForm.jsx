@@ -83,20 +83,14 @@ function InnerForm(props) {
     const [instagram, setInstagram] = useState({ link: '', invalid: false });
     const [facebook, setFacebook] = useState({ link: '', invalid: false });
     const [twitter, setTwitter] = useState({ link: '', invalid: false });
-    // disabled flag for progress 1/4
-    const disabled_1 = activityName.text === '' || address.text === '' || phone.text === '' || description.text === '';
 
     // states for progress 2/4
     const [times, setTimes] = useState([]);
     const [day,setDay] = useState({text:'', clicked: false});
     const [temporaryTimes,setTemporaryTimes] = useState([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false}]);
-    // state for open 24 hours checkbox
-    const [isChecked, setIsChecked] = useState(false);
     const [errorMsg,setErrorMsg] = useState('');
     // temporary client id for managing the time intervals (find the max id in the times array and add 1)
     const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
-    // disabled flag for progress 2/4
-    const disabled_2 = times.length <= 0;
 
     // states for progress 3/4
     const [image, setImage] = useState(PLACEHOLDER);
@@ -105,27 +99,11 @@ function InnerForm(props) {
     // states for progress 4/4
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
     const [dishes, setDishes] = useState([]);
+    // state for displaying error message when no dish is added
+    const [noDishError,setNoDishError] = useState('');
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const prevDishesLength = useRef(dishes.length);
-    const disabled_4 = dishes.length <= 0;
-
-    // next button disabled flag
-    let next_disabled;
-    switch (progress) {
-        case 1:
-            next_disabled = disabled_1;
-            break;
-        case 2:
-            next_disabled = disabled_2;
-            break;
-        case 3:
-            next_disabled = false;
-            break;
-        default:
-            next_disabled = true;
-            break;
-    }
 
     // DISH SECTION STATES
     const [dishName, setDishName] = useState({text:'' , invalid:false});
@@ -136,14 +114,12 @@ function InnerForm(props) {
     const [ingredients, setIngredients] = useState([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
     // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
     const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
-    const [ingredientImage, setIngredientImage] = useState([PLACEHOLDER]);
-    const [fileNameIngredient, setFileNameIngredient] = useState(['No File Chosen']);
+    const [ingredientImage, setIngredientImage] = useState([{id: 0, image: PLACEHOLDER}]);
+    const [fileNameIngredient, setFileNameIngredient] = useState([{id: 0, fileName: PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]}]);
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
-    // disabled flag for add edit dish
-    const disabled_dish = dishName.text === '' || price.text === '' || type.text === '' || ingredients.some((ingredient) => ingredient.text === '' || ingredient.brandname === '');
-
+    
     // state for operation confirmed
     const [showConfirm,setShowConfirm] = useState(false);
     const [confirmText,setConfirmText] = useState('');
@@ -233,8 +209,8 @@ function InnerForm(props) {
         setFileNameDish('No File Chosen');
         setIngredients([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
         setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
-        setIngredientImage([PLACEHOLDER]);
-        setFileNameIngredient(['No File Chosen']);
+        setIngredientImage([{id: 0, image: PLACEHOLDER}]);
+        setFileNameIngredient([{id: 0, fileName: PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]}]);
     };
           
     function createDishObject(dishId) {
@@ -346,13 +322,8 @@ function InnerForm(props) {
             if (last_hour > first_hour) {
                 saveTime(Object.assign({}, time, { invalid: false }),setTimeArrays);
             } else {
-                if (last_hour.isSame(first_hour) && last_hour.hour()===0 && last_hour.minute() === 0) {
-                    // allow 24 hours
-                    saveTime(Object.assign({}, time, { invalid: false }),setTimeArrays);
-                } else {
-                    saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
-                    invalid = true;
-                }   
+                saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
+                invalid = true;   
             }
         } else {
             saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
@@ -385,16 +356,10 @@ function InnerForm(props) {
             })
             
             // if all ok, add the temporary times
-            if (isChecked) {
-                setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, {id: timetempId, first: '00:00', last: '00:00', day:day.text, invalid: false }]) });
-                setTimeTempId((oldid) => oldid + 1);
-            } else {
-                setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
-            }
+            setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
             //setTemporaryTimes([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2, day: '', first: '', last: '', invalid: false}]);
             setDay({text:'', clicked: false});
             setErrorMsg('');
-            setIsChecked(false);
         } else {
             setErrorMsg('Select a Day of The Week');
         }
@@ -701,6 +666,12 @@ function InnerForm(props) {
                             invalid = ingredient_allergens_invalidity;
                         }*/
                     });
+                } else {
+                    // if no dishes, trigger the error and prevent the submit
+                    if (dishes.length <= 0) {
+                        setNoDishError('Insert at Least One Dish To Continue');
+                        invalid = true;
+                    }
                 }
                 break;
             default:
@@ -719,9 +690,11 @@ function InnerForm(props) {
                 if (manageDish && manageDish.id) {
                     // edit dish
                     editDish();
+                    setNoDishError('');
                 } else if(manageDish) {
                     // add dish
                     addDish();
+                    setNoDishError('');
                 }
                 const restaurant = {};
                 restaurant.image = image;
@@ -741,7 +714,6 @@ function InnerForm(props) {
                         // update case, add the restaurantId and 
                         restaurant.id = restaurant_id;
                         // call the API to update an existing restaurant
-                        console.log(restaurant);
                         await API.editRestaurant(restaurant).catch((err) => handleError(err));
                         setShowConfirm(true);
                         setConfirmText('Restaurant Edited Successfully');
@@ -833,29 +805,12 @@ function InnerForm(props) {
                             <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
                             <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
                         </Container>
-                        <Container style={{ marginBottom: '3%' }}>
-                            <Form.Check checked={isChecked} onChange={() => {
-                                // opposite control, since we set the status after and it is async
-                                if (!isChecked) {
-                                    // checked case (true) => reset and put only 00:00-00:00
-                                    // reset and add only 24 hours range
-                                    setTemporaryTimes([]);
-                                    //addTime(setTemporaryTimes, { first: '00:00', last: '00:00' });
-                                } else {
-                                    // unchecked case (false) => reset to empty range
-                                    setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
-                                }
-                                setIsChecked((old_checked) => !old_checked);
-                            }}
-                            style={{ display: 'inline-block', marginRight:'3%', marginBottom:'3%' }} />
-                            <span>Open 24 hours</span>
-                        </Container>
                         {temporaryTimes.map((temp_time) => {
                             return <EditTimeSelector key={temp_time.id} n_times={temporaryTimes.length} time={temp_time} addTime={addTime} setTimeArrays={setTemporaryTimes} saveTime={saveTime} deleteTime={deleteTime} checkTime={checkTime} />;
                         })}
                     </Container>
                     <Container className="d-flex justify-content-between" style={{marginTop: '3%'}}>
-                        <Button variant="danger" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg(''); setIsChecked(false);}}>Reset</Button>
+                        <Button variant="danger" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg('');}}>Reset</Button>
                         <Button variant="success" size='sm' onClick={addTempTimesToTimes}>Add</Button>
                     </Container>
                     <hr style={{borderTop: "1px solid #000"}}/>
@@ -908,6 +863,7 @@ function InnerForm(props) {
                 componentToRender = (
                         <>
                             <Container>
+                                <p style={(noDishError !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{noDishError}</p>
                                 <ListGroup>
                                     {
                                         dishes.sort((a, b) => {
@@ -927,9 +883,6 @@ function InnerForm(props) {
                                     }
                                 </ListGroup>
                             </Container>
-                            <Container className="d-flex flex-column align-items-center width-100">
-                                <Button variant='success' onClick={() => { setManageDish({route: 'add_dish', id: undefined}) }}>Add Dish</Button>
-                            </Container>
                         </>
                 );
             }
@@ -947,9 +900,10 @@ function InnerForm(props) {
                 <>
                     <Container fluid style={{ height: '65vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
                     <Container className="d-flex flex-column align-items-center width-100">
-                        <Button variant='primary' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
+                        <Button variant='success' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
                     </Container>
-                </> : <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
+                </> : 
+                <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
                 <Container className="d-flex justify-content-between mt-auto">
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="danger" onClick={() => { setShow(true) }}>Back</Button> : ''}
                     {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="danger"  onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
