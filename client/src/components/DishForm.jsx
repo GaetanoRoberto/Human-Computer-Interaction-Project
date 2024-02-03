@@ -78,14 +78,14 @@ function DishForm(props) {
 
                 if (dish.ingredients.length == 0) {
                     setIngredientImage([{id: 0, image: PLACEHOLDER}]);
-                    setFileNameIngredient([{id: 0, fileName: PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]}]);
+                    setFileNameIngredient([{id: 0, fileName: 'No File Chosen'}]);
                 } else {
                     // Fill image and filename and set them
                     const updatedIngredientImages = dish.ingredients.map((ingredient, index) => {
                         return {id:ingredient.id, image: ingredient.image || PLACEHOLDER};
                     });
                     const updatedIngredientFileNames = dish.ingredients.map((ingredient, index) => {
-                        return {id:ingredient.id, fileName: ingredient.image.split('/')[ingredient.image.split('/').length - 1] || PLACEHOLDER.split('/')[PLACEHOLDER.split('/').length - 1]};
+                        return {id:ingredient.id, fileName: ingredient.image.split('/')[ingredient.image.split('/').length - 1] || 'No File Chosen'};
                     });
                     setIngredientImage(updatedIngredientImages);
                     setFileNameIngredient(updatedIngredientFileNames);
