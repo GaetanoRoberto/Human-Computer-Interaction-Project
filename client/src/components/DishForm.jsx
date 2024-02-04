@@ -8,13 +8,13 @@ import { ImageViewer, DishItem, AddressSelector, address_string_to_object, addre
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import { foodAllergens } from './Costants';
+import {ErrorContext} from "./userContext.jsx";
 
 const animatedComponents = makeAnimated();
 
 function DishForm(props) {
-    
-    //const [restaurant,setRestaurant] = useState({});
-    //const [dishes, setDishes] = useState([]);
+    const handleError = useContext(ErrorContext);
+
     const {
         dish,
         dishName,
@@ -75,7 +75,7 @@ function DishForm(props) {
 
             } else {
                 // Handle the case when the dish with dishId is not found
-                console.log('Dish not found');
+                handleError({error: 'Dish not found'});
             }
         };
         if (dish) {
