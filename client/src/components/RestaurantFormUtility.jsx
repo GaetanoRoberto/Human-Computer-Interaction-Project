@@ -20,7 +20,7 @@ const calculateFileSize = (dataURL) => {
     return binaryData.length;
 };
 
-const fileName_length = 13;
+const fileName_length = 14;
 
 const handleImageChange = (event, setImage, setFileName, setViewImage) => {
     const file = event.target.files[0];    
