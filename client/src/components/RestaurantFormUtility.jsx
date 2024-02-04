@@ -20,9 +20,10 @@ const calculateFileSize = (dataURL) => {
     return binaryData.length;
 };
 
+const fileName_length = 13;
+
 const handleImageChange = (event, setImage, setFileName, setViewImage) => {
-    const file = event.target.files[0];
-    const fileName_length = 18;
+    const file = event.target.files[0];    
     if (file.name) {
         setFileName((file.name.length > fileName_length) ? file.name.slice(0, fileName_length) + "..." : file.name);
     }
@@ -95,6 +96,7 @@ function ImageViewer(props) {
     const [viewImage,setViewImage] = useState(PLACEHOLDER2);
     const { width, height, image, setImage, fileName, setFileName } = props;
     const fileInputRef = useRef(null);
+
     return (
         <>
             <Container className="d-flex flex-column align-items-center">
@@ -103,7 +105,7 @@ function ImageViewer(props) {
 
             </Container>
             <Container className="d-flex align-items-center custom-input">
-                <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{fileName}</span>
+                <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{(fileName.length > fileName_length) ? fileName.slice(0, fileName_length) + "..." : fileName}</span>
                 <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName, setViewImage)} accept="image/*" />
             </Container>
         </>

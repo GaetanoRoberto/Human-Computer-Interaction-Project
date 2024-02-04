@@ -13,6 +13,19 @@ import { ErrorContext } from './userContext';
 import { DishForm } from './DishForm';
 import ConfirmModal from './ConfirmModal';
 
+const handleFileNames = (filename) => {
+    // change the file name only if there is a new path, otherwise keep the old filename
+    if (!filename.startsWith("data:image")) {
+        if (filename === 'placeholder2.png') {
+            return 'No File Chosen';
+        } else {
+            return filename;
+        }
+    }
+    // no file name to update return undefined
+    return undefined;
+}
+
 function SuccessModal(props) {
     const {text,show,setShow,action,parameter} = props;
     
@@ -111,11 +124,9 @@ function InnerForm(props) {
     const [type, setType] = useState({ text: '', invalid: false });
     const [dishImage, setDishImage] = useState(PLACEHOLDER);
     const [fileNameDish, setFileNameDish] = useState('No File Chosen');
-    const [ingredients, setIngredients] = useState([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
+    const [ingredients, setIngredients] = useState([{ id: 0, text: '', image: PLACEHOLDER, fileName:'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
     // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
     const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
-    const [ingredientImage, setIngredientImage] = useState([{id: 0, image: PLACEHOLDER}]);
-    const [fileNameIngredient, setFileNameIngredient] = useState([{id: 0, fileName: 'No File Chosen'}]);
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
@@ -184,7 +195,22 @@ function InnerForm(props) {
                 setTimes(sort_and_merge_times(time_string_to_object(restaurant.hours)));
                 setImage(restaurant.image);
                 setFileName(restaurant.image.split('/')[restaurant.image.split('/').length - 1]);
-                setDishes(restaurant.dishes);
+                setDishes(restaurant.dishes.map(dish => {
+                    // Extract file name from image URL
+                    let imageName = dish.image.substring(dish.image.lastIndexOf('/') + 1);
+                    // Add fileName field to the object
+                    dish.fileName = handleFileNames(imageName) || '';
+                    // Iterate through ingredients if present
+                    if (dish.ingredients && dish.ingredients.length > 0) {
+                        dish.ingredients.forEach(ingredient => {
+                            // Extract file name from ingredient image URL
+                            let ingredientImageName = ingredient.image.substring(ingredient.image.lastIndexOf('/') + 1);
+                            // Add fileName field to the ingredient object
+                            ingredient.fileName = handleFileNames(ingredientImageName) || '';
+                        });
+                    }
+                    return dish;
+                }));
                 //setDishTempId(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
             } catch (err) {
                 // show error message
@@ -207,10 +233,8 @@ function InnerForm(props) {
         setType({ text: '', invalid: false });
         setDishImage(PLACEHOLDER);
         setFileNameDish('No File Chosen');
-        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+        setIngredients([{ id: 0, text: '', image: PLACEHOLDER, fileName:'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
         setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
-        setIngredientImage([{id: 0, image: PLACEHOLDER}]);
-        setFileNameIngredient([{id: 0, fileName: 'No File Chosen'}]);
     };
           
     function createDishObject(dishId) {
@@ -220,10 +244,12 @@ function InnerForm(props) {
             price: parseFloat(price.price),
             type: type.text,
             image: dishImage,
+            fileName: fileNameDish,
             ingredients: ingredients.map((ingredient) => ({
                 id: ingredient.id,
                 dishId: dishId,  // Assuming you have a fixed dishId or generate it accordingly
-                image: ingredientImage[ingredients.indexOf(ingredient)],  // Adjust accordingly
+                image: ingredient.image,  // Adjust accordingly
+                fileName: ingredient.fileName,
                 name: ingredient.text,
                 allergens: ingredient.allergens,
                 brandName: ingredient.brandname,
@@ -854,10 +880,6 @@ function InnerForm(props) {
                         setIngredients={setIngredients}
                         ingredientTempId={ingredientTempId}
                         setIngredientTempId={setIngredientTempId}
-                        ingredientImage={ingredientImage}
-                        setIngredientImage={setIngredientImage}
-                        fileNameIngredient={fileNameIngredient}
-                        setFileNameIngredient={setFileNameIngredient}
                     />
                 ) :
                 componentToRender = (

@@ -30,11 +30,7 @@ function DishForm(props) {
         ingredients,
         setIngredients,
         ingredientTempId,
-        setIngredientTempId,
-        ingredientImage,
-        setIngredientImage,
-        fileNameIngredient,
-        setFileNameIngredient
+        setIngredientTempId
     } = props;
 
     // to retrieve info of the restaurant if in edit
@@ -45,12 +41,11 @@ function DishForm(props) {
             if (dish) {
                 // You can access dish properties and use them in your component
                 // set info of the dish
-                
                 setDishName({ text: dish.name, invalid: false });
                 setPrice({ price: dish.price, invalid: false });
                 setType({ text: dish.type, invalid: false });
                 setDishImage(dish.image);
-                setFileNameDish(dish.image.split('/')[dish.image.split('/').length - 1]);
+                setFileNameDish(dish.fileName);
                 //setIngredients([{, name: '', allergens: [''], brandname: '', link: '', invalid: false }  ]);
                 // Fill the ingredients state based on dish.ingredients
                 const updatedIngredients = dish.ingredients.map(ingredient => ({
@@ -59,36 +54,23 @@ function DishForm(props) {
                     allergens: ingredient.allergens,
                     brandname: ingredient.brandName || '',
                     brandLink: ingredient.brandLink || '',
+                    image: ingredient.image || '',
+                    fileName: ingredient.fileName || '',
                     invalid_text: false,
                     invalid_allergens: false,
                     invalid_brandname: false,
                     invalid_link: false
                 }));
-
+                
                 if (dish.ingredients.length == 0) {
                     // check on dish.type instead of type.text since state update is asynchronous
                     if (dish.type!=='drinks') {
-                        setIngredients([{ id: 0, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+                        setIngredients([{ id: 0, text: '',image:'',fileName:'', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
                     } else {
                         setIngredients([]);
                     }
                 } else {
                     setIngredients(updatedIngredients);
-                }
-
-                if (dish.ingredients.length == 0) {
-                    setIngredientImage([{id: 0, image: PLACEHOLDER}]);
-                    setFileNameIngredient([{id: 0, fileName: 'No File Chosen'}]);
-                } else {
-                    // Fill image and filename and set them
-                    const updatedIngredientImages = dish.ingredients.map((ingredient, index) => {
-                        return {id:ingredient.id, image: ingredient.image || PLACEHOLDER};
-                    });
-                    const updatedIngredientFileNames = dish.ingredients.map((ingredient, index) => {
-                        return {id:ingredient.id, fileName: ingredient.image.split('/')[ingredient.image.split('/').length - 1] || 'No File Chosen'};
-                    });
-                    setIngredientImage(updatedIngredientImages);
-                    setFileNameIngredient(updatedIngredientFileNames);
                 }
 
             } else {
@@ -104,26 +86,14 @@ function DishForm(props) {
     const addIngredient = () => {
         setIngredients([
             ...ingredients,
-            { id: ingredientTempId, text: '', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
-        ]);
-        setIngredientImage([
-            ...ingredientImage,
-            {id: ingredientTempId, image: PLACEHOLDER}
-        ]);
-        setFileNameIngredient([
-            ...fileNameIngredient,
-            {id: ingredientTempId, fileName: 'No File Chosen'}
+            { id: ingredientTempId, text: '', image: PLACEHOLDER, fileName: 'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }
         ]);
         setIngredientTempId((old_id) => old_id + 1);
     };
 
     const removeIngredient = (ingredient_id) => {
         const newIngredients = ingredients.filter((item) => item.id !== ingredient_id);
-        const newIngredientsImages = ingredientImage.filter((item) => item.id !== ingredient_id);
-        const newIngredientsFileNames = fileNameIngredient.filter((item) => item.id !== ingredient_id);
         setIngredients(newIngredients);
-        setIngredientImage(newIngredientsImages);
-        setFileNameIngredient(newIngredientsFileNames);
     };
 
     const addAllergen = (outer_id, selected_allergens) => {
@@ -270,19 +240,19 @@ function DishForm(props) {
                             <div style={{ marginBottom: '2%' }}>
                                 <Form.Group className="mb-3" >
                                     <Form.Label style={{ fontSize: 'medium', fontWeight: 'bold' }}>Ingredient {index + 1} Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                                    <ImageViewer width={"150px"} height={"150px"} image={ingredientImage[index].image} setImage={(new_image) => {setIngredientImage((oldIngredientsImage) => {
-                                        return oldIngredientsImage.map((oldingredient,inner_index) => {
-                                            if (inner_index === index) {
-                                                return {id: oldingredient.id, image: new_image};
+                                    <ImageViewer width={"150px"} height={"150px"} image={ingredient.image} setImage={(new_image) => {setIngredients((oldIngredients) => {
+                                        return oldIngredients.map((oldIngredient) => {
+                                            if (oldIngredient.id === ingredient.id) {
+                                                return {...oldIngredient, image: new_image};
                                             }
-                                            return oldingredient;
+                                            return oldIngredient;
                                         })
-                                    })}} fileName={fileNameIngredient[index].fileName} setFileName={(new_filename) => {setFileNameIngredient((oldFileNames) => {
-                                        return oldFileNames.map((oldFileName,inner_index) => {
-                                            if (inner_index === index) {
-                                                return {id: oldFileName.id, fileName: new_filename};
+                                    })}} fileName={ingredient.fileName} setFileName={(new_filename) => {setIngredients((oldIngredients) => {
+                                        return oldIngredients.map((oldIngredient) => {
+                                            if (oldIngredient.id === ingredient.id) {
+                                                return {...oldIngredient, fileName: new_filename};
                                             }
-                                            return oldFileName;
+                                            return oldIngredient;
                                         })
                                     })}} />
                                 </Form.Group>
