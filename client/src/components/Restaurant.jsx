@@ -384,8 +384,18 @@ const BannerProfile = (props) => {
                     }} >
                 </div>
                 {/* Content with Text */}
-                <Row>
+                <Row style={{ maxHeight: 70 }}>
                     <h1 style={{ fontSize: '2rem', marginTop: '10px' }}> <b><i> {restaurant.name} </i></b> </h1>
+                </Row>
+                <Row style={{ maxHeight: 20 }}>
+                    {restaurant.reviews.length === 0 ?
+                        <></>
+                        :
+                        restaurant.reviews.length === 1 ?
+                            <h6>({restaurant.reviews.length} review)</h6>
+                            :
+                            <h6>({restaurant.reviews.length} reviews)</h6>
+                    }
                 </Row>
                 <Row>
                     <Col xs={5} style={{ marginTop: "0.4rem" }}> {restaurantStars()} </Col>
@@ -393,7 +403,7 @@ const BannerProfile = (props) => {
                 <Row>
                     <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
                 </Row>
-                <Row style={{ whiteSpace: "nowrap" }}>
+                <Row style={{ whiteSpace: "nowrap", maxHeight: 15 }}>
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
             </Container>
@@ -413,7 +423,7 @@ const Menu = (props) => {
     const allDishTypes = [...new Set(restaurant.dishes.map(dish => dish.type))];
     const keyType = 'selectedDishType';
     // Load the selected type from localStorage or use the first type
-    const initialType = (location.state && location.state.previousLocationPathname === '/') ? allDishTypes[0] : (localStorage.getItem(keyType) || allDishTypes[0]);
+    const initialType = (location.state && (location.state.previousLocationPathname === '/' || location.state.previousLocationPathname === '/settings')) ? allDishTypes[0] : (localStorage.getItem(keyType) || allDishTypes[0]);
     const [type, setType] = useState((menuType.length !== 0 && location.state && location.state.previousLocationPathname === '/') ? menuType[0] : initialType);
     const allAllergens = [...new Set(restaurant.dishes.flatMap(dish => dish.ingredients.map(ingredient => ingredient.allergens)).filter(allergen => allergen !== null))];
     const optionsAllergens = allAllergens.map(allergen => ({ label: 'No ' + allergen, value: allergen }));
@@ -613,7 +623,7 @@ const Menu = (props) => {
 
 const Details = (props) => {
     const { restaurant } = props;
-    const descriptionHeight = (window.innerHeight - 495);
+    const descriptionHeight = (window.innerHeight - 520);
 
     function formatTimeRanges(input) {
         let groupedByDay = {};
@@ -674,7 +684,7 @@ const Details = (props) => {
                 <Card.Header as="h5" style={{ textAlign: "center" }}>
                     Description
                 </Card.Header>
-                <Card.Body style={{ overflowY: "auto", height: 180 }}>
+                <Card.Body style={{ overflowY: "auto", height: descriptionHeight }}>
                     <Card.Text>
                         {restaurant.description.split("\n").map((row, index) => {
                             return <span key={index}><span>{row}</span><br /></span>

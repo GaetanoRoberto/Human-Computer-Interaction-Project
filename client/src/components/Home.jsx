@@ -64,7 +64,7 @@ function SearchBar(props) {
         const filteredRestaurants = restaurantInitialList.filter((restaurant) => {
             const restaurantNameMatch = restaurant.name.toLowerCase().includes(ev.target.value.trim().toLowerCase());
             const dishesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => typeof filter === 'string' && filter.toLowerCase().includes(allergen.toLowerCase()))));
-            const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase());
+            const typesMatch = (ev.target.value.trim().toLowerCase() !== '') && restaurant.dishes.some((dish) => dish.type.toLowerCase() === ev.target.value.trim().toLowerCase()) && restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(ev.target.value.trim().toLowerCase()) && !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).length !== 0;
             return restaurantNameMatch || dishesMatch || typesMatch;
         });
         // If there are no matches for dishes, set isSearchingDishes to false
@@ -217,7 +217,7 @@ function RestaurantsList(props) {
 
     const { filterRestaurants, filters, search, isSearchingDishes, isSearchingType, filtersToApply, setFiltersToApply, setRestaurantAllergens, setMenuType } = props;
     // Used for scrollable restaurant list
-    const listHeight = (filters.length === 0 ? (window.innerHeight - 140) : (window.innerHeight - 185));
+    const listHeight = (filters.length === 0 ? (window.innerHeight - 135) : (window.innerHeight - 180));
 
     useEffect(() => {
         if (restaurantsRef.current) {
@@ -400,15 +400,10 @@ function RestaurantsList(props) {
                                                                         }
                                                                     </Col>
                                                                 </Row>
-
                                                                 {index < array.length - 1 && <div style={{ borderTop: "1px solid #0A3622", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem" }}></div>}
                                                             </ListGroup.Item>
                                                         )
                                                     })}
-                                                {restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(search.trim().toLowerCase()) &&
-                                                    !dish.allergens.some((allergen) => filters.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).length === 0 &&
-                                                    <h6>No dishes found with the selected allergens</h6>
-                                                }
                                             </ListGroup>
                                         </Accordion.Body>
                                     </Accordion.Item>
@@ -752,8 +747,8 @@ function Home(props) {
 
                 if (props.filtersToApply.allergens.length > 0) {
                     searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
-                        restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm) && !dish.allergens.some((allergen) => props.filtersToApply.allergens.some((filter) => filter.toLowerCase().includes(allergen.toLowerCase())))) ||
-                        restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm);
+                        restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm) && !dish.allergens.some((allergen) => props.filtersToApply.allergens.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))) ||
+                        (restaurant.dishes.some(dish => dish.type.toLowerCase() === searchTerm) && restaurant.dishes.filter((dish) => dish.type.toLowerCase().includes(searchTerm) && !dish.allergens.some((allergen) => props.filtersToApply.allergens.some((filter) => String(filter).toLowerCase().includes(allergen.toLowerCase())))).length !== 0);
                 } else {
                     searchMatch = restaurant.name.toLowerCase().includes(searchTerm) ||
                         restaurant.dishes.some(dish => dish.name.toLowerCase().includes(searchTerm)) ||

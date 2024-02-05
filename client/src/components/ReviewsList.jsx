@@ -129,12 +129,12 @@ function SearchReview(props) {
   const userReview = user ? reviews.find(review => review.username === user.username) : "";
   return (
     <>
-      <Row className='my-1 mx-0 d-flex align-items-center'>
-        <Col xs={1} >
-          <i className="bi bi-search " style={{ fontSize: "1.5rem", marginLeft: "1%" }}></i>
+      <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
+        <Col xs={1} className="d-flex align-items-center" style={{ marginRight: "2%" }}>
+          <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
         </Col>
         <Col xs={10}>
-          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search By Title or Description" />
+          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search title or description" />
         </Col>
       </Row>
       <Row className='my-1 mx-0 '>
@@ -172,7 +172,7 @@ function SearchReview(props) {
 
 function ReviewsList({ reviews, divHeight }) {
   const navigate = useNavigate();
-  const reviewsHeight = (divHeight === 166 ? window.innerHeight - 350 : divHeight === 195 ? window.innerHeight - 380 : divHeight === 175 ? window.innerHeight - 360 : window.innerHeight - 330);
+  const reviewsHeight = (divHeight === 166 ? window.innerHeight - 360 : divHeight === 195 ? window.innerHeight - 390 : divHeight === 175 ? window.innerHeight - 370 : window.innerHeight - 340);
   const { id } = useParams();
   const reviewsRef = useRef();
   //const [list, setList] = useState(reviews);
@@ -197,6 +197,7 @@ function ReviewsList({ reviews, divHeight }) {
   return (
     <>
       <SearchReview filteredReviews={filteredReviews} reviews={reviews} search={search} setSearch={setSearch} setFilteredReviews={setFilteredReviews} />
+      <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
       <ListGroup onScroll={handleScrollReviews} ref={reviewsRef} style={{ overflowY: "scroll", maxHeight: reviewsHeight }}>
         {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
           //   list.map((item) => {

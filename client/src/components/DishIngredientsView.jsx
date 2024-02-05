@@ -29,7 +29,11 @@ function DishIngredientsView(){
         <>
             { dish && (
                 <Container fluid style={{maxHeight: window.innerHeight - 55, overflowY: "scroll"}}>
-                    <Image style={{marginTop: "0.4rem"}} src={dish.image} fluid />
+                    <Row style={{textAlign: "center"}}>
+                        <Col>
+                            <Image style={{marginTop: "0.4rem", height: 336, width: 336}} src={dish.image} fluid />
+                        </Col>
+                    </Row>
                     <div style={{borderTop: "1px solid #D3D3D3", margin: 0, marginBottom: "0.4rem", marginTop: "0.4rem"}}></div>
                     <h1 style={{textAlign: "center", fontSize:'xx-large'}}>
                         {dish.name}

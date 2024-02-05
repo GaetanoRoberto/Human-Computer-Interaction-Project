@@ -246,7 +246,7 @@ const ReviewForm = (props) => {
     <>
       <Container>
         {view ?
-          <Card className="mt-4 border">
+          <Card className="mt-4 border" style={{ overflowY: "scroll", maxHeight: 650 }}>
             <Card.Body className="p-4">
             <div className="mb-2 d-flex justify-content-between align-items-center">
                 <div>
