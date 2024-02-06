@@ -27,7 +27,7 @@ function PositionModal(props) {
                 <Button variant="danger" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={perform_action}>Ok</Button>
+                <Button variant="success" onClick={perform_action}>Ok</Button>
             </Modal.Footer>
         </Modal>
     );
