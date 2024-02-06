@@ -134,12 +134,12 @@ function SearchReview(props) {
           <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
         </Col>
         <Col xs={10}>
-          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search title or description" />
+          <FormControl value={search} onChange={handleSearch} type="search" placeholder="Search title or description" className="form-control-green-focus"/>
         </Col>
       </Row>
       <Row className='my-1 mx-0 '>
         <Col style={{padding:'5px'}}>
-          <DropdownButton id="dropdown-Review" title={"SORT BY: " + label} variant="success" >
+          <DropdownButton id="dropdown-Review" className="dropdown-modificato" title={"SORT BY: " + label} variant="success" >
             <Dropdown.Item onClick={() => sortByField("date", filteredReviews)}>DATE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("price", filteredReviews)}>PRICE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("quality", filteredReviews)}>QUALITY</Dropdown.Item>
@@ -159,7 +159,7 @@ function SearchReview(props) {
             {userReview ?
               <Button style={{ whiteSpace: "nowrap" }} variant="success" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
               :
-              <Button style={{ whiteSpace: "nowrap" }} variant="success" onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
+              <Button style={{ whiteSpace: "nowrap" }} className='light-green' onClick={() => navigate(`/restaurants/${id}/reviews/add`)}>Add review</Button>
             }
           </Col>
           :

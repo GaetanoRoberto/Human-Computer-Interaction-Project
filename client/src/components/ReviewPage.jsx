@@ -299,13 +299,13 @@ const ReviewForm = (props) => {
               </Row>
               <Form.Group controlId="formTitle">
                 <Form.Label style={{marginTop:'2%'}}>Title:</Form.Label>
-                <Form.Control type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
+                <Form.Control className="form-control-green-focus" type="text" isInvalid={titleInvalid} disabled={view} required name="title" value={title} onChange={ev => { setTitle(ev.target.value); setTitleInvalid(false); }} />
                 <Form.Control.Feedback type="invalid">Please choose a Title.</Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="formDescription">
                 <Form.Label style={{marginTop:'2%'}}>Description:</Form.Label>
-                <Form.Control as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
+                <Form.Control className="form-control-green-focus" as="textarea" isInvalid={descInvalid} required disabled={view} rows={3} name="description" value={description} onChange={ev => { setDescription(ev.target.value); setDescInvalid(false); }} />
                 <Form.Control.Feedback type="invalid">Please choose a Description.</Form.Control.Feedback>
               </Form.Group>
 
@@ -364,7 +364,7 @@ const ReviewForm = (props) => {
                 </Col>
                 <Col xs={6} className="text-end">
                   <Button className="btn-lg mx-1 mb-2" type='submit' variant="success">
-                    {reviewId ? 'Update' : 'Add'}
+                    {reviewId ? 'Save' : 'Save'}
                   </Button>
                 </Col>
               </Row>

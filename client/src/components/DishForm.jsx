@@ -120,14 +120,14 @@ function DishForm(props) {
                     <Row className="mb-3">
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Dish Name</Form.Label>
-                            <Form.Control required isInvalid={dishName.invalid} type="text" defaultValue={dishName.text}
+                            <Form.Control className="form-control-green-focus" required isInvalid={dishName.invalid} type="text" defaultValue={dishName.text}
                                 onChange={(event) => setDishName({ text: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid" >Choose a Name</Form.Control.Feedback>
                         </Col>
 
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Price (€)</Form.Label>
-                            <Form.Control required isInvalid={price.invalid} type="number" value={price.price}
+                            <Form.Control className="form-control-green-focus" required isInvalid={price.invalid} type="number" value={price.price}
                                 onInput={(event) => setPrice({ price: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid" >Insert a Valid Price</Form.Control.Feedback>
                         </Col>
@@ -135,7 +135,7 @@ function DishForm(props) {
                     <Row>
                         <Col>
                             <Form.Label className='formLabelRestaurant'>Category</Form.Label>
-                            <Form.Select required isInvalid={type.invalid} value={type.text}
+                            <Form.Select className="form-control-green-focus" required isInvalid={type.invalid} value={type.text}
                                 onChange={(event) => setType({ text: event.target.value, invalid: false })}>
                                 <option value="" hidden>Choose one Category</option>
                                 <option value="desserts">Desserts</option>
@@ -168,6 +168,7 @@ function DishForm(props) {
                                 <Col>
                                     <Form.Label className='formLabelRestaurant'>Ingredient Name</Form.Label>
                                     <Form.Control
+                                        className="form-control-green-focus"
                                         required
                                         type="text"
                                         name="name"
@@ -185,6 +186,7 @@ function DishForm(props) {
                                 <Col>
                                     <Form.Label className='formLabelRestaurant'>Brand Name</Form.Label>
                                     <Form.Control
+                                        className="form-control-green-focus"
                                         required
                                         type="text"
                                         name="brandname"
@@ -203,6 +205,7 @@ function DishForm(props) {
                             <div style={{ marginBottom: '5%' }}>
                                 <Form.Label className='formLabelRestaurant'>Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
                                 <Form.Control
+                                    className="form-control-green-focus"
                                     type="text"
                                     name="link"
                                     isInvalid={ingredient.invalid_link}
@@ -234,6 +237,14 @@ function DishForm(props) {
                                         }
                                     }).filter((item) => item !== undefined).flat().filter((item) => item.value !== '' && item.label !== '')}
                                     onChange={(event) => addAllergen(ingredient.id, event)}
+                                    theme={(theme) => ({
+                                        ...theme,
+                                        colors: {
+                                            ...theme.colors,
+                                            primary25: '#D1E7DD',
+                                            primary: '#34ce57',
+                                        },
+                                    })}
                                 />
                                 {(ingredient.invalid_allergens) ? <div className="invalid-feedback" style={{ display: 'block' }}>Remove Empty-Spaces Allergens</div> : ''}
                             </div>
@@ -259,7 +270,7 @@ function DishForm(props) {
                             </div>
                         </div>
                     ))}
-                    <Button variant="success" onClick={addIngredient} style={{ display:'block', marginRight: "2%", marginTop: "2%" }}>Add New Ingredient</Button>
+                    <Button className='light-green' onClick={addIngredient} style={{ display:'block', marginRight: "2%", marginTop: "2%" }}>Add New Ingredient</Button>
                 </Form.Group>
             </Container>
             {/*<Container className="d-flex justify-content-between mt-auto">

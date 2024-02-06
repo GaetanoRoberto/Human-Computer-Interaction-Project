@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row, Col, Form, Button, Fade ,Dropdown,DropdownButton} from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Fade, Dropdown, DropdownButton } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ToggleButton from 'react-bootstrap/ToggleButton';
@@ -8,7 +8,7 @@ import makeAnimated from 'react-select/animated';
 import { Range } from 'react-range';
 import PositionModal from './PositionModal';
 import PositionModalAlert from './PositionModalAlert';
-import { UserContext,ErrorContext } from './userContext';
+import { UserContext, ErrorContext } from './userContext';
 import API from '../API';
 
 
@@ -117,7 +117,7 @@ const FilterPage = (props) => {
                     //console.log(user);
                 } else {
                     // Handle the case when the user
-                    handleError({error: 'User not found'});
+                    handleError({ error: 'User not found' });
                 }
             } catch (err) {
                 // show error message
@@ -130,10 +130,11 @@ const FilterPage = (props) => {
     }, [username]);
 
     const handleRemoveFilters = () => {
-        setTempFilters({categories: [],
+        setTempFilters({
+            categories: [],
             priceRange: [0, 50],
             qualityRating: '',
-            safetyRating: '', 
+            safetyRating: '',
             allergens: [], // Array to hold added ingredients
             openNow: false,
             distance: false,
@@ -174,7 +175,7 @@ const FilterPage = (props) => {
     const mapToCategoriesOptions = (array) => {
         // Sort the array in alphabetical order before mapping
         const sortedArray = array.sort((a, b) => a.localeCompare(b));
-    
+
         return sortedArray.map((item) => ({
             value: capitalizeFirstLetter(item),
             label: capitalizeFirstLetter(item)
@@ -184,7 +185,7 @@ const FilterPage = (props) => {
     const mapToAllergensOptions = (array) => {
         // Sort the array in alphabetical order before mapping
         const sortedArray = array.sort((a, b) => a.localeCompare(b));
-    
+
         return sortedArray.map((item) => ({
             value: capitalizeFirstLetter(item),
             label: capitalizeFirstLetter(item)
@@ -205,7 +206,7 @@ const FilterPage = (props) => {
                     //console.log(user);
                 } else {
                     // Handle the case when the filtering infos are not found
-                    handleError({error: 'Infos not found'});
+                    handleError({ error: 'Infos not found' });
                 }
             } catch (err) {
                 // show error message
@@ -275,7 +276,7 @@ const FilterPage = (props) => {
         //     e.preventDefault(); // Prevent the toggle action
         //     setShowModal(true); // Show the modal
         // } else {
-            setTempFilters({ ...tempFilters, distance: e.target.checked });
+        setTempFilters({ ...tempFilters, distance: e.target.checked });
         //}
     };
 
@@ -328,7 +329,7 @@ const FilterPage = (props) => {
     //     //console.log(filtersToApply);
 
     //   };
-    
+
     //   const toggleOrder = () => {
     //     setTempFilters((prevFilter) => ({
     //         ...prevFilter,
@@ -340,7 +341,7 @@ const FilterPage = (props) => {
             <Container fluid style={{ height: '78vh', overflowY: 'auto', marginBottom: '10%' }}>
                 <Row>
                     <Col>
-                        <h2 style={{ marginTop: "3%", fontWeight: "bold"}}>Filter by:</h2>
+                        <h2 style={{ marginTop: "3%", fontWeight: "bold" }}>Filter by:</h2>
                         <ToggleButton
                             id="toggle-check1"
                             type="checkbox"
@@ -348,11 +349,11 @@ const FilterPage = (props) => {
                             checked={tempFilters.openNow}
                             value="1"
                             onChange={(e) => handleOpenNowChange(e)}
-                            
-                                style={(tempFilters.openNow)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff",paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
-                                {backgroundColor:"#ffff", color:"#52b69a",borderColor:"#52b69a",paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
+
+                            style={(tempFilters.openNow) ? { backgroundColor: "#34ce57", color: "#ffff", borderColor: "#ffff", paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" } :
+                                { backgroundColor: "#ffff", color: "#34ce57", borderColor: "#34ce57", paddingLeft: "1.5rem", paddingRight: "1.5rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }}
                         >
-                            {tempFilters.openNow ? <FontAwesomeIcon  icon="fa-solid fa-check" /> : ''} Open Now
+                            {tempFilters.openNow ? <FontAwesomeIcon icon="fa-solid fa-check" /> : ''} Open Now
                         </ToggleButton>
                         <ToggleButton
                             id="toggle-check2"
@@ -362,16 +363,16 @@ const FilterPage = (props) => {
                             value="1"
                             onChange={handleDistanceChange}
                             disabled={locationError}
-                            style={(tempFilters.distance)?{backgroundColor:"#52b69a", color:"#ffff",borderColor:"#ffff", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }:
-                            {backgroundColor:"#ffff", color:"#52b69a",borderColor:"#52b69a", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }
-                        }
+                            style={(tempFilters.distance) ? { backgroundColor: "#34ce57", color: "#ffff", borderColor: "#ffff", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" } :
+                                { backgroundColor: "#ffff", color: "#34ce57", borderColor: "#34ce57", marginLeft: "1.5rem", paddingLeft: "2rem", paddingRight: "2rem", borderRadius: 0, marginTop: "1.8%", marginBottom: "2.8%" }
+                            }
                         >
                             <PositionModal show={showModal} setShow={setShowModal} action={handleLocationClick} />
                             <PositionModalAlert text={props.address.text} show={showModal2} setShow={setShowModal2} />
                             {isLoadingLocation ? (
-                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{"marginRight": 10}} />
+                                <FontAwesomeIcon icon="fas fa-spinner" spin style={{ "marginRight": 10 }} />
                             ) : (
-                                tempFilters.distance && !locationError ? <FontAwesomeIcon icon="fa-solid fa-check" style={{"marginRight": 10}}/> : ''
+                                tempFilters.distance && !locationError ? <FontAwesomeIcon icon="fa-solid fa-check" style={{ "marginRight": 10 }} /> : ''
                             )}
                             Distance
                         </ToggleButton>
@@ -393,6 +394,14 @@ const FilterPage = (props) => {
                                             onMenuOpen={() => setMenuOpen(true)}
                                             onMenuClose={() => setMenuOpen(false)}
                                             menuIsOpen={menuOpen}
+                                            theme={(theme) => ({
+                                                ...theme,
+                                                colors: {
+                                                    ...theme.colors,
+                                                    primary25: '#D1E7DD',
+                                                    primary: '#34ce57',
+                                                },
+                                            })}
                                         />
                                     </Form.Group>
                                 </Col>
@@ -411,6 +420,14 @@ const FilterPage = (props) => {
                                                     options={props.allergensOptions}
                                                     value={props.allergensOptions.filter((option) => tempFilters.allergens.includes(option.value))}
                                                     onChange={handleIngredientChange}
+                                                    theme={(theme) => ({
+                                                        ...theme,
+                                                        colors: {
+                                                            ...theme.colors,
+                                                            primary25: '#D1E7DD',
+                                                            primary: '#34ce57',
+                                                        },
+                                                    })}
                                                 />
                                             </Col>
                                         </Row>
@@ -420,31 +437,36 @@ const FilterPage = (props) => {
                                     <Row>
                                         <Form.Group as={Col} controlId="formBasicQualityRating">
                                             <Form.Label>Quality Rating</Form.Label>
-                                            <Form.Select
-                                                name="qualityRating"  // This should match the key in your state
-                                                onChange={(e) => handleChange({ target: { name: 'qualityRating', value: e.target.value } })}
-                                                value={tempFilters.qualityRating}  // Set the value from state
-                                            >
-                                                <option value="">Choose...</option>
-                                                <option value="5">5 Stars</option>
-                                                <option value="4">4 Stars & above</option>
-                                                <option value="3">3 Stars & above</option>
-                                                <option value="2">2 Stars & above</option>
-                                            </Form.Select>
+                                            <div className="select-green-focus">
+                                                <Form.Select
+                                                    name="qualityRating"  // This should match the key in your state
+                                                    onChange={(e) => handleChange({ target: { name: 'qualityRating', value: e.target.value } })}
+                                                    value={tempFilters.qualityRating}  // Set the value from state
+                                                    className="form-select" // Make sure to have this class for correct styling
+                                                >
+                                                    <option value="">Choose...</option>
+                                                    <option value="5">5 Stars</option>
+                                                    <option value="4">4 Stars & above</option>
+                                                    <option value="3">3 Stars & above</option>
+                                                    <option value="2">2 Stars & above</option>
+                                                </Form.Select>
+                                            </div>
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="formBasicSafetyRating">
                                             <Form.Label>Safety Rating</Form.Label>
-                                            <Form.Select
-                                                name="safetyRating"  // This should match the key in your state
-                                                onChange={(e) => handleChange({ target: { name: 'safetyRating', value: e.target.value } })}
-                                                value={tempFilters.safetyRating}  // Set the value from state
-                                            >
-                                                <option value="">Choose...</option>
-                                                <option value="5">5</option>
-                                                <option value="4">4 & above</option>
-                                                <option value="3">3 & above</option>
-                                                <option value="2">2 & above</option>
-                                            </Form.Select>
+                                            <div className="select-green-focus">
+                                                <Form.Select
+                                                    name="safetyRating"  // This should match the key in your state
+                                                    onChange={(e) => handleChange({ target: { name: 'safetyRating', value: e.target.value } })}
+                                                    value={tempFilters.safetyRating}  // Set the value from state
+                                                >
+                                                    <option value="">Choose...</option>
+                                                    <option value="5">5</option>
+                                                    <option value="4">4 & above</option>
+                                                    <option value="3">3 & above</option>
+                                                    <option value="2">2 & above</option>
+                                                </Form.Select>
+                                            </div>
                                         </Form.Group>
                                     </Row>
                                 </Col>
@@ -478,7 +500,7 @@ const FilterPage = (props) => {
                                                             ...props.style,
                                                             height: '2.5px',
                                                             width: '100%',
-                                                            background: `linear-gradient(to right, #badbcb ${percentageStart}%, #198754 ${percentageStart}%, #198754 ${percentageEnd}%, #badbcb ${percentageEnd}%)`
+                                                            background: `linear-gradient(to right, #daf5e8 ${percentageStart}%, #34ce57 ${percentageStart}%, #34ce57 ${percentageEnd}%, #daf5e8 ${percentageEnd}%)`
                                                         }}
                                                     >
                                                         {children}
@@ -494,7 +516,7 @@ const FilterPage = (props) => {
                                                         height: '13px',
                                                         width: '13px',
                                                         borderRadius: '100%',
-                                                        backgroundColor: '#198754'//"#52b69a"
+                                                        backgroundColor: '#34ce57'//"#52b69a"
                                                     }}
                                                 />
                                             )}
@@ -556,8 +578,8 @@ const FilterPage = (props) => {
                                     (tempFilters.distance === false)
                                     // && (tempFilters.label === "Nothing") &&
                                     // (tempFilters.order === "DESC" || tempFilters.order === "ASC")
-                                }    
-                                variant="danger" onClick = {() => handleRemoveFilters()}>
+                                }
+                                    variant="danger" onClick={() => handleRemoveFilters()}>
                                     Remove filters
                                 </Button>
                                 <Button variant="success" type='submit'

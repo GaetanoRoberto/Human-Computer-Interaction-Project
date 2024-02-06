@@ -85,14 +85,14 @@ function SearchBar(props) {
                     <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
                 </Col>
                 <Col>
-                    <Form.Control type="search" placeholder="Search restaurant or dish" value={search} onChange={handleSearch} />
+                    <Form.Control type="search" placeholder="Search restaurant or dish" value={search} onChange={handleSearch} className="form-control-green-focus"/>
                 </Col>
                 <Col xs={1} className="d-flex justify-content-end align-items-center" style={{ marginLeft: "3%" }}>
                     <i className="bi bi-sliders" style={{ fontSize: "1.5rem" }} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
             <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
-                <Col style={{ textAlign: "center" }}>
+                <Col style={{ textAlign: "center",alignItems:'center' }}>
                     <b style={{ marginRight: "0.5rem", position: "relative", bottom: 3 }}>More info</b>
                     <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "1.5rem", color: "#007bff" }} icon="fa-solid fa-circle-info" />
                 </Col>

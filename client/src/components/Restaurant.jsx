@@ -508,7 +508,7 @@ const Menu = (props) => {
                     <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
                 </Col>
                 <Col xs={10}>
-                    <Form.Control type="search" placeholder="Search dish or ingredient" value={search} onChange={handleSearch} />
+                    <Form.Control type="search" placeholder="Search dish or ingredient" value={search} onChange={handleSearch} className="form-control-green-focus"/>
                 </Col>
                 {/*Allergens multi-select*/}
                 <Col style={{ marginTop: "0.5rem" }}>
@@ -537,7 +537,7 @@ const Menu = (props) => {
                             colors: {
                                 ...theme.colors,
                                 primary25: '#D1E7DD',
-                                primary: '#52b69a',
+                                primary: '#34ce57',
                             },
                         })}
                     />
@@ -547,7 +547,7 @@ const Menu = (props) => {
             {/*Menu categories*/}
             <Col onScroll={handleScrollMenuType} ref={menuTypeRef} className="scroll" style={{ display: "flex", overflowX: "scroll" }}>
                 {allDishTypes.map((currentType, index) => (
-                    <Button key={index} active={currentType === type} size="lg" style={{ margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#52b69a" : "#fff", borderColor: "#52b69a", color: currentType === type ? "#fff" : "#52b69a", border: 0 }}
+                    <Button key={index} active={currentType === type} size="lg" style={{ margin: "0.4rem", borderRadius: 30, backgroundColor: currentType === type ? "#34ce57" : "#fff", borderColor: "#34ce57", color: currentType === type ? "#fff" : "#34ce57", border: 0 }}
                         onClick={() => {
                             setType(currentType);
                             localStorage.setItem(keyType, currentType);

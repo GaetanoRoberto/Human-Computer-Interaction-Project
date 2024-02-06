@@ -105,7 +105,7 @@ function ImageViewer(props) {
 
             </Container>
             <Container className="d-flex align-items-center custom-input">
-                <Button variant='secondary' onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{(fileName.length > fileName_length) ? fileName.slice(0, fileName_length) + "..." : fileName}</span>
+                <Button style={{backgroundColor:'lightgray', border:'1px solid lightgray', color:'#000'}} onClick={() => { fileInputRef.current.click() }}>Choose File</Button><span style={{ marginLeft: '5%' }}>{(fileName.length > fileName_length) ? fileName.slice(0, fileName_length) + "..." : fileName}</span>
                 <Form.Control style={{ display: 'none' }} type='file' ref={fileInputRef} onChange={(event) => handleImageChange(event, setImage, setFileName, setViewImage)} accept="image/*" />
             </Container>
         </>
@@ -186,6 +186,7 @@ function AddressSelector(props) {
                     isInvalid={address.invalid}
                     type="text"
                     placeholder=""
+                    className="form-control-green-focus"
                     // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
                     onChange={(event) => { setAddress({ text: event.target.value.trim(), lat: address.lat, lng: address.lng, invalid: false }); }}
                     defaultValue={address.text}

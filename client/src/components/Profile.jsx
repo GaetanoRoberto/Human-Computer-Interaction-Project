@@ -81,7 +81,7 @@ function MyLocation(props) {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Button variant="success" onClick={handleLocationClick} style={{ width: '330px', marginTop: 10 }}>
+      <Button className='light-green' onClick={handleLocationClick} style={{ width: '330px', marginTop: 10 }}>
         {isLoadingLocation ?
           <FontAwesomeIcon icon="fas fa-spinner" spin style={{ "marginRight": 10 }} /> :
           <><FontAwesomeIcon icon="fas fa-map-marker-alt" style={{ "marginRight": 10 }} />Use your GPS</>

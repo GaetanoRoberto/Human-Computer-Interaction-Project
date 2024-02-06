@@ -41,10 +41,10 @@
 }
 
 .custom-input input:focus {
-  border-color: #80bdff; /* Border color on focus */
+  border-color: #34ce57; /* Border color on focus */
   border-radius: 0.25rem; /* Border radius */
   outline: 0; /* Remove default focus outline */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus shadow */
+  box-shadow: 0 0 0 0.2rem rgba(52, 206, 87, 0.4); /* Focus shadow */
 }
 
 
@@ -113,7 +113,7 @@
   width: 35px;
   height: 35px;
   margin-right: 6px;
-  background-color: #0d6efd;
+  background-color: #28a745;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -128,7 +128,7 @@
   width: 35px;
   height: 35px;
   margin-right: 6px;
-  background-color: #0056b3;
+  background-color: #28a745;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -213,4 +213,56 @@
 .formLabelRestaurant {
   font-size: 15px;
   margin: 0%;
+}
+
+.light-orange {
+  background-color: #ff8400 !important;
+  border: 1px solid #ff8400 !important;
+}
+
+.light-blue {
+  background-color: #009eff !important;
+  border: 1px solid #009eff !important;
+}
+
+.dark-yellow {
+  background-color: #f0440f !important; 
+  border: 1px solid #f0440f !important;
+  color: #fff !important;
+}
+
+.light-green {
+  background-color: #34ce57 !important;
+  border: 1px solid #34ce57 !important;
+}
+
+.select-green-focus .form-select:focus {
+  border-color: #34ce57;
+  box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, 0.25);
+}
+
+.form-control-green-focus:focus {
+  border-color: #34ce57;
+  box-shadow: 0 0 0 0.25rem rgba(0, 128, 0, 0.25);
+}
+
+.dropdown-modificato .btn {
+  background-color: #34ce57 !important;
+  border-color: #34ce57 !important;
+}
+
+.dropdown-modificato .btn:hover, .dropdown-modificato .btn:focus {
+  background-color: #34ce57 !important; 
+  border-color: #34ce57 !important; 
+}
+
+.dropdown-modificato .dropdown-item.active,
+.dropdown-modificato .dropdown-item:active {
+  background-color: #34ce57 !important;
+  color: #fff;
+}
+
+.dropdown-modificato .dropdown-item:hover {
+  background-color: #34ce57 !important;
+  color: #fff;
 }

@@ -770,7 +770,7 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Main Info's</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Activity Name</Form.Label>
-                            <Form.Control isInvalid={activityName.invalid} type="text" onChange={(event) => setActivityName({ text: event.target.value.trim(), invalid: false })} defaultValue={activityName.text} />
+                            <Form.Control className="form-control-green-focus" isInvalid={activityName.invalid} type="text" onChange={(event) => setActivityName({ text: event.target.value.trim(), invalid: false })} defaultValue={activityName.text} />
                             <Form.Control.Feedback type="invalid">Enter The Activity's Name</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
@@ -779,12 +779,12 @@ function InnerForm(props) {
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Phone Number</Form.Label>
-                            <PhoneInput className={(phone.invalid === false) ? 'custom-input' : 'custom-input is-invalid'} defaultCountry='IT' value={phone.text} onChange={(event) => { setPhone({ text: event, invalid: false }) }} />
+                            <PhoneInput className={(phone.invalid === false) ? 'custom-input form-control-green-focus' : 'custom-input is-invalid form-control-green-focus'} defaultCountry='IT' value={phone.text} onChange={(event) => { setPhone({ text: event, invalid: false }) }} />
                             <p style={{ color: '#dc3545' }} className='small'>{(phone.invalid === true) ? 'Enter a Valid Phone Number' : ''}</p>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Description</Form.Label>
-                            <Form.Control isInvalid={description.invalid} as="textarea" rows={4} onChange={(event) => setDescription({ text: event.target.value.trim(), invalid: false })} defaultValue={description.text} />
+                            <Form.Control className="form-control-green-focus" isInvalid={description.invalid} as="textarea" rows={4} onChange={(event) => setDescription({ text: event.target.value.trim(), invalid: false })} defaultValue={description.text} />
                             <Form.Control.Feedback type="invalid">Enter A Description</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -793,22 +793,22 @@ function InnerForm(props) {
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Website Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite({ link: event.target.value.trim(), invalid: false })} />
+                            <Form.Control className="form-control-green-focus" isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Instagram Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram({ link: event.target.value.trim(), invalid: false })} />
+                            <Form.Control className="form-control-green-focus" isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Facebook Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook({ link: event.target.value.trim(), invalid: false })} />
+                            <Form.Control className="form-control-green-focus" isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Twitter Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
-                            <Form.Control isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter({ link: event.target.value.trim(), invalid: false })} />
+                            <Form.Control className="form-control-green-focus" isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                     </Form.Group>
@@ -922,14 +922,14 @@ function InnerForm(props) {
                 <>
                     <Container fluid style={{ height: '65vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
                     <Container className="d-flex flex-column align-items-center width-100">
-                        <Button variant='success' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
+                        <Button className='light-green' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
                     </Container>
                 </> : 
                 <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
                 <Container className="d-flex justify-content-between mt-auto">
-                    {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button variant="danger" onClick={() => { setShow(true) }}>Back</Button> : ''}
-                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button variant="danger"  onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
-                    {(progress < 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Next</Button> : ''}
+                    {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button className='dark-yellow' onClick={() => { setShow(true) }}>Back</Button> : ''}
+                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button className='dark-yellow'  onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
+                    {(progress < 4) ? <Button onClick={handleSubmit} className="ms-auto light-green">Next</Button> : ''}
                     {(progress === 4 && manageDish === undefined) ? <Button  variant="success" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
                     {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
                     {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
