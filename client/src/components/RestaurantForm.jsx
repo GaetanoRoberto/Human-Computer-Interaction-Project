@@ -736,18 +736,22 @@ function InnerForm(props) {
                 restaurant.dishes = dishes;
     
                 if (submit) {
-                    if (restaurant_id) {
-                        // update case, add the restaurantId and 
-                        restaurant.id = restaurant_id;
-                        // call the API to update an existing restaurant
-                        await API.editRestaurant(restaurant).catch((err) => handleError(err));
-                        setShowConfirm(true);
-                        setConfirmText('Restaurant Edited Successfully');
-                    } else {
-                        // call the API to add a new restaurant
-                        await API.createRestaurant(restaurant).catch((err) => handleError(err));
-                        setShowConfirm(true);
-                        setConfirmText('Restaurant Added Successfully');
+                    try {
+                        if (restaurant_id) {
+                            // update case, add the restaurantId and 
+                            restaurant.id = restaurant_id;
+                            // call the API to update an existing restaurant
+                            await API.editRestaurant(restaurant);
+                            setShowConfirm(true);
+                            setConfirmText('Restaurant Edited Successfully');
+                        } else {
+                            // call the API to add a new restaurant
+                            await API.createRestaurant(restaurant);
+                            setShowConfirm(true);
+                            setConfirmText('Restaurant Added Successfully');
+                        }
+                    } catch (error) {
+                        handleError(error);
                     }
                 }
                 //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4

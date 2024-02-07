@@ -103,7 +103,7 @@ function InfoPopup(props) {
                 ))}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="warning" onClick={perform_action}>Ok</Button>
+                <Button variant="success" onClick={perform_action}>Ok</Button>
             </Modal.Footer>
         </Modal>
     );
