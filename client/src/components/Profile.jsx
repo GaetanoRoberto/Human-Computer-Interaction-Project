@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Container, Row, Col, Button, Dropdown } from 'react-bootstrap'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,7 +6,7 @@ import API from "../API.jsx";
 import '../index.css'
 import { AddressSelector } from './RestaurantFormUtility';
 import { ReviewsListProfile } from './ReviewsListProfile';
-import { BannerProfile } from './Restaurant';
+import { Banner } from './Restaurant';
 import { Header } from './Header.jsx';
 import ConfirmModal from './ConfirmModal';
 import { address_object_to_string } from './RestaurantFormUtility';
@@ -141,6 +141,7 @@ const ReviewRow = (props) => {
 const RestaurantManagement = (props) => {
   {/*ME LO PASSA GAETANO*/ }
   const handleError = useContext(ErrorContext);
+  const bannerRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const { restaurant, setRestaurant, setProgress } = props;
   const navigate = useNavigate();
@@ -163,7 +164,7 @@ const RestaurantManagement = (props) => {
       <Col className="mb-2" style={{ marginTop: 35 }}>
         <Row as="h2" style={{ marginBottom: 14 }}>Your Restaurant:</Row>
         <Row className="text-secondary">
-          {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant.</Row> : <BannerProfile restaurant={restaurant} />}
+        {(restaurant == null) ? <Row as="h6" className="text-secondary">You don't have a page for your restaurant.</Row> : <Banner restaurant={restaurant} bannerRef={bannerRef} setDivHeight={props.setDivHeight} isInProfile={true}/>}
           {(restaurant == null) ?
             <Col style={{textAlign:'center'}}>
               <Button variant="success" onClick={() => { navigate(`/addInfo`); setProgress(1); }} style={{ width: '330px', marginTop: 20 }}>Create a Restaurant Page</Button>
@@ -261,7 +262,7 @@ function Profile(props) {
     <>
       <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
         <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus} />
-        {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} setProgress={setProgress} /> : <></>}
+        {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} setProgress={setProgress} setDivHeight={props.setDivHeight}/> : <></>}
         <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
       </Container>
     </>

@@ -58,7 +58,8 @@ function getHappinessColor(index) {
 }
 
 const Banner = (props) => {
-    const { restaurant, bannerRef, setDivHeight } = props;
+    const { restaurant, bannerRef, setDivHeight, isInProfile } = props;
+    const navigate = useNavigate();    
     const iconsData = [
         { to: `tel:${restaurant.phone}`, src: phoneImage, width: 40, height: 40 },
         { to: restaurant.website, src: webImage, width: 40, height: 40 },
@@ -71,7 +72,7 @@ const Banner = (props) => {
     useEffect(() => {
         // Ref for responsive banner
         if (bannerRef) {
-            setDivHeight(bannerRef.current.offsetHeight);
+            props.setDivHeight(bannerRef.current.offsetHeight);
             //console.log('Div Height:', bannerRef.current.offsetHeight);
         }
     }, [bannerRef]);
@@ -191,8 +192,10 @@ const Banner = (props) => {
 
     return (
         <>
-            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
-            <div ref={bannerRef} style={{ position: 'relative', overflow: 'hidden', padding: "0.2rem 0.2rem 0.5rem 0.5rem" }}>
+            <div style={{ borderTop: "1px solid #000", margin: 0}}></div>
+            <div ref={bannerRef} 
+                style={(isInProfile) ? { position: 'relative', overflow: 'hidden', padding: "0.2rem 0.2rem 0.5rem 0.5rem", color: "black", borderLeft: "1px solid black", borderRight: "1px solid black"} :
+                { position: 'relative', overflow: 'hidden', padding: "0.2rem 0.2rem 0.5rem 0.5rem"} } onClick={() => {if (isInProfile) {navigate(`/restaurants/${restaurant.id}/menu`, { state: { previousLocationPathname: location.pathname } })}}}>
                 {/* Background Image Overlay */}
                 <div
                     style={{
@@ -225,7 +228,7 @@ const Banner = (props) => {
                 <Stack direction={"horizontal"}>
                     <Col xs={"auto"} style={{ textAlign: "start", marginTop: "0.2rem" }}> {restaurantStars()} </Col>
                     <Col xs={"auto"} className="ms-auto" style={{ textAlign: "end", marginBottom: "0.4rem" }}>
-                        {iconsData.map((icon, index) => (
+                    {!isInProfile && iconsData.map((icon, index) => (
                             icon.to && (
                                 <Link key={index} target={"_blank"} style={{ marginLeft: "0.4rem" }} to={icon.to}>
                                     <img width={icon.width} height={icon.height} src={icon.src} />
@@ -241,172 +244,6 @@ const Banner = (props) => {
                     <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
                 </Row>
             </div>
-            <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
-        </>
-    );
-}
-
-
-const BannerProfile = (props) => {
-    const { restaurant } = props;
-    const navigate = useNavigate();
-    const location = useLocation();
-    // Used to show the restaurant rating based on the reviews
-    const restaurantStars = () => {
-        if (restaurant.reviews.length === 0) {
-            return (
-                <p>
-                    <i className="bi bi-star" style={{ color: '#FFD700', marginRight: "5px" }}></i>
-                    <i>No reviews yet</i>
-                </p>
-            );
-        } else {
-            const averageQuality = (restaurant.reviews.reduce((sum, review) => sum + review.quality, 0)) / restaurant.reviews.length;
-            const averageSafety = (restaurant.reviews.reduce((sum, review) => sum + review.safety, 0)) / restaurant.reviews.length;
-            // return Array.from({ length: Math.round(averageStars) }, (_, index) => ( <i key={index} className="bi bi-star-fill"></i> ));
-            return (
-                <h6>
-                    Quality: <i className="bi bi-star-fill" style={{ color: "#FFC107" }}></i> {averageQuality.toFixed(1)}
-                    <br />
-                    Safety: <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(averageSafety))} style={{ color: getHappinessColor(Math.round(averageSafety)) }} /> {averageSafety.toFixed(1)}
-                </h6>
-            );
-        }
-    }
-
-    // Functions used to show the opening hours status based on real time
-    const getOpeningHours = (openingHours) => {
-        const currentDateTime = new Date();
-        const currentDay = currentDateTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-        const currentHour = currentDateTime.getHours();
-        const currentMinutes = currentDateTime.getMinutes();
-        const currentTime = currentHour * 60 + currentMinutes;
-
-        const dayAbbreviations = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const fullDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-        const dayRanges = openingHours.split('/');
-
-        for (const dayRange of dayRanges) {
-            const [dayAbbreviation, ranges] = dayRange.split('=');
-            const dayIndex = dayAbbreviations.indexOf(dayAbbreviation);
-
-            if (dayIndex === currentDay) {
-                const dayTimeRanges = ranges.split(';').map(range => {
-                    const [start, end] = range.split('-').map(time => {
-                        const [hours, minutes] = time.split(':').map(Number);
-                        return hours * 60 + minutes;
-                    });
-                    return { start, end };
-                });
-
-                for (const { start, end } of dayTimeRanges) {
-                    if (start === 0 && end === 0)
-                        return 'Open 24 hours today'
-                    else if (
-                        (currentTime >= start && currentTime <= end) ||
-                        (end >= 0 && end <= 420 && currentTime >= start && currentTime >= end)
-                    ) {
-                        return `Open now (closes at ${formatTime(end)})`;
-                    }
-                }
-
-                const nextOpeningTime = dayTimeRanges.reduce((closestTime, { start }) => {
-                    return start > currentTime && (start < closestTime || closestTime === -1) ? start : closestTime;
-                }, -1);
-
-                if (nextOpeningTime !== -1) {
-                    return `Closed now (opens at ${formatTime(nextOpeningTime)})`;
-                }
-            }
-        }
-
-        // Business is closed today, find the next opening day and time
-        for (let i = 1; i <= 7; i++) {
-            const nextDayIndex = (currentDay + i) % 7;
-            const nextDayRanges = dayRanges.find(range => dayAbbreviations[nextDayIndex] === range.split('=')[0]);
-
-            if (nextDayRanges) {
-                const nextOpeningTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[0];
-                const lastClosingTime = nextDayRanges.replace(`${dayAbbreviations[nextDayIndex]}=`, '').split(';')[0].split('-')[1];
-                const opensTomorrow = i === 1;
-                const h24 = nextOpeningTime === "00:00" && lastClosingTime === "00:00";
-                if (!opensTomorrow && !h24)
-                    return `Closed today, opens on ${fullDays[nextDayIndex]} at ${nextOpeningTime}`;
-                else if (!opensTomorrow && h24)
-                    return `Closed today, opens 24 hours on ${fullDays[nextDayIndex]}`;
-                else if (opensTomorrow && h24)
-                    return `Closed today, opens 24 hours tomorrow`;
-                else
-                    return `Closed today, opens tomorrow at ${nextOpeningTime}`;
-            }
-        }
-        // If no information for the current day or future days, return a default message
-        return 'No information available for today or the next days';
-    }
-    const formatTime = (minutes) => {
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return `${padZero(hours)}:${padZero(mins)}`;
-    }
-    const padZero = (number) => {
-        return number < 10 ? `0${number}` : number;
-    }
-
-    // Used for banner image zoom
-    const bannerZoom = () => {
-        const img = new Image();
-        img.src = restaurant.image;
-        if (img.width !== 0 && window.innerWidth > img.width)
-            return window.innerWidth / img.width;
-        else
-            return 1;
-    }
-
-
-    return (
-        <>
-            <div style={{ borderTop: "1px solid #000", margin: 0 }} ></div>
-            <Container fluid style={{ position: 'relative', overflow: 'hidden', height: "174px", borderLeft: '1px solid #000', borderRight: '1px solid #000', color: 'black' }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu`, { state: { previousLocationPathname: location.pathname } })}>
-                {/* Background Image Overlay */}
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage: `url(${restaurant.image})`,
-                        backgroundPositionY: 'center',
-                        opacity: 0.2,
-                        zoom: bannerZoom(),
-                        zIndex: -1, // Ensure the overlay is behind the text
-                    }} >
-                </div>
-                {/* Content with Text */}
-                <Row style={{ maxHeight: 70 }}>
-                    <h1 style={{ fontSize: '2rem', marginTop: '10px' }}> <b><i> {restaurant.name} </i></b> </h1>
-                </Row>
-                <Row style={{ maxHeight: 20 }}>
-                    {restaurant.reviews.length === 0 ?
-                        <></>
-                        :
-                        restaurant.reviews.length === 1 ?
-                            <h6>({restaurant.reviews.length} review)</h6>
-                            :
-                            <h6>({restaurant.reviews.length} reviews)</h6>
-                    }
-                </Row>
-                <Row>
-                    <Col xs={5} style={{ marginTop: "0.4rem" }}> {restaurantStars()} </Col>
-                </Row>
-                <Row>
-                    <h6><FontAwesomeIcon icon="fa-solid fa-location-dot" /> {address_string_to_object(restaurant.location).text} </h6>
-                </Row>
-                <Row style={{ whiteSpace: "nowrap", maxHeight: 15 }}>
-                    <h6><FontAwesomeIcon icon="fa-solid fa-clock" /> {getOpeningHours(restaurant.hours)} </h6>
-                </Row>
-            </Container>
             <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
         </>
     );
@@ -697,12 +534,11 @@ const Details = (props) => {
 }
 
 
-function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType }) {
+function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType, divHeight, setDivHeight }) {
     const { id } = useParams();
     const handleError = useContext(ErrorContext);
     const location = useLocation();
     const bannerRef = useRef(null);
-    const [divHeight, setDivHeight] = useState(null);
     const regexDetails = /\/details$/;
     const regexMenu = /\/menu$/;
     const regexReviews = /\/reviews$/;
@@ -753,7 +589,7 @@ function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType }) {
         <>
             {restaurant && (
                 <>
-                    <Banner restaurant={restaurant} bannerRef={bannerRef} setDivHeight={setDivHeight} />
+                    <Banner restaurant={restaurant} bannerRef={bannerRef} setDivHeight={setDivHeight} isInProfile={false}/>
                     {menu ? (
                         <Menu restaurant={restaurant} restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType}
                             filteredDishes={filteredDishes} setFilteredDishes={setFilteredDishes} filteredSearchDishes={filteredSearchDishes}
@@ -778,4 +614,4 @@ function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType }) {
         </>
     );
 }
-export { Restaurant, BannerProfile };
+export { Restaurant, Banner };

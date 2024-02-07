@@ -50,6 +50,7 @@ function App() {
   const [restaurantAllergens, setRestaurantAllergens] = useState([]);
   // Menu category state
   const [menuType, setMenuType] = useState([]);
+  const [divHeight, setDivHeight] = useState(null);
 
 
   // Define doLogIn function outside of useEffect
@@ -195,9 +196,9 @@ function App() {
           <Routes>
             <Route path='/' element={<Home filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} search={search} setSearch={setSearch} setRestaurantAllergens={setRestaurantAllergens} setMenuType={setMenuType} />} />     {/* FATTA*/}
             <Route path='/filters' element={<FilterPage filtersToApply={filtersToApply} setFiltersToApply={setFiltersToApply} address={address} setAddress={setAddress} selectedStatus={selectedStatus} categoriesOptions={categoriesOptions} setCategoriesOptions={setCategoriesOptions} allergensOptions={allergensOptions} setAllergensOptions={setAllergensOptions}/>} />{/* DAVE [o chi finisce prima] */}
-            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} setProgress={setProgress} />} />{/* DAVE*/}
-            <Route path='/restaurants/:id/details' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/menu' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* QUEEN*/}
+            <Route path='/settings' element={<Profile user={user} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} address={address} setAddress={setAddress} setProgress={setProgress} setDivHeight={setDivHeight}/>} />{/* DAVE*/}
+            <Route path='/restaurants/:id/details' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} divHeight={divHeight} setDivHeight={setDivHeight}/>} />{/* QUEEN*/}
+            <Route path='/restaurants/:id/menu' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} divHeight={divHeight} setDivHeight={setDivHeight}/>} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
             <Route path='/restaurants/:id/reviews' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}

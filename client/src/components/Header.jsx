@@ -63,7 +63,7 @@ function Header(props) {
           
         }} />
 
-        <Container fluid >
+        <Container fluid style={{fontFamily: "Comic Sans MS"}}>
           {location.pathname != "/" ?
             <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : (dishView && location.state && location.state.previousLocationPathname === '/') ? () => navigate(-1) : (dishView && !location.state) ? () => navigate(location.pathname.split("/dish")[0]) : (settings && location.state && location.state.previousLocationPathname.includes("editInfo" || "addInfo")) ? () => navigate('/') : () => navigate(-1)} />
             :
