@@ -200,7 +200,7 @@ function App() {
             <Route path='/restaurants/:id/details' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} divHeight={divHeight} setDivHeight={setDivHeight}/>} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} divHeight={divHeight} setDivHeight={setDivHeight}/>} />{/* QUEEN*/}
             <Route path='/restaurants/:id/menu/dish/:dishId' element={<DishIngredientsView />} />{/* QUEEN*/}
-            <Route path='/restaurants/:id/reviews' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} />} />{/* TANUCC*/}
+            <Route path='/restaurants/:id/reviews' element={<Restaurant restaurantAllergens={restaurantAllergens} setRestaurantAllergens={setRestaurantAllergens} menuType={menuType} divHeight={divHeight} setDivHeight={setDivHeight}/>} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
