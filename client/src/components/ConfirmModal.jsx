@@ -21,7 +21,8 @@ function ConfirmModal(props) {
                 <Modal.Title>Confirm Operation</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                Are you Sure to {text} ?
+                Are you Sure to {text}?<br/>
+                If you proceed, you will lose all the changes you have made.
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="danger" onClick={handleClose}>No</Button>
