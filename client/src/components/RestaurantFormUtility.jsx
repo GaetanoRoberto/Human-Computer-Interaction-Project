@@ -323,7 +323,7 @@ function sort_and_merge_times(times) {
   }
 
 function EditTimeSelector(props) {
-    const { n_times, time, addTime, setTimeArrays, saveTime, deleteTime, checkTime } = props;
+    const { n_times, time, add, setTimeArrays, saveTime, reset, checkTime } = props;
 
     return (
         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -345,9 +345,8 @@ function EditTimeSelector(props) {
                     checkTime(new_time, setTimeArrays);
                 }
             }} onKeyDown={(event) => { event.preventDefault() }} />
-            { (time.first === '00:00' && time.last === '00:00') ? '' : <Button size='sm' variant="success" onClick={() => { addTime(setTimeArrays,time.day) }} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>}
-            {(n_times > 1) ? <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button> : ''}
-            <p style={{ display: 'block', color: '#dc3545' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
+            <Button size='sm' className='light-green' onClick={() => add()} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>
+            <p style={{ display: 'block', color: '#dc3545', marginBottom:'0px' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
     );
 }
@@ -368,7 +367,7 @@ function ViewTimeSelector(props) {
                 checkTime(new_time, setTimeArrays);
             }} onKeyDown={(event) => { event.preventDefault() }} />
             <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button>
-            <p style={{ display: 'block', color: '#dc3545' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
+            <p style={{ display: 'block', color: '#dc3545', marginBottom:'0px' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
     );
 }

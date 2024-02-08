@@ -173,7 +173,7 @@ const RestaurantManagement = (props) => {
             <Container>
               <Row style={{ textAlign: 'center' }}>
                 <Col>
-                  <Button variant="success" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`); setProgress(1); }}>Edit Information</Button>
+                  <Button variant="success" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`); setProgress(1); }}>Edit Info</Button>
                 </Col>
                 <Col>
                   <Button variant="success" style={{ marginTop: "20px", marginBottom: "20px", width: '140px' }} onClick={() => { navigate(`/editInfo/${restaurant.id}/`, { state: { from: 'edit_menu' } }); setProgress(4); }}>Edit Menu</Button>

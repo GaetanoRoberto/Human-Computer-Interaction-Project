@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Header } from './Home';
-import { Button, Container, Form, ListGroup, Col, Row, Dropdown, Modal } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup, Col, Row, Dropdown, Modal, CloseButton } from 'react-bootstrap';
 import { PLACEHOLDER } from './Costants';
 import dayjs from 'dayjs';
 import validator from 'validator';
@@ -27,10 +27,10 @@ const handleFileNames = (filename) => {
 }
 
 function SuccessModal(props) {
-    const {text,show,setShow,action,parameter} = props;
-    
+    const { text, show, setShow, action, parameter } = props;
+
     const perform_action = () => {
-        if(parameter == undefined){
+        if (parameter == undefined) {
             action();
             setShow(false);
         } else {
@@ -44,7 +44,7 @@ function SuccessModal(props) {
             <Modal.Header closeButton>
                 <Modal.Title>Operation Successful</Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{display:'flex',alignItems:'center'}}>
+            <Modal.Body style={{ display: 'flex', alignItems: 'center' }}>
                 {text}&nbsp;&nbsp;<i className="bi bi-check-circle-fill" style={{ fontSize: '24px', color: '#198754' }}></i>
             </Modal.Body>
             <Modal.Footer>
@@ -63,7 +63,7 @@ function ProgressLabel(props) {
             text = 'Insert Info ';
             break;
         case 2:
-            text = 'Insert your TimeTable ';
+            text = 'Insert your Timetable ';
             break;
         case 3:
             text = 'Describe Your Activity '
@@ -77,7 +77,7 @@ function ProgressLabel(props) {
     }
 
     return (
-        <h1 className="text-center" style={{marginTop:'3%'}}>{text}{(editMenu) ? '' : `(${progress}/4)`}</h1>
+        <h1 className="text-center" style={{ marginTop: '3%' }}>{text}{(editMenu) ? '' : `(${progress}/4)`}</h1>
     );
 }
 
@@ -99,41 +99,51 @@ function InnerForm(props) {
 
     // states for progress 2/4
     const [times, setTimes] = useState([]);
-    const [day,setDay] = useState({text:'', clicked: false});
-    const [temporaryTimes,setTemporaryTimes] = useState([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false}]);
-    const [errorMsg,setErrorMsg] = useState('');
+    const [day, setDay] = useState({ text: '', clicked: false });
+    const [temporaryTimes, setTemporaryTimes] = useState([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
+    const [errorMsg, setErrorMsg] = useState('');
+    // state for showing the add time form or not
+    const [showTimeForm, setShowTimeForm] = useState(false);
     // temporary client id for managing the time intervals (find the max id in the times array and add 1)
     const [timetempId, setTimeTempId] = useState(times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2);
+    // function to reset temporary times
+    const reset = () => {
+        setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]);
+        setDay({ text: '', clicked: false });
+        setErrorMsg('');
+    };
+    // state for showing the reset timetable modal
+    const [showResetTimetable, setShowResetTimetable] = useState(false);
 
     // states for progress 3/4
     const [image, setImage] = useState(PLACEHOLDER);
     const [fileName, setFileName] = useState('No File Chosen');
- 
+
     // states for progress 4/4
     //const [dishes, setDishes] = useState([{ "id": 1, "name": "Pasta Carbonara", "price": 10.99, "type": "pasta", "image": "http://localhost:3001/dishes/bismark.jpeg", "ingredients": [{ "id": 1, "dishId": 1, "image": "http://localhost:3001/ingredients/spaghetti.png", "name": "Spaghetti", "allergens": "gluten", "brandName": "Barilla", "brandLink": "http://www.barilla.com" }, { "id": 2, "dishId": 1, "image": "http://localhost:3001/ingredients/bacon.jpg", "name": "Bacon", "allergens": "pork", "brandName": "HomeMade", "brandLink": null }] }, { "id": 2, "name": "Margherita Pizza", "price": 12.99, "type": "pizza", "image": "http://localhost:3001/dishes/capricciosa.jpg", "ingredients": [{ "id": 3, "dishId": 2, "image": "http://localhost:3001/ingredients/tomato_sauce-png", "name": "Tomato Sauce", "allergens": null, "brandName": "Ragu", "brandLink": "http://www.ragu.com" }, { "id": 4, "dishId": 2, "image": "http://localhost:3001/ingredients/mozzarella.jpg", "name": "Mozzarella Cheese", "allergens": "lactose", "brandName": "Galbani", "brandLink": "http://www.galbani.com" }] }]);
     const [dishes, setDishes] = useState([]);
     // state for displaying error message when no dish is added
-    const [noDishError,setNoDishError] = useState('');
+    const [noDishError, setNoDishError] = useState('');
     // temporary client id for managing the dishes inserted (find the max id in the dishes array and add 1)
     const [dishtempId, setDishTempId] = useState(dishes.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const prevDishesLength = useRef(dishes.length);
 
     // DISH SECTION STATES
-    const [dishName, setDishName] = useState({text:'' , invalid:false});
-    const [price, setPrice] = useState({price: '' , invalid:false});
+    const [dishName, setDishName] = useState({ text: '', invalid: false });
+    const [price, setPrice] = useState({ price: '', invalid: false });
     const [type, setType] = useState({ text: '', invalid: false });
     const [dishImage, setDishImage] = useState(PLACEHOLDER);
     const [fileNameDish, setFileNameDish] = useState('No File Chosen');
-    const [ingredients, setIngredients] = useState([{ id: 0, text: '', image: PLACEHOLDER, fileName:'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname:false, invalid_link:false }]);
+    const [ingredients, setIngredients] = useState([{ id: 0, text: '', image: PLACEHOLDER, fileName: 'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
     // temporary client id for managing the ingredients (find the max id in the ingredients array and add 1)
     const [ingredientTempId, setIngredientTempId] = useState(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     const [show, setShow] = useState(false);
     // state for going into the dish section
     const [manageDish, setManageDish] = useState(undefined);
-    
+
     // state for operation confirmed
-    const [showConfirm,setShowConfirm] = useState(false);
-    const [confirmText,setConfirmText] = useState('');
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmText, setConfirmText] = useState('');
     const action_to_perform = () => {
         //then return home if Click Save Button, if in Add/Edit Dish, return to 4/4
         if (manageDish) {
@@ -143,7 +153,7 @@ function InnerForm(props) {
             navigate('/');
         }
     };
-    
+
     // TO ENSURE CORRECT TEMPORARY ID OF THE TIMES UPDATE
     useEffect(() => {
         // Check if the length of dishes array has changed
@@ -162,18 +172,21 @@ function InnerForm(props) {
         // TRIGGERED BY TIMES
         // Always do, even if length does not changed, means times merged so update it anyway
         // Update temporaryTimes and timetempId when times state changes
-        setTemporaryTimes([
-            {
-                id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
-                day: '',
-                first: '',
-                last: '',
-                invalid: false,
-            },
-        ]);
-        setTimeTempId(
-            times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2
-        );
+        // only if valid
+        if (!temporaryTimes.some(time => time.invalid)) {
+            setTemporaryTimes([
+                {
+                    id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1,
+                    day: '',
+                    first: '',
+                    last: '',
+                    invalid: false,
+                },
+            ]);
+            setTimeTempId(
+                times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2
+            );
+        }
     }, [times]);
 
     // to retrieve info of the restaurant if in edit
@@ -221,7 +234,7 @@ function InnerForm(props) {
             getRestaurant(restaurant_id);
         }
         // Access the information about the previous location
-        if(location.state?.from && location.state?.from==='add_or_edit_dish') {
+        if (location.state?.from && location.state?.from === 'add_or_edit_dish') {
             setProgress(4);
         }
     }, []);
@@ -233,10 +246,10 @@ function InnerForm(props) {
         setType({ text: '', invalid: false });
         setDishImage(PLACEHOLDER);
         setFileNameDish('No File Chosen');
-        setIngredients([{ id: 0, text: '', image: PLACEHOLDER, fileName:'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
+        setIngredients([{ id: 0, text: '', image: PLACEHOLDER, fileName: 'No File Chosen', allergens: null, brandname: '', brandLink: '', invalid_text: false, invalid_allergens: false, invalid_brandname: false, invalid_link: false }]);
         setIngredientTempId(ingredients.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1);
     };
-          
+
     function createDishObject(dishId) {
         const dishObject = {
             id: dishId,
@@ -256,10 +269,10 @@ function InnerForm(props) {
                 brandLink: ingredient.brandLink || null,
             })),
         };
-    
+
         return dishObject;
     }
-    
+
     function addDish() {
         const new_dish = createDishObject(undefined);
         //console.log(new_dish)
@@ -293,7 +306,7 @@ function InnerForm(props) {
         ));
     }
 
-    function addTime(setTimeArrays,new_time) {
+    function addTime(setTimeArrays, new_time) {
         setTimeTempId((oldTempId) => {
             if (new_time) {
                 setTimeArrays((oldtimeList) => {
@@ -314,7 +327,7 @@ function InnerForm(props) {
         });
     }
 
-    function saveTime(updatedTime,setTimeArrays) {
+    function saveTime(updatedTime, setTimeArrays) {
         setTimeArrays((timeList) => timeList.map((time) => {
             if (time.id === updatedTime.id) {
                 return Object.assign({}, updatedTime);
@@ -323,36 +336,36 @@ function InnerForm(props) {
             }
         }
         ));
-        
+
         // sort and merge only if there are no invalidities and no in edit
         //setTimeArrays((timelist) => (timelist.every(item => !item.invalid)) ? sort_and_merge_times(timelist) : timelist);
     }
 
-    function deleteTime(timeId,setTimeArrays) {
+    function deleteTime(timeId, setTimeArrays) {
         setTimeArrays((timeList) => timeList.filter((time) => {
-                if (time.id !== timeId) {
-                    return true;
-                } else {
-                    return false;
-                }
+            if (time.id !== timeId) {
+                return true;
+            } else {
+                return false;
+            }
             return true;
         }
         ));
     }
 
-    function checkTime(time,setTimeArrays) {
+    function checkTime(time, setTimeArrays) {
         let invalid = undefined;
-        if (time.first!=='' && time.last!=='') {
+        if (time.first !== '' && time.last !== '') {
             const first_hour = dayjs(`2023-01-01T${time.first}`);
             const last_hour = dayjs(`2023-01-01T${time.last}`);
             if (last_hour > first_hour) {
-                saveTime(Object.assign({}, time, { invalid: false }),setTimeArrays);
+                saveTime(Object.assign({}, time, { invalid: false }), setTimeArrays);
             } else {
-                saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
-                invalid = true;   
+                saveTime(Object.assign({}, time, { invalid: true }), setTimeArrays);
+                invalid = true;
             }
         } else {
-            saveTime(Object.assign({}, time, { invalid: true }),setTimeArrays);
+            saveTime(Object.assign({}, time, { invalid: true }), setTimeArrays);
             invalid = true;
         }
         return invalid;
@@ -362,14 +375,14 @@ function InnerForm(props) {
         // temporary times validation
         let invalidity = undefined;
         for (const time of temporaryTimes) {
-            invalidity = checkTime(time,setTemporaryTimes);
+            invalidity = checkTime(time, setTemporaryTimes);
             if (invalidity) {
                 return;
             }
         }
         // check if a day has been clicked
         // in case not,message of error and don't add
-        if(day.clicked === true) {
+        if (day.clicked === true) {
             // add also the day to temporary times
             const times_to_add = temporaryTimes.map((time) => {
                 return {
@@ -380,11 +393,11 @@ function InnerForm(props) {
                     invalid: time.invalid
                 };
             })
-            
+
             // if all ok, add the temporary times
             setTimes((oldTimes) => { return sort_and_merge_times([...oldTimes, ...times_to_add]) });
             //setTemporaryTimes([{id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 2, day: '', first: '', last: '', invalid: false}]);
-            setDay({text:'', clicked: false});
+            setDay({ text: '', clicked: false });
             setErrorMsg('');
         } else {
             setErrorMsg('Select a Day of The Week');
@@ -456,7 +469,7 @@ function InnerForm(props) {
             setState({ link: info.link, invalid: true });
         } else {
             setState({ link: info.link, invalid: false });
-        }        
+        }
         return invalid;
     }
 
@@ -569,7 +582,7 @@ function InnerForm(props) {
         return invalid;
     }*/
 
-    const handleSubmit = async (event,submit) => {
+    const handleSubmit = async (event, submit) => {
         event.preventDefault();
         event.stopPropagation();
         let invalid = false;
@@ -620,10 +633,10 @@ function InnerForm(props) {
                     invalid = true;
                     setErrorMsg('At Least One Hours Is Required');
                 }
-                
+
                 // check for good values
                 for (const time of times) {
-                    const invalidity = checkTime(time,setTimes);
+                    const invalidity = checkTime(time, setTimes);
                     if (invalidity) {
                         invalid = invalidity;
                         break;
@@ -645,7 +658,9 @@ function InnerForm(props) {
                     // sort and merge them (only here and after temporary times to avoid changing while user do something)
                     setTimes((oldTimes) => sort_and_merge_times(oldTimes));
                     setTemporaryTimes((oldTempTimes) => sort_and_merge_times(oldTempTimes));
-                    setErrorMsg('');
+                    // reset everything, also close the hour form
+                    reset();
+                    setShowTimeForm(false);
                 }
                 break;
             case 3:
@@ -712,12 +727,12 @@ function InnerForm(props) {
         } else {
             //progress is 4 and click save button, construct the http post object and submit by invoking the API
             // construct the object to call the API
-            if(!invalid) {
+            if (!invalid) {
                 if (manageDish && manageDish.id) {
                     // edit dish
                     editDish();
                     setNoDishError('');
-                } else if(manageDish) {
+                } else if (manageDish) {
                     // add dish
                     addDish();
                     setNoDishError('');
@@ -734,7 +749,7 @@ function InnerForm(props) {
                 restaurant.hours = time_object_to_string(times);
                 restaurant.description = description.text;
                 restaurant.dishes = dishes;
-    
+
                 if (submit) {
                     try {
                         if (restaurant_id) {
@@ -779,7 +794,7 @@ function InnerForm(props) {
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Location</Form.Label>
-                            <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false}/>
+                            <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false} />
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Phone Number</Form.Label>
@@ -796,22 +811,22 @@ function InnerForm(props) {
                     <Form.Group className="mb-3">
                         <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Website/Social</Form.Label>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Label className='formLabelRestaurant'>Website Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Website Link <i style={{ color: 'gray' }}>(optional)</i></Form.Label>
                             <Form.Control className="form-control-green-focus" isInvalid={website.invalid} type="text" defaultValue={website.link} onChange={(event) => setWebsite({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Label className='formLabelRestaurant'>Instagram Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Instagram Link <i style={{ color: 'gray' }}>(optional)</i></Form.Label>
                             <Form.Control className="form-control-green-focus" isInvalid={instagram.invalid} type="text" defaultValue={instagram.link} onChange={(event) => setInstagram({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Label className='formLabelRestaurant'>Facebook Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Facebook Link <i style={{ color: 'gray' }}>(optional)</i></Form.Label>
                             <Form.Control className="form-control-green-focus" isInvalid={facebook.invalid} type="text" defaultValue={facebook.link} onChange={(event) => setFacebook({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
-                            <Form.Label className='formLabelRestaurant'>Twitter Link <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                            <Form.Label className='formLabelRestaurant'>Twitter Link <i style={{ color: 'gray' }}>(optional)</i></Form.Label>
                             <Form.Control className="form-control-green-focus" isInvalid={twitter.invalid} type="text" defaultValue={twitter.link} onChange={(event) => setTwitter({ link: event.target.value.trim(), invalid: false })} />
                             <Form.Control.Feedback type="invalid">Enter A Valid Link</Form.Control.Feedback>
                         </div>
@@ -823,35 +838,17 @@ function InnerForm(props) {
         case 2:
             componentToRender = (
                 <Container fluid>
-                    <div style={{marginTop: '2%', marginBottom:'2%'}}><strong style={{fontSize: 'large'}}>Your Temporary Timetable:</strong></div>
-                    <Container>
-                        <p style={(errorMsg !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{errorMsg}</p>
-                        <Container>
-                            <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Mon', clicked: true}) }}>Mon</span>
-                            <span className={(day.text === 'Tue') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Tue', clicked: true}) }}>Tue</span>
-                            <span className={(day.text === 'Wed') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Wed', clicked: true}) }}>Wed</span>
-                            <span className={(day.text === 'Thu') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Thu', clicked: true}) }}>Thu</span>
-                            <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Fry', clicked: true}) }}>Fry</span>
-                            <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sat', clicked: true}) }}>Sat</span>
-                            <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({text:'Sun', clicked: true}) }}>Sun</span>
-                        </Container>
-                        {temporaryTimes.map((temp_time) => {
-                            return <EditTimeSelector key={temp_time.id} n_times={temporaryTimes.length} time={temp_time} addTime={addTime} setTimeArrays={setTemporaryTimes} saveTime={saveTime} deleteTime={deleteTime} checkTime={checkTime} />;
-                        })}
-                    </Container>
-                    <Container className="d-flex justify-content-between" style={{marginTop: '3%'}}>
+                    {(filter_by_day(times, 'Mon').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Mon')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Tue').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Tue')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Wed').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Wed')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Thu').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Thu')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Fry').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Fry')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Sat').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sat')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {(filter_by_day(times, 'Sun').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sun')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime} /> : ''}
+                    {/*<Container className="d-flex justify-content-between" style={{marginTop: '3%'}}>
                         <Button variant="danger" size='sm' onClick={() => { setTemporaryTimes([{ id: times.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1, day: '', first: '', last: '', invalid: false }]); setDay({text:'',clicked:false}); setErrorMsg('');}}>Reset</Button>
                         <Button variant="success" size='sm' onClick={addTempTimesToTimes}>Add</Button>
-                    </Container>
-                    <hr style={{borderTop: "1px solid #000"}}/>
-                    <div style={{marginTop: '7%'}}><strong style={{fontSize: 'large'}}>Your Actual Timetable:</strong></div>
-                    {(filter_by_day(times, 'Mon').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Mon')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Tue').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Tue')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Wed').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Wed')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Thu').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Thu')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Fry').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Fry')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Sat').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sat')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
-                    {(filter_by_day(times, 'Sun').length !== 0) ? <ViewDailyTimeSelector times={filter_by_day(times, 'Sun')} n_times={times.length} deleteTime={deleteTime} setTimeArrays={setTimes} saveTime={saveTime} checkTime={checkTime}/> : ''}
+                    </Container>*/}
                 </Container>
             );
             break;
@@ -859,7 +856,7 @@ function InnerForm(props) {
             componentToRender = (
                 <Container fluid>
                     <Form.Group className="mb-3" >
-                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Activity Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                        <Form.Label style={{ fontSize: 'large', fontWeight: 'bold' }}>Activity Image <i style={{ color: 'gray' }}>(optional)</i></Form.Label>
                         <ImageViewer width={"300px"} height={"300px"} image={image} setImage={setImage} fileName={fileName} setFileName={setFileName} />
                     </Form.Group>
                 </Container>
@@ -869,7 +866,7 @@ function InnerForm(props) {
             {
                 manageDish ? componentToRender = (
                     <DishForm
-                        dish={(manageDish.id) ? dishes.filter((dish) => dish.id===manageDish.id)[0] : undefined}
+                        dish={(manageDish.id) ? dishes.filter((dish) => dish.id === manageDish.id)[0] : undefined}
                         dishName={dishName}
                         setDishName={setDishName}
                         price={price}
@@ -886,31 +883,31 @@ function InnerForm(props) {
                         setIngredientTempId={setIngredientTempId}
                     />
                 ) :
-                componentToRender = (
+                    componentToRender = (
                         <>
                             <Container>
                                 <p style={(noDishError !== '') ?{color: '#dc3545'} : {color: '#dc3545', display:'none'}}>{noDishError}</p>
                                 <ListGroup>
                                     {
                                         dishes.sort((a, b) => {
-                                            const nameA = a.name.toUpperCase(); 
+                                            const nameA = a.name.toUpperCase();
                                             const nameB = b.name.toUpperCase();
-                                          
+
                                             if (nameA < nameB) {
-                                              return -1;
+                                                return -1;
                                             }
                                             if (nameA > nameB) {
-                                              return 1;
+                                                return 1;
                                             }
                                             return 0;
-                                          }).map((dish, index) => {
+                                        }).map((dish, index) => {
                                             return (<DishItem key={index} dish={dish} deleteDish={deleteDish} setManageDish={setManageDish} />);
                                         })
                                     }
                                 </ListGroup>
                             </Container>
                         </>
-                );
+                    );
             }
             break;
         default:
@@ -920,23 +917,66 @@ function InnerForm(props) {
     return (
         <>
             <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
-            <SuccessModal text={confirmText} show={showConfirm} setShow={setShowConfirm} action={action_to_perform}/>
+            <ConfirmModal text={'Reset Your Timetable'} show={showResetTimetable} setShow={setShowResetTimetable} action={() => setTimes([])} />
+            <SuccessModal text={confirmText} show={showConfirm} setShow={setShowConfirm} action={action_to_perform} />
             <Form noValidate onSubmit={handleSubmit}>
                 {(progress === 4 && manageDish === undefined) ?
-                <>
-                    <Container fluid style={{ height: '65vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
-                    <Container className="d-flex flex-column align-items-center width-100">
-                        <Button className='light-green' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
-                    </Container>
-                </> : 
-                <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
+                    <>
+                        <Container fluid style={{ height: '64.8vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
+                        <Container className="d-flex flex-column align-items-center width-100">
+                            <Button className='light-green' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
+                        </Container>
+                    </> : (progress === 2 && showTimeForm) ?
+                        <span>
+                            <Container fluid>
+                                <Container style={(showTimeForm) ? {} : { display: 'none' }}>
+                                    <p style={(errorMsg !== '') ? { color: '#dc3545', marginBottom:'0%' } : { color: '#dc3545', display: 'none' }}>{errorMsg}</p>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2%', marginBottom: '2%' }}>
+                                        <strong style={{ fontSize: 'large' }}>Select Opening Day and Hours:</strong>
+                                        <CloseButton onClick={() => { reset(); setShowTimeForm(false); }} />
+                                    </div>
+
+                                    <span className={(day.text === 'Mon') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Mon', clicked: true }) }}>Mon</span>
+                                    <span className={(day.text === 'Tue') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Tue', clicked: true }) }}>Tue</span>
+                                    <span className={(day.text === 'Wed') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Wed', clicked: true }) }}>Wed</span>
+                                    <span className={(day.text === 'Thu') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Thu', clicked: true }) }}>Thu</span>
+                                    <span className={(day.text === 'Fry') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Fry', clicked: true }) }}>Fry</span>
+                                    <span className={(day.text === 'Sat') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Sat', clicked: true }) }}>Sat</span>
+                                    <span className={(day.text === 'Sun') ? "round-icon-selected" : "round-icon"} onClick={() => { setDay({ text: 'Sun', clicked: true }) }}>Sun</span>
+                                    {temporaryTimes.map((temp_time) => {
+                                        return <EditTimeSelector key={temp_time.id} n_times={temporaryTimes.length} time={temp_time} add={addTempTimesToTimes} setTimeArrays={setTemporaryTimes} saveTime={saveTime} checkTime={checkTime}
+                                            reset={reset} />;
+                                    })}
+                                    <hr style={{ borderTop: "1px solid #000" }} />
+                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5%' }}>
+                                        {(showTimeForm) ? '' : <Button size='sm' className='light-green' onClick={() => { reset(); setShowTimeForm(true); }}>Add Hours</Button>}
+                                        {(times.length > 0) ? <Button size='sm' variant='danger' style={{ marginLeft: 'auto' }} onClick={() => { setShowResetTimetable(true) }}>Reset Timetable</Button> : <Button size='sm' variant='danger' style={{ visibility:'hidden' }}>Reset Timetable</Button>}
+                                    </div>
+                                </Container>
+                            </Container>
+                            <Container fluid style={(errorMsg !== '') ? { height: '40.2vh', overflowY: 'auto', marginBottom: '3%' } : (temporaryTimes.some(time => time.invalid)) ? { height: '41.4vh', overflowY: 'auto', marginBottom: '3%' } : { height: '44.1vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
+                        </span>
+                        : (progress === 2 && !showTimeForm) ?
+                        <span>
+                            <Container fluid>
+                                <Container>
+                                    <p style={(errorMsg !== '') ? { color: '#dc3545', marginBottom:'2%' } : { color: '#dc3545', display: 'none' }}>{errorMsg}</p>
+                                </Container>
+                                <Container style={{ display: 'flex', alignItems: 'center', marginBottom: '5%' }}>
+                                    {(showTimeForm) ? '' : <Button size='sm' className='light-green' onClick={() => { reset(); setShowTimeForm(true); }}>Add Hours</Button>}
+                                    {(times.length > 0) ? <Button size='sm' variant='danger' style={{ marginLeft: 'auto' }} onClick={() => { setShowResetTimetable(true) }}>Reset Timetable</Button> : ''}
+                                </Container>
+                            </Container>
+                            <Container fluid style={(errorMsg !== '') ? { height: '59.9vh', overflowY: 'auto', marginBottom: '3%' } : { height: '63.8vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
+                        </span> : 
+                        <Container fluid style={{ height: '70vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>}
                 <Container className="d-flex justify-content-between mt-auto">
                     {(manageDish !== undefined && manageDish.route !== undefined && progress === 4) ? <Button className='dark-yellow' onClick={() => { setShow(true) }}>Back</Button> : ''}
-                    {(progress > 1 && manageDish === undefined && editMenu===false) ? <Button className='dark-yellow'  onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
+                    {(progress > 1 && manageDish === undefined && editMenu === false) ? <Button className='dark-yellow' onClick={() => { setProgress(progress - 1) }}>Back</Button> : ''}
                     {(progress < 4) ? <Button onClick={handleSubmit} className="ms-auto light-green">Next</Button> : ''}
-                    {(progress === 4 && manageDish === undefined) ? <Button  variant="success" onClick={(event) => handleSubmit(event,true)} className="ms-auto">Save</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
-                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button  variant="success" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
+                    {(progress === 4 && manageDish === undefined) ? <Button variant="success" onClick={(event) => handleSubmit(event, true)} className="ms-auto">Save</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id !== undefined && progress === 4) ? <Button variant="success" onClick={handleSubmit} className="ms-auto">Edit Dish</Button> : ''}
+                    {(manageDish !== undefined && manageDish.id === undefined && progress === 4) ? <Button variant="success" onClick={handleSubmit} className="ms-auto">Add Dish</Button> : ''}
                 </Container>
             </Form>
         </>
@@ -945,21 +985,21 @@ function InnerForm(props) {
 
 function RestaurantForm(props) {
     const location = useLocation();
-    const {progress, setProgress} = props;
-    const [editMenu,setEditMenu] = useState(false);
+    const { progress, setProgress } = props;
+    const [editMenu, setEditMenu] = useState(false);
 
     useEffect(() => {
         // Access the information about the previous location
         // If i came from the settings route and i click edit your menu do logic for masking 
-        if(location.state?.from && location.state?.from==='edit_menu') {
+        if (location.state?.from && location.state?.from === 'edit_menu') {
             setEditMenu(true);
         }
     }, []);
 
     return (
         <>
-            <ProgressLabel progress={progress} editMenu={editMenu}/>
-            <InnerForm progress={progress} setProgress={setProgress} editMenu={editMenu}/>
+            <ProgressLabel progress={progress} editMenu={editMenu} />
+            <InnerForm progress={progress} setProgress={setProgress} editMenu={editMenu} />
         </>
     );
 }
