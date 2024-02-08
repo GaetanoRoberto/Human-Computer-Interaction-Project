@@ -69,7 +69,8 @@ function Header(props) {
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
-          <div style={{fontFamily: "Comic Sans MS"}}>
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"></link>
+          <div style={{fontFamily: "Poppins"}}>
           {
             location.pathname === "/settings"?
             <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => formPages ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
