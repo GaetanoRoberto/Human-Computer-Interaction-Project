@@ -63,19 +63,20 @@ function Header(props) {
           
         }} />
 
-        <Container fluid style={{fontFamily: "Comic Sans MS"}}>
+        <Container fluid>
           {location.pathname != "/" ?
             <FontAwesomeIcon style={{ fontSize: "2rem", color: "white" }} icon="fa-regular fa-circle-left" onClick={detailsMenuReviews ? () => navigate("/") : formPages ? () => setShow2(true) : (dishView && location.state && location.state.previousLocationPathname === '/') ? () => navigate(-1) : (dishView && !location.state) ? () => navigate(location.pathname.split("/dish")[0]) : (settings && location.state && location.state.previousLocationPathname.includes("editInfo" || "addInfo")) ? () => navigate('/') : () => navigate(-1)} />
             :
             <Button style={{ visibility: 'hidden', marginLeft: "2%", pointerEvents: 'none' }}></Button>
           }
+          <div style={{fontFamily: "Comic Sans MS"}}>
           {
             location.pathname === "/settings"?
             <Button style={{ marginLeft: "23px" }}  variant="warning" onClick={() => formPages ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
             :
             <Button   variant="warning" onClick={() => formPages ? setShow(true) : navigate('/')}>GLUTEN-HUB</Button>
           }
-         
+          </div>
           {location.pathname === "/settings" ?
 
             <Dropdown className='headerDropdown' drop="down" align="end" style={{ marginRight: "-12px" }}>

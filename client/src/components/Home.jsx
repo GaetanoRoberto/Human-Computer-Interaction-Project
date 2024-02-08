@@ -92,9 +92,9 @@ function SearchBar(props) {
                 </Col>
             </Row>
             <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
-                <Col style={{ textAlign: "center",alignItems:'center' }}>
-                    <b style={{ marginRight: "0.5rem", position: "relative", bottom: 3 }}>More info</b>
-                    <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "1.5rem", color: "#007bff" }} icon="fa-solid fa-circle-info" />
+                <Col style={{ alignItems:'center' }}>
+                    <b style={{ marginRight: "0.5rem", position: "relative", bottom: 0 }}>More info</b>
+                    <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "1.2rem", color: "#007bff", position: "relative", bottom: -2.5, marginLeft: "-5px" }} icon="fa-solid fa-circle-info" />
                 </Col>
             </Row>
         </>
