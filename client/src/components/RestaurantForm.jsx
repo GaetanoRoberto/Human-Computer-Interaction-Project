@@ -922,7 +922,7 @@ function InnerForm(props) {
             <Form noValidate onSubmit={handleSubmit}>
                 {(progress === 4 && manageDish === undefined) ?
                     <>
-                        <Container fluid style={{ height: '64.8vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
+                        <Container fluid style={{ height: '65.2vh', overflowY: 'auto', marginBottom: '3%' }}>{componentToRender}</Container>
                         <Container className="d-flex flex-column align-items-center width-100">
                             <Button className='light-green' onClick={() => { setManageDish({ route: 'add_dish', id: undefined }) }}>Add Dish</Button>
                         </Container>
