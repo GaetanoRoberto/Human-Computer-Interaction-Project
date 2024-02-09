@@ -207,7 +207,7 @@ function InnerForm(props) {
                 // retrieve hours
                 setTimes(sort_and_merge_times(time_string_to_object(restaurant.hours)));
                 setImage(restaurant.image);
-                setFileName(restaurant.image.split('/')[restaurant.image.split('/').length - 1]);
+                setFileName(handleFileNames(restaurant.image.split('/')[restaurant.image.split('/').length - 1]));
                 setDishes(restaurant.dishes.map(dish => {
                     // Extract file name from image URL
                     let imageName = dish.image.substring(dish.image.lastIndexOf('/') + 1);
