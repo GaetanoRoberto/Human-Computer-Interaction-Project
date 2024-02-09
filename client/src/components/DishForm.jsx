@@ -153,7 +153,7 @@ function DishForm(props) {
                     </Row>
 
                     <Form.Group className="mb-3" style={{marginTop: '3%'}}>
-                        <Form.Label style={{ fontSize: 'x-large', fontWeight: 'bold' }}>Dish Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
+                        <Form.Label className='formLabelRestaurant' style={{marginBottom:'2%'}}>Dish Image <i style={{color:'gray'}}>(optional)</i></Form.Label>
                         <ImageViewer width={"200px"} height={"200px"} image={dishImage} setImage={setDishImage} fileName={fileNameDish} setFileName={setFileNameDish} />
                     </Form.Group>
                 </Form.Group>

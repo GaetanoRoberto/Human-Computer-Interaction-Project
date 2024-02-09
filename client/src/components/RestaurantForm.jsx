@@ -916,7 +916,7 @@ function InnerForm(props) {
 
     return (
         <>
-            <ConfirmModal text={'Undo The Changes Made'} show={show} setShow={setShow} action={() => resetStates()} />
+            <ConfirmModal text={'Undo The Dish Modifications'} show={show} setShow={setShow} action={() => resetStates()} />
             <ConfirmModal text={'Reset Your Timetable'} show={showResetTimetable} setShow={setShowResetTimetable} action={() => setTimes([])} />
             <SuccessModal text={confirmText} show={showConfirm} setShow={setShowConfirm} action={action_to_perform} />
             <Form noValidate onSubmit={handleSubmit}>

@@ -378,9 +378,7 @@ function ViewDailyTimeSelector(props) {
 
     return (
         <>
-            <div style={{ marginBottom: '10px' }}>
-                <strong>{day}:</strong>
-            </div>
+            <strong>{day}:</strong>
             {times.map((time) => {
                 return <ViewTimeSelector key={time.id} n_times={n_times} time={time} deleteTime={deleteTime} setTimeArrays={setTimeArrays} saveTime={saveTime} checkTime={checkTime}/>;
             })}
