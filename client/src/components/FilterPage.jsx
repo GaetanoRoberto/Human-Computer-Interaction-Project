@@ -580,7 +580,7 @@ const FilterPage = (props) => {
                                     // (tempFilters.order === "DESC" || tempFilters.order === "ASC")
                                 }
                                     variant="danger" onClick={() => handleRemoveFilters()}>
-                                    Remove filters
+                                    Reset filters
                                 </Button>
                                 <Button variant="success" type='submit'
                                     disabled={isLoadingLocation}>
