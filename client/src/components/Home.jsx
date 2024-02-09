@@ -620,13 +620,54 @@ function Home(props) {
         restaurantInitialList.forEach(restaurant => {
             let passesAllFilters = true;
 
+            console.log(restaurantInitialList);
             // Price Range Filter
+            //DECOMMENTA SE VUOI FILTRARE PER PREZZO MEDIO DEL MENU DI UN RISTORANTE:
+            // if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 50) {
+            //     if (restaurant.dishes_avg_price < props.filtersToApply.priceRange[0] ||
+            //         (props.filtersToApply.priceRange[1] !== 50 && restaurant.dishes_avg_price > props.filtersToApply.priceRange[1])) {
+            //         passesAllFilters = false;
+            //     }
+            // }
+
+            // PER FILTRARE IN BASE AL PREZZO DELLE RECENSIONI:
             if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 50) {
-                if (restaurant.dishes_avg_price < props.filtersToApply.priceRange[0] ||
-                    (props.filtersToApply.priceRange[1] !== 50 && restaurant.dishes_avg_price > props.filtersToApply.priceRange[1])) {
+                const avgPriceRange = approssimaValoreAlRange(Math.round(restaurant.avg_price));
+                let lowerBound, upperBound;
+            
+                switch (avgPriceRange) {
+                    case "1-10":
+                        lowerBound = 1;
+                        upperBound = 10;
+                        break;
+                    case "10-20":
+                        lowerBound = 10;
+                        upperBound = 20;
+                        break;
+                    case "20-30":
+                        lowerBound = 20;
+                        upperBound = 30;
+                        break;
+                    case "30-40":
+                        lowerBound = 30;
+                        upperBound = 40;
+                        break;
+                    case "40+":
+                        lowerBound = 40;
+                        upperBound = 50; // Note: This upper bound is inclusive in this case
+                        break;
+                    default:
+                        passesAllFilters = false; // In case of an unexpected range string
+                        return;
+                }
+            
+                // Adjusted logic to exclude the upper bound from the computation
+                if (upperBound <= props.filtersToApply.priceRange[0] || lowerBound >= props.filtersToApply.priceRange[1]) {
                     passesAllFilters = false;
                 }
             }
+            
+
 
             // Categories Filter
             if (passesAllFilters && props.filtersToApply.categories.length > 0) {
