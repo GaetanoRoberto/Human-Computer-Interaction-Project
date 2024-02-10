@@ -189,7 +189,7 @@ function AddressSelector(props) {
                     className="form-control-green-focus"
                     // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
                     onChange={(event) => { setAddress({ text: event.target.value.trim(), lat: address.lat, lng: address.lng, invalid: false }); }}
-                    defaultValue={address.text}
+                    value={(address) ? address.text : ''}
                 />
                 <Form.Control.Feedback type="invalid">Please Insert a Valid Address</Form.Control.Feedback>
             </>
