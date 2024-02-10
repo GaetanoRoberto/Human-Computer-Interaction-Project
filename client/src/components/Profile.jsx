@@ -256,7 +256,7 @@ function Profile(props) {
     }
 
     getInsertedRestaurant();
-  }, []);
+  }, [username]);
 
   return (
     <>
