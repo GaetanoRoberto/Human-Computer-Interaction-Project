@@ -794,7 +794,7 @@ function InnerForm(props) {
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Location</Form.Label>
-                            <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false} />
+                            <AddressSelector address={address} setAddress={setAddress} isInProfilePage={false} selectedStatus={""}/>
                         </div>
                         <div style={{ marginBottom: '5%' }}>
                             <Form.Label className='formLabelRestaurant'>Phone Number</Form.Label>

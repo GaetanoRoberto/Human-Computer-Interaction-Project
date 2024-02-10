@@ -105,13 +105,13 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
         <Col className="mb-2" style={{ marginTop: 15 }}>
           <Row as="h2">Your Info:</Row>
           <Row as="h4" className="text-secondary">
-            {props.username}
+            {props.selectedStatus}
           </Row>
         </Col>
         <Col className="mb-2" style={{ marginTop: 35 }}>
           <Row as="h2" style={{ marginTop: 30, marginBottom: 14.1 }}>Enter Your Location:</Row>
           <Row style={{ marginLeft: "-22.5px" }}>
-            <AddressSelector address={props.address} setAddress={props.setAddress} isInProfilePage={true} />
+            <AddressSelector address={props.address} setAddress={props.setAddress} isInProfilePage={true} selectedStatus={props.selectedStatus}/>
             <MyLocation address={props.address} setAddress={props.setAddress} username={props.username} selectedStatus={props.selectedStatus} />
           </Row>
         </Col>
@@ -228,7 +228,7 @@ function Profile(props) {
   useEffect(() => {
     const getReviewsByUser = async () => {
       try {
-        const reviews = await API.getReviewsByUser(username);
+        const reviews = await API.getReviewsByUser(props.selectedStatus);
         //console.log(reviews);
         setReviews(reviews);
 

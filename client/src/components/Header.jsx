@@ -114,7 +114,7 @@ function Header(props) {
                   User
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onClick={() => handleOptionSelect('Restaurant')} className={'bg-success text-light d-flex align-items-center '}
+                  onClick={() => handleOptionSelect('Restaurateur')} className={'bg-success text-light d-flex align-items-center '}
                 >
                   {restaurantIcon}
                   Restaurant

@@ -620,7 +620,7 @@ function Home(props) {
         restaurantInitialList.forEach(restaurant => {
             let passesAllFilters = true;
 
-            console.log(restaurantInitialList);
+            //console.log(restaurantInitialList);
             // Price Range Filter
             //DECOMMENTA SE VUOI FILTRARE PER PREZZO MEDIO DEL MENU DI UN RISTORANTE:
             // if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 50) {

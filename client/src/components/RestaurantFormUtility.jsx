@@ -160,8 +160,8 @@ function AddressSelector(props) {
                 const location = place.formatted_address + ';lat:' + place.geometry.location.lat() + ";lng:" + place.geometry.location.lng();
                 const updatedUser = { 
                     position: location, 
-                    isRestaurateur: 1, 
-                    username: "Restaurateur"
+                    isRestaurateur: props.selectedStatus == "User" ? "0" : "1",
+                    username: props.selectedStatus
                 };
                 //console.log(updatedUser);
     
