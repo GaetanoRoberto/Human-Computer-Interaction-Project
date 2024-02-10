@@ -262,7 +262,7 @@ function Profile(props) {
     <>
       <Container fluid style={{ height: window.innerHeight - 70, overflowY: 'auto', marginBottom: '3%' }}>
         <ProfileInformation address={props.address} setAddress={props.setAddress} username={username} selectedStatus={props.selectedStatus} />
-        {isRestaurateur ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} setProgress={setProgress} setDivHeight={props.setDivHeight}/> : <></>}
+        {props.selectedStatus == "Restaurateur" ? <RestaurantManagement restaurant={restaurant} setRestaurant={setRestaurant} setProgress={setProgress} setDivHeight={props.setDivHeight}/> : <></>}
         <ReviewRow reviews={reviews} setReviews={setReviews} restaurant={restaurant} />
       </Container>
     </>
