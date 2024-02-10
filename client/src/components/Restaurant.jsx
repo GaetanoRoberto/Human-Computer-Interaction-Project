@@ -327,7 +327,7 @@ const Menu = (props) => {
     const hasGluten = (dish) => {
         return dish.ingredients.some((ingredient) => {
             if (ingredient.allergens != null) {
-                return ingredient.allergens.includes("gluten")
+                return ingredient.allergens.includes("gluten") || ingredient.allergens.includes("Gluten")
             } else {
                 return false
             }

@@ -358,7 +358,7 @@ function RestaurantsList(props) {
                                                                 (<i>{dish.type}</i>)
                                                             </Col>
                                                             <Col style={{ textAlign: "center" }}>
-                                                                {dish.allergens.some(allergen => allergen === 'gluten') ?
+                                                                {dish.allergens.some(allergen => allergen.toLowerCase() === 'gluten') ?
                                                                     <Badge pill bg="danger"> <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten </Badge>
                                                                     :
                                                                     <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
@@ -393,7 +393,7 @@ function RestaurantsList(props) {
                                                                         <b style={{ textDecoration: "underline" }} onClick={() => navigate(`/restaurants/${restaurant.id}/menu/dish/${dish.id}`, { state: { previousLocationPathname: location.pathname } })}> {dish.name} </b>
                                                                     </Col>
                                                                     <Col style={{ textAlign: "center" }}>
-                                                                        {dish.allergens.some(allergen => allergen === 'gluten') ?
+                                                                        {dish.allergens.some(allergen => allergen.toLowerCase() === 'gluten') ?
                                                                             <Badge pill bg="danger"> <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> gluten </Badge>
                                                                             :
                                                                             <Badge pill bg="success"> <FontAwesomeIcon icon="fa-solid fa-check" /> gluten-free </Badge>
