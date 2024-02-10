@@ -216,10 +216,10 @@ function ReviewsList({ reviews, divHeight }) {
         {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
           //   list.map((item) => {
           reviews.length === 0 ?
-            <p style={{ marginTop: "1rem", marginLeft: "0.4rem" }}> No reviews for this Restaurant, add the first! </p>
+            <p style={{ marginTop: "1rem", textAlign: "center" }}> No reviews for this Restaurant, add the first! </p>
             :
             filteredReviews.length === 0 ?
-              <p style={{ marginTop: "1rem", marginLeft: "0.4rem" }}> No result for "<b>{search}</b>" in these reviews! </p>
+              <p style={{ marginTop: "1rem", textAlign: "center" }}> No result for "<b>{search}</b>" in these reviews! </p>
               :
               filteredReviews.map((item) => {
                 return (

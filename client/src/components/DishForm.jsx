@@ -184,7 +184,7 @@ function DishForm(props) {
                                     <Form.Control.Feedback type="invalid">Insert The Ingredient Name</Form.Control.Feedback>
                                 </Col>
                                 <Col>
-                                    <Form.Label className='formLabelRestaurant'>Brand Name</Form.Label>
+                                    <Form.Label className='formLabelRestaurant'>Brand/Provenience</Form.Label>
                                     <Form.Control
                                         className="form-control-green-focus"
                                         required
@@ -233,7 +233,7 @@ function DishForm(props) {
                                     options={foodAllergens}
                                     value={ingredients.map((ingredient, inner_index) => {
                                         if (inner_index === index && ingredient.allergens) {
-                                            return ingredient.allergens.split(',').map(item => ({ value: item.trim(), label: item.trim() }));
+                                            return ingredient.allergens.split(',').map(item => ({ value: item.trim().charAt(0).toUpperCase() + item.trim().slice(1), label: item.trim().charAt(0).toUpperCase() + item.trim().slice(1) }));
                                         }
                                     }).filter((item) => item !== undefined).flat().filter((item) => item.value !== '' && item.label !== '')}
                                     onChange={(event) => addAllergen(ingredient.id, event)}
