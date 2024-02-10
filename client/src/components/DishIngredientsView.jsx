@@ -77,7 +77,7 @@ function DishIngredientsView(){
                                                 :
                                                 allergens.map((allergen, index) => (
                                                     <h5 key={index} style={{marginTop: "0.4rem"}}>
-                                                        <Badge style={{borderRadius: 20}} bg={ allergen === "lactose" ? "info" : allergen === "pork" ? "secondary" : allergen === "gluten" ? "danger" : "primary"}>
+                                                        <Badge style={{borderRadius: 20}} bg={ allergen === "gluten" ? "danger" : "warning"}>
                                                             { allergen === "gluten" ?
                                                                 <>
                                                                     <FontAwesomeIcon icon="fa-solid fa-triangle-exclamation" /> {allergen}

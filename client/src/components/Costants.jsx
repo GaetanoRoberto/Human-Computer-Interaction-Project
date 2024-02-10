@@ -22,7 +22,9 @@ const FILTERS = [];
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"];
 
 // Allergens
-const foodAllergens = ['Peanuts', 'Tree nuts', 'Lactose', 'Eggs', 'Soy', 'Gluten', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries', 'Nickel'].map(item => ({ value: item.toLowerCase(), label: item.toLowerCase() }));
+const foodAllergens = ['Peanuts', 'Tree nuts', 'Lactose', 'Eggs', 'Soy', 'Gluten', 'Fish', 'Shellfish', 'Sesame seeds', 'Mustard', 'Celery', 'Sulphites', 'Lupin', 'Mollusks', 'Kiwi', 'Mango', 'Pineapple', 'Papaya', 'Avocado', 'Banana', 'Strawberry', 'Tomato', 'Bell peppers', 'Garlic', 'Onion', 'Carrot', 'Peach', 'Plum', 'Melons', 'Berries', 'Nickel']
+  .map(item => ({ value: item, label: item }))
+  .sort((a, b) => a.label.localeCompare(b.label));
 
 function approssimaValoreAlRange(valore) {
     if (valore == 1 ) {
