@@ -187,6 +187,20 @@ function ReviewsList({ reviews, divHeight }) {
         reviewsRef.current.scrollTop = localStorage.getItem('scrollPositionReviews') || 0;
       }, 1);
     }
+    // added 10/02
+    const getRestaurant = async () => {
+      try {
+          const restaurant = await API.getRestaurant(id);
+          setFilteredReviews(restaurant.reviews)
+      } catch (error) {
+          handleError(error);
+      }
+  }
+
+  getRestaurant();
+
+
+
   }, []);
 
   const handleScrollReviews = () => {
