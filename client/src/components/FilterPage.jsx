@@ -380,10 +380,10 @@ const FilterPage = (props) => {
                             <Row>
                                 <Col md={3} style={{ marginTop: "2.5%", marginBottom: "3.5%" }}>
                                     <Form.Group controlId="formBasicCategory" style={{ fontSize: "1rem" }}>
-                                        <Form.Label>Category</Form.Label>
+                                        <Form.Label>Categories</Form.Label>
                                         <Select
                                             closeMenuOnSelect={false}
-                                            placeholder="Choose Category"
+                                            placeholder="Choose Categories"
                                             components={animatedComponents}
                                             isMulti
                                             isSearchable={false}
@@ -407,12 +407,12 @@ const FilterPage = (props) => {
                                 </Col>
                                 <Col md={3} style={{ marginTop: "1.8%", marginBottom: "2.8%" }}>
                                     <Form.Group className='mb-3' controlId="formBasicIngredient">
-                                        <Form.Label>Allergens to avoid</Form.Label>
+                                        <Form.Label>Allergens</Form.Label>
                                         <Row>
                                             <Col>
                                                 <Select
                                                     closeMenuOnSelect={false}
-                                                    placeholder="Choose Allergens"
+                                                    placeholder="Choose Allergens to Avoid"
                                                     components={animatedComponents}
                                                     isMulti
                                                     isSearchable={false}
