@@ -631,7 +631,7 @@ function InnerForm(props) {
                 // at least 1 timetable required
                 if (times.length === 0) {
                     invalid = true;
-                    setErrorMsg('At Least One Hours Is Required');
+                    setErrorMsg('At Least One Hour Is Required');
                 }
 
                 // check for good values
