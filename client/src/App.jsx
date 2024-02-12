@@ -204,8 +204,8 @@ function App() {
             <Route path='/restaurants/:id/reviews/add' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/edit/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
             <Route path='/restaurants/:id/reviews/:reviewId' element={<ReviewForm />} />{/* TANUCC*/}
-            <Route path='/addInfo' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />  {/* DOME*/}
-            <Route path='/editInfo/:id' element={<RestaurantForm progress={progress} setProgress={setProgress} />} />{/* DOME*/}
+            <Route path='/addInfo' element={selectedStatus == "Restaurateur" ? <RestaurantForm progress={progress} setProgress={setProgress} /> : <DefaultRoute />} />  {/* DOME*/}
+            <Route path='/editInfo/:id' element={selectedStatus == "Restaurateur" ? <RestaurantForm progress={progress} setProgress={setProgress} /> : <DefaultRoute />} />{/* DOME*/}
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>
