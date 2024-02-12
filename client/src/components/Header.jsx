@@ -123,7 +123,7 @@ function Header(props) {
             </Dropdown>
 
             :
-            isRestaurateur ?
+            props.selectedStatus == "Restaurateur" ?
               <FontAwesomeIcon icon="fa-solid fa-utensils" onClick={formPages ? () => setShow2(true) : () => navigate("/settings")}  style={{
                 borderRadius: '50%',
                 border: '2px solid white',
