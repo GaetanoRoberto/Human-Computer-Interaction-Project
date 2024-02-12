@@ -138,7 +138,7 @@ function SearchReview(props) {
         </Col>
       </Row>
       <Row className='my-1 mx-0 '>
-        <Col style={{padding:'5px'}}>
+        <Col style={{padding:'5px', display: filteredReviews.length === 0 ? 'none' : 'block' }}>
           <DropdownButton id="dropdown-Review" className="dropdown-modificato" title={"SORT BY: " + label} variant="success" >
             <Dropdown.Item onClick={() => sortByField("date", filteredReviews)}>DATE</Dropdown.Item>
             <Dropdown.Item onClick={() => sortByField("price", filteredReviews)}>PRICE</Dropdown.Item>
@@ -146,7 +146,7 @@ function SearchReview(props) {
             <Dropdown.Item onClick={() => sortByField("safety", filteredReviews)}>SAFETY</Dropdown.Item>
           </DropdownButton>
         </Col>
-        <Col style={{padding:'5px'}} onClick={toggleOrder}>
+        <Col style={{padding:'5px', display: filteredReviews.length === 0 ? 'none' : 'block' }} onClick={toggleOrder}>
           {order === 'ASC' ? (
             <i className="bi bi-sort-down"  style={{ fontSize: "1.5rem" }} />
           ) : (
@@ -155,7 +155,7 @@ function SearchReview(props) {
 
         </Col>
         {!yourRestaur ?
-          <Col style={{padding:'5px'}}>
+          <Col style={{padding:'5px', display: filteredReviews.length === 0 ? 'flex' : 'block', justifyContent: "flex-end"}}>
             {userReview ?
               <Button style={{ whiteSpace: "nowrap" }} variant="success" onClick={() => navigate(`/restaurants/${id}/reviews/edit/${userReview.id}`)}>Edit review</Button>
               :
