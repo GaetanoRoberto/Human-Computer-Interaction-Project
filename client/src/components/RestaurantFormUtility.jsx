@@ -188,7 +188,8 @@ function AddressSelector(props) {
                     placeholder=""
                     className="form-control-green-focus"
                     // HERE NOT TO AVOID CALL TOO MUCH THE API onChange={(event) => addressValidation({text: event.target.value, lat:address.lat, lng:address.lng, invalid: address.invalid},setAddress)}
-                    onChange={(event) => { setAddress({ text: event.target.value.trim(), lat: address.lat, lng: address.lng, invalid: false }); }}
+                    onChange={(event) => { setAddress({ text: event.target.value, lat: address.lat, lng: address.lng, invalid: false }); }}
+                    onBlur={(event) => { setAddress({ text: event.target.value.trim(), lat: address.lat, lng: address.lng, invalid: false }); }}
                     value={(address) ? address.text : ''}
                 />
                 <Form.Control.Feedback type="invalid">Please Insert a Valid Address</Form.Control.Feedback>
@@ -335,7 +336,7 @@ function EditTimeSelector(props) {
                 if (new_time.last) {
                     checkTime(new_time, setTimeArrays);
                 }
-            }} onKeyDown={(event) => { event.preventDefault() }} />
+            }} onFocus={(event) => event.target.blur()}/>
             <TimePicker invalid={time.invalid} style={{ width: "30%", marginRight: "5%" }} value={time.last} step={60 * 30} onChange={(event) => {
                 const new_time = { day: time.day, id: time.id, first: time.first, last: event.target.value, invalid: time.invalid };
                 // check only if also first is inserted, otherwise error while user is inserting
@@ -344,7 +345,7 @@ function EditTimeSelector(props) {
                 if (new_time.first) {
                     checkTime(new_time, setTimeArrays);
                 }
-            }} onKeyDown={(event) => { event.preventDefault() }} />
+            }} onFocus={(event) => event.target.blur()}/>
             <Button size='sm' className='light-green' onClick={() => add()} style={{ marginRight: "2%" }}><i className="bi bi-plus-lg"></i></Button>
             <p style={{ display: 'block', color: '#dc3545', marginBottom:'0px' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
@@ -360,12 +361,12 @@ function ViewTimeSelector(props) {
                 const new_time = { day: time.day, id: time.id, first: event.target.value, last: time.last, invalid: time.invalid };
                 //saveTime(new_time, setTimeArrays);
                 checkTime(new_time, setTimeArrays);
-            }} onKeyDown={(event) => { event.preventDefault() }} />
+            }} onFocus={(event) => event.target.blur()}/>
             <TimePicker invalid={time.invalid} style={{ width: "30%", marginRight: "5%" }} value={time.last} step={60 * 30} onChange={(event) => {
                 const new_time = { day: time.day, id: time.id, first: time.first, last: event.target.value, invalid: time.invalid };
                 //saveTime(new_time, setTimeArrays);
                 checkTime(new_time, setTimeArrays);
-            }} onKeyDown={(event) => { event.preventDefault() }} />
+            }} onFocus={(event) => event.target.blur()} />
             <Button size='sm' variant="danger" onClick={() => { deleteTime(time.id, setTimeArrays) }}><i className="bi bi-trash"></i></Button>
             <p style={{ display: 'block', color: '#dc3545', marginBottom:'0px' }} className='small'>{(time.invalid === true) ? 'Choose a valid time interval' : ''}</p>
         </div>
