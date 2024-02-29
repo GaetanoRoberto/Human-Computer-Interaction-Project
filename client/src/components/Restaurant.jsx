@@ -21,7 +21,7 @@ import API from "../API.jsx";
 import { NavigationButtons } from "./NavigationButtons.jsx";
 import { Reviews } from "./ReviewsList.jsx";
 import { address_string_to_object, time_string_to_object } from "./RestaurantFormUtility.jsx";
-import { ErrorContext } from "./userContext.jsx";
+import { DirtyContext, ErrorContext, setDirtyContext } from "./userContext.jsx";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -537,6 +537,8 @@ const Details = (props) => {
 function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType, divHeight, setDivHeight }) {
     const { id } = useParams();
     const handleError = useContext(ErrorContext);
+    const dirty = useContext(DirtyContext);
+    const setDirty = useContext(setDirtyContext);
     const location = useLocation();
     const bannerRef = useRef(null);
     const regexDetails = /\/details$/;
@@ -552,7 +554,6 @@ function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType, div
     const keySearch = 'selectedSearch';
     const initialSearch = (location.state && location.state.previousLocationPathname === '/') ? "" : (localStorage.getItem(keySearch) || "");
     const [search, setSearch] = useState(initialSearch);
-
 
     useEffect(() => {
         const getRestaurant = async () => {
@@ -575,14 +576,16 @@ function Restaurant({ restaurantAllergens, setRestaurantAllergens, menuType, div
                             ingredient.name.toLowerCase().includes(search.trim().toLowerCase())
                         )))
                 ));
-
+                setDirty(false);
             } catch (error) {
                 handleError(error);
             }
         }
 
+        //if (dirty) {
         getRestaurant();
-    }, [id]);
+        //}
+    }, [id,dirty]);
 
 
     return (

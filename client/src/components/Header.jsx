@@ -22,6 +22,7 @@ function Header(props) {
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
+  const [show3, setShow3] = useState(false);
 
   const userIcon = <FontAwesomeIcon icon="fa-solid fa-user" onClick={() => navigate('/settings')} style={{
     borderRadius: '50%',
@@ -47,6 +48,8 @@ function Header(props) {
   const handleOptionSelect = async (option) => {
     if (option != props.selectedStatus) {
       //props.handleLogout(); // Log out from the current session
+      console.log('reseeg')
+      props.reset_searchBar_filters();
       props.setSelectedStatus(option); // Update the selected status
       //props.doLogIn(); // Log in with new credentials based on the selected status
     }
@@ -58,10 +61,14 @@ function Header(props) {
         <ConfirmModal text={'go Home'} show={show} setShow={setShow} action={() => {
           navigate('/')
         }} />
-        <ConfirmModal text={afterSettings?"go to Settings":'go Back'} show={show2} setShow={setShow2} action={() => {
+        <ConfirmModal text={afterSettings ?"go to Settings":'go Back'} show={show2} setShow={setShow2} action={() => {
                       afterSettings ? navigate("/settings", { state: { previousLocationPathname: location.pathname } }) : navigate(-1)
           
         }} />
+        <ConfirmModal text={"go to Settings"} show={show3} setShow={setShow3} action={() => {
+                      navigate("/settings", { state: { previousLocationPathname: location.pathname } })
+        }} />
+
 
         <Container fluid>
           {location.pathname != "/" ?
@@ -124,7 +131,7 @@ function Header(props) {
 
             :
             props.selectedStatus == "Restaurateur" ?
-              <FontAwesomeIcon icon="fa-solid fa-utensils" onClick={formPages ? () => setShow2(true) : () => navigate("/settings")}  style={{
+              <FontAwesomeIcon icon="fa-solid fa-utensils" onClick={formPages ? () => setShow3(true) : () => navigate("/settings")}  style={{
                 borderRadius: '50%',
                 border: '2px solid white',
                 fontSize: '1.25rem',
@@ -135,7 +142,7 @@ function Header(props) {
 
               }} />
               :
-              <FontAwesomeIcon icon="fa-solid fa-user" onClick={formPages ? () => setShow2(true) : () => navigate("/settings")}  style={{
+              <FontAwesomeIcon icon="fa-solid fa-user" onClick={formPages ? () => setShow3(true) : () => navigate("/settings")}  style={{
                 borderRadius: '50%',
                 border: '2px solid white',
                 fontSize: '1.25rem',

@@ -1,34 +1,4 @@
-# TUTORIAL FOR RUN ON THE SMARTPHONE
+# Hci_project
 
-### RUN THE CLIENT WITH THE FOLLOWING COMMAND
-```
-npm run dev -- --host
-```
-### THEN SELECT THE IP ADDRESS (WITHOUT PORT) CORRESPONDING TO THE LAST ELEMENT THAT IS RETURNED
-```
-VITE v5.0.8  ready in 174 ms
-
-➜  Local:   http://localhost:5173/
-➜  Network: http://192.168.56.1:5173/
-➜  Network: http://192.168.73.212:5173/  ➜ Select this IP, without port (192.168.73.212)
-➜  press h + enter to show help
-```
-
-### NOW SUBSTITUTE THE OBTAINED IP IN COSTANTS.JSX FILE (IN THIS EXAMPLE IS 192.168.73.212)
-``` javascript
-const HTTP_AND_IP_ADDRESS_AND_PORT = "http://192.168.73.212:3001";
-```
-
-### NOW FROM THE SMARTPHONE, OPEN GOOGLE CHROME AND DIGITS ON THE SEARCHBAR
-```
-chrome://flags/ 
-```
-### SEARCH ON THE RESULTING PAGE
-```
-Insecure origins treated as secure
-```
-### NOW INSERT THE PREVIOUS URL (IN THIS EXAMPLE http://192.168.73.212:5173/) IN THE INPUT FIELD AND SWITCH TO ENABLE. AFTER THAT, ACCONSENT TO RELAUNCH CHROME TO APPLY THE CHANGES.
-
-### NOW RUN BOTH CLIENT AND SERVER
-
-### USE THE PREVIOUS URL (IN THIS EXAMPLE http://192.168.73.212:5173/) TO RUN ON THE SMARTPHONE
+Project of the Human Computer Interaction course, made in <a href='https://www.javascript.com/' target='_blank'>javascript</a> with the <a href='https://code.visualstudio.com/' target='_blank'>VsCode</a> IDE. 
+<br>The goal of the project is to design and implement an application to allow celiacs people to browse several restaurants available, see the offered dishes and ingredients in depth. All this done in order to make them feel safer about the quality of what they will eat, without the risk of feel sick. To achieve this, a focus on the ingredients provenience, as well as quality and safety of the offered products was considered inside the application. <br>The project was made with the <a href='https://react.dev/' target='_blank'>React framework</a>, using <a href='https://react-bootstrap.netlify.app/' target='_blank'>React Bootstrap</a> for styling and <a href='https://nodejs.org/en' target='_blank'>NodeJs</a> as runtime environment.

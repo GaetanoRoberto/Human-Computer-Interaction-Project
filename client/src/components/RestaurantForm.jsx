@@ -592,6 +592,7 @@ function InnerForm(props) {
                 let activity_invalidity = mainInfoValidation(activityName, setActivityName);
                 if (activity_invalidity) {
                     invalid = activity_invalidity;
+                    break;
                 }
                 try {
                     // Wait for the promise to settle before moving to the next line
@@ -599,31 +600,38 @@ function InnerForm(props) {
                     invalid = undefined;
                 } catch (error) {
                     invalid = true;
+                    break;
                 }
                 let phone_invalidity = phoneValidation(phone, setPhone);
                 if (phone_invalidity) {
                     invalid = phone_invalidity;
+                    break;
                 }
                 let description_invalidity = mainInfoValidation(description, setDescription);
                 if (description_invalidity) {
                     invalid = description_invalidity;
+                    break;
                 }
                 // links validation
                 let website_invalidity = linkValidation(website, setWebsite);
                 if (website_invalidity) {
                     invalid = website_invalidity;
+                    break;
                 }
                 let instagram_invalidity = linkValidation(instagram, setInstagram);
                 if (instagram_invalidity) {
                     invalid = instagram_invalidity;
+                    break;
                 }
                 let facebook_invalidity = linkValidation(facebook, setFacebook);
                 if (facebook_invalidity) {
                     invalid = facebook_invalidity;
+                    break;
                 }
                 let twitter_invalidity = linkValidation(twitter, setTwitter);
                 if (twitter_invalidity) {
                     invalid = twitter_invalidity;
+                    break;
                 }
                 break;
             case 2:
@@ -632,6 +640,7 @@ function InnerForm(props) {
                 if (times.length === 0) {
                     invalid = true;
                     setErrorMsg('At Least One Hour Is Required');
+                    break;
                 }
 
                 // check for good values
@@ -672,16 +681,19 @@ function InnerForm(props) {
                     let dish_name_invalidity = mainInfoDishValidation(dishName, setDishName, false);
                     if (dish_name_invalidity) {
                         invalid = dish_name_invalidity;
+                        break;
                     }
                     // Validate Dish Price
                     let dish_price_invalidity = priceValidation(price);
                     if (dish_price_invalidity) {
                         invalid = dish_price_invalidity;
+                        break;
                     }
                     // Validate Category type
                     let category_invalidity = mainInfoDishValidation(type, setType, false);
                     if (category_invalidity) {
                         invalid = category_invalidity;
+                        break;
                     }
 
                     // Validate each ingredient
@@ -690,16 +702,19 @@ function InnerForm(props) {
                         let ingredient_name_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'text');
                         if (ingredient_name_invalidity) {
                             invalid = ingredient_name_invalidity;
+                            return;
                         }
                         // Validate Ingredient Brand Name
                         let ingredient_Brandname_invalidity = mainInfoDishValidation(ingredient, setIngredients, 'brandname');
                         if (ingredient_Brandname_invalidity) {
                             invalid = ingredient_Brandname_invalidity;
+                            return;
                         }
                         // Validate Ingredient Brand Link
                         let ingredient_Brandlink_invalidity = ingredientLinkValidation(ingredient, setIngredients);
                         if (ingredient_Brandlink_invalidity) {
                             invalid = ingredient_Brandlink_invalidity;
+                            return;
                         }
                         /* Validate Allergens
                         let ingredient_allergens_invalidity = allergen_validation(ingredient);
@@ -712,6 +727,7 @@ function InnerForm(props) {
                     if (dishes.length <= 0) {
                         setNoDishError('Insert at Least One Dish To Continue');
                         invalid = true;
+                        break;
                     }
                 }
                 break;
@@ -721,7 +737,8 @@ function InnerForm(props) {
 
         // go on if all ok
         if (progress < 4) {
-            if (!invalid) {
+            console.log(invalid)
+            if (invalid === false || invalid === undefined) {
                 setProgress(progress + 1);
             }
         } else {

@@ -72,7 +72,7 @@ function ReviewsListProfile(props) {
                     <Card.Title>{item.title}</Card.Title>
                   </Col>
                   <Row>
-                    <Col><Card.Subtitle>{item.description}</Card.Subtitle></Col>
+                    <Col><Card.Subtitle>{(item.description.length > 50) ? item.description.slice(0, 50) + "..." : item.description}</Card.Subtitle></Col>
                   </Row>
                 </Row>
                 <Row className='mt-2'>

@@ -19,12 +19,27 @@ function MyLocation(props) {
 
   function handleLocationClick() {
     setIsLoadingLocation(true);
-    if (navigator.geolocation) {
+    setTimeout(async () => {
+      setIsLoadingLocation(false);
+      setAddress({ text: 'Corso Castelfidardo, 10138 Torino TO', lat: 45.0651431, lng: 7.6584808, invalid: false });
+      const location = 'Corso Castelfidardo, 10138 Torino TO' + ';lat:' + '45.0651431' + ";lng:" + '7.6584808';
+      const updatedUser = {
+        position: location,
+        isRestaurateur: selectedStatus == "User" ? 0 : 1,
+        username: selectedStatus == "User" ? "User" : "Restaurateur",
+      };
+      try {
+        await API.updateUser(updatedUser);
+      } catch (error) {
+        handleError({ error: `Unable to retrieve your location` });
+      }
+    }, 3000);
+    /*if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true });
     } else {
       //console.log("Geolocation not supported");
       setIsLoadingLocation(false);
-    }
+    }*/
   }
 
   function success(position) {
@@ -103,7 +118,7 @@ const ProfileInformation = (props) => { //USERNAME, YOURSTATUS, POSITION
     <>
       <Container fluid>
         <Col className="mb-2" style={{ marginTop: 15 }}>
-          <Row as="h2">Your Info:</Row>
+          <Row as="h2">Your Username:</Row>
           <Row as="h4" className="text-secondary">
             {props.selectedStatus}
           </Row>

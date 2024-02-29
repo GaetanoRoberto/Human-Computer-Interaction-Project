@@ -40,7 +40,7 @@ function DishIngredientsView(){
                     </h1>
                     <Row>
                         <Col as={"h2"} style={{textAlign: "center"}}>
-                                <Badge pill bg="success"> {dish.type} </Badge>
+                                <Badge bg="success"> {dish.type} </Badge>
                         </Col>
                     </Row>
                     <Row>
@@ -90,9 +90,14 @@ function DishIngredientsView(){
                                                 ))
                                             }
                                             { ingredient.brandLink === null ?
-                                                <h5 style={{marginTop: "3rem"}}>
+                                                <>
+                                                <h6 style={{marginTop: "3rem"}}>
+                                                    Provenience :
+                                                </h6>
+                                                <h5 style={{marginTop: "10px"}}>
                                                     {ingredient.brandName}
                                                 </h5>
+                                                </>
                                                 :
                                                 <>
                                                     <h6 style={{marginTop: "3rem"}}>

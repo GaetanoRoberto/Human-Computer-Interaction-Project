@@ -71,8 +71,8 @@ function InfoPopup(props) {
                 </Row>
                 <Row className="mb-3 " >
                     <Col>
-                    <b>Average Safety</b> refers to the degree of security perceived by customers after eating Gluten-Free dishes in restaurants.<br/>
-                     These are the metrics:
+                    <b>Average Safety</b> refers to the degree of security perceived by customers after eating gluten-free dishes in restaurants.<br/>
+                     These are the possible values:
                     </Col>
                 </Row>
                 {Array.from({ length: 5 }, (_, index) => (

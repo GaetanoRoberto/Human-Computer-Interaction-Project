@@ -10,6 +10,7 @@ import PositionModal from './PositionModal';
 import PositionModalAlert from './PositionModalAlert';
 import { UserContext, ErrorContext } from './userContext';
 import API from '../API';
+import { foodAllergens } from './Costants';
 
 
 const animatedComponents = makeAnimated();
@@ -201,7 +202,7 @@ const FilterPage = (props) => {
                 if (categoriesAndAllergenes != null) {
                     // Example of how to use this function when setting the state
                     props.setCategoriesOptions(mapToCategoriesOptions(categoriesAndAllergenes.categories));
-                    props.setAllergensOptions(mapToAllergensOptions(categoriesAndAllergenes.allergens));
+                    props.setAllergensOptions(foodAllergens);
                     //setUserAddress(user1.position.split(";")[0]);
                     //console.log(user);
                 } else {

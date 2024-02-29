@@ -11,7 +11,7 @@ import { ReviewForm } from './components/ReviewPage';
 import { useState, useEffect,useContext } from 'react';
 import { RestaurantForm } from './components/RestaurantForm';
 import { Restaurant } from "./components/Restaurant.jsx";
-import { ErrorContext, UserContext } from './components/userContext';
+import { ErrorContext, UserContext,DirtyContext,setDirtyContext } from './components/userContext';
 import { Button, Col, Alert, Toast } from 'react-bootstrap';
 import { Profile } from './components/Profile';
 import { DishForm } from './components/DishForm';
@@ -51,7 +51,7 @@ function App() {
   // Menu category state
   const [menuType, setMenuType] = useState([]);
   const [divHeight, setDivHeight] = useState(null);
-
+  const [dirty,setDirty] = useState(true);
 
   // Define doLogIn function outside of useEffect
   const doLogIn = () => {
@@ -160,6 +160,21 @@ function App() {
     setUser(undefined);
   }
 
+  const reset_searchBar_filters = () => {
+    setSearch('');
+    setFiltersToApply({
+      categories: [],
+      priceRange: [0, 50],
+      qualityRating: '',
+      safetyRating: '', 
+      allergens: [], // Array to hold added ingredients
+      openNow: false,
+      distance: false,
+      // label: "Nothing",
+      // order: "DESC"
+    });
+  };
+
   useEffect(() => {
     // function used to retrieve restaurant information in detail
     async function getUser(username) {
@@ -185,8 +200,10 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <ErrorContext.Provider value={handleError}>
+        <DirtyContext.Provider value={dirty}>
+          <setDirtyContext.Provider value={setDirty}>
         <BrowserRouter>
-          <Header selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />
+          <Header reset_searchBar_filters={reset_searchBar_filters} selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} handleLogout={handleLogout} doLogIn={doLogIn} />
           {errorMessage ?
             <Toast  show={errorMessage !== ''} onClose={() => setErrorMessage('')} delay={6000} autohide bg="danger w-100">
               <Toast.Body>{errorMessage}</Toast.Body>
@@ -209,6 +226,8 @@ function App() {
             <Route path='*' element={<DefaultRoute />} />
           </Routes>
         </BrowserRouter>
+        </setDirtyContext.Provider>
+        </DirtyContext.Provider>
       </ErrorContext.Provider>
     </UserContext.Provider>
 

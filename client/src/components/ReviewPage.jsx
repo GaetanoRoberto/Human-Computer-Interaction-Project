@@ -5,7 +5,7 @@ import { ButtonGroup, Form, Button, Alert, Row, Col, Image, Container, Card, Bad
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Header } from './Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { UserContext } from './userContext';
+import { UserContext, setDirtyContext } from './userContext';
 import ConfirmModal from './ConfirmModal';
 import API from '../API';
 import { ErrorContext } from './userContext';
@@ -24,7 +24,7 @@ import { approssimaValoreAlRange } from './Costants';
 const ReviewForm = (props) => {
   const user = useContext(UserContext);
   const handleError = useContext(ErrorContext);
-
+  const setDirty = useContext(setDirtyContext);
 
   // reviewId da URL
   const { id, reviewId } = useParams();
@@ -72,17 +72,17 @@ const ReviewForm = (props) => {
 
   const addReview = (review) => {
     API.createReview(review)
-      .then(() => { })
+      .then(() => { setDirty(true); })
       .catch(e => handleError(e));
   }
   const editReview = (review) => {
     API.updateReview(review)
-      .then(() => { })
+      .then(() => { setDirty(true); })
       .catch(e => handleError(e));
   }
   const deleteReview = (review) => {
     API.deleteReview(review)
-      .then(() => { })
+      .then(() => { setDirty(true); })
       .catch(e => handleError(e));
   }
   function Rating(props) {

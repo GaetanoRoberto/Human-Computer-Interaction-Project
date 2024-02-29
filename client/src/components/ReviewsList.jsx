@@ -8,6 +8,7 @@ import { ErrorContext } from './userContext';
 import API from '../API';
 import dayjs from 'dayjs';
 import { approssimaValoreAlRange } from './Costants';
+
 function getHappinessClass(index) {
   switch (index) {
     case 0:
@@ -59,7 +60,7 @@ function getHappinessColor(index) {
 function SearchReview(props) {
   const { filteredReviews, reviews, setFilteredReviews, search, setSearch } = props;
   const [label, setLabel] = useState("DATE");
-  const [order, setOrder] = useState("DESC");
+  const [order, setOrder] = useState('DESC');
   const user = useContext(UserContext);
 
   const { id } = useParams();
@@ -105,19 +106,24 @@ function SearchReview(props) {
         :
         [...list].sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day"))
       setFilteredReviews(sortedList);
+      console.log("sorted",sortedList)
+
     } else {
       const sortedList = order === 'ASC' ? [...list].sort((a, b) => a[field] - b[field])
         :
         [...list].sort((a, b) => b[field] - a[field])
       setFilteredReviews(sortedList);
+      //console.log("sorted",sortedList)
+
     }
+
   };
 
   const toggleOrder = () => {
     const sortedList = [...filteredReviews].reverse();
     setFilteredReviews(sortedList);
     setOrder(order === 'ASC' ? 'DESC' : 'ASC');
-    //console.log(order, label);
+    //console.log(order, sortedList);
   };
   const handleSearch = (ev) => {
     setSearch(ev.target.value);
@@ -174,13 +180,13 @@ function ReviewsList({ reviews, divHeight }) {
   const navigate = useNavigate();
   const reviewsHeight = (divHeight === 166 ? window.innerHeight - 360 : divHeight === 195 ? window.innerHeight - 390 : divHeight === 175 ? window.innerHeight - 370 : window.innerHeight - 340);
   const { id } = useParams();
-  const reviewsRef = useRef();
+  //const reviewsRef = useRef();
   //const [list, setList] = useState(reviews);
   const user = useContext(UserContext);
   const [filteredReviews, setFilteredReviews] = useState(reviews);
   const [search, setSearch] = useState("")
 
-
+/*
   useEffect(() => {
     if (reviewsRef.current) {
       setTimeout(() => {
@@ -188,7 +194,7 @@ function ReviewsList({ reviews, divHeight }) {
       }, 1);
     }
     // added 10/02
-    const getRestaurant = async () => {
+    /*const getRestaurant = async () => {
       try {
           const restaurant = await API.getRestaurant(id);
           setFilteredReviews(restaurant.reviews)
@@ -201,18 +207,18 @@ function ReviewsList({ reviews, divHeight }) {
 
 
 
-  }, []);
-
+  }, []);*/
+/*
   const handleScrollReviews = () => {
     localStorage.setItem('scrollPositionReviews', reviewsRef.current.scrollTop);
-  };
+  };*/
 
 
   return (
     <>
       <SearchReview filteredReviews={filteredReviews} reviews={reviews} search={search} setSearch={setSearch} setFilteredReviews={setFilteredReviews} />
       <div style={{ borderTop: "1px solid #000", margin: 0 }}></div>
-      <ListGroup onScroll={handleScrollReviews} ref={reviewsRef} style={{ overflowY: "scroll", maxHeight: reviewsHeight }}>
+      <ListGroup style={{ overflowY: "scroll", maxHeight: reviewsHeight }}>
         {//list.sort((a, b) => dayjs(b.date).diff(dayjs(a.date), "day")).map((item) => {
           //   list.map((item) => {
           reviews.length === 0 ?
@@ -243,7 +249,7 @@ function ReviewsList({ reviews, divHeight }) {
                         </Card.Text></Col>
                       </Row>
 
-                      <Row>
+                      <Row style={{ display: "flex", alignItems: "center" }}>
                       <Col xs={4} style={{display:'flex', alignItems:'center' }}><Card.Text style={{ fontSize: "1.2em" }}>Safety:</Card.Text></Col>
                         <Col xs={8}>
                           <Card.Text>
@@ -256,9 +262,11 @@ function ReviewsList({ reviews, divHeight }) {
                         </Col>
                       </Row>
 
-                      <Row>
-                        <Col xs={4} ><Card.Text style={{ fontSize: "1.2em" }}>Price:</Card.Text></Col>
-                        <Col xs={8} ><Card.Text style={{ fontSize: "1.2em" }}>
+                      <Row style={{ display: "flex", alignItems: "center" }}>
+                        <Col xs={4} style={{display:'flex', alignItems:'center' }}>
+                          <Card.Text style={{ fontSize: "1.2em" }}>Price:</Card.Text></Col>
+                        <Col xs={8} >
+                          <Card.Text style={{ fontSize: "1.2em", marginTop: "2px" }}>
                         <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
                                 {approssimaValoreAlRange(item.price)}
                         </Card.Text></Col>

@@ -85,14 +85,14 @@ function SearchBar(props) {
                     <i className="bi bi-search" style={{ fontSize: "1.5rem" }}></i>
                 </Col>
                 <Col>
-                    <Form.Control type="search" placeholder="Search restaurant or dish" value={search} onChange={handleSearch} className="form-control-green-focus"/>
+                    <Form.Control type="search" placeholder="Search restaurant or dish" value={search} onChange={handleSearch} className="form-control-green-focus" />
                 </Col>
                 <Col xs={1} className="d-flex justify-content-end align-items-center" style={{ marginLeft: "3%" }}>
                     <i className="bi bi-sliders" style={{ fontSize: "1.5rem" }} onClick={() => navigate('/filters')}></i>
                 </Col>
             </Row>
             <Row className="align-items-center" style={{ marginRight: 0, marginTop: "0.2rem", marginLeft: 0, marginBottom: "0.2rem" }}>
-                <Col style={{ alignItems:'center' }}>
+                <Col style={{ alignItems: 'center' }}>
                     <b style={{ marginRight: "0.5rem", position: "relative", bottom: 0 }}>More info</b>
                     <FontAwesomeIcon onClick={setShowInfo} style={{ fontSize: "1.2rem", color: "#007bff", position: "relative", bottom: -2.5, marginLeft: "-5px" }} icon="fa-solid fa-circle-info" />
                 </Col>
@@ -134,7 +134,7 @@ function Filters(props) {
                     filterKey != 'distance'
                     // && filterKey != 'label' &&
                     // filterKey != 'order'
-                    ) {
+                ) {
 
                 }
                 // Update your switch case to correctly identify and remove the filter
@@ -278,7 +278,7 @@ function RestaurantsList(props) {
         });
         return val
     };
-    
+
     return (
         <ListGroup onScroll={handleScrollRestaurants} ref={restaurantsRef} style={{ overflowY: "scroll", overflowX: "hidden", maxHeight: listHeight }}>
             {filterRestaurants().length === 0 ?
@@ -320,12 +320,12 @@ function RestaurantsList(props) {
                                                     }
                                                 </Card.Text>
 
-                                                <Card.Text style={{ textAlign: "start",  fontSize: "1.2em",marginTop: "-10px", display: "flex", alignItems: "center" }}>
+                                                <Card.Text style={{ textAlign: "start", fontSize: "1.2em", marginTop: "-10px", display: "flex", alignItems: "center" }}>
                                                     <i className="bi bi-currency-euro" style={{ marginRight: "5px" }}></i>
                                                     {approssimaValoreAlRange(Math.round(restaurant.avg_price))}
                                                 </Card.Text>
-                                                <Card.Text style={{ textAlign: "start", marginTop: "-10px",  fontSize: "1.2em" }}>
-                                                   <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{ color: getHappinessColor(Math.round(restaurant.avg_safety)) }} />  ({restaurant.avg_safety.toFixed(1)})
+                                                <Card.Text style={{ textAlign: "start", fontSize: "1.2em", marginTop: "-10px", display: "flex", alignItems: "center" }}>
+                                                    <FontAwesomeIcon icon={getHappinessSolidClass(Math.round(restaurant.avg_safety))} style={{ color: getHappinessColor(Math.round(restaurant.avg_safety)), marginRight: "5px" }} />  ({restaurant.avg_safety.toFixed(1)})
                                                 </Card.Text>
                                             </>
                                         }
@@ -603,10 +603,10 @@ function Home(props) {
             (props.filtersToApply.safetyRating === '') &&
             (props.filtersToApply.allergens.length === 0) && // Added check for allergens
             (props.filtersToApply.openNow === false) &&
-            (props.filtersToApply.distance === false) 
+            (props.filtersToApply.distance === false)
             // && (props.filtersToApply.label === "Nothing") &&
             // (props.filtersToApply.order === "DESC")
-            ) {
+        ) {
             setRestaurantList(restaurantInitialList);
         }
     };
@@ -634,7 +634,7 @@ function Home(props) {
             if (props.filtersToApply.priceRange[0] > 0 || props.filtersToApply.priceRange[1] < 50) {
                 const avgPriceRange = approssimaValoreAlRange(Math.round(restaurant.avg_price));
                 let lowerBound, upperBound;
-            
+
                 switch (avgPriceRange) {
                     case "1-10":
                         lowerBound = 1;
@@ -660,13 +660,13 @@ function Home(props) {
                         passesAllFilters = false; // In case of an unexpected range string
                         return;
                 }
-            
+
                 // Adjusted logic to exclude the upper bound from the computation
                 if (upperBound <= props.filtersToApply.priceRange[0] || lowerBound >= props.filtersToApply.priceRange[1]) {
                     passesAllFilters = false;
                 }
             }
-            
+
 
 
             // Categories Filter
@@ -878,8 +878,8 @@ function Home(props) {
     props.filtersToApply.allergens.length,
     props.filtersToApply.openNow,
     props.filtersToApply.distance,
-    // props.filtersToApply.label,
-    // props.filtersToApply.order
+        // props.filtersToApply.label,
+        // props.filtersToApply.order
     ]);
 
     return (
